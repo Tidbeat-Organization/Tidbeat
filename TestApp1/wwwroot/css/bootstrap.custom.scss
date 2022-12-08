@@ -1,0 +1,44 @@
+﻿//IMPORTANT: variable changes before imports
+
+$theme-colors: (
+  primary: #6610F2, // override some or all base color definitions
+  secondary: #8f5325, //nao decidido
+  success: #3e8d63, //nao decidido
+  dark: #343a40, //nao decidido
+);
+$primary: #6610F2;
+
+//imports
+@import "../lib/bootstrap/scss/bootstrap";
+@import url("https://fonts.google.com/specimen/Poppins");
+
+//IMPORTANT: creation and change of classes after imports
+
+//styling existing classes
+* {
+    font-family: 'Poppins', sans-serif!important;
+}
+
+.navbar {
+    //background: linear-gradient($primary, $white)
+    padding: 0!important;
+}
+
+
+
+nav-link {
+}
+
+
+//personalized classes
+.filldiv {
+    height: 100vh;
+}
+
+.temporary-margin {
+    margin-top: 20vh;
+}
+
+.no-padding {
+    padding: 0!important;
+}
