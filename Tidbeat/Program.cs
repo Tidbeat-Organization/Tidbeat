@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using TestApp1.Data;
+using Tidbeat.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 

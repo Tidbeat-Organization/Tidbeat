@@ -1,4 +1,4 @@
-namespace TestApp1.Models {
+namespace Tidbeat.Models {
     public class ErrorViewModel {
         public string? RequestId { get; set; }
 

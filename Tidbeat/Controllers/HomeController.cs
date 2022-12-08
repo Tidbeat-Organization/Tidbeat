@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
-using TestApp1.Models;
+using Tidbeat.Models;
 
-namespace TestApp1.Controllers {
+namespace Tidbeat.Controllers {
     public class HomeController : Controller {
         private readonly ILogger<HomeController> _logger;
 
