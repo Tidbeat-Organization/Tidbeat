@@ -5,9 +5,10 @@ $theme-colors: (
   secondary: #8f5325, //nao decidido
   success: #3e8d63, //nao decidido
   dark: #343a40, //nao decidido
+  light-grey: #e3e3e3,
 );
 $primary: #6610F2;
-
+$light-grey: #e3e3e3;
 //imports
 @import "../lib/bootstrap/scss/bootstrap";
 @import url("https://fonts.google.com/specimen/Poppins");
@@ -19,11 +20,14 @@ $primary: #6610F2;
     font-family: 'Poppins', sans-serif!important;
 }
 
-.navbar {
-    //background: linear-gradient($primary, $white)
-    padding: 0!important;
+body {
+    
 }
 
+.navbar {
+    //background: linear-gradient($primary, $white)
+    padding: 0 !important;
+}
 
 
 nav-link {
@@ -37,6 +41,10 @@ nav-link {
 
 .temporary-margin {
     margin-top: 20vh;
+}
+
+.temporary-below-navbar {
+    margin-top: 12vh;
 }
 
 .no-padding {
