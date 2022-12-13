@@ -2,7 +2,7 @@
 }
 
 <div class="temporary-below-navbar ms-3">
-    <div class="d-flex flex-row">
+    <div class="d-flex flex-row border-bottom pb-1">
         <img class="me-2" src="~/images/PlayButton.png"/>
         <div>
             <div class="fw-bold">Jean Pardieu</div>
@@ -13,17 +13,27 @@
             </div>
         </div>
     </div>
-    <div class="fw-bold">
+    <div class="fw-bold mt-2">
         A minha opinião sobre este excerto de Makeba:
     </div>
     <div class="mt-2">
         Este excerto fez-me lembrar aquela altura em que fui a um festival de música e perdi-me no meio
         da multidão de tão hipnotizado...!
     </div>
-    <div class="mt-4">
-        <div>Comentários:</div>
-        <div>
-            <div class="border border-primary d-flex flex-row align-items-center rounded-3 ms-5">
+    <div class="mt-4 border-top pt-2">
+        <!--<div>Comentários:</div>-->
+        <div class="ms-2 mb-3">
+            <div class="border border-primary d-flex flex-row align-items-center rounded-3 input-group bg-primary">
+                <div class="ms-2 me-2 text-end text-white fw-bold">
+                    Adicionar comentário
+                </div>
+                <div class="form-outline w-100">
+                    <textarea id="form1" class="form-control" placeholder="Escreva um comentário..." rows="1" cols="60"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="ms-2">
+            <div class="border border-primary d-flex flex-row align-items-center rounded-3">
                 <div class="border-end ms-3 pe-2 me-2 text-end">
                     <div class="fw-bold">Jan Magnussen</div>
                     <div class="text-primary">Utilizador</div>

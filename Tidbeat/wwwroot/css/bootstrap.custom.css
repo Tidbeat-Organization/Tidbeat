@@ -10520,6 +10520,10 @@ textarea.form-control-lg {
   padding: 0 !important;
 }
 
+.background-gradient {
+  background: linear-gradient(#6610F2, #0069fd);
+}
+
 .filldiv {
   height: 100vh;
 }
