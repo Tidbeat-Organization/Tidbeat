@@ -9,6 +9,10 @@ $theme-colors: (
 );
 $primary: #6610F2;
 $light-grey: #e3e3e3;
+
+$font-sizes : (
+    6: 12px
+);
 //imports
 @import "../lib/bootstrap/scss/bootstrap";
 @import url("https://fonts.google.com/specimen/Poppins");
