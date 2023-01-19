@@ -16,7 +16,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,400;1,400&amp;display=swap" rel="stylesheet" />
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Poppins" />
     <!-- Core theme CSS (includes Bootstrap)-->
-    
+
     <link rel="stylesheet" href="~/css/theme.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/TestTemplate.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/bootstrap.custom.min.css" asp-append-version="true" />
@@ -27,7 +27,7 @@
     <nav class="navbar navbar-expand-lg navbar-light fixed-top shadow-sm" id="mainNav">
         <div class="container-fluid">
             <a class="navbar-brand fw-bold d-flex flex-row">
-                <img src="~/images/Logo.png" width="60" height="55"/>
+                <img src="~/images/Logo.png" width="60" height="55" />
                 <h1 class="text-primary mt-1">Tidbeat</h1>
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
@@ -36,10 +36,12 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav me-2 my-3 my-lg-0">
-                    <li class="nav-item border border-2 border-primary me-1 rounded text-center bg-primary"><a class="nav-link text-white" href="#features">Posts Recomendados</a></li>
+                    <li class="nav-item me-1 rounded text-center bg-white">
+                        <a class="nav-link text-black" href="#features">Posts Recomendados</a>
+                    </li>
                 </ul>
-                <div class="dropdown me-3">
-                    <button class="btn btn-primary dropdown-toggle py-2" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <div class="dropdown me-3" style="background-color: white; color: black;">
+                    <button class="btn dropdown-toggle py-2 border-0" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="background-color: white; color: black;">
                         Outros Conteúdos
                     </button>
                     <ul class="dropdown-menu">
@@ -54,33 +56,43 @@
                     </div>
                     <div class="input-group">
                         <div class="form-outline">
-                            <input type="search" id="form1" class="form-control" placeholder="Search"/>
+                            <input type="search" id="form1" class="form-control" placeholder="Search" />
                         </div>
                         <button type="button" class="btn btn-primary">
-                            <img class="no-padding" src="~/images/SearchIcon.png" height="26" width="30"/>
+                            <img class="no-padding" src="~/images/SearchIcon.png" height="26" width="30" />
                         </button>
                     </div>
                 </div>
                 <div class="ms-auto d-flex flex-row">
-                    <button class="btn btn-primary rounded-pill px-3 mb-2 mb-lg-0 me-1" data-bs-toggle="modal" data-bs-target="#feedbackModal">
+                    <!-- <button class="btn btn-primary rounded-pill px-3 mb-2 mb-lg-0 me-1" data-bs-toggle="modal" data-bs-target="#feedbackModal">
                         <span class="d-flex align-items-center">
                             <i class="bi-chat-text-fill me-2"></i>
                         </span>
-                    </button>
-                    <button class="btn btn-primary rounded-pill px-3 mb-2 mb-lg-0" data-bs-toggle="modal" data-bs-target="#feedbackModal">
+                    </button> -->
+                    <!-- <button class="btn btn-primary rounded-pill px-3 mb-2 mb-lg-0" data-bs-toggle="modal" data-bs-target="#feedbackModal">
                         <span class="d-flex align-items-center">
                             Profile
                         </span>
-                    </button>
+                    </button>-->
+                    <ul class="navbar-nav me-2 my-3 my-lg-0">
+                        <li class="nav-item me-1 rounded text-center bg-white">
+                            <a class="nav-link text-black" asp-controller="Home" asp-action="Index">Login</a>
+                        </li>
+                    </ul>
+                    <ul class="navbar-nav me-2 my-3 my-lg-0">
+                    <li class="nav-item me-1 rounded text-center bg-white">
+                        <a class="nav-link text-black" href="#features">Registo</a>
+                    </li>
+                    </ul>
                 </div>
             </div>
         </div>
     </nav>
     <div class="row filldiv">
-        <main role="main" class="pb-3 col-10">
+        <main role="main" class="text-center">
             @RenderBody()
         </main>
-        <aside class="col-2 border rounded bg-primary">
+        <!--<aside class="col-2 border rounded bg-primary">
             <h1 class="text-white text-center">Tidbeat</h1>
             <h5 class="text-white">Pessoas que segues:</h5>
             <div>
@@ -130,7 +142,7 @@
                     </button>
                 </div>
             </div>
-        </aside>
+        </aside> -->
     </div>
     <!-- Footer
     <footer class="bg-black text-center py-5">
