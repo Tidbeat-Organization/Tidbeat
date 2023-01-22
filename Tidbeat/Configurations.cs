@@ -13,7 +13,6 @@ namespace Tidbeat {
             };
 
             var createUser = await userManager.CreateAsync(normalUser, "Password_123");
-            System.Diagnostics.Debug.WriteLine("EXISTE UM ERRO: " + createUser);
         }
     }
 }
