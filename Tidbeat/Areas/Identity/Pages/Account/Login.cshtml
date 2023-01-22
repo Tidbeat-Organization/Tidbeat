@@ -5,6 +5,40 @@
     ViewData["Title"] = "Log in";
 }
 
+<div class="text-center d-flex flex-column temporary-margin">
+    <h3 class="display-4 text-primary">Faz login no TidBeat</h3>
+    <form class="w-25 mx-auto d-flex flex-column" id="account" method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="mb-3">
+            <label asp-for="Input.Email" class="form-label text-primary">Nome de Utilizador / Email</label>
+            <input asp-for="Input.Email" type="email" class="form-control" id="InputEmail1" aria-describedby="emailHelp">
+            <span asp-validation-for="Input.Email" class="text-danger"></span>
+            <div id="emailHelp" class="form-text">Nunca partilharemos o seu email com outros.</div>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Input.Password" class="form-label text-primary">Palavra-Passe</label>
+            <input asp-for="Input.Password" type="password" class="form-control" id="InputPassword1">
+            <span asp-validation-for="Input.Password" class="text-danger"></span>
+        </div>
+        <div class="checkbox">
+            <label asp-for="Input.RememberMe" class="form-label">
+                <input class="form-check-input" asp-for="Input.RememberMe" />
+                @Html.DisplayNameFor(m => m.Input.RememberMe)
+            </label>
+        </div>
+        <div class="border border-2 border-primary rounded-3 w-20 d-flex align-self-center justify-content-center mb-3">
+            <img src="~/images/GoogleIcon.png" width="60" height="55" />
+        </div>
+        <button id="login-submit" type="submit" class="btn btn-primary">Efetuar Login</button>
+        <p>
+            <a id="forgot-password" asp-page="./ForgotPassword">Esqueceste-te da palavra-passe?</a>
+        </p>
+        <p>
+            <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Não tenho conta no TidBeat. Criar conta.</a>
+        </p>
+    </form>
+</div>
+<!--
 <h1>@ViewData["Title"]</h1>
 <div class="row">
     <div class="col-md-4">
@@ -79,7 +113,7 @@
         </section>
     </div>
 </div>
-
+-->
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }
