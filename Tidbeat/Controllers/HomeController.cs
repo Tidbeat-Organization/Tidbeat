@@ -22,6 +22,12 @@ namespace Tidbeat.Controllers {
         public IActionResult Post() {
             return View();
         }
+        
+        public IActionResult Register(EnumRegisterPhase phase)
+        {
+            ViewBag.RegisterPhase = phase;
+            return View();
+        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error() {
