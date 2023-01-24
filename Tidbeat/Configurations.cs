@@ -8,8 +8,8 @@ namespace Tidbeat {
             var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
             var normalUser = new ApplicationUser {
                 FullName = "Utilizador Normal",
-                UserName = "utilizador@ips.pt",
-                Email = "utilizador@ips.pt"
+                UserName = "afonsosemeano@gmail.com",
+                Email = "afonsosemeano@gmail.com"
             };
 
             var createUser = await userManager.CreateAsync(normalUser, "Password_123");

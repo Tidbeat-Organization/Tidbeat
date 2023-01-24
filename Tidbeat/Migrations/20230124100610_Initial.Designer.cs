@@ -12,7 +12,7 @@ using Tidbeat.Data;
 namespace Tidbeat.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230122113351_Initial")]
+    [Migration("20230124100610_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
