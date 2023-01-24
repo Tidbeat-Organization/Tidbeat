@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Tidbeat.Models {
     public class ApplicationUser : IdentityUser {
@@ -7,8 +8,5 @@ namespace Tidbeat.Models {
 
         [PersonalData]
         public DateTime BirthdayDate { get; set; }
-
-        [PersonalData]
-        public string Gender { get; set; }
     }
 }
