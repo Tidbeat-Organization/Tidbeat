@@ -9,7 +9,8 @@ namespace Tidbeat {
             var normalUser = new ApplicationUser {
                 FullName = "Utilizador Normal",
                 UserName = "afonsosemeano@gmail.com",
-                Email = "afonsosemeano@gmail.com"
+                Email = "afonsosemeano@gmail.com",
+                BirthdayDate = DateTime.Now,
             };
 
             var createUser = await userManager.CreateAsync(normalUser, "Password_123");

@@ -64,6 +64,16 @@ namespace Tidbeat.Areas.Identity.Pages.Account.Manage
             [DataType(DataType.Text)]
             [Display(Name = "Full name")]
             public string FullName { get; set; }
+
+            [Required]
+            [DataType(DataType.Date)]
+            [Display(Name = "Birthday Date")]
+            public DateTime BirthdayDate { get; set; }
+
+            [Required]
+            [DataType(DataType.Text)]
+            [Display(Name = "Gender")]
+            public string Gender { get; set; }
         }
 
         private async Task LoadAsync(ApplicationUser user)
@@ -75,7 +85,9 @@ namespace Tidbeat.Areas.Identity.Pages.Account.Manage
 
             Input = new InputModel {
                 PhoneNumber = phoneNumber,
-                FullName = ""
+                FullName = "",
+                BirthdayDate = DateTime.Now,
+                Gender = ""
             };
         }
 
