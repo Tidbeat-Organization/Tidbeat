@@ -75,7 +75,7 @@ namespace Tidbeat.Areas.Identity.Pages.Account
         {
             [Required]
             [DataType(DataType.Text)]
-            [Display(Name = "Full name")]
+            [Display(Name = "Nome completo")]
             public string FullName { get; set; }
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -88,8 +88,12 @@ namespace Tidbeat.Areas.Identity.Pages.Account
 
             [Required]
             [DataType(DataType.Date)]
-            [Display(Name = "Birthday Date")]
+            [Display(Name = "Data de Nascimento")]
             public DateTime BirthdayDate { get; set; }
+
+            [DataType(DataType.Text)]
+            [Display(Name = "Género")]
+            public string Gender { get; set; }
 
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -98,7 +102,7 @@ namespace Tidbeat.Areas.Identity.Pages.Account
             [Required]
             [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
             [DataType(DataType.Password)]
-            [Display(Name = "Password")]
+            [Display(Name = "Palavra-Passe")]
             public string Password { get; set; }
 
             /// <summary>
@@ -106,8 +110,8 @@ namespace Tidbeat.Areas.Identity.Pages.Account
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
             [DataType(DataType.Password)]
-            [Display(Name = "Confirm password")]
-            [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+            [Display(Name = "Confirmar palavra-passe")]
+            [Compare("Password", ErrorMessage = "A palavra-passe e a confirmação de palavra-passe não são iguais.")]
             public string ConfirmPassword { get; set; }
         }
 
@@ -127,6 +131,7 @@ namespace Tidbeat.Areas.Identity.Pages.Account
                 var user = CreateUser();
                 user.FullName = Input.FullName;
                 user.BirthdayDate = Input.BirthdayDate;
+                user.Gender = Input.Gender;
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);

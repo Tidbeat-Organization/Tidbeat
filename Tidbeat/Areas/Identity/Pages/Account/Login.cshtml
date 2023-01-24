@@ -26,14 +26,14 @@
                 @Html.DisplayNameFor(m => m.Input.RememberMe)
             </label>
         </div>
+        <p>
+            <a id="forgot-password" asp-page="./ForgotPassword">Esqueceste-te da palavra-passe?</a>
+        </p>
         <div class="border border-2 border-primary rounded-3 w-20 d-flex align-self-center justify-content-center mb-3">
             <img src="~/images/GoogleIcon.png" width="60" height="55" />
         </div>
         <button id="login-submit" type="submit" class="btn btn-primary">Efetuar Login</button>
-        <p>
-            <a id="forgot-password" asp-page="./ForgotPassword">Esqueceste-te da palavra-passe?</a>
-        </p>
-        <p>
+        <p class="mt-2">
             <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Não tenho conta no TidBeat. Criar conta.</a>
         </p>
     </form>

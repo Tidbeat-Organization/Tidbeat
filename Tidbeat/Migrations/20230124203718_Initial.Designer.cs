@@ -12,7 +12,7 @@ using Tidbeat.Data;
 namespace Tidbeat.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230124194849_Initial")]
+    [Migration("20230124203718_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -184,6 +184,10 @@ namespace Tidbeat.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("FullName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Gender")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

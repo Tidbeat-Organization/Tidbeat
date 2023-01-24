@@ -70,6 +70,10 @@ namespace Tidbeat.Areas.Identity.Pages.Account.Manage
             [DataType(DataType.Date)]
             [Display(Name = "Birthday Date")]
             public DateTime BirthdayDate { get; set; }
+
+            [DataType(DataType.Text)]
+            [Display(Name = "Gender")]
+            public string Gender { get; set; }
         }
 
         private async Task LoadAsync(ApplicationUser user)
@@ -83,6 +87,7 @@ namespace Tidbeat.Areas.Identity.Pages.Account.Manage
                 PhoneNumber = phoneNumber,
                 FullName = "",
                 BirthdayDate = DateTime.Now,
+                Gender = ""
             };
         }
 

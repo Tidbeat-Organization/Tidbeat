@@ -8,5 +8,8 @@ namespace Tidbeat.Models {
 
         [PersonalData]
         public DateTime BirthdayDate { get; set; }
+
+        [PersonalData]
+        public string Gender { get; set; }
     }
 }
