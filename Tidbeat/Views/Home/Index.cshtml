@@ -1,4 +1,6 @@
-﻿@{
+﻿@using Tidbeat.Controllers
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
@@ -22,6 +24,6 @@
             <img src="~/images/GoogleIcon.png" width="60" height="55"/>
         </div>
         <button type="submit" class="btn btn-primary">Efetuar Login</button>
-        <a class="mt-3" href="#">Não tenho conta no TidBeat. Criar conta.</a>
+        <a class="mt-3" href=@Url.Action("Register", "Home", )>Não tenho conta no TidBeat. Criar conta.</a>
     </form>
 </div>
