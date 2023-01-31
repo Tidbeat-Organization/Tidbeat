@@ -24,7 +24,7 @@ namespace Tidbeat.Services {
         public async Task Execute(string apikey, string subject, string message, string toEmail) {
             var client = new SendGridClient(apikey);
             var msg = new SendGridMessage() {
-                From = new EmailAddress("tidbeatnoreply@gmail.com", "Password Recovery"),
+                From = new EmailAddress("tidbeatnoreply@gmail.com", "Tidbeat NO-REPLY"),
                 Subject = subject,
                 PlainTextContent = message,
                 HtmlContent = message
