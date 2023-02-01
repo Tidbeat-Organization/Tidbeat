@@ -25,7 +25,7 @@
             <input type="email" class="first-phase form-control mt-0" id="registerEmailField">
 
             <label for="registerPasswordField" class="first-phase form-label text-primary mt-3 mb-0">Palavra-Passe</label>
-            <input type="password" class="first-phase form-control mt-0" id="registerUserField">
+            <input type="password" class="first-phase form-control mt-0" id="registerPasswordField">
 
             <label for="registerConfirmPasswordField" class="first-phase form-label text-primary mt-3 mb-0">Confirmar Palavra-Passe</label>
             <input type="password" class="first-phase form-control mt-0" id="registerConfirmPasswordField">
@@ -53,13 +53,31 @@
     </form>
 </div>
 <script>
+    const pattern = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@@$!%*?&])[A-Za-z\d@@$!%*?&]{6,}$");
     function showPhase(isPhaseOne) {
+        let email = document.getElementById('registerEmailField').value
+        let password = document.getElementById('registerPasswordField').value
+        let confirmPassword = document.getElementById('registerConfirmPasswordField').value
+        if (!email.includes("@@")) {
+            alert("Email Wrong")
+            console.log("Email Wrong");
+            return
+        }
+        if (!pattern.test(password)) {
+            alert("Password Wrong")
+            console.log("Password Wrong");
+            return
+        }
+        if (!password === confirmPassword) {
+            alert("Password and ConfirmPasswordDifferent")
+            console.log("Password and ConfirmPasswordDifferent");
+            return
+        }
         let phaseOneStyle = (!!isPhaseOne) ? "none" : "inherit";
         let phaseTwoStyle = (!!isPhaseOne) ? "inherit" : "none";
         
         let firstPhaseLen = document.getElementsByClassName("first-phase").length;
         let secondPhaseLen = document.getElementsByClassName("second-phase").length;
-
         for (let i = 0; i < firstPhaseLen; i++) {
             document.getElementsByClassName("first-phase")[i].style.display = phaseOneStyle;
         }
@@ -68,8 +86,6 @@
         }
     }
     function registerPhase() {
-        
-
 		let isFirstPhase = document.getElementsByClassName("first-phase")[0].style.display !== "none";
         console.log(isFirstPhase);
         showPhase(isFirstPhase);
