@@ -53,23 +53,24 @@
     </form>
 </div>
 <script>
-    const pattern = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@@$!%*?&])[A-Za-z\d@@$!%*?&]{6,}$");
+    "use strict";
     function showPhase(isPhaseOne) {
-        let email = document.getElementById('registerEmailField').value
-        let password = document.getElementById('registerPasswordField').value
-        let confirmPassword = document.getElementById('registerConfirmPasswordField').value
+        let pattern = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@@$!%*?&])[A-Za-z\d@@$!%*?&]{6,}$");
+        let email = document.getElementById('registerEmailField').value;
+        let password = document.getElementById('registerPasswordField').value;
+        let confirmPassword = document.getElementById('registerConfirmPasswordField').value;
         if (!email.includes("@@")) {
-            alert("Email Wrong")
+            alert("Email Wrong");
             console.log("Email Wrong");
             return
         }
         if (!pattern.test(password)) {
-            alert("Password Wrong")
-            console.log("Password Wrong");
+           alert("Password Wrong");
+           console.log("Password Wrong");
             return
         }
-        if (!password === confirmPassword) {
-            alert("Password and ConfirmPasswordDifferent")
+        if (!(password === confirmPassword)) {
+            alert("Password and ConfirmPasswordDifferent");
             console.log("Password and ConfirmPasswordDifferent");
             return
         }

@@ -25,11 +25,11 @@
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
         <label asp-for="Input.Email" class="first-phase form-label text-primary mb-0 ">Email</label>
-        <input asp-for="Input.Email" class="form-control first-phase mt-0" autocomplete="username" aria-required="true" id="registerUserField" />
+        <input asp-for="Input.Email" class="form-control first-phase mt-0" autocomplete="username" aria-required="true" id="registerEmailField" />
         <span asp-validation-for="Input.Email" class="text-danger"></span>
   
         <label asp-for="Input.Password" class="first-phase form-label text-primary mt-3 mb-0"></label>
-        <input asp-for="Input.Password" class="form-control first-phase mt-0" autocomplete="new-password" aria-required="true" id="registerUserField" />
+        <input asp-for="Input.Password" class="form-control first-phase mt-0" autocomplete="new-password" aria-required="true" id="registerPasswordField" />
         <span asp-validation-for="Input.Password" class="text-danger"></span>
 
         <label asp-for="Input.ConfirmPassword" class="first-phase form-label text-primary mt-3 mb-0"></label>
@@ -37,7 +37,7 @@
         <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
 
         <label asp-for="Input.FullName" class="second-phase form-label text-primary mb-0"></label>
-        <input asp-for="Input.FullName" class="form-control second-phase mt-0" id="nicknameField" autocomplete="username" aria-required="true" />
+        <input asp-for="Input.FullName" class="form-control second-phase mt-0" id="nicknameField" autocomplete="username" aria-required="true" id="usernameField" />
         <span asp-validation-for="Input.FullName" class="text-danger"></span>
 
         <label asp-for="Input.Gender" class="second-phase form-label text-primary mt-3 mb-0"></label>
@@ -45,12 +45,13 @@
         <span asp-validation-for="Input.Gender" class="text-danger"></span>
 
         <label asp-for="Input.BirthdayDate" class="second-phase form-label text-primary mt-3 mb-0"></label>
-        <input asp-for="Input.BirthdayDate" type="date" class="form-control second-phase mt-0" autocomplete="username" aria-required="true" />
+        <input asp-for="Input.BirthdayDate" type="date" class="form-control second-phase mt-0" autocomplete="username" aria-required="true" id="birthField" />
         <span asp-validation-for="Input.Email" class="text-danger"></span>
 
         <div class="d-flex flex-row justify-content-evenly mt-5 w-auto">
             <asp:Button id="reg-phase-btn" class="first-phase btn btn-primary mr-5">Continuar Registo</asp:Button>
-            <button id="registerSubmit" type="submit" class="second-phase btn btn-primary mr-5" onclick="">Efetuar Registo</button>
+            <asp:Button id="registerSubmit" class="second-phase btn btn-primary mr-5" onclick="RegisterFunction()">Efetuar Registo</asp:Button>
+            <asp:Button id="registerFinalSubmit" type="submit" class="hidden" onclick=""></asp:Button>
             <button class="btn btn-primary ml-5" asp-page="./Login">Efetuar Login</button>
         </div>
         
@@ -58,13 +59,32 @@
     </form>
 </div>
 <script>
+    "use strict";
     function showPhase(isPhaseOne) {
+        let pattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@@$!%*?&])[A-Za-z\d@@$!%*?&]{6,}$/;
+        let email = document.getElementById('registerEmailField').value;
+        let password = document.getElementById('registerPasswordField').value;
+        let confirmPassword = document.getElementById('registerConfirmPasswordField').value;
+        if (!email.includes("@@")) {
+            alert("Email Wrong");
+            console.log("Email Wrong");
+            return
+        }
+        if (!pattern.test(password)) {
+            alert("Password Wrong");
+            console.log("Password Wrong");
+            return
+        }
+        if (!(password === confirmPassword)) {
+            alert("Password and ConfirmPassword Different");
+            console.log("Password and ConfirmPassword Different");
+            return
+        }
         let phaseOneStyle = (!!isPhaseOne) ? "none" : "inherit";
         let phaseTwoStyle = (!!isPhaseOne) ? "inherit" : "none";
 
         let firstPhaseLen = document.getElementsByClassName("first-phase").length;
         let secondPhaseLen = document.getElementsByClassName("second-phase").length;
-
         for (let i = 0; i < firstPhaseLen; i++) {
             document.getElementsByClassName("first-phase")[i].style.display = phaseOneStyle;
         }
@@ -73,8 +93,6 @@
         }
     }
     function registerPhase() {
-
-
         let isFirstPhase = document.getElementsByClassName("first-phase")[0].style.display !== "none";
         console.log(isFirstPhase);
         showPhase(isFirstPhase);
@@ -82,7 +100,27 @@
     }
 
     document.getElementById("reg-phase-btn").onclick = registerPhase;
-
+    function RegisterFunction(){
+        let birthDate = document.getElementById("birthField");
+        let gender = document.getElementById("genderField");
+        let username = document.getElementById("usernameField");
+        if (!birthDate.value) {
+            event.preventDefault();
+            console.log(birthDate);
+            return false
+        }
+        if (!gender.value) {
+            event.preventDefault();
+            console.log(gender);
+            return false
+        }
+        if (!username || username.value === "") {
+            event.preventDefault();
+            console.log(username);
+            return false
+        }
+        document.getElementById("registerFinalSubmit").click();
+    }
 </script>
 
 <!--
@@ -134,25 +172,25 @@
             @{
                 if ((Model.ExternalLogins?.Count ?? 0) == 0)
                 {
-                    <div>
-                        <p>
-                            There are no external authentication services configured. See this <a href="https://go.microsoft.com/fwlink/?LinkID=532715">article
-                            about setting up this ASP.NET application to support logging in via external services</a>.
-                        </p>
-                    </div>
+    <div>
+                                                            <p>
+                                                                There are no external authentication services configured. See this <a href="https://go.microsoft.com/fwlink/?LinkID=532715">article
+                                                                about setting up this ASP.NET application to support logging in via external services</a>.
+                                                            </p>
+    </div>
                 }
                 else
                 {
-                    <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
-                        <div>
-                            <p>
-                                @foreach (var provider in Model.ExternalLogins)
+    <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
+                                                            <div>
+                                                                <p>
+                                                                    @foreach (var provider in Model.ExternalLogins)
                                 {
-                                    <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
+                                                                        <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
                                 }
-                            </p>
-                        </div>
-                    </form>
+                                                                </p>
+                                                            </div>
+    </form>
                 }
             }
         </section>
