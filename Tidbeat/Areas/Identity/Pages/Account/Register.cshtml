@@ -8,7 +8,8 @@
         new SelectListItem {Text = "Feminino", Value="Feminino"},
         new SelectListItem {Text = "Não Binário", Value="Não Binário"}
     };
-    ;
+
+
 }
 
 <style>
@@ -26,24 +27,24 @@
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
         <label asp-for="Input.Email" class="first-phase form-label text-primary mb-0 ">Email</label>
-        <input asp-for="Input.Email" class="form-control first-phase mt-0" autocomplete="username" aria-required="true" id="registerEmailField" />
-        <span asp-validation-for="Input.Email" class="text-danger" id="emailDanger">  @if (ViewData.ModelState["EmailRed"] != null) {Html.Raw(ViewData.ModelState["EmailRed"].ToString()); }</span>
+        <input asp-for="Input.Email" class="form-control first-phase mt-0" autocomplete="username" aria-required="true" id="registerEmailField"/>
+        <span asp-validation-for="Input.Email" class="text-danger" id="emailDanger">  @if (ModelState.ContainsKey("EmailRed")) { @ViewData.ModelState["EmailRed"].Errors.FirstOrDefault().ErrorMessage.ToString(); }</span>
 
         <label asp-for="Input.Password" class="first-phase form-label text-primary mt-3 mb-0"></label>
         <input asp-for="Input.Password" class="form-control first-phase mt-0" autocomplete="new-password" aria-required="true" id="registerPasswordField" />
-        <span asp-validation-for="Input.Password" class="text-danger" id="passDanger"> @if (ViewData.ModelState["PasswordRed"] != null) { Html.Raw(ViewData.ModelState["PasswordRed"].ToString()); }</span>
+        <span asp-validation-for="Input.Password" class="text-danger" id="passDanger"> @if (ViewData.ModelState.ContainsKey("PasswordRed")) {@ViewData.ModelState["PasswordRed"].Errors.FirstOrDefault().ErrorMessage.ToString(); }</span>
 
         <label asp-for="Input.ConfirmPassword" class="first-phase form-label text-primary mt-3 mb-0"></label>
         <input asp-for="Input.ConfirmPassword" class="form-control first-phase mt-0" autocomplete="new-password" aria-required="true" id="registerConfirmPasswordField" />
-        <span asp-validation-for="Input.ConfirmPassword" class="text-danger" id="passConfirmDanger">@if (ViewData.ModelState["ConfirmPasswordRed"] != null) { Html.Raw(ViewData.ModelState["ConfirmPasswordRed"].ToString()); }</span>
+        <span asp-validation-for="Input.ConfirmPassword" class="text-danger" id="passConfirmDanger">@if (ViewData.ModelState.ContainsKey("ConfirmPasswordRed")){@ViewData.ModelState["ConfirmPasswordRed"].Errors.FirstOrDefault().ErrorMessage.ToString();}</span>
 
         <label asp-for="Input.FullName" class="second-phase form-label text-primary mb-0"></label>
         <input asp-for="Input.FullName" class="form-control second-phase mt-0" id="nicknameField" autocomplete="username" aria-required="true" />
-        <span asp-validation-for="Input.FullName" class="text-danger" id="nameDanger">@if (ViewData.ModelState["NameRed"] != null) { Html.Raw(ViewData.ModelState["NameRed"].ToString()); }</span>
+        <span asp-validation-for="Input.FullName" class="text-danger" id="nameDanger">@if (ViewData.ModelState.ContainsKey("NameRed")){@ViewData.ModelState["NameRed"].Errors.FirstOrDefault().ErrorMessage.ToString();}</span>
 
         <label asp-for="Input.Gender" class="second-phase form-label text-primary mt-3 mb-0"></label>
         <select asp-for="Input.Gender" asp-items="genders" class="form-control second-phase form-select mt-0" id="genderField"></select>
-        <span asp-validation-for="Input.Gender" class="text-danger" id="genderDanger">@if (ViewData.ModelState["GenderRed"] != null) { Html.Raw(ViewData.ModelState["GenderRed"].ToString()); }</span>
+        <span asp-validation-for="Input.Gender" class="text-danger" id="genderDanger">@if (ViewData.ModelState.ContainsKey("GenderRed")){@ViewData.ModelState["GenderRed"].Errors.FirstOrDefault().ErrorMessage.ToString();}</span>
 
         <label asp-for="Input.BirthdayDate" class="second-phase form-label text-primary mt-3 mb-0"></label>
         <input asp-for="Input.BirthdayDate" type="date" class="form-control second-phase mt-0" autocomplete="username" aria-required="true" id="birthField" />
@@ -187,23 +188,23 @@
                 if ((Model.ExternalLogins?.Count ?? 0) == 0)
                 {
     <div>
-                                                                                        <p>
-                                                                                            There are no external authentication services configured. See this <a href="https://go.microsoft.com/fwlink/?LinkID=532715">article
-                                                                                            about setting up this ASP.NET application to support logging in via external services</a>.
-                                                                                        </p>
+                                                                                                <p>
+                                                                                                    There are no external authentication services configured. See this <a href="https://go.microsoft.com/fwlink/?LinkID=532715">article
+                                                                                                    about setting up this ASP.NET application to support logging in via external services</a>.
+                                                                                                </p>
     </div>
                 }
                 else
                 {
     <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
-                                                                                        <div>
-                                                                                            <p>
-                                                                                                @foreach (var provider in Model.ExternalLogins)
+                                                                                                <div>
+                                                                                                    <p>
+                                                                                                        @foreach (var provider in Model.ExternalLogins)
                                 {
-                                                                                                    <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
+                                                                                                            <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
                                 }
-                                                                                            </p>
-                                                                                        </div>
+                                                                                                    </p>
+                                                                                                </div>
     </form>
                 }
             }

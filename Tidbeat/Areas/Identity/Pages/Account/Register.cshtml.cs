@@ -22,6 +22,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.FileSystemGlobbing.Internal;
 using Microsoft.Extensions.Logging;
+using NuGet.Protocol;
 using Tidbeat.Models;
 
 namespace Tidbeat.Areas.Identity.Pages.Account
@@ -199,7 +200,6 @@ namespace Tidbeat.Areas.Identity.Pages.Account
                     }
                 }
             }
-
             // If we got this far, something failed, redisplay form
             return Page();
         }
