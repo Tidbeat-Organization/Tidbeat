@@ -26,27 +26,27 @@
 
         <label asp-for="Input.Email" class="first-phase form-label text-primary mb-0 ">Email</label>
         <input asp-for="Input.Email" class="form-control first-phase mt-0" autocomplete="username" aria-required="true" id="registerEmailField" />
-        <span asp-validation-for="Input.Email" class="text-danger"></span>
+        <span asp-validation-for="Input.Email" class="text-danger" id="emailDanger"></span>
   
         <label asp-for="Input.Password" class="first-phase form-label text-primary mt-3 mb-0"></label>
         <input asp-for="Input.Password" class="form-control first-phase mt-0" autocomplete="new-password" aria-required="true" id="registerPasswordField" />
-        <span asp-validation-for="Input.Password" class="text-danger"></span>
+        <span asp-validation-for="Input.Password" class="text-danger" id="passDanger"></span>
 
         <label asp-for="Input.ConfirmPassword" class="first-phase form-label text-primary mt-3 mb-0"></label>
         <input asp-for="Input.ConfirmPassword" class="form-control first-phase mt-0" autocomplete="new-password" aria-required="true" id="registerConfirmPasswordField" />
-        <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+        <span asp-validation-for="Input.ConfirmPassword" class="text-danger" id="passConfirmDanger"></span>
 
         <label asp-for="Input.FullName" class="second-phase form-label text-primary mb-0"></label>
-        <input asp-for="Input.FullName" class="form-control second-phase mt-0" id="nicknameField" autocomplete="username" aria-required="true" id="usernameField" />
-        <span asp-validation-for="Input.FullName" class="text-danger"></span>
+        <input asp-for="Input.FullName" class="form-control second-phase mt-0" id="nicknameField" autocomplete="username" aria-required="true" />
+        <span asp-validation-for="Input.FullName" class="text-danger" id="nameDanger"></span>
 
         <label asp-for="Input.Gender" class="second-phase form-label text-primary mt-3 mb-0"></label>
         <select asp-for="Input.Gender" asp-items="genders" class="form-control second-phase form-select mt-0" id="genderField"></select>
-        <span asp-validation-for="Input.Gender" class="text-danger"></span>
+        <span asp-validation-for="Input.Gender" class="text-danger" id="genderDanger"></span>
 
         <label asp-for="Input.BirthdayDate" class="second-phase form-label text-primary mt-3 mb-0"></label>
         <input asp-for="Input.BirthdayDate" type="date" class="form-control second-phase mt-0" autocomplete="username" aria-required="true" id="birthField" />
-        <span asp-validation-for="Input.Email" class="text-danger"></span>
+        <span asp-validation-for="Input.Email" class="text-danger" id="birthDanger"></span>
 
         <div class="d-flex flex-row justify-content-evenly mt-5 w-auto">
             <asp:Button id="reg-phase-btn" class="first-phase btn btn-primary mr-5">Continuar Registo</asp:Button>
@@ -66,17 +66,17 @@
         let password = document.getElementById('registerPasswordField').value;
         let confirmPassword = document.getElementById('registerConfirmPasswordField').value;
         if (!email.includes("@@")) {
-            alert("Email Wrong");
+            document.getElementById('emailDanger').value = "O email é inválido";
             console.log("Email Wrong");
             return
         }
         if (!pattern.test(password)) {
-            alert("Password Wrong");
+            document.getElementById('passDanger').value = "A palavra-passe deve conter, pelo menos 6 caracteres, dos quais têm que ter um número [0-9],uma letra minuscula [a-z], uma letra maiuscula [A-Z] e um caracter especial [@@&?%]";
             console.log("Password Wrong");
             return
         }
         if (!(password === confirmPassword)) {
-            alert("Password and ConfirmPassword Different");
+            document.getElementById('passConfirmDanger').value = "A palavra-passe e a confirmação de palavra-passe não são iguais.";
             console.log("Password and ConfirmPassword Different");
             return
         }
@@ -103,23 +103,20 @@
     function RegisterFunction(){
         let birthDate = document.getElementById("birthField");
         let gender = document.getElementById("genderField");
-        let username = document.getElementById("usernameField");
+        let username = document.getElementById("nicknameField");
         if (!birthDate.value) {
+            document.getElementById('birthDanger').value = "Não selecionou uma data de aniversário válida";
             event.preventDefault();
             console.log(birthDate);
             return false
         }
-        if (!gender.value) {
-            event.preventDefault();
-            console.log(gender);
-            return false
-        }
         if (!username || username.value === "") {
+            document.getElementById('nameDanger').value = "Não um nome válido";
             event.preventDefault();
             console.log(username);
             return false
         }
-        document.getElementById("registerFinalSubmit").click();
+        document.getElementById("registerForm").submit();
     }
 </script>
 
@@ -173,23 +170,23 @@
                 if ((Model.ExternalLogins?.Count ?? 0) == 0)
                 {
     <div>
-                                                            <p>
-                                                                There are no external authentication services configured. See this <a href="https://go.microsoft.com/fwlink/?LinkID=532715">article
-                                                                about setting up this ASP.NET application to support logging in via external services</a>.
-                                                            </p>
+                                                                    <p>
+                                                                        There are no external authentication services configured. See this <a href="https://go.microsoft.com/fwlink/?LinkID=532715">article
+                                                                        about setting up this ASP.NET application to support logging in via external services</a>.
+                                                                    </p>
     </div>
                 }
                 else
                 {
     <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
-                                                            <div>
-                                                                <p>
-                                                                    @foreach (var provider in Model.ExternalLogins)
+                                                                    <div>
+                                                                        <p>
+                                                                            @foreach (var provider in Model.ExternalLogins)
                                 {
-                                                                        <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
+                                                                                <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
                                 }
-                                                                </p>
-                                                            </div>
+                                                                        </p>
+                                                                    </div>
     </form>
                 }
             }
