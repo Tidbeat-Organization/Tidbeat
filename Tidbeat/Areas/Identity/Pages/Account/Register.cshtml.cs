@@ -24,13 +24,13 @@ using Microsoft.Extensions.FileSystemGlobbing.Internal;
 using Microsoft.Extensions.Logging;
 using NuGet.Protocol;
 using Tidbeat.Models;
-
+using System.Text.RegularExpressions;
 namespace Tidbeat.Areas.Identity.Pages.Account
 {
     
     public class RegisterModel : PageModel
     {
-        private static string Pattern = "^(?=.*[a - z])(?=.*[A - Z])(?=.*\\d)(?=.*[@$! % *? &])[A - Za - z\\d@$! % *? &]{6,}$";
+        private static string Pattern = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{6,}$";
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IUserStore<ApplicationUser> _userStore;
