@@ -30,7 +30,7 @@ namespace Tidbeat.Areas.Identity.Pages.Account
     
     public class RegisterModel : PageModel
     {
-        private static string Pattern = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{6,}$";
+        private static string Pattern = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&_-])[A-Za-z\\d@$!%*?&_-]{6,}$";
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IUserStore<ApplicationUser> _userStore;
@@ -140,8 +140,7 @@ namespace Tidbeat.Areas.Identity.Pages.Account
                 else
                 if (!Regex.IsMatch(Input.Password, Pattern))
                 {
-                    Console.WriteLine("StillBugged");
-                    ModelState.AddModelError("PasswordRed", "A palavra-passe deve conter, pelo menos 6 caracteres, dos quais têm que ter um número [0-9],uma letra minuscula [a-z], uma letra maiuscula [A-Z] e um caracter especial [@@&?%]");
+                    ModelState.AddModelError("PasswordRed", "A palavra-passe deve conter, pelo menos 6 caracteres, dos quais têm que ter um número [0-9],uma letra minuscula [a-z], uma letra maiuscula [A-Z] e um caracter especial [@&?%]");
                 }
                 else
                 if (Input.Password != Input.ConfirmPassword)
@@ -156,6 +155,10 @@ namespace Tidbeat.Areas.Identity.Pages.Account
                 if (Input.Gender != "Masculino" && Input.Gender != "Feminino" && Input.Gender != "Não Binário")
                 {
                     ModelState.AddModelError("GenderRed", "Não é um género válido");
+                }else
+                if( DateTime.Compare(Input.BirthdayDate.AddYears(13),DateTime.Now) > 0)
+                {
+                    ModelState.AddModelError("AgeRed", "Para criar a Conta têm que ter 13 anos");
                 }
                 else
                 {
@@ -196,7 +199,38 @@ namespace Tidbeat.Areas.Identity.Pages.Account
                     }
                     foreach (var error in result.Errors)
                     {
-                        ModelState.AddModelError(string.Empty, error.Description);
+
+                        if (error.Code == "DuplicateUserName")
+                        {
+                            ModelState.AddModelError("EmailRed", "O Email já se encontra Registado");
+                        } else
+                        if (error.Code == "DefaultError") 
+                        {
+                            ModelState.AddModelError("Danger", "Erro: Ocorreu um erro, por favor tente, mais tarde");
+                        } else
+                        if (error.Code == "ConcurrencyFailure") {
+                            ModelState.AddModelError("Danger", "Erro: Multiplas, pessoas estão a modificar a conta");
+                        }
+                        else
+                        if (error.Code == "InvalidEmail")
+                        {
+                            ModelState.AddModelError("EmailRed", "O email é inválido");
+                        }
+                        else
+                        if (error.Code == "PasswordMismatch")
+                        {
+                            ModelState.AddModelError("ConfirmPasswordRed", "A palavra-passe e a confirmação de palavra-passe não são iguais.");
+                        }
+                        else
+                        if (error.Code == "PasswordTooShort" || error.Code == "PasswordRequiresNonAlphanumeric" || error.Code == "PasswordRequiresDigit" || error.Code == "PasswordRequiresLower" || error.Code == "PasswordRequiresUpper")
+                        {
+                            ModelState.AddModelError("PasswordRed", "A palavra-passe deve conter, pelo menos 6 caracteres, dos quais têm que ter um número [0-9],uma letra minuscula [a-z], uma letra maiuscula [A-Z] e um caracter especial [@&?%]");
+                        }
+                        else
+                        {
+                            Console.WriteLine(error.Code);
+                            ModelState.AddModelError(string.Empty, error.Description);
+                        }
                     }
                 }
             }
