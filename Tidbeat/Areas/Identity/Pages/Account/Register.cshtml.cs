@@ -200,6 +200,12 @@ namespace Tidbeat.Areas.Identity.Pages.Account
                     }
                 }
             }
+            TempData["Email"] = Input.Email;
+            TempData["Password"] = Input.Password;
+            TempData["ConfirmPassword"] = Input.ConfirmPassword;
+            TempData["Date"] = Input.BirthdayDate.ToString("yyyy-MM-dd");
+            TempData["Name"] = Input.FullName; 
+            TempData["Gender"] = Input.Gender;
             // If we got this far, something failed, redisplay form
             return Page();
         }
