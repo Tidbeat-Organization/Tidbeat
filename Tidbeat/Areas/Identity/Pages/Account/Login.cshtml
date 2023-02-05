@@ -9,16 +9,43 @@
     <h3 class="display-4 text-primary">Faz login no TidBeat</h3>
     <form class="w-25 mx-auto d-flex flex-column" id="account" method="post">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="text-danger" id="Danger">
+            @if (ModelState.ContainsKey("Danger"))
+            {
+                @ViewData.ModelState["Danger"].Errors.FirstOrDefault().ErrorMessage.ToString()
+                ;
+            }
+        </div>
         <div class="mb-3">
             <label asp-for="Input.Email" class="form-label text-primary">Nome de Utilizador / Email</label>
-            <input asp-for="Input.Email" type="email" class="form-control" id="InputEmail1" aria-describedby="emailHelp">
-            <span asp-validation-for="Input.Email" class="text-danger"></span>
+            <input asp-for="Input.Email" type="email" class="form-control" id="InputEmail1" aria-describedby="emailHelp" value=@if (TempData.ContainsKey("Email"))
+                   {
+                   @TempData["Email"]
+                   ;
+                   }>
+            <span asp-validation-for="Input.Email" class="text-danger" id="emailDanger">
+                @if (ModelState.ContainsKey("EmailRed"))
+                {
+                    @ViewData.ModelState["EmailRed"].Errors.FirstOrDefault().ErrorMessage.ToString()
+                    ;
+                }
+            </span>
             <div id="emailHelp" class="form-text">Nunca partilharemos o seu email com outros.</div>
         </div>
         <div class="mb-3">
             <label asp-for="Input.Password" class="form-label text-primary">Palavra-Passe</label>
-            <input asp-for="Input.Password" type="password" class="form-control" id="InputPassword1">
-            <span asp-validation-for="Input.Password" class="text-danger"></span>
+            <input asp-for="Input.Password" type="password" class="form-control" id="InputPassword1" value=@if (TempData.ContainsKey("Password"))
+                   {
+                   @TempData["Password"]
+;
+                   }>
+            <span asp-validation-for="Input.Password" class="text-danger" id="passDanger">
+                @if (ViewData.ModelState.ContainsKey("PasswordRed"))
+                {
+                    @ViewData.ModelState["PasswordRed"].Errors.FirstOrDefault().ErrorMessage.ToString()
+                    ;
+                }
+            </span>
         </div>
         <div class="checkbox">
             <label asp-for="Input.RememberMe" class="form-label">
@@ -32,12 +59,40 @@
         <div class="border border-2 border-primary rounded-3 w-20 d-flex align-self-center justify-content-center mb-3">
             <img src="~/images/GoogleIcon.png" width="60" height="55" />
         </div>
-        <button id="login-submit" type="submit" class="btn btn-primary">Efetuar Login</button>
+        <asp:Button id="loginFinalSubmit" style="margin-top: 100px;" type="submit" class="hidden" ></asp:Button>
+        <asp:Button id="login-submit" class="btn btn-primary" onclick="LoginFunction()">Efetuar Login</asp:Button>
         <p class="mt-2">
             <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Não tenho conta no TidBeat. Criar conta.</a>
         </p>
     </form>
 </div>
+<script>
+    "use strict";
+    function LoginFunction() {
+        let pattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@@$!%*?&_-])[A-Za-z\d@@$!%*?&_-]{6,}$/;
+        let email = document.getElementById('InputEmail1').value;
+        let password = document.getElementById('InputPassword1').value;
+        if (!email.includes("@@")) {
+            ResetDanger();
+            document.getElementById('emailDanger').innerHTML = "O email é inválido";
+            console.log("Email Wrong");
+            return
+        }
+        if (!pattern.test(password)) {
+            ResetDanger();
+            document.getElementById('passDanger').innerHTML = "A palavra-passe deve conter, pelo menos 6 caracteres, dos quais têm que ter um número [0-9],uma letra minuscula [a-z], uma letra maiuscula [A-Z] e um caracter especial [@@&?%]";
+            console.log("Password Wrong");
+            return
+        }
+        document.getElementById("account").submit();
+    }
+
+    function ResetDanger() {
+        document.getElementById('Danger').innerHTML = "";
+        document.getElementById('passDanger').innerHTML = "";
+        document.getElementById('emailDanger').innerHTML = "";
+    }
+</script>
 <!--
 <h1>@ViewData["Title"]</h1>
 <div class="row">
