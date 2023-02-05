@@ -17,7 +17,7 @@
             }
         </div>
         <div class="mb-3">
-            <label asp-for="Input.Email" class="form-label text-primary">Nome de Utilizador / Email</label>
+            <label asp-for="Input.Email" class="form-label text-primary">Email</label>
             <input asp-for="Input.Email" type="email" class="form-control" id="InputEmail1" aria-describedby="emailHelp" value=@if (TempData.ContainsKey("Email"))
                    {
                    @TempData["Email"]

@@ -80,7 +80,7 @@ namespace Tidbeat.Areas.Identity.Pages.Account
         {
             [Required]
             [DataType(DataType.Text)]
-            [Display(Name = "Nome completo")]
+            [Display(Name = "Nome apresentado")]
             public string FullName { get; set; }
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
