@@ -202,14 +202,14 @@ namespace Tidbeat.Areas.Identity.Pages.Account
 
                         if (error.Code == "DuplicateUserName")
                         {
-                            ModelState.AddModelError("EmailRed", "O Email já se encontra Registado");
+                            ModelState.AddModelError("EmailRed", "O email já se encontra registado");
                         } else
                         if (error.Code == "DefaultError") 
                         {
-                            ModelState.AddModelError("Danger", "Erro: Ocorreu um erro, por favor tente, mais tarde");
+                            ModelState.AddModelError("Danger", "Erro: Ocorreu um erro, por favor tente mais tarde");
                         } else
                         if (error.Code == "ConcurrencyFailure") {
-                            ModelState.AddModelError("Danger", "Erro: Multiplas, pessoas estão a modificar a conta");
+                            ModelState.AddModelError("Danger", "Erro: Multiplas pessoas estão a modificar a conta");
                         }
                         else
                         if (error.Code == "InvalidEmail")
