@@ -122,7 +122,7 @@ namespace Tidbeat.Areas.Identity.Pages.Account
                 else
                 if (!Regex.IsMatch(Input.Password, Pattern))
                 {
-                    ModelState.AddModelError("PasswordRed", "A palavra-passe deve conter, pelo menos 6 caracteres, dos quais têm que ter um número [0-9],uma letra minuscula [a-z], uma letra maiuscula [A-Z] e um caracter especial [@&?%]");
+                    ModelState.AddModelError("PasswordRed", "A palavra-passe deve conter, pelo menos 6 caracteres, dos quais têm que ter um número [0-9],uma letra minuscula [a-z], uma letra maiuscula [A-Z] e um caracter especial [@$!%*?&_-]");
                 }
                 else {
                     var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
