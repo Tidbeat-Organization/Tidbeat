@@ -186,7 +186,6 @@ namespace Tidbeat.Areas.Identity.Pages.Account
 
                         await _emailSender.SendEmailAsync(Input.Email, "TIDBEAT - Confirmar o teu mail",
                             $"Por favor, confirma a tua conta através do link, <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicando aqui</a>.");
-                        return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
 
                         if (_userManager.Options.SignIn.RequireConfirmedAccount)
                         {
@@ -195,7 +194,7 @@ namespace Tidbeat.Areas.Identity.Pages.Account
                         else
                         {
                             await _signInManager.SignInAsync(user, isPersistent: false);
-                            return LocalRedirect(returnUrl);
+                            return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
                         }
                     }
                     foreach (var error in result.Errors)
