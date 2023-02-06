@@ -37,7 +37,7 @@
     { 
         @TempData["Email"]; 
     }/>
-        <span asp-validation-for="Input.Email" class="text-danger" id="emailDanger">  @if (ModelState.ContainsKey("EmailRed")) { @ViewData.ModelState["EmailRed"].Errors.FirstOrDefault().ErrorMessage.ToString(); }</span>
+        <div asp-validation-for="Input.Email" class="text-danger" id="emailDanger">  @if (ModelState.ContainsKey("EmailRed")) { @ViewData.ModelState["EmailRed"].Errors.FirstOrDefault().ErrorMessage.ToString(); }</div>
 
         <label asp-for="Input.Password" class="first-phase form-label text-primary mt-3 mb-0"></label>
         <input asp-for="Input.Password" class="form-control first-phase mt-0" autocomplete="new-password" aria-required="true" id="registerPasswordField" value=@if (TempData.ContainsKey("Password"))
@@ -45,7 +45,7 @@
                @TempData["Password"]
 ;
                } />
-        <span asp-validation-for="Input.Password" class="text-danger" id="passDanger"> @if (ViewData.ModelState.ContainsKey("PasswordRed")) {@ViewData.ModelState["PasswordRed"].Errors.FirstOrDefault().ErrorMessage.ToString(); }</span>
+        <div asp-validation-for="Input.Password" class="text-danger" id="passDanger"> @if (ViewData.ModelState.ContainsKey("PasswordRed")) {@ViewData.ModelState["PasswordRed"].Errors.FirstOrDefault().ErrorMessage.ToString(); }</div>
 
         <label asp-for="Input.ConfirmPassword" class="first-phase form-label text-primary mt-3 mb-0"></label>
         <input asp-for="Input.ConfirmPassword" class="form-control first-phase mt-0" autocomplete="new-password" aria-required="true" id="registerConfirmPasswordField" value=@if (TempData.ContainsKey("ConfirmPassword"))
@@ -53,7 +53,7 @@
                @TempData["ConfirmPassword"]
 ;
                } />
-        <span asp-validation-for="Input.ConfirmPassword" class="text-danger" id="passConfirmDanger">@if (ViewData.ModelState.ContainsKey("ConfirmPasswordRed")){@ViewData.ModelState["ConfirmPasswordRed"].Errors.FirstOrDefault().ErrorMessage.ToString();}</span>
+        <div asp-validation-for="Input.ConfirmPassword" class="text-danger" id="passConfirmDanger">@if (ViewData.ModelState.ContainsKey("ConfirmPasswordRed")){@ViewData.ModelState["ConfirmPasswordRed"].Errors.FirstOrDefault().ErrorMessage.ToString();}</div>
 
         <label asp-for="Input.FullName" class="second-phase form-label text-primary mb-0"></label>
         <input asp-for="Input.FullName" class="form-control second-phase mt-0" id="nicknameField" autocomplete="username" aria-required="true" value=@if (TempData.ContainsKey("Name"))
@@ -61,28 +61,29 @@
                @TempData["Name"]
 ;
                } />
-        <span asp-validation-for="Input.FullName" class="text-danger" id="nameDanger">@if (ViewData.ModelState.ContainsKey("NameRed")){@ViewData.ModelState["NameRed"].Errors.FirstOrDefault().ErrorMessage.ToString();}</span>
+        <div asp-validation-for="Input.FullName" class="text-danger" id="nameDanger">@if (ViewData.ModelState.ContainsKey("NameRed")){@ViewData.ModelState["NameRed"].Errors.FirstOrDefault().ErrorMessage.ToString();}</div>
 
         <label asp-for="Input.Gender" class="second-phase form-label text-primary mt-3 mb-0"></label>
         <select asp-for="Input.Gender" asp-items="genders" class="form-control second-phase form-select mt-0" id="genderField"></select>
-        <span asp-validation-for="Input.Gender" class="text-danger" id="genderDanger">@if (ViewData.ModelState.ContainsKey("GenderRed")){@ViewData.ModelState["GenderRed"].Errors.FirstOrDefault().ErrorMessage.ToString();}</span>
+        <div asp-validation-for="Input.Gender" class="text-danger" id="genderDanger">@if (ViewData.ModelState.ContainsKey("GenderRed")){@ViewData.ModelState["GenderRed"].Errors.FirstOrDefault().ErrorMessage.ToString();}</div>
 
         <label asp-for="Input.BirthdayDate" class="second-phase form-label text-primary mt-3 mb-0"></label>
         <input asp-for="Input.BirthdayDate" type="date" class="form-control second-phase mt-0" autocomplete="username" aria-required="true" id="birthField" value=@if (TempData.ContainsKey("Date")) 
     { 
         @TempData["Date"];
     }/>
-        <span asp-validation-for="Input.Email" class="text-danger" id="birthDanger">@if (ViewData.ModelState.ContainsKey("AgeRed"))
+        <div asp-validation-for="Input.Email" class="text-danger" id="birthDanger">@if (ViewData.ModelState.ContainsKey("AgeRed"))
             {
                 @ViewData.ModelState["AgeRed"].Errors.FirstOrDefault().ErrorMessage.ToString()
                 ;
-            }</span>
+            }</div>
 
         <div class="d-flex flex-row justify-content-evenly mt-5 w-auto">
-            <asp:Button id="reg-phase-btn" class="first-phase btn btn-primary mr-5">Continuar Registo</asp:Button>
-            <asp:Button id="registerSubmit" class="second-phase btn btn-primary mr-5" onclick="RegisterFunction()">Efetuar Registo</asp:Button>
-            <asp:Button id="registerFinalSubmit" type="submit" class="hidden" onclick=""></asp:Button>
+            <a id="reg-phase-return-btn" class="second-phase btn btn-primary mr-5">Retornar</a>
             <a class="btn btn-primary ml-5" asp-page="./Login">Efetuar Login</a>
+            <a id="reg-phase-btn" class="first-phase btn btn-primary mr-5">Continuar Registo</a>
+            <a id="registerSubmit" class="second-phase btn btn-primary mr-5" onclick="RegisterFunction()">Efetuar Registo</a>
+            <a id="registerFinalSubmit" type="submit" class="hidden" onclick=""></a>
         </div>
         
 
@@ -133,6 +134,21 @@
         }
     }
 
+    function showPhaseReturn(isPhaseOne) {
+        let phaseOneStyle = (!!isPhaseOne) ? "inherit" : "none";
+        let phaseTwoStyle = (!!isPhaseOne) ? "none" : "inherit";
+
+        let firstPhaseLen = document.getElementsByClassName("first-phase").length;
+        let secondPhaseLen = document.getElementsByClassName("second-phase").length;
+        ResetDanger()
+        for (let i = 0; i < firstPhaseLen; i++) {
+            document.getElementsByClassName("first-phase")[i].style.display = phaseOneStyle;
+        }
+        for (let i = 0; i < secondPhaseLen; i++) {
+            document.getElementsByClassName("second-phase")[i].style.display = phaseTwoStyle;
+        }
+    }
+
     function compareDates() {
         //Get the text in the elements
         let birthDate = document.getElementById("birthField").value;
@@ -157,7 +173,15 @@
         event.preventDefault();
     }
 
+    function returnPhase() {
+        let isSecondtPhase = document.getElementsByClassName("first-phase")[0].style.display === "none";
+        console.log(isSecondtPhase);
+        showPhaseReturn(isSecondtPhase);
+        event.preventDefault();
+    }
+
     document.getElementById("reg-phase-btn").onclick = registerPhase;
+    document.getElementById("reg-phase-return-btn").onclick = returnPhase;
     function RegisterFunction(){
         let birthDate = document.getElementById("birthField");
         let gender = document.getElementById("genderField");
