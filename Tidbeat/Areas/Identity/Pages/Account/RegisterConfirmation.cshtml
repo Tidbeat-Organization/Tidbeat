@@ -4,7 +4,7 @@
     ViewData["Title"] = "Confirmação do registo";
 }
 
-<h1 style="margin-top: 175px; color: #6610F2;">@ViewData["Title"]</h1>
+<h1 style="margin-top: 100px; color: #6610F2;">@ViewData["Title"]</h1>
 @{
     if (@Model.DisplayConfirmAccountLink)
     {
@@ -16,7 +16,10 @@
     else
     {
 <p>
-        Please check your email to confirm your account.
+        Por favor, verifique o seu mail para confirmar a conta.
+</p>
+<p>
+    Pode continuar a utilizar o Tidbeat, porém é importante confirmar o mail para ter mais proteção na sua conta.
 </p>
     }
 }
