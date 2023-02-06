@@ -27,7 +27,7 @@ builder.Services.Configure<AuthMessageSenderOptions>(builder.Configuration);
 builder.Services.Configure<IdentityOptions>(opts => {
     opts.Lockout.AllowedForNewUsers = true;
     opts.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(10);
-    opts.Lockout.MaxFailedAccessAttempts = 3;
+    opts.Lockout.MaxFailedAccessAttempts = 5;
 });
 
 var app = builder.Build();
