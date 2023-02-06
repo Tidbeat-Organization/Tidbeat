@@ -138,7 +138,8 @@ namespace Tidbeat.Areas.Identity.Pages.Account
                     if (result.IsLockedOut)
                     {
                         _logger.LogWarning("User account locked out.");
-                        return RedirectToPage("./Lockout");
+                        //return RedirectToPage("./Lockout");
+                        ModelState.AddModelError("Danger", "Conta bloqueada por 10 minutos.");
                     }
                     else
                     {
