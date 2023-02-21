@@ -1,0 +1,38 @@
+﻿@using Tidbeat.Services
+@model IEnumerable<Tidbeat.Models.Band>
+@inject IMusicService musicService
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1 class="mt-5 pt-5">Index</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Image)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Image)
+            </td>
+            <td>
+                <a asp-action="Details" asp-route-id="@item.BandId">Details</a> |
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

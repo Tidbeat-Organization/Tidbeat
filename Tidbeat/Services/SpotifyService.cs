@@ -15,14 +15,16 @@ namespace Tidbeat.Services {
             _client = new SpotifyClient(SpotifyClientConfig.CreateDefault().WithAuthenticator(new ClientCredentialsAuthenticator(clientId, clientSecret)));
         }
 
-        public async Task<Song> GetSongAsync(string id) {
+        public async Task<FullTrack> GetSongAsync(string id) {
             var track = await _client.Tracks.Get(id);
-            return new Song() { SongId = id, Name = track.Name, BandId = track.Artists[0].Id };
+            return track;
+            //return new Song() { SongId = id, Name = track.Name, BandId = track.Artists[0].Id };
         }
 
-        public async Task<Band> GetBandAsync(string id) {
+        public async Task<FullArtist> GetBandAsync(string id) {
             var band = await _client.Artists.Get(id);
-            return new Band() { BandId = id, Name = band.Name, Image = band.Uri };
+            return band;
+            //return new Band() { BandId = id, Name = band.Name, Image = band.Images[0].Url };
         } 
     }
 }
