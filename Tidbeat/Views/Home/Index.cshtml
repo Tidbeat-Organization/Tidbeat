@@ -1,7 +1,15 @@
 ﻿@using Tidbeat.Controllers
+@using Tidbeat.Services
+@inject IMusicService MusicService
 
 @{
     ViewData["Title"] = "Home Page";
 }
 
-
+<div class="mt-5">
+    <h2 class="pt-5">Spotify API here:</h2>
+    <ul>
+        <li>Song name: @((await MusicService.GetSong("5JdLUE9D743ob2RtgmVpVx")).Name)</li>
+        <li>Band name: @((await MusicService.GetBand("2HHmvvSQ44ePDH7IKVzgK0")).Name)</li>
+    </ul>
+</div>

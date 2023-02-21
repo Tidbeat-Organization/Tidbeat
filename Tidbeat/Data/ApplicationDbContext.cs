@@ -7,5 +7,14 @@ namespace Tidbeat.Data {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options) {
         }
+
+        public DbSet<Song> Songs { get; set; }
+        public DbSet<Band> Bands { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder builder) {
+            base.OnModelCreating(builder);
+            builder.Entity<Song>().ToTable(nameof(Song));
+            builder.Entity<Band>().ToTable(nameof(Band));
+        }
     }
 }
