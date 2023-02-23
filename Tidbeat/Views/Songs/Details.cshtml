@@ -1,0 +1,31 @@
+﻿@model SpotifyAPI.Web.FullTrack
+@using Tidbeat.Services
+
+@{
+    ViewData["Title"] = "Details";
+    var songLength = Model.DurationMs / 60000;
+}
+
+<div class="ms-5 ps-5 d-flex flex-column">
+    <div class="mt-5 pt-5 mb-3 d-flex align-items-center">
+        <img src="~/images/PlayButton.png"/>
+        <h4 class="d-flex ms-2">Música: @Model.Name de <a class="ms-1" href="@Url.Action("Details", "Bands", new { id = Model.Artists[0].Id })">@Model.Artists[0].Name</a></h4>
+    </div>
+    <div class="d-flex justify-content-lg-start align-items-center">
+        <div>
+            <img src="@Model.Album.Images[0].Url" height="200" />
+            <div>@Model.Name</div>
+        </div>
+        <div class="ms-5">
+            <div>Lançado em @Model.Album.ReleaseDate</div>
+            <div>Duração: @songLength minutos</div>
+            <!--<div>@(Model.Explicit ? "É" : "Não é") explícito</div>-->
+            <div>Álbum: @Model.Album.Name</div>
+            <a href="@(SpotifyService.UrlSong + Model.Id)">Página no Spotify</a>
+        </div>
+    </div>
+    <div class="d-flex justify-content-lg-start mt-3">
+        Número de posts sobre esta música: 0
+    </div>
+</div>
+

@@ -2,18 +2,12 @@
 
 @{
     ViewData["Title"] = "Details";
+    var imageUrl = Model.Images[0].Url;
 }
 
-<h1 class="mt-5 pt-5">Details</h1>
-
 <div>
-    <h4>Artista/Banda: @Model.Name</h4>
-    <hr />
-    <dl class="row">
-        <dd class = "col-sm-10">
-            <img src="@Model.Images[0].Url" />
-        </dd>
-    </dl>
+    <h4 class="mt-5 pt-5">Artista/Banda: @Model.Name</h4>
+    <img src="@imageUrl" height="300"/>
 </div>
 <div>
     <a asp-action="Index">Back to List</a>
