@@ -1,9 +1,10 @@
 ﻿using Tidbeat.Models;
+using SpotifyAPI.Web;
 
 namespace Tidbeat.Services {
     public interface ISpotifyService {
-        Task<Song> GetSongAsync(string id);
+        Task<FullTrack> GetSongAsync(string id);
 
-        Task<Band> GetBandAsync(string id);
+        Task<FullArtist> GetBandAsync(string id);
     }
 }
