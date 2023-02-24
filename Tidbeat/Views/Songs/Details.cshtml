@@ -5,6 +5,7 @@
     ViewData["Title"] = "Details";
     var songLength = Model.DurationMs / 60000;
     var spotifyPageURL = SpotifyService.UrlSong + Model.Id;
+    var releaseDate = DateTime.ParseExact(Model.Album.ReleaseDate, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture).ToString("dd-MM-yyyy");
 }
 
 <!--All music info goes here-->
@@ -12,8 +13,13 @@
     <div class="d-flex flex-column col-lg-4 col-12">
         <div class="mt-5 pt-5 mb-3 d-flex align-items-center justify-content-center justify-content-lg-start">
             <div>
-                <img src="~/images/PlayButton.png" />
-                <div>Preview</div>
+                <div>
+                    <img id="startAudio" src="~/images/PlayButton.png" />
+                    <div id="audioStatus" class="text-nowrap"></div>
+                </div>
+                <audio id="myAudio">
+                    <source src="@Model.PreviewUrl" type="audio/mpeg">
+                </audio>
             </div>
             <h4 class="d-flex ms-2">Música: @Model.Name</h4>
         </div>
@@ -21,7 +27,7 @@
             <a href="@spotifyPageURL"><img src="@Model.Album.Images[0].Url" height="200" /></a>
             <div class="ms-2 text-start">
                 <div>De: <a class="ms-1" href="@Url.Action("Details", "Bands", new { id = Model.Artists[0].Id })">@Model.Artists[0].Name</a></div>
-                <div>Lançado em: @Model.Album.ReleaseDate</div>
+                <div>Lançado em: @releaseDate</div>
                 <div>Duração: @songLength minutos</div>
                 <!--<div>@(Model.Explicit ? "É" : "Não é") explícito</div>-->
                 <div>Álbum: @Model.Album.Name</div>
@@ -47,3 +53,47 @@
         }
     </div>
 </div>
+
+<script>
+    var startAudio = document.getElementById("startAudio");
+    var myAudio = document.getElementById("myAudio");
+    var audioStatus = document.getElementById("audioStatus");
+
+    var isPlaying = false;
+
+    startAudio.onclick = function () {
+        if (isPlaying) {
+            myAudio.pause();
+            isPlaying = false;
+            startAudio.src = "../../images/PlayButton.png";
+            audioStatus.innerHTML = "Pausado";
+        } else {
+            myAudio.play();
+            isPlaying = true;
+            startAudio.src = "../../images/StopButton.png";
+            audioStatus.innerHTML = "A correr...";
+        }
+    }
+
+    startAudio.addEventListener("mouseover", function () {
+        if (isPlaying) {
+            startAudio.src = "../../images/StopButtonHover.png";
+        } else {
+            startAudio.src = "../../images/PlayButtonHover.png";
+        }
+    });
+
+    startAudio.addEventListener("mouseout", function () {
+        if (isPlaying) {
+            startAudio.src = "../../images/StopButton.png";
+        } else {
+            startAudio.src = "../../images/PlayButton.png";
+        }
+    });
+
+    myAudio.addEventListener("ended", function () {
+        isPlaying = false;
+        startAudio.src = "../../images/PlayButton.png";
+        audioStatus.innerHTML = "";
+    });
+</script>
