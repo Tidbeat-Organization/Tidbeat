@@ -1,38 +1,56 @@
 ﻿@using Tidbeat.Controllers
 @using Tidbeat.Services
 @inject IMusicService MusicService
+@inject ISpotifyService SpotifyService
 
 @{
     ViewData["Title"] = "Musics Page";
 }
-
-<div class="mt-5">
+<head>
+<link rel="stylesheet" href="https://cdn.korzh.com/metroui/v4.5.1/css/metro-all.min.css">
+</head>
+<div class="mt-5 pt-13">
     <div class="mx-3">
         <div class="border border-3 border-dark rounded">
-            <div class="display-6 text-primary text-left w-2">Filtros</div>
-            <div class="d-flex flex-row">
-                <div class="input-group d-flex flex-row">
-                    <div class="align-self-center mx-3">Género:</div>
+            <div class="display-6 text-primary text-left d-flex w-2">Filtros</div>
+            <div class="d-flex flex-row w-100">
+                <div class="input-group d-flex flex-row w-25">
+                    <div class="align-self-center">Género:</div>
                     <div class="form-outline d-flex flex-row">
                         <img class="no-padding align-self-center" src="~/images/SearchIcon.png" height="26" width="30" />
                         <input type="search" id="formGender" class="form-control" placeholder="Search" />
                     </div>
                 </div>
-                <div class="input-group d-flex flex-row">
-                    <div class="align-self-center mx-3">Banda/Artista:</div>
+                <div class="input-group d-flex flex-row w-25">
+                    <div class="align-self-center">Banda/Artista:</div>
                     <div class="form-outline  d-flex flex-row">
                         <img class="no-padding align-self-center" src="~/images/SearchIcon.png" height="26" width="30" />
                         <input type="search" id="formBand" class="form-control" placeholder="Search" />
                     </div>
                 </div>
-                <div class="input-group d-flex flex-row">
-                    <div class="align-self-center mx-3">Álbum:</div>
+                <div class="input-group d-flex flex-row w-25">
+                    <div class="align-self-center">Álbum:</div>
                     <div class="form-outline  d-flex flex-row">
                         <img class="no-padding align-self-center" src="~/images/SearchIcon.png" height="26" width="30" />
                         <input type="search" id="formAlbum" class="form-control" placeholder="Search" />
                     </div>
                 </div>
+                <div class="input-group d-flex flex-row w-25">
+                    <div class="align-self-center">Ano de Lançamento:</div>
+                    <input class="w-50" data-role="doubleslider" data-accuracy="1" id="formAlbum" data-hint="true" data-hint-always="true" data-min="1950" data-max="2023" />
+                </div>
             </div>
+        </div>
+        <div>
+            <h2 class="d-flex">Músicas</h2>
+            @foreach (var item in ViewBag.Result.Tracks.Items)
+            {
+                <div class="border border-3 border-primary rounded mt-2 d-flex justify-content-around">
+                    <div class="d-flex align-content-start font-weight-bold">@item.Name</div>
+                    <div class="d-flex align-content-end"> de: @item.Artists[0].Name</div>
+                </div>
+            }
         </div>
     </div>
 </div>
+<script src="https://cdn.korzh.com/metroui/v4/js/metro.min.js"></script>
