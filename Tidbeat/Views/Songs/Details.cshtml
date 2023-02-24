@@ -4,31 +4,48 @@
 @{
     ViewData["Title"] = "Details";
     var songLength = Model.DurationMs / 60000;
+    var spotifyPageURL = SpotifyService.UrlSong + Model.Id;
 }
 
-<div class="ms-5 ps-5 d-flex flex-column">
-    <div class="mt-5 pt-5 mb-3 d-flex align-items-center">
-        <div>
-            <img src="~/images/PlayButton.png"/>
-            <div>Preview</div>
+<!--All music info goes here-->
+<div class="container-fluid row w-100">
+    <div class="d-flex flex-column col-4">
+        <div class="mt-5 pt-5 mb-3 d-flex align-items-center">
+            <div>
+                <img src="~/images/PlayButton.png" />
+                <div>Preview</div>
+            </div>
+            <h4 class="d-flex ms-2">Música: @Model.Name de <a class="ms-1" href="@Url.Action("Details", "Bands", new { id = Model.Artists[0].Id })">@Model.Artists[0].Name</a></h4>
         </div>
-        <h4 class="d-flex ms-2">Música: @Model.Name de <a class="ms-1" href="@Url.Action("Details", "Bands", new { id = Model.Artists[0].Id })">@Model.Artists[0].Name</a></h4>
+        <div class="d-flex justify-content-lg-start align-items-center">
+            <div>
+                <a href="@spotifyPageURL"><img src="@Model.Album.Images[0].Url" height="200" /></a>
+            
+            </div>
+            <div class="ms-5 text-start">
+                <div>Lançado em @Model.Album.ReleaseDate</div>
+                <div>Duração: @songLength minutos</div>
+                <!--<div>@(Model.Explicit ? "É" : "Não é") explícito</div>-->
+                <div>Álbum: @Model.Album.Name</div>
+            </div>
+        </div>
+        <div class="d-flex align-items-lg-start flex-column mt-5">
+            <div>Número de favoritos: 0</div>
+            <div>Número de posts sobre esta música: 0</div>
+        </div>
     </div>
-    <div class="d-flex justify-content-lg-start align-items-center">
-        <div>
-            <img src="@Model.Album.Images[0].Url" height="200" />
-            <div>@Model.Name</div>
-        </div>
-        <div class="ms-5">
-            <div>Lançado em @Model.Album.ReleaseDate</div>
-            <div>Duração: @songLength minutos</div>
-            <!--<div>@(Model.Explicit ? "É" : "Não é") explícito</div>-->
-            <div>Álbum: @Model.Album.Name</div>
-            <a href="@(SpotifyService.UrlSong + Model.Id)">Página no Spotify</a>
-        </div>
-    </div>
-    <div class="d-flex justify-content-lg-start mt-3">
-        Número de posts sobre esta música: 0
+
+    <!--All posts goes here-->
+    <div class="col-8 mt-5 pt-5 scrollable-lg-posts">
+        <div class="fs-3">Posts</div>
+        @for (int i = 1; i <= 15; i++) {
+            <div class="d-flex align-items-center border border-2 border-primary p-1 rounded mb-2">
+                <div class="border-end border-2 border-primary pe-2">
+                    <div>Joana Dias</div>
+                    <div>Utilizador</div>
+                </div>
+                <div class="ms-2">O porquê desta música ser uma das melhores de sempre.</div>
+            </div>
+        }
     </div>
 </div>
-

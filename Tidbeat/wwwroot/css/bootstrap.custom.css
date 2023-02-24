@@ -10505,3 +10505,8 @@ textarea.form-control-lg {
 .no-padding {
   padding: 0 !important;
 }
+
+.scrollable-lg-posts {
+  max-height: calc(100vh - 50px);
+  overflow: auto;
+}
