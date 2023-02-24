@@ -49,9 +49,10 @@
             <h2 class="d-flex">Músicas</h2>
             @foreach (var item in ViewBag.Result.Tracks.Items)
             {
-                <div class="border border-3 border-primary rounded mt-2 d-flex justify-content-around mx-3">
-                    <div class="d-flex align-content-start font-weight-bold">@item.Name</div>
-                    <div class="d-flex align-content-end"> de: @item.Artists[0].Name</div>
+                <div class="border border-3 border-primary rounded mt-2 d-flex justify-content-between mx-5">
+                    <img src="@item.Album.Images[0].Url" alt="@item.Album.Name" width="45" height="45">
+                        <div class="d-flex text-start align-content-start align-self-start font-weight-bold">@item.Name</div>
+                        <div class="d-flex align-content-end pr-3"> de: @item.Artists[0].Name</div>
                 </div>
             }
         </div>
