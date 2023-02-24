@@ -10506,7 +10506,14 @@ textarea.form-control-lg {
   padding: 0 !important;
 }
 
-.scrollable-lg-posts {
-  max-height: calc(100vh - 50px);
-  overflow: auto;
+@media (min-width: 992px) {
+  .scrollable-posts {
+    max-height: calc(100vh - 50px);
+    overflow: auto;
+  }
+}
+@media (max-width: 767.98px) {
+  .scrollable-posts {
+    overflow: initial;
+  }
 }

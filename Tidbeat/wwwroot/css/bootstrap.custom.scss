@@ -60,7 +60,15 @@ nav-link {
     padding: 0!important;
 }
 
-.scrollable-lg-posts {
-    max-height: calc(100vh - 50px);
-    overflow: auto;
+@include media-breakpoint-up(lg) {
+    .scrollable-posts {
+        max-height: calc(100vh - 50px);
+        overflow: auto;
+    }
+}
+
+@include media-breakpoint-down(md) {
+    .scrollable-posts {
+        overflow: initial;
+    }
 }
