@@ -9,7 +9,7 @@ namespace Tidbeat.Models {
         [Required]
         public string Name { get; set;}
 
-        [ForeignKey("Band")]
-        public string BandId { get; set; }
+        [Required]
+        public Band Band { get; set; }
     }
 }

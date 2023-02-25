@@ -16,7 +16,7 @@
                 @Html.DisplayNameFor(model => model.Name)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.BandId)
+                @Html.DisplayNameFor(model => model.Band.BandId)
             </th>
             <th></th>
         </tr>
@@ -28,7 +28,7 @@
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.BandId)
+                @Html.DisplayFor(modelItem => item.Band.BandId)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.SongId">Edit</a> |

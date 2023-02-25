@@ -24,7 +24,7 @@ namespace Tidbeat.Services {
             //FullTrack song = await _spotifyService.GetSongAsync(songId);
             Song song = _context.Songs.Find(songId);
             if (song == null) {
-                return new Song() { Name = "Not found", BandId = "" };
+                return new Song() { Name = "Not found", Band = new Band() };
             }
             return song;
         }
@@ -35,7 +35,8 @@ namespace Tidbeat.Services {
         }
 
         public void SaveSong(FullTrack song) {
-            _context.Songs.Add(new Song() { SongId = song.Id, Name = song.Name, BandId = song.Artists[0].Id });
+            var artist = song.Artists[0];
+            _context.Songs.Add(new Song() { SongId = song.Id, Name = song.Name, Band = _context.Bands.Find(artist.Id) });
             _context.SaveChanges();
         }
     }
