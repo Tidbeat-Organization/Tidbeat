@@ -66,13 +66,18 @@
             myAudio.pause();
             isPlaying = false;
             startAudio.src = "../../images/PlayButton.png";
-            audioStatus.innerHTML = "Pausado";
+            audioStatus.innerHTML = "Pausado: " + (30 - myAudio.currentTime.toFixed(0)) + "s";
+            myAudio.removeEventListener("timeupdate", updateTime);
         } else {
             myAudio.play();
             isPlaying = true;
             startAudio.src = "../../images/StopButton.png";
-            audioStatus.innerHTML = "A correr...";
+            myAudio.addEventListener("timeupdate", updateTime);
         }
+    }
+
+    function updateTime() {
+        audioStatus.innerHTML = "A correr: " + (30 - myAudio.currentTime.toFixed(0)) + "s";
     }
 
     startAudio.addEventListener("mouseover", function () {
