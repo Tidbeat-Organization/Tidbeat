@@ -60,5 +60,6 @@ app.MapRazorPages();
 
 using var scope = app.Services.CreateScope();
 await Configurations.CreateStartingUsers(scope.ServiceProvider);
+//await Configurations.CreateStartingPosts(scope.ServiceProvider);
 
 app.Run();

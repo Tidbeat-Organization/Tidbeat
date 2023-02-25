@@ -6,6 +6,7 @@
     var songLength = Model.DurationMs / 60000;
     var spotifyPageURL = SpotifyService.UrlSong + Model.Id;
     var releaseDate = DateTime.ParseExact(Model.Album.ReleaseDate, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture).ToString("dd-MM-yyyy");
+    List<Post> allPosts = ViewBag.posts;
 }
 
 <!--All music info goes here-->
@@ -42,13 +43,13 @@
     <!--All posts goes here-->
     <div class="col-lg-8 col-12 mt-5 pt-5 scrollable-posts">
         <div class="fs-3">Posts</div>
-        @for (int i = 1; i <= 15; i++) {
+        @foreach (Post post in allPosts) {
             <div class="d-flex align-items-center border border-2 border-primary p-1 rounded mb-2">
                 <div class="border-end border-2 border-primary pe-2">
-                    <div>Joana Dias</div>
+                    <div>@post.User.FullName</div>
                     <div>Utilizador</div>
                 </div>
-                <div class="ms-2">O porquê desta música ser uma das melhores de sempre.</div>
+                <div class="ms-2">@post.Title</div>
             </div>
         }
     </div>

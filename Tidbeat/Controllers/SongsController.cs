@@ -42,6 +42,11 @@ namespace Tidbeat.Controllers
                 return NotFound();
             }
 
+            var allPosts = _context.Posts.Include(p => p.User).Include(p => p.Song).Where(p => p.Song != null && p.Song.SongId == id).ToList();
+            ViewBag.posts = allPosts;
+
+
+
             return View(song);
         }
     }
