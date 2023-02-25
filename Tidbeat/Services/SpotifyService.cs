@@ -29,17 +29,38 @@ namespace Tidbeat.Services {
             //return new Band() { BandId = id, Name = band.Name, Image = band.Images[0].Url };
         }
 
-        public async Task<SearchResponse> GetMultipleSongsAsync() 
+        public async Task<SearchResponse> GetMultipleSongsAsync(string searchKey) 
         {
-            SearchRequest searchTop = new SearchRequest(SearchRequest.Types.Track, "Shape");
+            SearchRequest searchTop;
+            if (!string.IsNullOrEmpty(searchKey))
+            {
+                searchTop = new SearchRequest(SearchRequest.Types.Track, searchKey);
+            }
+            else {
+                searchTop = new SearchRequest(SearchRequest.Types.Track, "a");
+            }
             var tracks = await _client.Search.Item(searchTop);
             return tracks;
         }
 
         public async Task<SearchResponse> GetSearchSongsbyValuesAsync(string Gener, string band, string album, string yearStart, string yearEnd) 
         {
-            //still need to use Band and Album
-            string searchString = "genre:" + Gener + " AND year:" + yearStart+"-"+yearEnd;
+            var searchString = "";
+            if(!string.IsNullOrEmpty(Gener)){
+                searchString += "genre:" + Gener;
+            }
+            if (!string.IsNullOrEmpty(band))
+            {
+                searchString += "artist:" + band;
+            }
+            if (!string.IsNullOrEmpty(album))
+            {
+                searchString += "album:" + album;
+            }
+            if (!string.IsNullOrEmpty(yearStart) && yearStart.Length==4 && !string.IsNullOrEmpty(yearEnd) && yearEnd.Length == 4)
+            {
+                searchString += "year:" + yearStart + "-"+yearEnd;
+            }
             SearchRequest searchTop = new SearchRequest(SearchRequest.Types.Track, searchString);
             var tracks = await _client.Search.Item(searchTop);
             return tracks;
