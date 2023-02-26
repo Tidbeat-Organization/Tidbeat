@@ -6,5 +6,9 @@ namespace Tidbeat.Services {
         Task<FullTrack> GetSongAsync(string id);
 
         Task<FullArtist> GetBandAsync(string id);
+
+        Task<int?> GetAmountBandAlbumAsync(string id);
+
+        Task<List<FullTrack>> GetTop3SongsAsync(string artistId);
     }
 }

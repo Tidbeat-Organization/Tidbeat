@@ -1,14 +1,55 @@
 ﻿@model SpotifyAPI.Web.FullArtist
+@using Tidbeat.Services
+@using SpotifyAPI.Web
 
 @{
     ViewData["Title"] = "Details";
     var imageUrl = Model.Images[0].Url;
+    var spotifyPageURL = SpotifyService.UrlBand + Model.Id;
 }
 
-<div>
-    <h4 class="mt-5 pt-5">Artista/Banda: @Model.Name</h4>
-    <img src="@imageUrl" height="300"/>
-</div>
-<div>
-    <a asp-action="Index">Back to List</a>
+<!--All music info goes here-->
+<div class="container-fluid row w-100 d-flex flex-column flex-lg-row mx-0">
+    <div class="d-flex flex-column col-lg-4 col-12">
+        <div class="mt-5 pt-5 mb-3 d-flex align-items-center justify-content-center justify-content-lg-start">
+            <h4 class="d-flex ms-2">Banda/Artista: @Model.Name</h4>
+        </div>
+        <div class="d-flex flex-column flex-xl-row justify-content-lg-start align-items-center">
+            <a href="@spotifyPageURL"><img src="@Model.Images[0].Url" height="200" /></a>
+            <div class="ms-2 text-start">
+                <div class="d-flex flex-column text-start mb-3">
+                    <div>Top 3 de Músicas:</div>
+                    @foreach (FullTrack track in ViewBag.top3Songs) {
+                        <div class="d-flex flex-row">
+                            <a href=@(SpotifyService.UrlSong + track.Id)>@track.Name</a>
+                            <div>&nbsp;- @track.Album.Name</div>
+                        </div>
+                    }
+                </div>
+                <div>@Model.Followers.Total Seguidores</div>
+                <div>Álbuns lançados: @ViewBag.albumAmount</div>
+            </div>
+        </div>
+        <div class="d-flex align-items-lg-start flex-column mt-5">
+            <div>Número de favoritos: 0</div>
+            <div>Número de posts sobre esta banda: 0</div>
+        </div>
+        
+    </div>
+
+    <!--All posts goes here-->
+    <div class="col-lg-8 col-12 mt-5 pt-5 scrollable-posts">
+        <div class="fs-3">Posts</div>
+        @{/*
+        @foreach (Post post in allPosts) {
+            <div class="d-flex align-items-center border border-2 border-primary p-1 rounded mb-2">
+                <div class="border-end border-2 border-primary pe-2">
+                    <div>@post.User.FullName</div>
+                    <div>Utilizador</div>
+                </div>
+                <div class="ms-2">@post.Title</div>
+            </div>
+            }*/
+        }
+    </div>
 </div>
