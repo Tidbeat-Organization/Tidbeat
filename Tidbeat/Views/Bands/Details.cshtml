@@ -6,6 +6,7 @@
     ViewData["Title"] = "Details";
     var imageUrl = Model.Images[0].Url;
     var spotifyPageURL = SpotifyService.UrlBand + Model.Id;
+    List<Post> allPosts = ViewBag.posts;
 }
 
 <!--All music info goes here-->
@@ -40,7 +41,7 @@
     <!--All posts goes here-->
     <div class="col-lg-8 col-12 mt-5 pt-5 scrollable-posts">
         <div class="fs-3">Posts</div>
-        @{/*
+        
         @foreach (Post post in allPosts) {
             <div class="d-flex align-items-center border border-2 border-primary p-1 rounded mb-2">
                 <div class="border-end border-2 border-primary pe-2">
@@ -49,7 +50,7 @@
                 </div>
                 <div class="ms-2">@post.Title</div>
             </div>
-            }*/
-        }
+            }
+        
     </div>
 </div>
