@@ -23,9 +23,25 @@ namespace Tidbeat.Controllers
         }
 
         // GET: Bands
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index([FromQuery] string searchKey, [FromQuery] string gener, [FromQuery] string order)
         {
-              return View(await _context.Bands.ToListAsync());
+            TempData["Search"] = searchKey;
+            TempData["Gener"] = gener;
+            TempData["Order"] = order;
+            if ((string.IsNullOrEmpty(gener) || gener == "/"))
+            {
+                ViewBag.Result = await _spotifyService.GetMultipleBandsAsync(searchKey);
+                return View();
+
+            }
+            var results = await _spotifyService.GetSearchBandsbyValuesAsync(searchKey, gener);
+            results.Artists.Items.Sort((n1, n2) => n1.Name.CompareTo(n2.Name));//Alfabeticamnete a-z
+            results.Artists.Items.Reverse();//Alfabeticamnete z-a
+            results.Artists.Items.Sort((n1, n2) => n1.Popularity.CompareTo(n2.Popularity));//popularidade menos-mais
+            results.Artists.Items.Reverse();//popularidade mais-menos
+            ViewBag.Result = results;
+            return View();
+
         }
 
         // GET: Bands/Details/5

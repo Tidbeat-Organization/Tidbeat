@@ -1,38 +1,47 @@
-﻿@using Tidbeat.Services
-@model IEnumerable<Tidbeat.Models.Band>
-@inject IMusicService musicService
+﻿@using Tidbeat.Controllers
+@using Tidbeat.Services
+@inject ISpotifyService SpotifyService
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Bands Page";
 }
 
-<h1 class="mt-5 pt-5">Index</h1>
-
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Image)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Image)
-            </td>
-            <td>
-                <a asp-action="Details" asp-route-id="@item.BandId">Details</a> |
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<div class="mt-4 pt-5">
+    <div class="mx-3 mt-10">
+        <div id="filter" class="border border-3 border-dark rounded pb-2 mt-10">
+            <div class="display-6 text-primary text-left d-flex w-2">Filtros</div>
+            <div class="d-flex flex-row flex-wrap w-md-100 flex-md-nowrap">
+                <div class="input-group d-flex flex-column px-3">
+                    <div class="align-self-start">Género:</div>
+                    <div class="form-outline d-flex flex-row">
+                        <input type="search" id="formGender" class="form-control" placeholder="Search" value="@if (TempData.ContainsKey("Gener")){
+                        @TempData["Gener"]
+;}" />
+                    </div>
+                </div>
+                <div class="input-group d-flex flex-column px-3">
+                    <div class="align-self-start">Ordenar:</div>
+                    <select class="form-control" id="Ordere" name="Orderby">
+                        <option>Alfabeticamente(a-z)</option>
+                        <option>Alfabeticamente(z-a)</option>
+                        <option>Mais Popular</option>
+                        <option>Menos Popular</option>
+                    </select>
+                </div>
+                <div class="align-self-center px-3 pt-3 pt-md-4">
+                    <img id="imgBand" class="no-padding align-self-center px-3" src="~/images/SearchIcon.png" height="26" width="30" onclick="actualEvent()" />
+                </div>
+            </div>
+        </div>
+        <div>
+            <h2 class="d-flex">Bandas e Artistas</h2>
+            @foreach (var item in ViewBag.Result.Artists.Items)
+            {
+                <div id="@item.Uri" class="border border-3 border-primary rounded mt-2 d-flex flex-nowrap justify-content-between mx-2 mx-md-5">
+                    <img src="@item.Images[0].Url" alt="@item.Name" width="100" height="100">
+                    <div class="d-flex text-start justify-content-start align-content-start align-self-center font-weight-bold w-25">@item.Name</div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

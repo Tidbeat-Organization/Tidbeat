@@ -25,6 +25,34 @@ namespace Tidbeat.Services {
             var band = await _client.Artists.Get(id);
             return band;
             //return new Band() { BandId = id, Name = band.Name, Image = band.Images[0].Url };
-        } 
+        }
+        public async Task<SearchResponse> GetMultipleBandsAsync(string searchKey)
+        {
+            SearchRequest searchTop;
+            if (!string.IsNullOrEmpty(searchKey))
+            {
+                searchTop = new SearchRequest(SearchRequest.Types.Artist, searchKey);
+            }
+            else
+            {
+                searchTop = new SearchRequest(SearchRequest.Types.Artist, "a");
+            }
+            var artist = await _client.Search.Item(searchTop);
+            return artist;
+        }
+        public async Task<SearchResponse> GetSearchBandsbyValuesAsync(string searchKey, string gener) {
+            var searchString = "";
+            if (!string.IsNullOrEmpty(searchKey))
+            {
+                searchString += searchKey;
+            }
+            if (!string.IsNullOrEmpty(gener))
+            {
+                searchString += "genre:" + gener;
+            }
+            SearchRequest searchTop = new SearchRequest(SearchRequest.Types.Track, searchString);
+            var bands = await _client.Search.Item(searchTop);
+            return bands;
+        }
     }
 }
