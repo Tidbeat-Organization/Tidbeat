@@ -9,37 +9,37 @@
 
 <div class="mt-4 pt-5">
     <div class="mx-3 mt-10">
-        <div class="border border-3 border-dark rounded pb-2 mt-10">
+        <div id="filter" class="border border-3 border-dark rounded pb-2 mt-10">
             <div class="display-6 text-primary text-left d-flex w-2">Filtros</div>
             <div class="d-flex flex-row w-100">
                 <div class="input-group d-flex flex-column">
                     <div class="align-self-start">Género:</div>
                     <div class="form-outline d-flex flex-row">
-                        <img id="imgGender" class="no-padding align-self-center" src="~/images/SearchIcon.png" height="26" width="30" />
-                        <input type="search" id="formGender" class="form-control" placeholder="Search" />
+                        <img id="imgGender" class="no-padding align-self-center" src="~/images/SearchIcon.png" height="26" width="30" onclick="actualEvent()" />
+                        <input type="search" id="formGender" class="form-control" placeholder="Search" value=@if (TempData.ContainsKey("Gener")){@TempData["Gener"];}/>
                     </div>
                 </div>
                 <div class="input-group d-flex flex-column">
                     <div class="align-self-start">Banda/Artista:</div>
                     <div class="form-outline  d-flex flex-row">
-                        <img id="imgBand" class="no-padding align-self-center" src="~/images/SearchIcon.png" height="26" width="30" />
-                        <input type="search" id="formBand" class="form-control" placeholder="Search" />
+                        <img id="imgBand" class="no-padding align-self-center" src="~/images/SearchIcon.png" height="26" width="30" onclick="actualEvent()" />
+                        <input type="search" id="formBand" class="form-control" placeholder="Search" value=@if (TempData.ContainsKey("Band")){@TempData["Band"];} />
                     </div>
                 </div>
                 <div class="input-group d-flex flex-column">
                     <div class="align-self-start">Álbum:</div>
                     <div class="form-outline  d-flex flex-row">
-                        <img id="imgAlbum" class="no-padding align-self-center" src="~/images/SearchIcon.png" height="26" width="30" />
-                        <input type="search" id="formAlbum" class="form-control" placeholder="Search" />
+                        <img id="imgAlbum" class="no-padding align-self-center" src="~/images/SearchIcon.png" height="26" width="30" onclick="actualEvent()" />
+                        <input type="search" id="formAlbum" class="form-control" placeholder="Search" value=@if (TempData.ContainsKey("Album")){@TempData["Album"];} />
                     </div>
                 </div>
                 <div class="input-group d-flex flex-column">
                     <div class="input-group d-flex flex-row h-50 align-items-end">
                         <div class="align-items-end d-flex">
                             <div class="align-self-start">Ano de Lançamento:</div>
-                            <input id="formStartYear" type="number" class="form-control form-outline" placeholder="YYYY" min="1950" max="@DateTime.Now.Year">
+                            <input id="formStartYear" type="number" class="form-control form-outline" placeholder="YYYY" min="1950" max="@DateTime.Now.Year" value=@if (TempData.ContainsKey("YearStar")){@TempData["YearStar"];}>
                             <div class="align-self-center">a</div>
-                            <input id="formEndYear" type="number" class="form-control form-outline" placeholder="YYYY" min="1950" max="@DateTime.Now.Year">
+                            <input id="formEndYear" type="number" class="form-control form-outline" placeholder="YYYY" min="1950" max="@DateTime.Now.Year" value=@if (TempData.ContainsKey("YearEnd")){@TempData["YearEnd"];}>
                         </div>
                     </div>
                 </div>
@@ -70,6 +70,7 @@
         if(inputGener.value || inputAlbum.value || inputArtist.value || inputStartYear.value.length===4 || inputEndYear.value.length===4){
             path+="?";
             let params = new URLSearchParams({
+                searchKey: @if (TempData.ContainsKey("Search")){@TempData["Search"];},
                 gener: inputGener.value,
                 band: inputArtist.value,
                 album: inputAlbum.value,
@@ -77,12 +78,12 @@
                 yearEnd: inputEndYear.value,
             })
             path+=params.toString();
-            windows.location = path;
+            console.log(window.location.href)
+            window.location.href = path;
         }
         event.preventDefault();
     }
-    input.addEventListener("keypress",function(event) 
-       {
+    document.getElementById("filter").addEventListener("keypress", function (event) {
            if(event.key === "Enter"){
             let focusElement = document.activeElement;
             let inputGener = document.getElementById("formGender");

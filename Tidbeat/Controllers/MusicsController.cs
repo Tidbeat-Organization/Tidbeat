@@ -22,8 +22,14 @@ namespace Tidbeat.Controllers
         }
 
         // GET: Musics
-        public async Task<IActionResult> Index(string searchKey,[FromQuery] string gener, [FromQuery] string band, [FromQuery] string album, [FromQuery] string yearStart, [FromQuery] string yearEnd)
+        public async Task<IActionResult> Index([FromQuery] string searchKey,[FromQuery] string gener, [FromQuery] string band, [FromQuery] string album, [FromQuery] string yearStart, [FromQuery] string yearEnd)
         {
+            TempData["Search"] = searchKey;
+            TempData["Gener"] = gener;
+            TempData["Band"] = band;
+            TempData["Album"] = album;
+            TempData["YearStar"] = yearStart;
+            TempData["YearEnd"] = yearEnd;
             if (string.IsNullOrEmpty(gener) && string.IsNullOrEmpty(band) && string.IsNullOrEmpty(album) && string.IsNullOrEmpty(yearStart) && string.IsNullOrEmpty(yearEnd))
             {
                 ViewBag.Result = await _spotifyService.GetMultipleSongsAsync(searchKey);
