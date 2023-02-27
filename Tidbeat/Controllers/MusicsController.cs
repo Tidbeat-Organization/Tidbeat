@@ -24,19 +24,19 @@ namespace Tidbeat.Controllers
         // GET: Musics
         public async Task<IActionResult> Index([FromQuery] string searchKey,[FromQuery] string gener, [FromQuery] string band, [FromQuery] string album, [FromQuery] string yearStart, [FromQuery] string yearEnd)
         {
-            TempData["Search"] = searchKey;
-            TempData["Gener"] = gener;
-            TempData["Band"] = band;
-            TempData["Album"] = album;
-            TempData["YearStar"] = yearStart;
-            TempData["YearEnd"] = yearEnd;
-            if (string.IsNullOrEmpty(gener) && string.IsNullOrEmpty(band) && string.IsNullOrEmpty(album) && string.IsNullOrEmpty(yearStart) && string.IsNullOrEmpty(yearEnd))
+                TempData["Search"] = searchKey;
+                TempData["Gener"] = gener;
+                TempData["Band"] = band;
+                TempData["Album"] = album;
+                TempData["YearStar"] = yearStart;
+                TempData["YearEnd"] = yearEnd;
+            if ((string.IsNullOrEmpty(gener) || gener=="/") && (string.IsNullOrEmpty(band) || band == "/" )&& (string.IsNullOrEmpty(album) || album == "/") && (string.IsNullOrEmpty(yearStart) || yearStart== "/") && (string.IsNullOrEmpty(yearEnd) || yearEnd == "/"))
             {
                 ViewBag.Result = await _spotifyService.GetMultipleSongsAsync(searchKey);
                 return View();
                  
             }
-            ViewBag.Result = await _spotifyService.GetSearchSongsbyValuesAsync(gener, band, album, yearStart, yearEnd);
+            ViewBag.Result = await _spotifyService.GetSearchSongsbyValuesAsync(searchKey,gener, band, album, yearStart, yearEnd);
             return View();
 
         }

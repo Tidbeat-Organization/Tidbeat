@@ -43,10 +43,14 @@ namespace Tidbeat.Services {
             return tracks;
         }
 
-        public async Task<SearchResponse> GetSearchSongsbyValuesAsync(string Gener, string band, string album, string yearStart, string yearEnd) 
+        public async Task<SearchResponse> GetSearchSongsbyValuesAsync(string Search,string Gener, string band, string album, string yearStart, string yearEnd) 
         {
             var searchString = "";
-            if(!string.IsNullOrEmpty(Gener)){
+            if (!string.IsNullOrEmpty(Search))
+            {
+                searchString += Gener;
+            }
+            if (!string.IsNullOrEmpty(Gener)){
                 searchString += "genre:" + Gener;
             }
             if (!string.IsNullOrEmpty(band))

@@ -8,6 +8,6 @@ namespace Tidbeat.Services {
         Task<FullArtist> GetBandAsync(string id);
 
         Task<SearchResponse> GetMultipleSongsAsync(string searchKey);
-        Task<SearchResponse> GetSearchSongsbyValuesAsync(string Gener, string band, string album, string yearStart, string yearEnd);
+        Task<SearchResponse> GetSearchSongsbyValuesAsync(string Search,string Gener, string band, string album, string yearStart, string yearEnd);
     }
 }
