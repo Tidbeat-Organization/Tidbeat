@@ -1,0 +1,56 @@
+﻿@model Tidbeat.Models.Post
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<div class="container" style="margin-top: 100px;">
+    <h3>Criar Post</h3>
+    <hr />
+    <div class="row">
+        <div class="col-md-6 col-lg-4">
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <!-- Song -->
+                <div class="form-group">
+                </div>
+                <!-- Band -->
+                <div class="form-group">
+                </div>
+                <!-- Spotify Link -->
+                <div class="form-group">
+                </div>
+                <!-- Test Song -->
+                <div class="form-group">
+                </div>
+                <!-- Title -->
+                <div class="form-group">
+                    <label asp-for="Title" class="control-label" style="color: #6610F2;"></label>
+                    <input asp-for="Title" class="form-control" placeholder="Escreva o título do seu post..." style="border: 1.5px solid #6610F2;" />
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+                <!-- Content -->
+                <div class="form-group" style="margin-top: 10px;">
+                    <label asp-for="Content" class="control-label" style="color: #6610F2;"></label>
+                    <textarea asp-for="Content" class="form-control" style="height: 200px; border: 1.5px solid #6610F2;" placeholder="Escreva o conteúdo do seu post..."></textarea>
+                    <span asp-validation-for="Content" class="text-danger"></span>
+                </div>
+                <!-- Form submit -->
+                <div class="form-group create-button" style="margin-top: 25px;">
+                    <input type="submit" value="Create" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="row" style="margin-top: 20px;">
+        <div class="col">
+            <a asp-action="Index">Back to List</a>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    }
