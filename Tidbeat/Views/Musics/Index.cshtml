@@ -12,36 +12,36 @@
         <div id="filter" class="border border-3 border-dark rounded pb-2 mt-10">
             <div class="display-6 text-primary text-left d-flex w-2">Filtros</div>
             <div class="d-flex flex-row flex-wrap w-md-100 flex-md-nowrap">
-                    <div class="input-group d-flex flex-column">
+                <div class="input-group d-flex flex-column px-3">
                         <div class="align-self-start">Género:</div>
                         <div class="form-outline d-flex flex-row">
-                            <img id="imgGender" class="no-padding align-self-center" src="~/images/SearchIcon.png" height="26" width="30" onclick="actualEvent()" />
                             <input type="search" id="formGender" class="form-control" placeholder="Search" value="@if (TempData.ContainsKey("Gener")){@TempData["Gener"];}"/>
                         </div>
                     </div>
-                    <div class="input-group d-flex flex-column">
+                <div class="input-group d-flex flex-column px-3">
                         <div class="align-self-start">Banda/Artista:</div>
                         <div class="form-outline  d-flex flex-row">
-                            <img id="imgBand" class="no-padding align-self-center" src="~/images/SearchIcon.png" height="26" width="30" onclick="actualEvent()" />
                             <input type="search" id="formBand" class="form-control" placeholder="Search" value="@if (TempData.ContainsKey("Band")){@TempData["Band"];}"/>
                         </div>
                     </div>
-                    <div class="input-group d-flex flex-column">
+                <div class="input-group d-flex flex-column px-3">
                         <div class="align-self-start">Álbum:</div>
                         <div class="form-outline  d-flex flex-row">
-                            <img id="imgAlbum" class="no-padding align-self-center" src="~/images/SearchIcon.png" height="26" width="30" onclick="actualEvent()" />
                             <input type="search" id="formAlbum" class="form-control" placeholder="Search" value="@if (TempData.ContainsKey("Album")){@TempData["Album"];}" />
                         </div>
                     </div>
-                    <div class="input-group d-flex flex-column">
-                        <div class="input-group d-flex flex-row h-50 align-items-end">
-                            <div class="align-items-end d-flex">
+                    <div class="input-group d-flex flex-column px-3">  
                                 <div class="align-self-start">Ano de Lançamento:</div>
+                        <div class="input-group d-flex flex-row h-50 align-items-end">
+                            <div class="align-items-end d-flex">    
                                 <input id="formStartYear" type="number" class="form-control form-outline" placeholder="YYYY" min="1950" max="@DateTime.Now.Year" value=@if (TempData.ContainsKey("YearStar")){@TempData["YearStar"];}>
-                                <div class="align-self-center">a</div>
+                                <div class="align-self-center px-1">a</div>
                                 <input id="formEndYear" type="number" class="form-control form-outline" placeholder="YYYY" min="1950" max="@DateTime.Now.Year" value=@if (TempData.ContainsKey("YearEnd")){@TempData["YearEnd"];}>
                             </div>
                         </div>
+                    </div>
+                    <div class="align-self-center px-3 pt-3 pt-md-4">
+                        <img id="imgBand" class="no-padding align-self-center px-3" src="~/images/SearchIcon.png" height="26" width="30" onclick="actualEvent()" />
                     </div>
             </div>
         </div>
@@ -51,8 +51,10 @@
             {
                 <div id="@item.Uri" class="border border-3 border-primary rounded mt-2 d-flex justify-content-between mx-5">
                     <img src="@item.Album.Images[0].Url" alt="@item.Album.Name" width="45" height="45">
-                    <div class="d-flex text-start align-content-start align-self-start font-weight-bold">@item.Name</div>
-                     <div class="d-flex align-content-end pr-3"> de: @item.Artists[0].Name</div>
+                    <div class="d-flex text-start align-content-start align-self-center font-weight-bold">@item.Name</div>
+                    <div class="d-flex align-content-start align-self-center mr-5">
+                        <div class="mr-5 align-content-start"> de: @item.Artists[0].Name</div>
+                    </div>
                 </div>
             }
         </div>
@@ -100,8 +102,5 @@
                }
             }
         )
-        document.getElementById("imgGender").onclick = actualEvent;
-        document.getElementById("imgAlbum").onclick = actualEvent;
-        document.getElementById("imgBand").onclick = actualEvent;
     };
 </script>
