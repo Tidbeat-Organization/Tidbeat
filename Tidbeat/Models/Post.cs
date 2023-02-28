@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Tidbeat.Models {
@@ -7,9 +8,11 @@ namespace Tidbeat.Models {
         public int PostId { get; set; }
 
         [Required]
+        [DisplayName("Título")]
         public string Title { get; set; }
 
         [Required]
+        [DisplayName("Conteúdo")]
         public string Content { get; set; }
 
         public Song? Song { get; set; }
