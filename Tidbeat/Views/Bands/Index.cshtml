@@ -1,6 +1,7 @@
 ﻿@using Tidbeat.Controllers
 @using Tidbeat.Services
 @inject ISpotifyService SpotifyService
+@using System.Web
 
 @{
     ViewData["Title"] = "Bands Page";
@@ -22,10 +23,10 @@
                 <div class="input-group d-flex flex-column px-3">
                     <div class="align-self-start">Ordenar:</div>
                     <select class="form-control w-100" id="Ordere" name="Orderby">
-                        <!option value="1" @(TempData["Order"] == "1"   ? "selected" : "")>Alfabeticamente(a-z)</!option>
-                        <!option value="2" @(TempData["Order"] == "2"   ? "selected" : "")>Alfabeticamente(z-a)</!option>
-                        <!option value="3" @(TempData["Order"] == "3"   ? "selected" : "")>Mais Popular</!option>
-                        <!option value="4" @(TempData["Order"] == "4"   ? "selected" : "")>Menos Popular</!option>
+                        <!option value="1" @if(TempData.ContainsKey("Order")){@(TempData["Order"].ToString() == "1" ? "selected" : "")}>Alfabeticamente(a-z)</!option>
+                        <!option value="2" @if(TempData.ContainsKey("Order")){@(TempData["Order"].ToString() == "2" ? "selected" : "")}>Alfabeticamente(z-a)</!option>
+                        <!option value="3" @if(TempData.ContainsKey("Order")){@(TempData["Order"].ToString() == "3" ? "selected" : "")}>Mais Popular</!option>
+                        <!option value="4" @if(TempData.ContainsKey("Order")){@(TempData["Order"].ToString() == "4" ? "selected" : "")}>Menos Popular</!option>
                     </select>
                 </div>
                 <div class="align-self-center px-3 pt-3 pt-md-4">
@@ -83,3 +84,8 @@
         }
         )
 </script>
+<style>
+    #imgBand {
+        cursor: pointer;
+    }
+</style>
