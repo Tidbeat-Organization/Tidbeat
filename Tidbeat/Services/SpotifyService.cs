@@ -50,7 +50,7 @@ namespace Tidbeat.Services {
             {
                 searchString += "genre:" + gener;
             }
-            SearchRequest searchTop = new SearchRequest(SearchRequest.Types.Track, searchString);
+            SearchRequest searchTop = new SearchRequest(SearchRequest.Types.Artist, searchString);
             var bands = await _client.Search.Item(searchTop);
             return bands;
         }

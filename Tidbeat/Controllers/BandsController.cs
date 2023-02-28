@@ -35,10 +35,26 @@ namespace Tidbeat.Controllers
 
             }
             var results = await _spotifyService.GetSearchBandsbyValuesAsync(searchKey, gener);
-            results.Artists.Items.Sort((n1, n2) => n1.Name.CompareTo(n2.Name));//Alfabeticamnete a-z
-            results.Artists.Items.Reverse();//Alfabeticamnete z-a
-            results.Artists.Items.Sort((n1, n2) => n1.Popularity.CompareTo(n2.Popularity));//popularidade menos-mais
-            results.Artists.Items.Reverse();//popularidade mais-menos
+            
+            if(order == "1") 
+            {
+                results.Artists.Items.Sort((n1, n2) => n1.Name.CompareTo(n2.Name));
+            }
+            if (order == "2")
+            {
+                results.Artists.Items.Sort((n1, n2) => n1.Name.CompareTo(n2.Name));
+                results.Artists.Items.Reverse();
+            }
+            if (order == "3")
+            {
+                results.Artists.Items.Sort((n1, n2) => n1.Popularity.CompareTo(n2.Popularity));
+            }
+            if (order == "4")
+            {
+                results.Artists.Items.Sort((n1, n2) => n1.Popularity.CompareTo(n2.Popularity));
+                results.Artists.Items.Reverse();
+            }
+            //Alfabeticamnete a-z
             ViewBag.Result = results;
             return View();
 
