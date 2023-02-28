@@ -46,16 +46,23 @@
             </div>
         </div>
         <div>
-            <h2 class="d-flex">Músicas</h2>
-            @foreach (var item in ViewBag.Result.Tracks.Items)
+            @if (ViewBag.Result.Tracks.Items.Count > 0)
             {
-                <div id="@item.Uri" class="border border-3 border-primary rounded mt-2 d-flex justify-content-between mx-2 mx-md-5">
-                    <img src="@item.Album.Images[0].Url" alt="@item.Album.Name" width="45" height="45">
-                    <div class="d-flex text-start justify-content-start align-content-start align-self-center font-weight-bold w-25">@item.Name</div>
-                    <div class="d-flex text-start justify-content-start align-content-start align-self-center w-25">
-                        <div class="mr-5 text-start justify-content-start align-content-start"> de: @item.Artists[0].Name</div>
+                <h2 class="d-flex">Músicas</h2>
+                @foreach (var item in ViewBag.Result.Tracks.Items)
+                {
+                    <div id="@item.Uri" class="border border-3 border-primary rounded mt-2 d-flex justify-content-between mx-2 mx-md-5">
+                        <img class="align-self-center"src="@item.Album.Images[0].Url" alt="@item.Album.Name" width="70" height="70">
+                        <div class="d-flex text-start justify-content-start align-content-start align-self-center font-weight-bold w-25">@item.Name</div>
+                        <div class="d-flex text-start justify-content-start align-content-start align-self-center w-25">
+                            <div class="mr-5 text-start justify-content-start align-content-start"> de: @item.Artists[0].Name</div>
+                        </div>
                     </div>
-                </div>
+                }
+
+            }else
+            {
+                <div class="text-danger" id="Danger">Não existe nenhuma música com esses filtros</div>
             }
         </div>
     </div>

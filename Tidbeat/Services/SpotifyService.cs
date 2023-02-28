@@ -48,7 +48,7 @@ namespace Tidbeat.Services {
             var searchString = "";
             if (!string.IsNullOrEmpty(Search))
             {
-                searchString += Gener;
+                searchString += Search;
             }
             if (!string.IsNullOrEmpty(Gener)){
                 searchString += "genre:" + Gener;
