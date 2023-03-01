@@ -17,6 +17,8 @@ namespace Tidbeat.Models {
 
         public Song? Song { get; set; }
 
+        public Band? Band { get; set; }
+
         [Required]
         public ApplicationUser User { get; set; }
     }
