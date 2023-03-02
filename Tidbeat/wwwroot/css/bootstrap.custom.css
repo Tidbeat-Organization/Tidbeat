@@ -10520,3 +10520,7 @@ textarea.form-control-lg {
 .pointer-active {
   cursor: pointer;
 }
+
+.hover-background-grey:hover {
+  background-color: #e3e3e3;
+}

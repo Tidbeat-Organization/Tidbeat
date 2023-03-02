@@ -77,3 +77,7 @@ nav-link {
 .pointer-active {
     cursor: pointer;
 }
+
+.hover-background-grey:hover {
+    background-color: $light-grey;
+}
