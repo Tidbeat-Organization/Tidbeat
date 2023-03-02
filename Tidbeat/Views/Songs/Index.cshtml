@@ -5,72 +5,73 @@
 
 @{
     ViewData["Title"] = "Musics Page";
+    var gender = TempData["Gener"]?.ToString();
 }
 
 <div class="mt-4 pt-5">
     <div class="mx-3 mt-10">
         <div id="filter" class="pb-2 mt-10">
             <div class="display-6 text-primary text-left d-flex w-2">Filtros</div>
-            <div class="d-flex flex-row flex-wrap w-md-100 flex-md-nowrap">
+            <div class="d-flex flex-xl-row flex-column w-md-100 justify-content-center">
                 <div class="input-group d-flex flex-column px-3">
-                    <div>Nome:</div>
+                    <div class="text-start">Nome:</div>
                     <input type="text" id="formSearch" class="form-control w-100 rounded" placeholder="Nome" value="@TempData?["Search"]">
                 </div>
                 <div class="input-group d-flex flex-column px-3">
-                        <div class="align-self-start">Género:</div>
-                        <div class="form-outline d-flex flex-row">
-                            <!--<input type="search" id="formGender" class="form-control" placeholder="Search" value="
-                                ;
-                            }"/>-->
-                        <select class="form-control w-100" id="formGender" name="formGender">
-                                <!option selected value="">Escolha um Género</!option>
-                                <!option value="rock" @(TempData["Gener"]?.ToString() == "rock" ? "selected" : "")>Rock</!option>
-                                <!option value="pop" @(TempData["Gener"]?.ToString() == "pop" ? "selected" : "")>Pop</!option>
-                                <!option value="kids" @(TempData["Gener"]?.ToString() == "kids" ? "selected" : "")>Crianças</!option>
-                                <!option value="funk" @(TempData["Gener"]?.ToString() == "funk" ? "selected" : "")>Funk</!option>
-                                <!option value="classical" @(TempData["Gener"]?.ToString() == "classical" ? "selected" : "")>Clássica</!option>
-                                <!option value="country" @(TempData["Gener"]?.ToString() == "country" ? "selected" : "")>Country</!option>
-                                <!option value="dance" @(TempData["Gener"]?.ToString() == "dance" ? "selected" : "")>Dança</!option>
-                                <!option value="metal" @(TempData["Gener"]?.ToString() == "metal" ? "selected" : "")>Metal</!option>
-                                <!option value="disco" @(TempData["Gener"]?.ToString() == "disco" ? "selected" : "")>Disco</!option>
-                                <!option value="folk" @(TempData["Gener"]?.ToString() == "folk" ? "selected" : "")>Folk</!option>
-                                <!option value="hip-hop" @(TempData["Gener"]?.ToString() == "hip-hop" ? "selected" : "")>Hip-Hop</!option>
-                                <!option value="indian" @(TempData["Gener"]?.ToString() == "indian" ? "selected" : "")>Indian</!option>
-                                <!option value="k-pop" @(TempData["Gener"]?.ToString() == "k-pop" ? "selected" : "")>K-Pop</!option>
-                                <!option value="punk" @(TempData["Gener"]?.ToString() == "punk" ? "selected" : "")>Punk</!option>
-                                <!option value="piano" @(TempData["Gener"]?.ToString() == "piano" ? "selected" : "")>Piano</!option>
-                                <!option value="reggae" @(TempData["Gener"]?.ToString() == "reggae" ? "selected" : "")>Reggae</!option>
-                                <!option value="techno" @(TempData["Gener"]?.ToString() == "techno" ? "selected" : "")>Techno</!option>
-                            </select>
-                        </div>
+                    <div class="align-self-start">Género:</div>
+                    <div class="form-outline d-flex flex-row">
+                        <!--<input type="search" id="formGender" class="form-control" placeholder="Search" value="
+                            ;
+                        }"/>-->
+                    <select class="form-control w-100" id="formGender" name="formGender">
+                            <!option selected value="">Escolha um Género</!option>
+                            <!option value="rock" @(gender == "rock" ? "selected" : "")>Rock</!option>
+                            <!option value="pop" @(gender == "pop" ? "selected" : "")>Pop</!option>
+                            <!option value="kids" @(gender == "kids" ? "selected" : "")>Crianças</!option>
+                            <!option value="funk" @(gender == "funk" ? "selected" : "")>Funk</!option>
+                            <!option value="classical" @(gender == "classical" ? "selected" : "")>Clássica</!option>
+                            <!option value="country" @(gender == "country" ? "selected" : "")>Country</!option>
+                            <!option value="dance" @(gender == "dance" ? "selected" : "")>Dança</!option>
+                            <!option value="metal" @(gender == "metal" ? "selected" : "")>Metal</!option>
+                            <!option value="disco" @(gender == "disco" ? "selected" : "")>Disco</!option>
+                            <!option value="folk" @(gender == "folk" ? "selected" : "")>Folk</!option>
+                            <!option value="hip-hop" @(gender == "hip-hop" ? "selected" : "")>Hip-Hop</!option>
+                            <!option value="indian" @(gender == "indian" ? "selected" : "")>Indian</!option>
+                            <!option value="k-pop" @(gender == "k-pop" ? "selected" : "")>K-Pop</!option>
+                            <!option value="punk" @(gender == "punk" ? "selected" : "")>Punk</!option>
+                            <!option value="piano" @(gender == "piano" ? "selected" : "")>Piano</!option>
+                            <!option value="reggae" @(gender == "reggae" ? "selected" : "")>Reggae</!option>
+                            <!option value="techno" @(gender == "techno" ? "selected" : "")>Techno</!option>
+                        </select>
                     </div>
+                </div>
                 <div class="input-group d-flex flex-column px-3">
-                        <div class="align-self-start">Banda/Artista:</div>
-                        <div class="form-outline  d-flex flex-row">
-                            <input type="search" id="formBand" class="form-control" placeholder="Search" value="@if (TempData.ContainsKey("Band")){@TempData["Band"];}"/>
-                        </div>
+                    <div class="align-self-start">Banda/Artista:</div>
+                    <div class="form-outline  d-flex flex-row">
+                        <input type="search" id="formBand" class="form-control" placeholder="Search" value="@TempData?["Band"]"/>
                     </div>
+                </div>
                 <div class="input-group d-flex flex-column px-3">
-                        <div class="align-self-start">Álbum:</div>
-                        <div class="form-outline  d-flex flex-row">
-                            <input type="search" id="formAlbum" class="form-control" placeholder="Search" value="@if (TempData.ContainsKey("Album")){@TempData["Album"];}" />
+                    <div class="align-self-start">Álbum:</div>
+                    <div class="form-outline  d-flex flex-row">
+                        <input type="search" id="formAlbum" class="form-control" placeholder="Search" value="@TempData?["Album"]" />
+                    </div>
+                </div>
+                <div class="input-group d-flex flex-column px-3">  
+                            <div class="align-self-start">Ano de Lançamento:</div>
+                    <div class="input-group d-flex flex-row h-50 align-items-end">
+                        <div class="align-items-end d-flex">    
+                            <input id="formStartYear" type="number" class="form-control form-outline" placeholder="YYYY" min="1950" max="@DateTime.Now.Year" value=@TempData?["YearStar"]>
+                            <div class="align-self-center px-1">a</div>
+                            <input id="formEndYear" type="number" class="form-control form-outline" placeholder="YYYY" min="1950" max="@DateTime.Now.Year" value=@TempData?["YearEnd"]>
                         </div>
                     </div>
-                    <div class="input-group d-flex flex-column px-3">  
-                                <div class="align-self-start">Ano de Lançamento:</div>
-                        <div class="input-group d-flex flex-row h-50 align-items-end">
-                            <div class="align-items-end d-flex">    
-                                <input id="formStartYear" type="number" class="form-control form-outline" placeholder="YYYY" min="1950" max="@DateTime.Now.Year" value=@if (TempData.ContainsKey("YearStar")){@TempData["YearStar"];}>
-                                <div class="align-self-center px-1">a</div>
-                                <input id="formEndYear" type="number" class="form-control form-outline" placeholder="YYYY" min="1950" max="@DateTime.Now.Year" value=@if (TempData.ContainsKey("YearEnd")){@TempData["YearEnd"];}>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="px-3 pt-3 pt-md-2">
-                        <button class="btn btn-primary">
-                            <img id="imgBand" class="no-padding align-self-center px-3" src="~/images/SearchIcon.png" height="37" width="45" onclick="actualEvent()" />
-                        </button>
-                    </div>
+                </div>
+                <div class="px-3 pt-3 pt-md-2">
+                    <button class="btn btn-primary">
+                        <img id="imgBand" class="no-padding align-self-center px-3" src="~/images/SearchIcon.png" height="37" width="45" onclick="actualEvent()" />
+                    </button>
+                </div>
             </div>
         </div>
         <div class="border border-1 border-light-grey my-4"></div>
