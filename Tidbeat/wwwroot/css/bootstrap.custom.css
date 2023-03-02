@@ -10517,3 +10517,6 @@ textarea.form-control-lg {
     overflow: initial;
   }
 }
+.pointer-active {
+  cursor: pointer;
+}

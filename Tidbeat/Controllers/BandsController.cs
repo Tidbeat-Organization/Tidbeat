@@ -42,6 +42,22 @@ namespace Tidbeat.Controllers
                 return NotFound();
             }
 
+            var albumAmount = await _spotifyService.GetAmountBandAlbumAsync(id);
+            if (albumAmount == null) 
+            {
+                ViewBag.albumAmount = 0;
+            }
+            else 
+            {
+                ViewBag.albumAmount = albumAmount;
+            }
+
+            var top3Songs = await _spotifyService.GetTop3SongsAsync(id);
+            ViewBag.top3Songs = top3Songs;
+
+            var allPosts = _context.Posts.Include(p => p.User).Include(p => p.Band).Where(p => p.Band != null && p.Band.BandId == id).ToList();
+            ViewBag.posts = allPosts;
+
             return View(band);
         }
     }

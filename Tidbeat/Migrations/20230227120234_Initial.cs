@@ -198,6 +198,7 @@ namespace Tidbeat.Migrations
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     SongId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    BandId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
@@ -209,6 +210,11 @@ namespace Tidbeat.Migrations
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Post_Band_BandId",
+                        column: x => x.BandId,
+                        principalTable: "Band",
+                        principalColumn: "BandId");
                     table.ForeignKey(
                         name: "FK_Post_Song_SongId",
                         column: x => x.SongId,
@@ -254,6 +260,11 @@ namespace Tidbeat.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Post_BandId",
+                table: "Post",
+                column: "BandId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Post_SongId",

@@ -12,7 +12,7 @@ using Tidbeat.Data;
 namespace Tidbeat.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230225152834_Initial")]
+    [Migration("20230227120234_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -262,6 +262,9 @@ namespace Tidbeat.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PostId"), 1L, 1);
 
+                    b.Property<string>("BandId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("Content")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -278,6 +281,8 @@ namespace Tidbeat.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("PostId");
+
+                    b.HasIndex("BandId");
 
                     b.HasIndex("SongId");
 
@@ -359,6 +364,10 @@ namespace Tidbeat.Migrations
 
             modelBuilder.Entity("Tidbeat.Models.Post", b =>
                 {
+                    b.HasOne("Tidbeat.Models.Band", "Band")
+                        .WithMany()
+                        .HasForeignKey("BandId");
+
                     b.HasOne("Tidbeat.Models.Song", "Song")
                         .WithMany()
                         .HasForeignKey("SongId");
@@ -368,6 +377,8 @@ namespace Tidbeat.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Band");
 
                     b.Navigation("Song");
 

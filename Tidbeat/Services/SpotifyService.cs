@@ -26,5 +26,20 @@ namespace Tidbeat.Services {
             return band;
             //return new Band() { BandId = id, Name = band.Name, Image = band.Images[0].Url };
         } 
+
+        public async Task<int?> GetAmountBandAlbumAsync(string id) {
+            var albums = await _client.Artists.GetAlbums(id);
+            //return albums.Items.Where(a => a.Artists.Any(ar => ar.Id == id) && a.AlbumType == "album" && a.ReleaseDate != null && a.ReleaseDatePrecision == "day").ToList().Count;
+            return albums.Items?.Count(album => album.AlbumType == "album");
+        }
+
+        public async Task<List<FullTrack>> GetTop3SongsAsync(string artistId) {
+            var request = new ArtistsTopTracksRequest(artistId);
+            var topTracks = await _client.Artists.GetTopTracks(artistId, new ArtistsTopTracksRequest("US"));
+            var sortedTracks = topTracks.Tracks.OrderByDescending(t => t.Popularity);
+
+            return sortedTracks.Take(3).ToList();
+        }
+
     }
 }
