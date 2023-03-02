@@ -74,12 +74,27 @@ namespace Tidbeat.Services {
             {
                 searchString += " album:" + album;
             }
-            if (!string.IsNullOrEmpty(yearStart) && yearStart.Length==4)
+            if (!string.IsNullOrEmpty(yearStart) && yearStart.Length == 4)
             {
                 Console.WriteLine("YEAR START IS NOT NULL");
-                if (string.IsNullOrEmpty(yearEnd) || yearEnd.Length == 4) {
+                if (string.IsNullOrEmpty(yearEnd) || yearEnd.Length == 4)
+                {
                     searchString += " year:" + yearStart + "-" + yearStart;
-                } else {
+                }
+                else
+                {
+                    searchString += " year:" + yearStart + "-" + yearEnd;
+                }
+            }
+            else if (!string.IsNullOrEmpty(yearEnd) && yearEnd.Length == 4)
+            {
+                Console.WriteLine("YEAR End IS NOT NULL");
+                if (string.IsNullOrEmpty(yearStart) || yearStart.Length == 4)
+                {
+                    searchString += " year:" + yearEnd + "-" + yearEnd;
+                }
+                else
+                {
                     searchString += " year:" + yearStart + "-" + yearEnd;
                 }
             }
