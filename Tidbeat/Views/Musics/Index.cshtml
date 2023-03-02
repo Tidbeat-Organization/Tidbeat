@@ -1,0 +1,113 @@
+﻿@using Tidbeat.Controllers
+@using Tidbeat.Services
+@inject IMusicService MusicService
+@inject ISpotifyService SpotifyService
+
+@{
+    ViewData["Title"] = "Musics Page";
+}
+
+<div class="mt-4 pt-5">
+    <div class="mx-3 mt-10">
+        <div id="filter" class="border border-3 border-dark rounded pb-2 mt-10">
+            <div class="display-6 text-primary text-left d-flex w-2">Filtros</div>
+            <div class="d-flex flex-row flex-wrap w-md-100 flex-md-nowrap">
+                <div class="input-group d-flex flex-column px-3">
+                        <div class="align-self-start">Género:</div>
+                        <div class="form-outline d-flex flex-row">
+                            <input type="search" id="formGender" class="form-control" placeholder="Search" value="@if (TempData.ContainsKey("Gener")){@TempData["Gener"];}"/>
+                        </div>
+                    </div>
+                <div class="input-group d-flex flex-column px-3">
+                        <div class="align-self-start">Banda/Artista:</div>
+                        <div class="form-outline  d-flex flex-row">
+                            <input type="search" id="formBand" class="form-control" placeholder="Search" value="@if (TempData.ContainsKey("Band")){@TempData["Band"];}"/>
+                        </div>
+                    </div>
+                <div class="input-group d-flex flex-column px-3">
+                        <div class="align-self-start">Álbum:</div>
+                        <div class="form-outline  d-flex flex-row">
+                            <input type="search" id="formAlbum" class="form-control" placeholder="Search" value="@if (TempData.ContainsKey("Album")){@TempData["Album"];}" />
+                        </div>
+                    </div>
+                    <div class="input-group d-flex flex-column px-3">  
+                                <div class="align-self-start">Ano de Lançamento:</div>
+                        <div class="input-group d-flex flex-row h-50 align-items-end">
+                            <div class="align-items-end d-flex">    
+                                <input id="formStartYear" type="number" class="form-control form-outline" placeholder="YYYY" min="1950" max="@DateTime.Now.Year" value=@if (TempData.ContainsKey("YearStar")){@TempData["YearStar"];}>
+                                <div class="align-self-center px-1">a</div>
+                                <input id="formEndYear" type="number" class="form-control form-outline" placeholder="YYYY" min="1950" max="@DateTime.Now.Year" value=@if (TempData.ContainsKey("YearEnd")){@TempData["YearEnd"];}>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="align-self-center px-3 pt-3 pt-md-4">
+                        <img id="imgBand" class="no-padding align-self-center px-3" src="~/images/SearchIcon.png" height="26" width="30" onclick="actualEvent()" />
+                    </div>
+            </div>
+        </div>
+        <div>
+            @if (ViewBag.Result.Tracks.Items.Count > 0)
+            {
+                <h2 class="d-flex">Músicas</h2>
+                @foreach (var item in ViewBag.Result.Tracks.Items)
+                {
+                    <div id="@item.Uri" class="border border-3 border-primary rounded mt-2 d-flex justify-content-between mx-2 mx-md-5">
+                        <img class="align-self-center"src="@item.Album.Images[0].Url" alt="@item.Album.Name" width="70" height="70">
+                        <div class="d-flex text-start justify-content-start align-content-start align-self-center font-weight-bold w-25">@item.Name</div>
+                        <div class="d-flex text-start justify-content-start align-content-start align-self-center w-25">
+                            <div class="mr-5 text-start justify-content-start align-content-start"> de: @item.Artists[0].Name</div>
+                        </div>
+                    </div>
+                }
+
+            }else
+            {
+                <div class="text-danger" id="Danger">Não existe nenhuma música com esses filtros</div>
+            }
+        </div>
+    </div>
+</div>
+
+<script>
+    window.onload = (event) => {
+        function actualEvent(){
+            let inputGener = document.getElementById("formGender");
+            let inputAlbum = document.getElementById("formAlbum");
+            let inputArtist = document.getElementById("formBand");
+            let inputStartYear = document.getElementById("formStartYear");
+            let inputEndYear = document.getElementById("formEndYear");
+            let path = window.location.href.split("?")[0];
+            if(inputGener.value || inputAlbum.value || inputArtist.value || inputStartYear.value.length===4 || inputEndYear.value.length===4){
+                path+="?";
+                let params = new URLSearchParams({
+                    searchKey: "@if (TempData.ContainsKey("Search")){@TempData["Search"];}",
+                    gener: inputGener.value,
+                    band: inputArtist.value,
+                    album: inputAlbum.value,
+                    yearStart: inputStartYear.value,
+                    yearEnd: inputEndYear.value,
+                })
+                path+=params.toString();
+                console.log(window.location.href)
+                window.location.href = path;
+            }
+            event.preventDefault();
+        }
+        document.getElementById("filter").addEventListener("keypress", function (event) {
+               if(event.key === "Enter"){
+                let focusElement = document.activeElement;
+                let inputGener = document.getElementById("formGender");
+                let inputAlbum = document.getElementById("formAlbum");
+                let inputArtist = document.getElementById("formBand");
+                let inputStartYear = document.getElementById("formStartYear");
+                let inputEndYear = document.getElementById("formEndYear");
+                    if(inputGener === focusElement || inputAlbum === focusElement || inputArtist === focusElement || inputStartYear === focusElement || inputEndYear === focusElement){
+                    //only if one of the elements is higthligthed
+                            event.preventDefault();
+                            actualEvent();
+                    }
+               }
+            }
+        )
+    };
+</script>

@@ -15,13 +15,15 @@ namespace Tidbeat.Services {
             _client = new SpotifyClient(SpotifyClientConfig.CreateDefault().WithAuthenticator(new ClientCredentialsAuthenticator(clientId, clientSecret)));
         }
 
-        public async Task<FullTrack> GetSongAsync(string id) {
+        public async Task<FullTrack> GetSongAsync(string id) 
+        {
             var track = await _client.Tracks.Get(id);
             return track;
             //return new Song() { SongId = id, Name = track.Name, BandId = track.Artists[0].Id };
         }
 
-        public async Task<FullArtist> GetBandAsync(string id) {
+        public async Task<FullArtist> GetBandAsync(string id) 
+        {
             var band = await _client.Artists.Get(id);
             return band;
             //return new Band() { BandId = id, Name = band.Name, Image = band.Images[0].Url };
@@ -39,6 +41,46 @@ namespace Tidbeat.Services {
             var sortedTracks = topTracks.Tracks.OrderByDescending(t => t.Popularity);
 
             return sortedTracks.Take(3).ToList();
+        }
+      public async Task<SearchResponse> GetMultipleSongsAsync(string searchKey) 
+        {
+            SearchRequest searchTop;
+            if (!string.IsNullOrEmpty(searchKey))
+            {
+                searchTop = new SearchRequest(SearchRequest.Types.Track, searchKey);
+            }
+            else {
+                searchTop = new SearchRequest(SearchRequest.Types.Track, "a");
+            }
+            var tracks = await _client.Search.Item(searchTop);
+            return tracks;
+        }
+
+        public async Task<SearchResponse> GetSearchSongsbyValuesAsync(string Search,string Gener, string band, string album, string yearStart, string yearEnd) 
+        {
+            var searchString = "";
+            if (!string.IsNullOrEmpty(Search))
+            {
+                searchString += Search;
+            }
+            if (!string.IsNullOrEmpty(Gener)){
+                searchString += "genre:" + Gener;
+            }
+            if (!string.IsNullOrEmpty(band))
+            {
+                searchString += "artist:" + band;
+            }
+            if (!string.IsNullOrEmpty(album))
+            {
+                searchString += "album:" + album;
+            }
+            if (!string.IsNullOrEmpty(yearStart) && yearStart.Length==4 && !string.IsNullOrEmpty(yearEnd) && yearEnd.Length == 4)
+            {
+                searchString += "year:" + yearStart + "-"+yearEnd;
+            }
+            SearchRequest searchTop = new SearchRequest(SearchRequest.Types.Track, searchString);
+            var tracks = await _client.Search.Item(searchTop);
+            return tracks;
         }
         public async Task<SearchResponse> GetMultipleBandsAsync(string searchKey)
         {
