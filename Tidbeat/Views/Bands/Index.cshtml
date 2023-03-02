@@ -1,38 +1,91 @@
-﻿@using Tidbeat.Services
-@model IEnumerable<Tidbeat.Models.Band>
-@inject IMusicService musicService
+﻿@using Tidbeat.Controllers
+@using Tidbeat.Services
+@inject ISpotifyService SpotifyService
+@using System.Web
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Bands Page";
 }
 
-<h1 class="mt-5 pt-5">Index</h1>
-
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Image)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Image)
-            </td>
-            <td>
-                <a asp-action="Details" asp-route-id="@item.BandId">Details</a> |
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<div class="mt-4 pt-5">
+    <div class="mx-3 mt-10">
+        <div id="filter" class="border border-3 border-dark rounded pb-2 mt-10">
+            <div class="display-6 text-primary text-left d-flex w-2">Filtros</div>
+            <div class="d-flex flex-row flex-wrap w-md-100 flex-md-nowrap">
+                <div class="input-group d-flex flex-column px-3">
+                    <div class="align-self-start">Género:</div>
+                    <div class="form-outline d-flex flex-row">
+                        <input type="search" id="formGender" class="form-control" placeholder="Search" value="@if (TempData.ContainsKey("Gener")){
+                        @TempData["Gener"]
+;}" />
+                    </div>
+                </div>
+                <div class="input-group d-flex flex-column px-3">
+                    <div class="align-self-start">Ordenar:</div>
+                    <select class="form-control w-100" id="Ordere" name="Orderby">
+                        <!option value="1" @(TempData["Order"]?.ToString() == "1" ? "selected" : "")>Alfabeticamente(a-z)</!option>
+                        <!option value="2" @(TempData["Order"]?.ToString() == "2" ? "selected" : "")>Alfabeticamente(z-a)</!option>
+                        <!option value="3" @(TempData["Order"]?.ToString() == "3" ? "selected" : "")>Mais Popular</!option>
+                        <!option value="4" @(TempData["Order"]?.ToString() == "4" ? "selected" : "")>Menos Popular</!option>
+                    </select>
+                </div>
+                <div class="align-self-center px-3 pt-3 pt-md-4">
+                    <img id="imgBand" class="no-padding align-self-center px-3" src="~/images/SearchIcon.png" height="37" width="45" onclick="actualEvent()" />
+                </div>
+            </div>
+        </div>
+        <div>
+            @if (ViewBag.Result.Artists.Items.Count > 0)
+            {
+                <h2 class="d-flex">Bandas e Artistas</h2>
+                @foreach (var item in ViewBag.Result.Artists.Items)
+                {
+                    <div id="@item.Uri" class="border border-3 border-primary rounded mt-2 d-inline-flex flex-wrap justify-content-between mx-2 mx-md-5 w-25 flex-md-row flex-column">
+                        <img src="@item.Images[0].Url" alt="@item.Name" width="100" height="100">
+                        <div class="d-flex text-start justify-content-start align-content-start align-self-center font-weight-bold w-50">@item.Name</div>
+                    </div>
+                }
+            }else
+            {
+                <div class="text-danger" id="Danger">Não foi encontrada nenhuma banda com esses filtros</div>
+            }
+        </div>
+    </div>
+</div>
+<script>
+        function actualEvent() {
+            let inputOrder = document.getElementById("Ordere");
+            let inputGener = document.getElementById("formGender");
+            let path = window.location.href.split("?")[0];
+            if (inputGener.value || inputOrder.value) {
+                path += "?";
+                let params = new URLSearchParams({
+                    searchKey: "@if (TempData.ContainsKey("Search")){@TempData["Search"];}",
+                    gener: inputGener.value,
+                    order: inputOrder.value,
+                })
+                path += params.toString();
+                console.log(window.location.href)
+                window.location.href = path;
+            }
+            event.preventDefault();
+        }
+        document.getElementById("filter").addEventListener("keypress", function (event) {
+            if (event.key === "Enter") {
+                let focusElement = document.activeElement;
+                let inputOrder = document.getElementById("Ordere");
+                let inputGener = document.getElementById("formGender");
+                if (inputGener === focusElement || inputOrder === focusElement) {
+                    //only if one of the elements is higthligthed
+                    event.preventDefault();
+                    actualEvent();
+                }
+            }
+        }
+        )
+</script>
+<style>
+    #imgBand {
+        cursor: pointer;
+    }
+</style>

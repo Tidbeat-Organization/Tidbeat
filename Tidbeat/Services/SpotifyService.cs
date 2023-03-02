@@ -40,6 +40,41 @@ namespace Tidbeat.Services {
 
             return sortedTracks.Take(3).ToList();
         }
-
+        public async Task<SearchResponse> GetMultipleBandsAsync(string searchKey)
+        {
+            SearchRequest searchTop;
+            if (!string.IsNullOrEmpty(searchKey))
+            {
+                searchTop = new SearchRequest(SearchRequest.Types.Artist, searchKey);
+            }
+            else
+            {
+                searchTop = new SearchRequest(SearchRequest.Types.Artist, "a");
+            }
+            var artist = await _client.Search.Item(searchTop);
+            return artist;
+        }
+        public async Task<SearchResponse> GetSearchBandsbyValuesAsync(string searchKey, string gener) {
+            var searchString = "";
+            if (!string.IsNullOrEmpty(searchKey))
+            {
+                searchString += searchKey;
+            }
+            if (!string.IsNullOrEmpty(gener))
+            {
+                searchString += "genre:" + gener;
+            }
+            if (string.IsNullOrEmpty(searchString))
+            {
+                return await GetMultipleBandsAsync(searchKey);
+            }
+            else 
+            {
+                SearchRequest searchTop = new SearchRequest(SearchRequest.Types.Artist, searchString);
+                var bands = await _client.Search.Item(searchTop);
+                return bands;
+            }
+            return await GetMultipleBandsAsync(searchKey);
+        }
     }
 }
