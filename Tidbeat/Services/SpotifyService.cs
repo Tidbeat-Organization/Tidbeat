@@ -76,7 +76,7 @@ namespace Tidbeat.Services {
             }
             if (!string.IsNullOrEmpty(yearStart) && yearStart.Length==4 && !string.IsNullOrEmpty(yearEnd) && yearEnd.Length == 4)
             {
-                searchString += "year:" + yearStart + "-"+yearEnd;
+                searchString += "year:"  + yearStart + "-" + yearEnd  ;
             }
             SearchRequest searchTop = new SearchRequest(SearchRequest.Types.Track, searchString);
             var tracks = await _client.Search.Item(searchTop);
