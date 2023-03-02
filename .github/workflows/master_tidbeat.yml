@@ -53,5 +53,5 @@ jobs:
         with:
           app-name: 'tidbeat'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_39B552B48A66492EAA937293C222800D }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_F0AD703B417840E5AF01659CF8DD1908 }}
           package: .
