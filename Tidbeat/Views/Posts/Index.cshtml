@@ -5,11 +5,11 @@
 }
 
 <div style="margin-top: 100px;">
-<h3>Índice</h3>
-
-<p>
-    <a asp-action="Create">Criar novo post</a>
-</p>
+    <h3 style="color: #6610F2;">Lista de Posts</h3>
+    <hr />
+    <p>
+        <a asp-action="Create">Criar novo post</a>
+    </p>
 </div>
 
 <table class="table">
@@ -25,20 +25,21 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Content)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.PostId">Editar</a> |
-                <a asp-action="Details" asp-route-id="@item.PostId">Detalhes</a> |
-                <a asp-action="Delete" asp-route-id="@item.PostId">Apagar</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Content)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.PostId">Editar</a> |
+                    <a asp-action="Details" asp-route-id="@item.PostId">Detalhes</a> |
+                    <a asp-action="Delete" asp-route-id="@item.PostId">Apagar</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
