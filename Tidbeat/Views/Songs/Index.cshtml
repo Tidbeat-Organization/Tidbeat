@@ -18,7 +18,8 @@
                             <!--<input type="search" id="formGender" class="form-control" placeholder="Search" value="
                                 ;
                             }"/>-->
-                            <select class="form-control w-100" id="Ordere" name="Orderby">
+                        <select class="form-control w-100" id="formGender" name="formGender">
+                                <!option selected value="">Escolha um Género</!option>
                                 <!option value="rock" @(TempData["Gener"]?.ToString() == "rock" ? "selected" : "")>Rock</!option>
                                 <!option value="pop" @(TempData["Gener"]?.ToString() == "pop" ? "selected" : "")>Pop</!option>
                                 <!option value="kids" @(TempData["Gener"]?.ToString() == "kids" ? "selected" : "")>Crianças</!option>
@@ -90,7 +91,6 @@
 </div>
 
 <script>
-    window.onload = (event) => {
         function actualEvent(){
             let inputGener = document.getElementById("formGender");
             let inputAlbum = document.getElementById("formAlbum");
@@ -129,6 +129,5 @@
                     }
                }
             }
-        )
-    };
+        );
 </script>
