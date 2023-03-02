@@ -64,7 +64,7 @@ namespace Tidbeat.Services {
                 searchString += Search;
             }
             if (!string.IsNullOrEmpty(Gener)){
-                searchString += "genre:" + Gener;
+                searchString += " genre:" + Gener;
             }
             if (!string.IsNullOrEmpty(band))
             {
@@ -104,7 +104,7 @@ namespace Tidbeat.Services {
             }
             if (!string.IsNullOrEmpty(gener))
             {
-                searchString += "genre:" + gener;
+                searchString += " genre:" + gener;
             }
             if (string.IsNullOrEmpty(searchString))
             {
