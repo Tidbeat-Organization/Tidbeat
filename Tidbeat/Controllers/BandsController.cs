@@ -28,12 +28,6 @@ namespace Tidbeat.Controllers
             TempData["Search"] = searchKey;
             TempData["Gener"] = gener;
             TempData["Order"] = order;
-            if ((string.IsNullOrEmpty(gener) || gener == "/"))
-            {
-                ViewBag.Result = await _spotifyService.GetMultipleBandsAsync(searchKey);
-                return View();
-
-            }
             var results = await _spotifyService.GetSearchBandsbyValuesAsync(searchKey, gener);
             ViewBag.Result = results;
             if (order == "1") 
@@ -46,11 +40,11 @@ namespace Tidbeat.Controllers
             }
             if (order == "3")
             {
-                ViewBag.Result.Artists.Items = results.Artists.Items.OrderBy(n => n.Popularity).ToList();
+                ViewBag.Result.Artists.Items = results.Artists.Items.OrderByDescending(n => n.Popularity).ToList();
             }
             if (order == "4")
             {
-                ViewBag.Result.Artists.Items = results.Artists.Items.OrderByDescending(n => n.Popularity).ToList();
+                ViewBag.Result.Artists.Items = results.Artists.Items.OrderBy(n => n.Popularity).ToList();
 
             }
             //Alfabeticamnete a-z
