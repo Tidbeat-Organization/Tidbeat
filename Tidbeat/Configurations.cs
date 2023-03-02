@@ -14,7 +14,7 @@ namespace Tidbeat {
                 Gender = "Masculino"
             };
 
-            var createUser = await userManager.CreateAsync(normalUser, "Password_123");
+            //var createUser = await userManager.CreateAsync(normalUser, "Password_123");
         }
     }
 }
