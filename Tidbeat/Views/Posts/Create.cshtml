@@ -4,45 +4,68 @@
     ViewData["Title"] = "Create";
 }
 
-<div class="container d-flex justify-content-center" style="margin-top: 100px;">
-    <div class="col-md-6 col-lg-4">
-        <h3 style="color: #6610F2;">Criar Post</h3>
-        <hr />
+<h3 style="color: #6610F2; margin-top: 100px;">Criar Post</h3>
+<hr />
+
+<div class="container d-flex justify-content-center" style="margin-top: 35px;">
+    <div class="col-md-6 col-lg-4" style="margin-right: 250px;">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <!-- Song -->
-            <div class="form-group">
-            </div>
-            <!-- Band -->
-            <div class="form-group">
-            </div>
-            <!-- Spotify Link -->
-            <div class="form-group">
-            </div>
-            <!-- Test Song -->
-            <div class="form-group">
-            </div>
-            <!-- Title -->
-            <div class="form-group">
-                <label asp-for="Title" class="control-label" style="color: #6610F2;"></label>
-                <input asp-for="Title" class="form-control" placeholder="Escreva o título do seu post..." style="border: 1.5px solid #6610F2;" />
-                <span asp-validation-for="Title" class="text-danger"></span>
-            </div>
-            <!-- Content -->
-            <div class="form-group" style="margin-top: 10px;">
-                <label asp-for="Content" class="control-label" style="color: #6610F2;"></label>
-                <textarea asp-for="Content" class="form-control" style="height: 200px; border: 1.5px solid #6610F2;" placeholder="Escreva o conteúdo do seu post..."></textarea>
-                <span asp-validation-for="Content" class="text-danger"></span>
-            </div>
-            <!-- Form submit -->
-            <div class="form-group create-button" style="margin-top: 25px;">
-                <input type="submit" value="Criar" class="btn btn-primary" />
-            </div>
-            <div class="row" style="margin-top: 20px;">
-                <div class="col">
-                    <a asp-action="Index">Cancelar</a>
+            <div class="form-group row">
+                <label asp-for="Song" class="col-sm-2 col-form-label" style="color: #6610F2; font-weight: bold;">Música:</label>
+                <div class="col-sm-10">
+                    <input asp-for="Song" class="form-control" placeholder="Escolha a música..." style="border: 1.5px solid #6610F2; border-radius: 15px; width:625px;" />
+                    <span asp-validation-for="Song" class="text-danger"></span>
                 </div>
             </div>
+
+            <!-- Band -->
+             <div class="form-group row" style="margin-top: 15px;">
+                <label asp-for="Band" class="col-sm-2 col-form-label" style="color: #6610F2; font-weight: bold;">Banda:</label>
+                <div class="col-sm-10">
+                    <input asp-for="Band" class="form-control" placeholder="Escolha a banda..." style="border: 1.5px solid #6610F2; border-radius: 15px; width:625px;" />
+                    <span asp-validation-for="Band" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!-- Spotify Link -->
+            <div class="form-group row" style="margin-top: 15px;">
+                <label class="col-sm-2 col-form-label"  style="color: #6610F2; font-weight: bold;">Link:</label>
+            </div>
+
+            <!-- Test Song -->
+            <div class="form-group row" style="margin-top: 15px;">
+                <label class="col-sm-2 col-form-label"  style="color: #6610F2; font-weight: bold;">Testar:</label>
+            </div>
+
+            <!-- Title -->
+            <div class="form-group row" style="margin-top: 20px;">
+                <label asp-for="Title" class="col-sm-2 col-form-label" style="color: #6610F2; font-weight: bold;">Título:</label>
+                <div class="col-sm-10">
+                    <input asp-for="Title" class="form-control" placeholder="Escreva o título do seu post..." style="border: 1.5px solid #6610F2; border-radius: 15px; width:625px;" />
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!-- Content -->
+            <div class="form-group" style="margin-top: 10px; display: flex; flex-direction: column;">
+                <!-- <label asp-for="Content" class="control-label" style="color: #6610F2;"></label> -->
+                <textarea asp-for="Content" class="form-control" style="height: 200px; border: 1.5px solid #6610F2; border-radius: 15px; width: 700px;" placeholder="Escreva o conteúdo do seu post..."></textarea>
+                <span asp-validation-for="Content" class="text-danger"></span>
+            </div>
+
+            <!-- Form submit -->
+            <div class="align-buttons" style="margin-left: 280px;">
+                <div class="form-group create-button" style="margin-top: 25px;">
+                    <input type="submit" value="Criar" class="btn btn-primary" />
+                </div>
+                <div class="row" style="margin-top: 20px;">
+                    <div class="col">
+                        <a asp-action="Index">Cancelar</a>
+                    </div>
+                </div>
+            </div>  
         </form>
     </div>
 </div>

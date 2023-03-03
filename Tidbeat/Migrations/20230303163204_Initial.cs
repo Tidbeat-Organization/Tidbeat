@@ -199,7 +199,7 @@ namespace Tidbeat.Migrations
                     Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     SongId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     BandId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -208,8 +208,7 @@ namespace Tidbeat.Migrations
                         name: "FK_Post_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Post_Band_BandId",
                         column: x => x.BandId,

@@ -7,11 +7,11 @@ namespace Tidbeat.Models {
         [Key]
         public int PostId { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Por favor, adicione um título ao seu post.")]
         [DisplayName("Título")]
         public string Title { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Por favor, adicione texto ao conteúdo do seu post.")]
         [DisplayName("Conteúdo")]
         public string Content { get; set; }
 
