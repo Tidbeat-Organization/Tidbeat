@@ -1,4 +1,6 @@
-﻿using Tidbeat.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using Tidbeat.Data;
+using Tidbeat.Enums;
 using Tidbeat.Models;
 
 namespace Tidbeat.Services {
@@ -9,8 +11,27 @@ namespace Tidbeat.Services {
             _context = context;
         }
 
-        public Task<List<PostRating>> GetPostRatingsAsync(int postId) {
-            throw new NotImplementedException();
+        public async Task<double> GetAverageRating(RatingType type, int postId) {
+            switch (type) {
+                case RatingType.Post:
+                    double? average = await _context.PostRatings.AverageAsync(r => r.Value);
+                    return average ?? 0;
+                case RatingType.Comment:
+                    throw new NotImplementedException("Comment rating type has not been implemented");
+                default:
+                    throw new ArgumentException("Invalid rating type. Make sure you added the type to the switch statement");
+            }
+        }
+
+        public async Task<bool> HasUserRated(RatingType type, int postId, int userId) {
+            switch (type) {
+                case RatingType.Post:
+                    return await _context.PostRatings.AnyAsync(r => r.Post.PostId == postId);
+                case RatingType.Comment:
+                    throw new NotImplementedException("Comment rating type has not been implemented");
+                default:
+                    throw new ArgumentException("Invalid rating type. Make sure you added the type to the switch statement");
+            }
         }
     }
 }

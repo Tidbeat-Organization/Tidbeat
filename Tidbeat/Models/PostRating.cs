@@ -1,9 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
 namespace Tidbeat.Models {
-    public class PostRating {
+    public class PostRating : IRating {
         [Key]
-        public int PostRatingId { get; set; }
+        public int RatingId { get; set; }
         public int Value { get; set; }
 
         [Required]

@@ -1,8 +1,9 @@
-﻿using Tidbeat.Models;
+﻿using Tidbeat.Enums;
+using Tidbeat.Models;
 
 namespace Tidbeat.Services {
     public interface IRatingService { 
-        Task<List<PostRating>> GetPostRatingsAsync(int postId);
-
+        Task<double> GetAverageRating(RatingType type, int postId);
+        Task<bool> HasUserRated(RatingType type, int postId, int userId);
     }
 }

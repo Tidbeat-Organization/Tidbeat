@@ -11,7 +11,7 @@ namespace Tidbeat.Data {
         public DbSet<Song> Songs { get; set; }
         public DbSet<Band> Bands { get; set; }
         public DbSet<Post> Posts { get; set; }
-        public DbSet<PostRating> Ratings { get; set; }
+        public DbSet<PostRating> PostRatings { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder) {
             base.OnModelCreating(builder);
