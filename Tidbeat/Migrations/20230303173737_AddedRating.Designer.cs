@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Tidbeat.Data;
 
@@ -11,9 +12,10 @@ using Tidbeat.Data;
 namespace Tidbeat.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230303173737_AddedRating")]
+    partial class AddedRating
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -289,13 +291,13 @@ namespace Tidbeat.Migrations
                     b.ToTable("Post", (string)null);
                 });
 
-            modelBuilder.Entity("Tidbeat.Models.PostRating", b =>
+            modelBuilder.Entity("Tidbeat.Models.Rating", b =>
                 {
-                    b.Property<int>("PostRatingId")
+                    b.Property<int>("RatingId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PostRatingId"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RatingId"), 1L, 1);
 
                     b.Property<int>("PostId")
                         .HasColumnType("int");
@@ -307,13 +309,13 @@ namespace Tidbeat.Migrations
                     b.Property<int>("Value")
                         .HasColumnType("int");
 
-                    b.HasKey("PostRatingId");
+                    b.HasKey("RatingId");
 
                     b.HasIndex("PostId");
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("PostRating", (string)null);
+                    b.ToTable("Rating", (string)null);
                 });
 
             modelBuilder.Entity("Tidbeat.Models.Song", b =>
@@ -410,7 +412,7 @@ namespace Tidbeat.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Tidbeat.Models.PostRating", b =>
+            modelBuilder.Entity("Tidbeat.Models.Rating", b =>
                 {
                     b.HasOne("Tidbeat.Models.Post", "Post")
                         .WithMany()
