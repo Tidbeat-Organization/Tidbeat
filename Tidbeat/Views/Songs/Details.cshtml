@@ -5,7 +5,12 @@
     ViewData["Title"] = "Details";
     var songLength = Model.DurationMs / 60000;
     var spotifyPageURL = SpotifyService.UrlSong + Model.Id;
-    var releaseDate = DateTime.ParseExact(Model.Album.ReleaseDate, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture).ToString("dd-MM-yyyy");
+    var releaseDate = "";
+    if (Model.Album.ReleaseDate.Length == 4) {
+        releaseDate = Model.Album.ReleaseDate;
+    } else {
+        releaseDate = DateTime.ParseExact(Model.Album.ReleaseDate, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture).ToString("dd-MM-yyyy");
+    }
     List<Post> allPosts = ViewBag.posts;
 }
 
