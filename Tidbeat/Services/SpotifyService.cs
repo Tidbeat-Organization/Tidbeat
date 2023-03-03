@@ -76,8 +76,7 @@ namespace Tidbeat.Services {
             }
             if (!string.IsNullOrEmpty(yearStart) && yearStart.Length == 4)
             {
-                Console.WriteLine("YEAR START IS NOT NULL");
-                if (string.IsNullOrEmpty(yearEnd) || yearEnd.Length == 4)
+                if (string.IsNullOrEmpty(yearEnd) || yearEnd.Length != 4)
                 {
                     searchString += " year:" + yearStart + "-" + yearStart;
                 }
@@ -88,8 +87,7 @@ namespace Tidbeat.Services {
             }
             else if (!string.IsNullOrEmpty(yearEnd) && yearEnd.Length == 4)
             {
-                Console.WriteLine("YEAR End IS NOT NULL");
-                if (string.IsNullOrEmpty(yearStart) || yearStart.Length == 4)
+                if (string.IsNullOrEmpty(yearStart) || yearStart.Length != 4)
                 {
                     searchString += " year:" + yearEnd + "-" + yearEnd;
                 }
