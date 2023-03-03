@@ -19,7 +19,6 @@ namespace Tidbeat.Models {
 
         public Band? Band { get; set; }
 
-        [Required]
-        public ApplicationUser User { get; set; }
+        public ApplicationUser? User { get; set; }
     }
 }
