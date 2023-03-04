@@ -1,90 +1,93 @@
 ﻿@model int
 @{
+    var id = Guid.NewGuid().ToString();
 
 }
 
-<div class="rating">
+<div id=@id class="rating">
 @for (int i = 1; i <= 5; i++) {
     if (i <= Model)
     {
-        <i class="bi bi-star-fill"></i>
+            <i class="bi bi-star-fill pointer-event" role="button"></i>
     }
     else
     {
-            <i class="bi bi-star"></i>
+            <i class="bi bi-star" role="button"></i>
     }
 }
 </div>
 
 <script>
-    const stars = document.querySelectorAll('.rating i');
-    let hasSelected = false;
-    let highestStarIndex = -1;
+    (function () {
+        let element = document.getElementById('@id');
+        let stars = element.querySelectorAll('i');
+        let hasSelected = false;
+        let highestStarIndex = -1;
 
-    stars.forEach((star, index) => {
-      hoveredStarsRef = hoveredStars(index);
-      resetStarsRef = resetStarsSelected(index);
+        stars.forEach((star, index) => {
+          hoveredStarsRef = hoveredStars(index);
+          resetStarsRef = resetStarsSelected(index);
 
-      star.addEventListener('mouseover', hoveredStarsRef);
+          star.addEventListener('mouseover', hoveredStarsRef);
 
-      star.addEventListener('mouseout', resetStarsRef);
+          star.addEventListener('mouseout', resetStarsRef);
 
-      star.addEventListener('click', () => {
-        resetStars();
-        hasSelected = false;
-        if (highestStarIndex === index) {
-            highestStarIndex = -1;
-            return;
-        }
-
-        for (let i = 0; i <= index; i++) {
-            stars[i].classList.add('bi-star-fill');
-            stars[i].classList.remove('bi-star');
-            stars[i].classList.remove('hovered-star-color');
-        }
-        
-        highestStarIndex = index;
-        hasSelected = true;
-      });
-    });
-
-    function hoveredStars(index) {
-        return () => {
-            
-            for (let i = 0; i <= index; i++) {
-                stars[i].classList.add('bi-star-fill');
-                stars[i].classList.add('hovered-star-color');
-                stars[i].classList.remove('bi-star');
-            }
-        }
-    }
-
-    function resetStarsSelected(index) {
-        return () => {
-            if (hasSelected) {
-                resetPreviousState();
+          star.addEventListener('click', () => {
+            resetStars();
+            hasSelected = false;
+            if (highestStarIndex === index) {
+                highestStarIndex = -1;
                 return;
             }
+
+            for (let i = 0; i <= index; i++) {
+                stars[i].classList.add('bi-star-fill');
+                stars[i].classList.remove('bi-star');
+                stars[i].classList.remove('hovered-star-color');
+            }
+        
+            highestStarIndex = index;
+            hasSelected = true;
+          });
+        });
+
+        function hoveredStars(index) {
+            return () => {
+            
+                for (let i = 0; i <= index; i++) {
+                    stars[i].classList.add('bi-star-fill');
+                    stars[i].classList.add('hovered-star-color');
+                    stars[i].classList.remove('bi-star');
+                }
+            }
+        }
+
+        function resetStarsSelected(index) {
+            return () => {
+                if (hasSelected) {
+                    resetPreviousState();
+                    return;
+                }
+                resetStars();
+            }
+        }
+
+        function resetStars() {
+            for (let i = 0; i < stars.length; i++) {
+                stars[i].classList.add('bi-star');
+                stars[i].classList.remove('bi-star-fill');
+                stars[i].classList.remove('hovered-star-color');
+            }
+        }
+
+        function resetPreviousState() {
+            if (highestStarIndex === -1) return;
             resetStars();
+            for (let i = 0; i <= highestStarIndex; i++) {
+                stars[i].classList.add('bi-star-fill');
+                stars[i].classList.remove('bi-star');
+                stars[i].classList.remove('hovered-star-color');
+            }
         }
-    }
-
-    function resetStars() {
-        for (let i = 0; i < stars.length; i++) {
-            stars[i].classList.add('bi-star');
-            stars[i].classList.remove('bi-star-fill');
-            stars[i].classList.remove('hovered-star-color');
-        }
-    }
-
-    function resetPreviousState() {
-        if (highestStarIndex === -1) return;
-        resetStars();
-        for (let i = 0; i <= highestStarIndex; i++) {
-            stars[i].classList.add('bi-star-fill');
-            stars[i].classList.remove('bi-star');
-            stars[i].classList.remove('hovered-star-color');
-        }
-    }
-
+    })();
 </script>
