@@ -1,0 +1,65 @@
+﻿@model int
+@{
+
+}
+
+<div class="rating">
+@for (int i = 1; i <= 5; i++) {
+    if (i <= Model)
+    {
+        <i class="bi bi-star-fill"></i>
+    }
+    else
+    {
+            <i class="bi bi-star"></i>
+    }
+}
+</div>
+
+<script>
+    const stars = document.querySelectorAll('.rating i');
+    let hasSelected = false;
+
+    stars.forEach((star, index) => {
+      hoveredStarsRef = hoveredStars(index);
+      resetStarsRef = resetStars(index);
+
+      star.addEventListener('mouseover', hoveredStarsRef);
+
+      star.addEventListener('mouseout', resetStarsRef);
+
+      star.addEventListener('click', () => {
+        for (let i = 0; i <= index; i++) {
+            stars[i].removeEventListener('mouseover', hoveredStarsRef);
+            stars[i].removeEventListener('mouseout', resetStarsRef);
+            stars[i].classList.add('bi-star-fill');
+            stars[i].classList.remove('bi-star');
+            stars[i].classList.remove('hovered-star-color');
+        }
+        hasSelected = true;
+      });
+    });
+
+    function hoveredStars(index) {
+        return () => {
+            if (hasSelected) return;
+            for (let i = 0; i <= index; i++) {
+                stars[i].classList.add('bi-star-fill');
+                stars[i].classList.add('hovered-star-color');
+                stars[i].classList.remove('bi-star');
+            }
+        }
+    }
+
+    function resetStars(index) {
+        return () => {
+            if (hasSelected) return;
+            for (let i = 0; i < stars.length; i++) {
+              stars[i].classList.add('bi-star');
+              stars[i].classList.remove('bi-star-fill');
+              stars[i].classList.remove('hovered-star-color');
+            }
+        }
+    }
+
+</script>

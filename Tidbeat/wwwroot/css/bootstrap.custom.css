@@ -10524,3 +10524,11 @@ textarea.form-control-lg {
 .hover-background-grey:hover {
   background-color: #e3e3e3;
 }
+
+.rating i {
+  color: #6610F2;
+}
+
+.hovered-star-color {
+  color: #B79EE3 !important;
+}

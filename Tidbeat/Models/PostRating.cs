@@ -4,6 +4,7 @@ namespace Tidbeat.Models {
     public class PostRating : IRating {
         [Key]
         public int RatingId { get; set; }
+        [Range(1, 5, ErrorMessage = "Value must be between 1 and 5")]
         public int Value { get; set; }
 
         [Required]
