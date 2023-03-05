@@ -11,10 +11,10 @@ namespace Tidbeat.Services {
             _context = context;
         }
 
-        public async Task<double> GetAverageRating(RatingType type, int postId) {
+        public async Task<double> GetAverageRating(RatingType type, int id) {
             switch (type) {
                 case RatingType.Post:
-                    double? average = await _context.PostRatings.AverageAsync(r => r.Value);
+                    double? average = await _context.PostRatings.Where(r => r.Post.PostId == id).AverageAsync(r => r.Value);
                     return average ?? 0;
                 case RatingType.Comment:
                     throw new NotImplementedException("Comment rating type has not been implemented");
@@ -23,10 +23,10 @@ namespace Tidbeat.Services {
             }
         }
 
-        public async Task<bool> HasUserRated(RatingType type, int postId, int userId) {
+        public async Task<bool> HasUserRated(RatingType type, int id, string userId) {
             switch (type) {
                 case RatingType.Post:
-                    return await _context.PostRatings.AnyAsync(r => r.Post.PostId == postId);
+                    return await _context.PostRatings.AnyAsync(r => r.Post.PostId == id && r.User.Id == userId);
                 case RatingType.Comment:
                     throw new NotImplementedException("Comment rating type has not been implemented");
                 default:

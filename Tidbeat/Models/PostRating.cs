@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Tidbeat.Models {
     public class PostRating : IRating {
@@ -10,7 +11,7 @@ namespace Tidbeat.Models {
         [Required]
         public ApplicationUser User { get; set; }
 
-        [Required]
-        public Post Post { get; set; }
+        [ForeignKey("PostId")]
+        public Post? Post { get; set; }
     }
 }

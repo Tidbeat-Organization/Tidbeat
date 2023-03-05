@@ -297,7 +297,7 @@ namespace Tidbeat.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RatingId"), 1L, 1);
 
-                    b.Property<int>("PostId")
+                    b.Property<int?>("PostId")
                         .HasColumnType("int");
 
                     b.Property<string>("UserId")
@@ -414,9 +414,7 @@ namespace Tidbeat.Migrations
                 {
                     b.HasOne("Tidbeat.Models.Post", "Post")
                         .WithMany()
-                        .HasForeignKey("PostId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("PostId");
 
                     b.HasOne("Tidbeat.Models.ApplicationUser", "User")
                         .WithMany()

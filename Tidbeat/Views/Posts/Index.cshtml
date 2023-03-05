@@ -1,4 +1,5 @@
-﻿@model IEnumerable<Tidbeat.Models.Post>
+﻿@using Tidbeat.Enums
+@model IEnumerable<Tidbeat.Models.Post>
 
 @{
     ViewData["Title"] = "Index";
@@ -12,8 +13,8 @@
 </p>
 </div>
 
-<partial>@Html.Partial("_RatingPartial", 0)</partial>
-<partial>@Html.Partial("_RatingPartial", 0)</partial>
+<partial>@Html.Partial("_RatingPartial", Tuple.Create(0, 5, RatingType.Post))</partial>
+<partial>@Html.Partial("_RatingPartial", Tuple.Create(0, 6, RatingType.Post))</partial>
 
 <table class="table">
     <thead>

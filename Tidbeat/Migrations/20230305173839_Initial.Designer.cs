@@ -12,8 +12,8 @@ using Tidbeat.Data;
 namespace Tidbeat.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230303173737_AddedRating")]
-    partial class AddedRating
+    [Migration("20230305173839_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -291,7 +291,7 @@ namespace Tidbeat.Migrations
                     b.ToTable("Post", (string)null);
                 });
 
-            modelBuilder.Entity("Tidbeat.Models.Rating", b =>
+            modelBuilder.Entity("Tidbeat.Models.PostRating", b =>
                 {
                     b.Property<int>("RatingId")
                         .ValueGeneratedOnAdd()
@@ -299,7 +299,7 @@ namespace Tidbeat.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RatingId"), 1L, 1);
 
-                    b.Property<int>("PostId")
+                    b.Property<int?>("PostId")
                         .HasColumnType("int");
 
                     b.Property<string>("UserId")
@@ -315,7 +315,7 @@ namespace Tidbeat.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Rating", (string)null);
+                    b.ToTable("PostRating", (string)null);
                 });
 
             modelBuilder.Entity("Tidbeat.Models.Song", b =>
@@ -412,13 +412,11 @@ namespace Tidbeat.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Tidbeat.Models.Rating", b =>
+            modelBuilder.Entity("Tidbeat.Models.PostRating", b =>
                 {
                     b.HasOne("Tidbeat.Models.Post", "Post")
                         .WithMany()
-                        .HasForeignKey("PostId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("PostId");
 
                     b.HasOne("Tidbeat.Models.ApplicationUser", "User")
                         .WithMany()
