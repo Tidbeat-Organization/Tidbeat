@@ -33,5 +33,35 @@ namespace Tidbeat.Services {
                     throw new ArgumentException("Invalid rating type. Make sure you added the type to the switch statement");
             }
         }
+
+        public async Task<int> GetUserRate(RatingType type, int id, string userId) {
+            switch (type) {
+                case RatingType.Post:
+                    var rating = await _context.PostRatings.FirstOrDefaultAsync(r => r.Post.PostId == id && r.User.Id == userId);
+                    if (rating == null) return 0;
+                    return rating.Value;
+                case RatingType.Comment:
+                    throw new NotImplementedException("Comment rating type has not been implemented");
+                default:
+                    throw new ArgumentException("Invalid rating type. Make sure you added the type to the switch statement");
+            }
+        }
+
+        public async Task SetUserRate(RatingType type, int id, string userId, int value) {
+            switch (type) {
+                case RatingType.Post:
+                    var rating = await _context.PostRatings.FirstOrDefaultAsync(r => r.Post.PostId == id && r.User.Id == userId);
+                    if (rating != null) {
+                        rating.Value = value;
+                        await _context.SaveChangesAsync();
+                    }
+                    break;
+                case RatingType.Comment:
+                    throw new NotImplementedException("Comment rating type has not been implemented");
+                default:
+                    throw new ArgumentException("Invalid rating type. Make sure you added the type to the switch statement");
+            }
+        } 
+
     }
 }

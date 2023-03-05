@@ -12,25 +12,41 @@ namespace Tidbeat.Controllers
 {
     public class RatingPartialController : Controller
     {
-        IRatingService _ratingService;
-        IServiceProvider _serviceProvider;
+        private readonly IRatingService _ratingService;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public RatingPartialController(IRatingService ratingService, IServiceProvider serviceProvider)
+        public RatingPartialController(IRatingService ratingService, UserManager<ApplicationUser> userManager)
         {
             _ratingService = ratingService;
-            _serviceProvider = serviceProvider;
+            _userManager = userManager;
         }
 
-        public async Task<double> GetAverageRatings([FromQuery] RatingType type, [FromQuery] int postId) {
-            return await _ratingService.GetAverageRating(type, postId);
+        public async Task<double> GetAverageRatings([FromQuery] RatingType type, [FromQuery] int id) {
+            return await _ratingService.GetAverageRating(type, id);
         }
 
-        public async Task<bool> HasUserRated([FromQuery] RatingType type, [FromQuery] int postId) {
-            var user = await _serviceProvider.GetRequiredService<UserManager<ApplicationUser>>().GetUserAsync(User);
+        public async Task<bool> HasUserRated([FromQuery] RatingType type, [FromQuery] int id) {
+            var user = await _userManager.GetUserAsync(User);
             if (user == null) {
                 return false;
             }
-            return await _ratingService.HasUserRated(type, postId, user.Id);
+            return await _ratingService.HasUserRated(type, id, user.Id);
+        }
+
+        public async Task<int> GetUserRate([FromQuery] RatingType type, [FromQuery] int id) {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null) {
+                return 0;
+            }
+            return await _ratingService.GetUserRate(type, id, user.Id);
+        }
+
+        public async Task SetUserRate([FromQuery] RatingType type, [FromQuery] int id, [FromQuery] int value) {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null) {
+                return;
+            }
+            await _ratingService.SetUserRate(type, id, user.Id, value);
         }
     }
 }
