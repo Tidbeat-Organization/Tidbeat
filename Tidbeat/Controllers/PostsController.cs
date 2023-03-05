@@ -60,7 +60,7 @@ namespace Tidbeat.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind(include:"Title,Content")] Post post)
+        public async Task<IActionResult> Create([Bind(include: "Title,Content")] Post post)
         {
             if (ModelState.IsValid)
             {
@@ -68,11 +68,15 @@ namespace Tidbeat.Controllers
                 post.User = user;
                 _context.Add(post);
                 await _context.SaveChangesAsync();
+                TempData["Message"] = "O seu post foi criado com sucesso.";
                 return RedirectToAction(nameof(Index));
             }
+            // If model state is not valid, display error messages.
             Console.WriteLine("User: " + await _userManager.GetUserAsync(User));
-            foreach (ModelStateEntry modelState in ModelState.Values) {
-                foreach (ModelError error in modelState.Errors) {
+            foreach (ModelStateEntry modelState in ModelState.Values)
+            {
+                foreach (ModelError error in modelState.Errors)
+                {
                     string errorMessage = error.ErrorMessage;
                     Console.WriteLine(errorMessage);
                 }
@@ -159,13 +163,20 @@ namespace Tidbeat.Controllers
             {
                 return Problem("Entity set 'ApplicationDbContext.Posts'  is null.");
             }
+
             var post = await _context.Posts.FindAsync(id);
             if (post != null)
             {
                 _context.Posts.Remove(post);
+                await _context.SaveChangesAsync();
+
+                TempData["Message"] = "O seu post foi apagado com sucesso.";
             }
-            
-            await _context.SaveChangesAsync();
+            else
+            {
+                return NotFound();
+            }
+
             return RedirectToAction(nameof(Index));
         }
 
