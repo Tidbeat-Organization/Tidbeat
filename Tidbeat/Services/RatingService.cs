@@ -53,8 +53,15 @@ namespace Tidbeat.Services {
                     var rating = await _context.PostRatings.FirstOrDefaultAsync(r => r.Post.PostId == id && r.User.Id == userId);
                     if (rating != null) {
                         rating.Value = value;
-                        await _context.SaveChangesAsync();
+                    } else { 
+                        var postRating = new PostRating() {
+                            Post = _context.Posts.FirstOrDefault(p => p.PostId == id),
+                            User = await _context.Users.FindAsync(userId),
+                            Value = value
+                        };
+                        _context.PostRatings.Add(postRating);
                     }
+                    await _context.SaveChangesAsync();
                     break;
                 case RatingType.Comment:
                     throw new NotImplementedException("Comment rating type has not been implemented");
