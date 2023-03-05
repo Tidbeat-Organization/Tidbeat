@@ -55,7 +55,7 @@ namespace Tidbeat.Services {
                         rating.Value = value;
                     } else { 
                         var postRating = new PostRating() {
-                            Post = _context.Posts.FirstOrDefault(p => p.PostId == id),
+                            Post = await _context.Posts.FindAsync(id),
                             User = await _context.Users.FindAsync(userId),
                             Value = value
                         };
