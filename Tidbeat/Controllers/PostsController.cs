@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Tidbeat.Data;
 using Tidbeat.Models;
+using Tidbeat.Services;
 
 namespace Tidbeat.Controllers
 {
@@ -17,12 +18,14 @@ namespace Tidbeat.Controllers
         private readonly ApplicationDbContext _context;
         private readonly IServiceProvider _serviceProvider;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly ISpotifyService _spotifyService;
 
-        public PostsController(ApplicationDbContext context, IServiceProvider serviceProvider)
+        public PostsController(ApplicationDbContext context, IServiceProvider serviceProvider, ISpotifyService spotifyService)
         {
             _context = context;
             _serviceProvider = serviceProvider;
             _userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+            _spotifyService = spotifyService;
         }
 
         // GET: Posts
@@ -45,7 +48,6 @@ namespace Tidbeat.Controllers
             {
                 return NotFound();
             }
-
             return View(post);
         }
 
@@ -64,12 +66,37 @@ namespace Tidbeat.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = await _userManager.GetUserAsync(User);
-                post.User = user;
-                _context.Add(post);
-                await _context.SaveChangesAsync();
-                TempData["Message"] = "O seu post foi criado com sucesso.";
-                return RedirectToAction(nameof(Index));
+                    var user = await _userManager.GetUserAsync(User);
+                if (user.FullName != null)
+                {
+                    post.User = user;
+                    var band = await _context.Bands.FindAsync(post.Band.BandId);
+                    if (band == null) 
+                    {
+                        Band newBand = new Band();
+                        var SpotifyBand = await _spotifyService.GetBandAsync(post.Band.BandId);
+                        newBand.BandId = post.Band.BandId;
+                        newBand.Name = SpotifyBand.Name;
+                        newBand.Image = SpotifyBand.Images[0].Url;
+                        band = newBand;
+                        _context.Bands.Add(band);
+                    }
+                    var song = await _context.Songs.FindAsync(post.Song.SongId);
+                    if (song == null)
+                    {
+                        Song newSong = new Song();
+                        var SpotifySong = await _spotifyService.GetSongAsync(post.Song.SongId);
+                        newSong.SongId = post.Song.SongId;
+                        newSong.Name = SpotifySong.Name;
+                        newSong.Band = band;
+                        song = newSong;
+                        _context.Songs.Add(song);
+                    }
+                    _context.Add(post);
+                    await _context.SaveChangesAsync();
+                    TempData["Sucess"] = "O seu post foi criado com sucesso.";
+                    return RedirectToAction(nameof(Details),post.PostId);
+                }
             }
             // If model state is not valid, display error messages.
             Console.WriteLine("User: " + await _userManager.GetUserAsync(User));
@@ -117,11 +144,42 @@ namespace Tidbeat.Controllers
             {
                 try
                 {
-                    _context.Update(post);
-                    await _context.SaveChangesAsync();
+                    var user = await _userManager.GetUserAsync(User);
+                    if (user.Equals(post.User)) //Add for Roles
+                    {
+                        var band = await _context.Bands.FindAsync(post.Band.BandId);
+                        if (band == null)
+                        {
+                            Band newBand = new Band();
+                            var SpotifyBand = await _spotifyService.GetBandAsync(post.Band.BandId);
+                            newBand.BandId = post.Band.BandId;
+                            newBand.Name = SpotifyBand.Name;
+                            newBand.Image = SpotifyBand.Images[0].Url;
+                            band = newBand;
+                            _context.Bands.Add(band);
+                        }
+                        var song = await _context.Songs.FindAsync(post.Song.SongId);
+                        if (song == null)
+                        {
+                            Song newSong = new Song();
+                            var SpotifySong = await _spotifyService.GetSongAsync(post.Song.SongId);
+                            newSong.SongId = post.Song.SongId;
+                            newSong.Name = SpotifySong.Name;
+                            newSong.Band = band;
+                            song = newSong;
+                            _context.Songs.Add(song);
+                        }
+                        _context.Update(post);
+                        TempData["Sucess"] = "O seu post foi atualizado com sucesso.";
+                        await _context.SaveChangesAsync();
+                    }
+                    else {
+                        TempData["Insucess"] = "Não têm permissões para modificar o post";
+                    }
                 }
                 catch (DbUpdateConcurrencyException)
                 {
+                    TempData["Insucess"] = "Ocorreu um erro";
                     if (!PostExists(post.PostId))
                     {
                         return NotFound();
@@ -131,7 +189,7 @@ namespace Tidbeat.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Details), post.PostId);
             }
             return View(post);
         }
@@ -177,7 +235,7 @@ namespace Tidbeat.Controllers
                 return NotFound();
             }
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Details), post.PostId);
         }
 
         private bool PostExists(int id)
