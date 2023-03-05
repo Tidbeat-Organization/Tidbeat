@@ -39,15 +39,16 @@
             hasSelected = false;
             if (highestStarIndex === index) {
                 highestStarIndex = -1;
+                setUserRate(0);
                 return;
             }
+            setUserRate(index + 1);
 
             for (let i = 0; i <= index; i++) {
                 stars[i].classList.add('bi-star-fill');
                 stars[i].classList.remove('bi-star');
                 stars[i].classList.remove('hovered-star-color');
             }
-            setUserRate(index + 1);
 
             
             highestStarIndex = index;
