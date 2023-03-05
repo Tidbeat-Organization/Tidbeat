@@ -1,5 +1,5 @@
 ﻿@using Tidbeat.Enums
-@model Tuple<int, int, RatingType>
+@model Tuple<int, RatingType>
 @{
     var id = Guid.NewGuid().ToString();
     var averageId = "average-" + id;
@@ -10,14 +10,7 @@
     <div id="@averageId" class="me-2">...</div>
     <div id=@id class="rating">
     @for (int i = 1; i <= 5; i++) {
-        if (i <= Model.Item1)
-        {
-                <i class="bi bi-star-fill" role="button"></i>
-        }
-        else
-        {
-                <i class="bi bi-star" role="button"></i>
-        }
+        <i class="bi bi-star" role="button"></i>
     }
     </div>
 </div>
@@ -34,8 +27,8 @@
         
 
         stars.forEach((star, index) => {
-          hoveredStarsRef = hoveredStars(index);
-          resetStarsRef = resetStarsSelected(index);
+          let hoveredStarsRef = hoveredStars(index);
+          let resetStarsRef = resetStarsSelected(index);
 
           star.addEventListener('mouseover', hoveredStarsRef);
 
@@ -103,7 +96,7 @@
         function getAverageRating() {
             var averageDiv = document.getElementById('@averageId');
             var xhr = new XMLHttpRequest();
-            xhr.open('GET', '/RatingPartial/GetAverageRatings?type=@(Model.Item3)&id=@(Model.Item2)');
+            xhr.open('GET', '/RatingPartial/GetAverageRatings?type=@(Model.Item2)&id=@(Model.Item1)');
             xhr.onload = function () {
                 if (xhr.status === 200) {
                     var response = xhr.responseText;
@@ -118,7 +111,7 @@
 
         function getUserRate(stars) {
             var xhr = new XMLHttpRequest();
-                xhr.open('GET', '/RatingPartial/GetUserRate?type=@(Model.Item3)&id=@(Model.Item2)');
+                xhr.open('GET', '/RatingPartial/GetUserRate?type=@(Model.Item2)&id=@(Model.Item1)');
                 xhr.onload = function () {
                     if (xhr.status === 200) {
                         var response = parseInt(xhr.responseText);
@@ -139,7 +132,7 @@
 
         function setUserRate(rate) {
             var xhr = new XMLHttpRequest();
-            xhr.open('POST', '/RatingPartial/SetUserRate?type=@(Model.Item3)&id=@(Model.Item2)&value=' + rate);
+            xhr.open('POST', '/RatingPartial/SetUserRate?type=@(Model.Item2)&id=@(Model.Item1)&value=' + rate);
             xhr.onload = function () {
                 if (xhr.status === 200) {
                     getAverageRating();
@@ -162,7 +155,7 @@
         (function getAverageRating() {
             var averageDiv = document.getElementById('@averageId');
             var xhr = new XMLHttpRequest();
-            xhr.open('GET', '/RatingPartial/GetAverageRatings?type=@(Model.Item3)&id=@(Model.Item2)');
+            xhr.open('GET', '/RatingPartial/GetAverageRatings?type=@(Model.Item2)&id=@(Model.Item1)');
             xhr.onload = function () {
                 if (xhr.status === 200) {
                     var response = xhr.responseText;
