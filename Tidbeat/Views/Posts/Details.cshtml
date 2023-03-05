@@ -34,6 +34,9 @@
         <div class="text-start" >@Model.Content</div>
     </div>
     <div class="text-start mt-2 mb-2">Comentários:<hr class="m-0 mb-2"/></div>
+    <form class="w-100 mx-auto d-flex flex-column mb-1" id="account" method="post">
+        <input class="form-control second-phase mt-0 rounded border-primary" id="commentText" autocomplete="text" aria-required="true"/>
+    </form>
     <div class="m-2">
         <a class="bg-primary text-white rounded p-2 m-2 text-decoration-none" asp-action="Edit" asp-route-id="@Model.PostId">Editar</a>
         <a class="bg-primary text-white rounded p-2 m-2 text-decoration-none" asp-action="Delete" asp-route-id="@Model.PostId">Apagar</a>
