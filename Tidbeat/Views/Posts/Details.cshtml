@@ -4,6 +4,43 @@
     ViewData["Title"] = "Details";
 }
 
+
+<div class="mt-4 pt-5">
+    <div class="bg-success w-100">Sucess</div>
+    <div class="bg-danger w-100">Insucess</div>
+    <div class="mt-2 mb-3 d-flex align-items-center justify-content-center justify-content-lg-start">
+        @if (Model.Song != null)
+        {
+            <div>
+                <div>
+                <img id="startAudio" src="~/images/PlayButton.png" class="pointer-active" />
+                <div id="audioStatus" class="text-nowrap"></div>
+            </div>
+            <audio id="myAudio">
+                <source src="" type="audio/mpeg">
+            </audio>
+        </div>
+        }
+        <div class="d-flex ms-2">
+            <h3 class="font-weight-bold">Username</h3>
+            @if (Model.Song != null)
+            {
+                <div><div class="text-primary">Música:</div><div>@Model.Song.Name</div><div class="text-primary">de</div><div>@Model.Band.Name</div></div>
+            }
+        </div>
+    </div>
+    <div>
+        <h4 class="d-flex ms-2">@Model.Title</h4>
+        <div class="text-start" >@Model.Content</div>
+    </div>
+    <div class="text-start mt-2 mb-2">Comentários:<hr class="m-0 mb-2"/></div>
+    <div class="m-2">
+        <a class="bg-primary text-white rounded p-2 m-2 text-decoration-none" asp-action="Edit" asp-route-id="@Model.PostId">Editar</a>
+        <a class="bg-primary text-white rounded p-2 m-2 text-decoration-none" asp-action="Delete" asp-route-id="@Model.PostId">Apagar</a>
+    </div>
+    <a class="text-primary" asp-action="Index">Voltar</a>
+</div>
+<!--
 <h3 style="color: #6610F2; margin-top: 100px;" >Detalhes do Post</h3>
 
 <div class="d-flex justify-content-center">
@@ -30,3 +67,4 @@
     <a asp-action="Edit" asp-route-id="@Model?.PostId">Editar</a> |
     <a asp-action="Index">Cancelar</a>
 </div>
+-->
