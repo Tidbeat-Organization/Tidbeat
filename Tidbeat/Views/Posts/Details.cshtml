@@ -3,7 +3,7 @@
 @{
     ViewData["Title"] = "Details";
 }
-
+<!-- Falta Comentários, url da música, url da Banda-->
 
 <div class="mt-4 pt-5">
     @if (TempData.ContainsKey("Sucess"))
@@ -31,7 +31,10 @@
             <h3 class="font-weight-bold">@Model.User.FullName</h3>
             @if (Model.Song != null)
             {
-                <div><div class="text-primary">Música:</div><div>@Model.Song.Name</div><div class="text-primary">de</div><div>@Model.Band.Name</div></div>
+                <div><div class="text-primary">Música:</div><div>@Model.Song.Name</div><div class="text-primary">de</div><div>@Model.Band.Name</div><div class="text-primary">Link:</div><a href="">Spotify - @Model.Song.Name by @Model.Band.Name</a></div>
+            } else if (Model.Band != null) 
+            {
+                <div><div class="text-primary">Artista:</div><div>@Model.Band.Name </div><div class="text-primary">Link:</div><a href="">Spotify - @Model.Band.Name</a></div>
             }
         </div>
     </div>

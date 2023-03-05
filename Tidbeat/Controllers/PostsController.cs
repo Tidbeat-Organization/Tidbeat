@@ -42,7 +42,7 @@ namespace Tidbeat.Controllers
                 return NotFound();
             }
 
-            var post = await _context.Posts
+            var post = await _context.Posts.Include(user => user.User).Include(band => band.Band).Include(song => song.Song)
                 .FirstOrDefaultAsync(m => m.PostId == id);
             if (post == null)
             {
