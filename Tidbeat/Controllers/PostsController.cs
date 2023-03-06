@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json.Linq;
 using Tidbeat.Data;
 using Tidbeat.Models;
 using Tidbeat.Services;
@@ -67,7 +68,7 @@ namespace Tidbeat.Controllers
             if (ModelState.IsValid)
             {
                 var user = await _userManager.GetUserAsync(User);
-                if (user == null)
+                if (User?.Identity.IsAuthenticated == true)
                 {
                     post.User = user;
                     if (post.Band !=null) {
@@ -99,10 +100,14 @@ namespace Tidbeat.Controllers
                             _context.Songs.Add(song);
                         }
                     }
-                    _context.Add(post);
-                    await _context.SaveChangesAsync();
+                     var result = await _context.Posts.AddAsync(post);
                     TempData["Sucess"] = "O seu post foi criado com sucesso.";
-                    return RedirectToAction(nameof(Details),post.PostId);
+                    await _context.SaveChangesAsync();
+                    var value = _context.Posts.OrderBy(e => e.PostId).LastAsync().Result;
+                    if (value != null) {
+                        return Redirect("Details/"+value.PostId);
+                    }
+                    return RedirectToAction(nameof(Index));
                 }
             }
             // If model state is not valid, display error messages.
@@ -203,7 +208,7 @@ namespace Tidbeat.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Details), post.PostId);
+                return Redirect("Details/" + post.PostId);
             }
             return View(post);
         }
@@ -249,7 +254,7 @@ namespace Tidbeat.Controllers
                 return NotFound();
             }
 
-            return RedirectToAction(nameof(Details), post.PostId);
+            return RedirectToAction(nameof(Index));
         }
 
         private bool PostExists(int id)
