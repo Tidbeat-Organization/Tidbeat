@@ -86,7 +86,6 @@ namespace Tidbeat.Controllers
                     }
                     if (post.Song != null)
                     {
-                        Console.WriteLine(post.Song.SongId);
                         var song = await _context.Songs.FindAsync(post.Song.SongId);
                         if (song == null)
                         {
