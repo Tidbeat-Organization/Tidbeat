@@ -1,31 +1,31 @@
 ﻿@model Tidbeat.Models.Post
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Edit";
 }
 
-<h3 style="color: #6610F2; margin-top: 100px;">Criar Post</h3>
+<h3 style="color: #6610F2; margin-top: 100px;">Editar Post</h3>
 <hr />
 
 <div class="container d-flex justify-content-center" style="margin-top: 35px;">
     <div class="col-md-6 col-lg-4" style="margin-right: 250px;">
-        <form asp-action="Create">
+        <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <!-- Song -->
             <div class="form-group row">
-                <label asp-for="Song" class="col-sm-2 col-form-label" style="color: #6610F2; font-weight: bold;">Música:</label>
+                <label asp-for="Song.SongId" class="col-sm-2 col-form-label" style="color: #6610F2; font-weight: bold;">Música:</label>
                 <div class="col-sm-10">
-                    <input asp-for="Song" class="form-control" placeholder="Escolha a música..." style="border: 1.5px solid #6610F2; border-radius: 15px; width:625px;" value="@if(Model.Song != null){@Model.Song.Name;}" />
-                    <span asp-validation-for="Song" class="text-danger"></span>
+                    <input asp-for="Song.SongId" class="form-control" placeholder="Escolha a música..." style="border: 1.5px solid #6610F2; border-radius: 15px; width:625px;" value="@if(Model.Song != null){@Model.Song.Name;}" />
+                    <span asp-validation-for="Song.SongId" class="text-danger"></span>
                 </div>
             </div>
 
             <!-- Band -->
             <div class="form-group row" style="margin-top: 15px;">
-                <label asp-for="Band" class="col-sm-2 col-form-label" style="color: #6610F2; font-weight: bold;">Banda:</label>
+                <label asp-for="Band.BandId" class="col-sm-2 col-form-label" style="color: #6610F2; font-weight: bold;">Banda:</label>
                 <div class="col-sm-10">
-                    <input asp-for="Band" class="form-control" placeholder="Escolha a banda..." style="border: 1.5px solid #6610F2; border-radius: 15px; width:625px;" value="@if(Model.Band != null){@Model.Band.Name;}" />
-                    <span asp-validation-for="Band" class="text-danger"></span>
+                    <input asp-for="Band.BandId" class="form-control" placeholder="Escolha a banda..." style="border: 1.5px solid #6610F2; border-radius: 15px; width:625px;" value="@if(Model.Band != null){@Model.Band.Name;}" />
+                    <span asp-validation-for="Band.BandId" class="text-danger"></span>
                 </div>
             </div>
 

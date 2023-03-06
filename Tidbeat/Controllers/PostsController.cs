@@ -66,31 +66,38 @@ namespace Tidbeat.Controllers
         {
             if (ModelState.IsValid)
             {
-                    var user = await _userManager.GetUserAsync(User);
-                if (user.FullName != null)
+                var user = await _userManager.GetUserAsync(User);
+                if (user == null)
                 {
                     post.User = user;
-                    var band = await _context.Bands.FindAsync(post.Band.BandId);
-                    if (band == null) 
-                    {
-                        Band newBand = new Band();
-                        var SpotifyBand = await _spotifyService.GetBandAsync(post.Band.BandId);
-                        newBand.BandId = post.Band.BandId;
-                        newBand.Name = SpotifyBand.Name;
-                        newBand.Image = SpotifyBand.Images[0].Url;
-                        band = newBand;
-                        _context.Bands.Add(band);
+                    if (post.Band !=null) {
+                        var band = await _context.Bands.FindAsync(post.Band.BandId);
+                        if (band == null)
+                        {
+                            Band newBand = new Band();
+                            var SpotifyBand = await _spotifyService.GetBandAsync(post.Band.BandId);
+                            newBand.BandId = post.Band.BandId;
+                            newBand.Name = SpotifyBand.Name;
+                            newBand.Image = SpotifyBand.Images[0].Url;
+                            band = newBand;
+                            _context.Bands.Add(band);
+                        } 
                     }
-                    var song = await _context.Songs.FindAsync(post.Song.SongId);
-                    if (song == null)
+                    if (post.Song != null)
                     {
-                        Song newSong = new Song();
-                        var SpotifySong = await _spotifyService.GetSongAsync(post.Song.SongId);
-                        newSong.SongId = post.Song.SongId;
-                        newSong.Name = SpotifySong.Name;
-                        newSong.Band = band;
-                        song = newSong;
-                        _context.Songs.Add(song);
+                        Console.WriteLine(post.Song.SongId);
+                        var song = await _context.Songs.FindAsync(post.Song.SongId);
+                        if (song == null)
+                        {
+                            Song newSong = new Song();
+                            var SpotifySong = await _spotifyService.GetSongAsync(post.Song.SongId);
+                            newSong.SongId = post.Song.SongId;
+                            newSong.Name = SpotifySong.Name;
+                            var SongBand = await _spotifyService.GetBandAsync(SpotifySong.Artists[0].Id);
+                            newSong.Band = new Band() { Name = SpotifySong.Artists[0].Name, BandId = SpotifySong.Artists[0].Id , Image = SongBand.Images[0].Url };
+                            song = newSong;
+                            _context.Songs.Add(song);
+                        }
                     }
                     _context.Add(post);
                     await _context.SaveChangesAsync();
@@ -146,28 +153,35 @@ namespace Tidbeat.Controllers
                 {
                     var user = await _userManager.GetUserAsync(User);
                     if (user.Equals(post.User)) //Add for Roles
-                    {
-                        var band = await _context.Bands.FindAsync(post.Band.BandId);
-                        if (band == null)
+                    {;
+                        if (post.Band != null)
                         {
-                            Band newBand = new Band();
-                            var SpotifyBand = await _spotifyService.GetBandAsync(post.Band.BandId);
-                            newBand.BandId = post.Band.BandId;
-                            newBand.Name = SpotifyBand.Name;
-                            newBand.Image = SpotifyBand.Images[0].Url;
-                            band = newBand;
-                            _context.Bands.Add(band);
+                            var band = await _context.Bands.FindAsync(post.Band.BandId);
+                            if (band == null)
+                            {
+                                Band newBand = new Band();
+                                var SpotifyBand = await _spotifyService.GetBandAsync(post.Band.BandId);
+                                newBand.BandId = post.Band.BandId;
+                                newBand.Name = SpotifyBand.Name;
+                                newBand.Image = SpotifyBand.Images[0].Url;
+                                band = newBand;
+                                _context.Bands.Add(band);
+                            }
                         }
-                        var song = await _context.Songs.FindAsync(post.Song.SongId);
-                        if (song == null)
+                        if (post.Song != null)
                         {
-                            Song newSong = new Song();
-                            var SpotifySong = await _spotifyService.GetSongAsync(post.Song.SongId);
-                            newSong.SongId = post.Song.SongId;
-                            newSong.Name = SpotifySong.Name;
-                            newSong.Band = band;
-                            song = newSong;
-                            _context.Songs.Add(song);
+                            var song = await _context.Songs.FindAsync(post.Song.SongId);
+                            if (song == null)
+                            {
+                                Song newSong = new Song();
+                                var SpotifySong = await _spotifyService.GetSongAsync(post.Song.SongId);
+                                newSong.SongId = post.Song.SongId;
+                                newSong.Name = SpotifySong.Name;
+                                var SongBand = await _spotifyService.GetBandAsync(SpotifySong.Artists[0].Id);
+                                newSong.Band = new Band() { Name = SpotifySong.Artists[0].Name, BandId = SpotifySong.Artists[0].Id, Image = SongBand.Images[0].Url };
+                                song = newSong;
+                                _context.Songs.Add(song);
+                            }
                         }
                         _context.Update(post);
                         TempData["Sucess"] = "O seu post foi atualizado com sucesso.";
