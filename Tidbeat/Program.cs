@@ -7,6 +7,8 @@ using Tidbeat.Models;
 using Tidbeat.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+var services = builder.Services;
+var configuration = builder.Configuration;
 builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
 
@@ -31,6 +33,12 @@ builder.Services.Configure<IdentityOptions>(opts => {
     opts.Lockout.AllowedForNewUsers = true;
     opts.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(10);
     opts.Lockout.MaxFailedAccessAttempts = 5;
+});
+
+services.AddAuthentication().AddGoogle(googleOptions =>
+{
+    googleOptions.ClientId = configuration["Authentication:Google:ClientId"];
+    googleOptions.ClientSecret = configuration["Authentication:Google:ClientSecret"];
 });
 
 var app = builder.Build();
