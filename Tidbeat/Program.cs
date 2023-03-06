@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
@@ -10,7 +11,11 @@ var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
 var configuration = builder.Configuration;
 builder.Logging.ClearProviders();
-builder.Logging.AddConsole();
+
+services.AddAuthentication().AddGoogle(googleOptions => {
+    googleOptions.ClientId = configuration["Authentication:Google:ClientId"];
+    googleOptions.ClientSecret = configuration["Authentication:Google:ClientSecret"];
+});
 
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
@@ -33,12 +38,6 @@ builder.Services.Configure<IdentityOptions>(opts => {
     opts.Lockout.AllowedForNewUsers = true;
     opts.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(10);
     opts.Lockout.MaxFailedAccessAttempts = 5;
-});
-
-services.AddAuthentication().AddGoogle(googleOptions =>
-{
-    googleOptions.ClientId = configuration["Authentication:Google:ClientId"];
-    googleOptions.ClientSecret = configuration["Authentication:Google:ClientSecret"];
 });
 
 var app = builder.Build();
