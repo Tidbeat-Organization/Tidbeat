@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.DotNet.MSIdentity.Shared;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Linq;
 using Tidbeat.Data;
@@ -53,22 +54,10 @@ namespace Tidbeat.Controllers
         }
 
         // GET: Posts/Create
-        public async Task<IActionResult> CreateAsync([FromQuery] string artistKey, [FromQuery] string songkey)
+        public async Task<IActionResult> CreateAsync()
         {
-            var stringSong = "";
-            var stringBand = "";
-            if (!string.IsNullOrEmpty(artistKey)) 
-            {
-                stringBand= artistKey;
-            }
-            if (!string.IsNullOrEmpty(songkey))
-            {
-                stringSong = songkey;
-            }
-            var allSongs = await _spotifyService.GetMultipleSongsAsync(stringSong);
-            ViewBag.songs = allSongs.Tracks.Items;
-            var allBands = await _spotifyService.GetMultipleBandsAsync(stringBand);
-            ViewBag.bands = allBands.Artists.Items;
+            ViewBag.songs = _spotifyService.GetMultipleSongsAsync("a").Result.Tracks.Items;
+            ViewBag.bands = _spotifyService.GetMultipleBandsAsync("a").Result.Artists.Items;
             return View();
         }
 
@@ -312,6 +301,34 @@ namespace Tidbeat.Controllers
         private bool PostExists(int id)
         {
           return _context.Posts.Any(e => e.PostId == id);
+        }
+
+        public ActionResult SongInfo(string searchKey)
+        {
+            var songs = new List<SpotifyAPI.Web.FullTrack>();
+            if (!string.IsNullOrEmpty(searchKey))
+            {
+                songs = _spotifyService.GetMultipleSongsAsync(searchKey).Result.Tracks.Items;
+            }
+            else
+            {
+                songs = _spotifyService.GetMultipleSongsAsync("A").Result.Tracks.Items;
+            }
+            return Json(songs);
+        }
+
+        public ActionResult BandsInfo(string searchKey)
+        {
+            var bands = new List<SpotifyAPI.Web.FullArtist>();
+            if (!string.IsNullOrEmpty(searchKey))
+            {
+                bands = _spotifyService.GetMultipleBandsAsync(searchKey).Result.Artists.Items;
+            }
+            else
+            {
+                bands = _spotifyService.GetMultipleBandsAsync("A").Result.Artists.Items;
+            }
+            return Json(bands);
         }
     }
 }

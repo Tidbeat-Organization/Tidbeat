@@ -95,6 +95,7 @@
             var opts = document.getElementById('SongOptions').childNodes;
             var hiddenInput = document.getElementById("answerInput-song");
             var boolCheck = true;
+            //hiddenInput.value = val.value;
             for (var i = 0; i < opts.length; i++) {
                 if (opts[i].innerText === val.value) {
                     // An item was selected from the list!
@@ -105,24 +106,33 @@
                 }
             }
             if (boolCheck) {
-                let path = window.location.href.split("?")[0];
-                path += "?";
-                //RedirectToLink
-                let params = new URLSearchParams({
-                    artistKey:"",
-                    songkey: val.value,
-                })
-                path += params.toString();
-                console.log(window.location.href)
-                window.location.href = path;
+                fetch(window.location.origin + '/Posts/SongInfo/' + val.value)
+                    .then(response => response.json())
+                    .then(data => {
+                        // Loop through the JSON array and do something with each item
+                        let options = document.getElementById("SongOptions");
+                        while(options.firstChild)
+                        {
+                            options.removeChild(options.firstChild);
+                        }
+                        data.forEach(item => {
+                            var option = document.createElement("option");
+                            option.text = item.name;
+                            option.setAttribute("data-value",item.id);
+                            options.appendChild(option);
+                            // Your code here
+                            console.log(item.name);
+                        });
+                    })
             }
         }
-
+        
         function onInputBand() {
             var val = document.getElementById("Bandsinput");
             var opts = document.getElementById('BandOptions').childNodes;
             var hiddenInput = document.getElementById("answerInput-band");
             var boolCheck = true;
+            //hiddenInput.value = val.value;
             for (var i = 0; i < opts.length; i++) {
                 if (opts[i].innerText === val.value) {
                     // An item was selected from the list!
@@ -134,16 +144,23 @@
             }
             if (boolCheck) {
                 //RedirectToLink
-                let path = window.location.href.split("?")[0];
-                path += "?";
-                //RedirectToLink
-                let params = new URLSearchParams({
-                    artistKey: val.value,
-                    songkey:"",
+                fetch(window.location.origin + '/Posts/BandsInfo/' + val.value)
+                .then(response => response.json())
+                .then(data => {
+                    // Loop through the JSON array and do something with each item
+                        let options = document.getElementById("BandOptions");
+                    while (options.firstChild) {
+                        options.removeChild(options.firstChild);
+                    }
+                    data.forEach(item => {
+                        var option = document.createElement("option");
+                        option.text = item.name;
+                        option.setAttribute("data-value", item.id);
+                        options.appendChild(option);
+                        // Your code here
+                        console.log(item.name);
+                    });
                 })
-                path += params.toString();
-                console.log(window.location.href)
-                window.location.href = path;
             }
         }
 
