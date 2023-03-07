@@ -67,6 +67,7 @@ namespace Tidbeat.Controllers
         {
             if (ModelState.IsValid)
             {
+                Console.WriteLine(post.ToString());
                 var user = await _userManager.GetUserAsync(User);
                 if (User?.Identity.IsAuthenticated == true)
                 {
