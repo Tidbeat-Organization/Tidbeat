@@ -53,8 +53,22 @@ namespace Tidbeat.Controllers
         }
 
         // GET: Posts/Create
-        public IActionResult Create()
+        public async Task<IActionResult> CreateAsync([FromQuery] string artistKey, [FromQuery] string songkey)
         {
+            var stringSong = "";
+            var stringBand = "";
+            if (!string.IsNullOrEmpty(artistKey)) 
+            {
+                stringBand= artistKey;
+            }
+            if (!string.IsNullOrEmpty(songkey))
+            {
+                stringSong = songkey;
+            }
+            var allSongs = await _spotifyService.GetMultipleSongsAsync(stringSong);
+            ViewBag.songs = allSongs.Tracks.Items;
+            var allBands = await _spotifyService.GetMultipleBandsAsync(stringBand);
+            ViewBag.bands = allBands.Artists.Items;
             return View();
         }
 

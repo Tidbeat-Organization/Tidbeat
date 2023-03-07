@@ -15,7 +15,14 @@
             <div class="form-group row">
                 <label asp-for="Song" class="col-sm-2 col-form-label" style="color: #6610F2; font-weight: bold;">Música:</label>
                 <div class="col-sm-10">
-                    <input name="SongId" class="form-control" placeholder="Escolha a música..." style="border: 1.5px solid #6610F2; border-radius: 15px; width:625px;" />
+                    <input list="SongOptions" name="SongId1" id="SongIdInput" oninput='onInputSong()' class="form-control" placeholder="Escolha a música..." style="border: 1.5px solid #6610F2; border-radius: 15px; width:625px;" />
+                    <datalist id="SongOptions">
+                        @foreach (var item in ViewBag.songs)
+                        {
+                            <option data-value="@item.Uri">@item.Name</option>
+                        }
+                    </datalist>
+                    <input type="hidden" name="SongId" id="answerInput-Song">
                     <span asp-validation-for="Song" class="text-danger"></span>
                 </div>
             </div>
@@ -24,7 +31,14 @@
              <div class="form-group row" style="margin-top: 15px;">
                 <label asp-for="Band" class="col-sm-2 col-form-label" style="color: #6610F2; font-weight: bold;">Banda:</label>
                 <div class="col-sm-10">
-                    <input name="BandId" class="form-control" placeholder="Escolha a banda..." style="border: 1.5px solid #6610F2; border-radius: 15px; width:625px;" />
+                    <input list="BandOptions" name="BandId1" id="Bandsinput" oninput='onInputBand()'class="form-control" placeholder="Escolha a banda..." style="border: 1.5px solid #6610F2; border-radius: 15px; width:625px;" />
+                    <datalist id="BandOptions">
+                        @foreach (var item in ViewBag.bands)
+                        {
+                            <option data-value="@item.Uri">@item.Name</option>
+                        }
+                    </datalist>
+                    <input type="hidden" name="BandId" id="answerInput-band">
                     <span asp-validation-for="Band" class="text-danger"></span>
                 </div>
             </div>
@@ -75,3 +89,62 @@
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
     }
+<script>
+        function onInputSong() {
+            var val = document.getElementById("SongIdInput");
+            var opts = document.getElementById('SongOptions').childNodes;
+            var hiddenInput = document.getElementById("answerInput-song");
+            var boolCheck = true;
+            for (var i = 0; i < opts.length; i++) {
+                if (opts[i].innerText === val.value) {
+                    // An item was selected from the list!
+                    // yourCallbackHere()
+                    hiddenInput.value = opts[i].getAttribute('data-value');
+                    boolCheck = false;
+                    break;
+                }
+            }
+            if (boolCheck) {
+                let path = window.location.href.split("?")[0];
+                path += "?";
+                //RedirectToLink
+                let params = new URLSearchParams({
+                    artistKey:"",
+                    songkey: val.value,
+                })
+                path += params.toString();
+                console.log(window.location.href)
+                window.location.href = path;
+            }
+        }
+
+        function onInputBand() {
+            var val = document.getElementById("Bandsinput");
+            var opts = document.getElementById('BandOptions').childNodes;
+            var hiddenInput = document.getElementById("answerInput-band");
+            var boolCheck = true;
+            for (var i = 0; i < opts.length; i++) {
+                if (opts[i].innerText === val.value) {
+                    // An item was selected from the list!
+                    // yourCallbackHere()
+                    hiddenInput.value = opts[i].getAttribute('data-value');
+                    boolCheck = false;
+                    break;
+                }
+            }
+            if (boolCheck) {
+                //RedirectToLink
+                let path = window.location.href.split("?")[0];
+                path += "?";
+                //RedirectToLink
+                let params = new URLSearchParams({
+                    artistKey: val.value,
+                    songkey:"",
+                })
+                path += params.toString();
+                console.log(window.location.href)
+                window.location.href = path;
+            }
+        }
+
+</script>
