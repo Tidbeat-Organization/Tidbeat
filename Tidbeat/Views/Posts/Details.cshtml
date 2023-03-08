@@ -19,13 +19,13 @@
         {
             <div>
                 <div>
-                <img id="startAudio" src="~/images/PlayButton.png" class="pointer-active" />
-                <div id="audioStatus" class="text-nowrap"></div>
+                    <img id="startAudio" src="~/images/PlayButton.png" class="pointer-active" />
+                    <div id="audioStatus" class="text-nowrap"></div>
+                </div>
+                <audio id="myAudio">
+                    <source src="@ViewBag.urlSong" type="audio/mpeg">
+                </audio>
             </div>
-            <audio id="myAudio">
-                <source src="" type="audio/mpeg">
-            </audio>
-        </div>
         }
         <div class="d-flex ms-2 flex-column">
             <h3 class="font-weight-bold text-start">@Model.User.FullName</h3>
@@ -52,6 +52,54 @@
     </div>
     <a class="text-primary" asp-action="Index">Voltar</a>
 </div>
+<script>
+    var startAudio = document.getElementById("startAudio");
+    var myAudio = document.getElementById("myAudio");
+    var audioStatus = document.getElementById("audioStatus");
+
+    var isPlaying = false;
+
+    startAudio.onclick = function () {
+        if (isPlaying) {
+            myAudio.pause();
+            isPlaying = false;
+            startAudio.src = "../../images/PlayButton.png";
+            audioStatus.innerHTML = "Pausado: " + (30 - myAudio.currentTime.toFixed(0)) + "s";
+            myAudio.removeEventListener("timeupdate", updateTime);
+        } else {
+            myAudio.play();
+            isPlaying = true;
+            startAudio.src = "../../images/StopButton.png";
+            myAudio.addEventListener("timeupdate", updateTime);
+        }
+    }
+
+    function updateTime() {
+        audioStatus.innerHTML = "A correr: " + (30 - myAudio.currentTime.toFixed(0)) + "s";
+    }
+
+    startAudio.addEventListener("mouseover", function () {
+        if (isPlaying) {
+            startAudio.src = "../../images/StopButtonHover.png";
+        } else {
+            startAudio.src = "../../images/PlayButtonHover.png";
+        }
+    });
+
+    startAudio.addEventListener("mouseout", function () {
+        if (isPlaying) {
+            startAudio.src = "../../images/StopButton.png";
+        } else {
+            startAudio.src = "../../images/PlayButton.png";
+        }
+    });
+
+    myAudio.addEventListener("ended", function () {
+        isPlaying = false;
+        startAudio.src = "../../images/PlayButton.png";
+        audioStatus.innerHTML = "";
+    });
+</script>
 <!--
 <h3 style="color: #6610F2; margin-top: 100px;" >Detalhes do Post</h3>
 

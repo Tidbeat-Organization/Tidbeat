@@ -50,6 +50,10 @@ namespace Tidbeat.Controllers
             {
                 return NotFound();
             }
+            if (post.Song != null)
+            {
+                ViewBag.urlSong = _spotifyService.GetSongAsync(post.Song.SongId).Result.PreviewUrl;
+            }
             return View(post);
         }
 
@@ -303,7 +307,7 @@ namespace Tidbeat.Controllers
           return _context.Posts.Any(e => e.PostId == id);
         }
 
-        public ActionResult SongInfo(string searchKey)
+        public ActionResult SongInfo([FromQuery] string searchKey)
         {
             var songs = new List<SpotifyAPI.Web.FullTrack>();
             if (!string.IsNullOrEmpty(searchKey))
@@ -317,7 +321,7 @@ namespace Tidbeat.Controllers
             return Json(songs);
         }
 
-        public ActionResult BandsInfo(string searchKey)
+        public ActionResult BandsInfo([FromQuery] string searchKey)
         {
             var bands = new List<SpotifyAPI.Web.FullArtist>();
             if (!string.IsNullOrEmpty(searchKey))

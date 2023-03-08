@@ -19,10 +19,10 @@
                     <datalist id="SongOptions">
                         @foreach (var item in ViewBag.songs)
                         {
-                            <option data-value="@item.Uri">@item.Name</option>
+                            <option data-value="@item.Uri" song-link="@item.Href">@item.Name</option>
                         }
                     </datalist>
-                    <input type="hidden" name="SongId" id="answerInput-Song">
+                    <input type="hidden" name="SongId" id="answerInputSong" value="">
                     <span asp-validation-for="Song" class="text-danger"></span>
                 </div>
             </div>
@@ -38,19 +38,14 @@
                             <option data-value="@item.Uri">@item.Name</option>
                         }
                     </datalist>
-                    <input type="hidden" name="BandId" id="answerInput-band">
+                    <input type="hidden" name="BandId" id="answerInputband" value="">
                     <span asp-validation-for="Band" class="text-danger"></span>
                 </div>
             </div>
 
             <!-- Spotify Link -->
             <div class="form-group row" style="margin-top: 15px;">
-                <label class="col-sm-2 col-form-label"  style="color: #6610F2; font-weight: bold;">Link:</label>
-            </div>
-
-            <!-- Test Song -->
-            <div class="form-group row" style="margin-top: 15px;">
-                <label class="col-sm-2 col-form-label"  style="color: #6610F2; font-weight: bold;">Testar:</label>
+                <label class="col-sm-2 col-form-label w-100 text-start"><span style="color: #6610F2; font-weight: bold;">Link:</span><a id="SongLink"></a></label>
             </div>
 
             <!-- Title -->
@@ -93,20 +88,25 @@
         function onInputSong() {
             var val = document.getElementById("SongIdInput");
             var opts = document.getElementById('SongOptions').childNodes;
-            var hiddenInput = document.getElementById("answerInput-song");
+            var hiddenInput = document.getElementById("answerInputSong");
+            var songLink = document.getElementById("SongLink");
             var boolCheck = true;
             //hiddenInput.value = val.value;
+            hiddenInput.value = "";
+            songLink.textContent="";
             for (var i = 0; i < opts.length; i++) {
                 if (opts[i].innerText === val.value) {
                     // An item was selected from the list!
                     // yourCallbackHere()
                     hiddenInput.value = opts[i].getAttribute('data-value');
+                    songLink.textContent = "Spotify - " + opts[i].innerText;
+                    songLink.setAttribute("href", opts[i].getAttribute('song-link'));
                     boolCheck = false;
                     break;
                 }
             }
             if (boolCheck) {
-                fetch(window.location.origin + '/Posts/SongInfo/' + val.value)
+                fetch(window.location.origin + '/Posts/SongInfo/?searchKey=' + val.value)
                     .then(response => response.json())
                     .then(data => {
                         // Loop through the JSON array and do something with each item
@@ -119,6 +119,7 @@
                             var option = document.createElement("option");
                             option.text = item.name;
                             option.setAttribute("data-value",item.id);
+                            option.setAttribute("song-link", item.Href);
                             options.appendChild(option);
                             // Your code here
                             console.log(item.name);
@@ -130,9 +131,10 @@
         function onInputBand() {
             var val = document.getElementById("Bandsinput");
             var opts = document.getElementById('BandOptions').childNodes;
-            var hiddenInput = document.getElementById("answerInput-band");
+            var hiddenInput = document.getElementById("answerInputband");
             var boolCheck = true;
             //hiddenInput.value = val.value;
+            hiddenInput.value = "";
             for (var i = 0; i < opts.length; i++) {
                 if (opts[i].innerText === val.value) {
                     // An item was selected from the list!
@@ -144,7 +146,7 @@
             }
             if (boolCheck) {
                 //RedirectToLink
-                fetch(window.location.origin + '/Posts/BandsInfo/' + val.value)
+                fetch(window.location.origin + '/Posts/BandsInfo?searchKey=' + val.value)
                 .then(response => response.json())
                 .then(data => {
                     // Loop through the JSON array and do something with each item
