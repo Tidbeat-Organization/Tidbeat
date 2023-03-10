@@ -42,7 +42,7 @@ namespace Tidbeat.Controllers
                     await _context.SaveChangesAsync();
                 }
             }
-            return View("../Posts");
+            return RedirectToAction("Index","Posts");
         }
 
 

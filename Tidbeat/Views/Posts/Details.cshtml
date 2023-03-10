@@ -43,10 +43,10 @@
         <div class="text-start" >@Model.Content</div>
     </div>
     <div class="text-start mt-2 mb-2">Comentários:<hr class="m-0 mb-2"/></div>
-    <form class="w-100 mx-auto d-flex flex-column mb-1" asp-controller="Comments" asp-action="Create" id="account" method="post">
+    <form class="w-100 mx-auto d-flex flex-column mb-1" asp-controller="Comments" asp-action="Create" id="commentForm" method="post">
         <input asp-for="Content" class="form-control second-phase mt-0 rounded border-primary" id="commentText" autocomplete="text" aria-required="true" />
     </form>
-    @if (Model.Comments.Count() > 0)
+    @if (Model.Comments != null)
     {
         <div>
             @foreach (var item in Model.Comments)
