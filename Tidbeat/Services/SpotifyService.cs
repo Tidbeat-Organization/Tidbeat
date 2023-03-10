@@ -24,8 +24,13 @@ namespace Tidbeat.Services {
 
         public async Task<FullArtist> GetBandAsync(string id) 
         {
-            var band = await _client.Artists.Get(id);
-            return band;
+            try {
+                var band = await _client.Artists.Get(id);
+                return band;
+            }
+            catch (APIException e) {
+                return null;
+            }
             //return new Band() { BandId = id, Name = band.Name, Image = band.Images[0].Url };
         } 
 
