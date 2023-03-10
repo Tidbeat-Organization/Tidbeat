@@ -24,12 +24,14 @@ namespace Tidbeat.Areas.Identity.Pages.Account
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
+        private readonly UserManager<ApplicationUser> _userManager;
         private static string Pattern = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&_-])[A-Za-z\\d@$!%*?&_-]{6,}$";
 
-        public LoginModel(SignInManager<ApplicationUser> signInManager, ILogger<LoginModel> logger)
+        public LoginModel(SignInManager<ApplicationUser> signInManager, ILogger<LoginModel> logger, UserManager<ApplicationUser> userManager)
         {
             _signInManager = signInManager;
             _logger = logger;
+            _userManager = userManager;
         }
 
         /// <summary>
@@ -140,7 +142,16 @@ namespace Tidbeat.Areas.Identity.Pages.Account
                         _logger.LogWarning("User account locked out.");
                         //return RedirectToPage("./Lockout");
                         ModelState.AddModelError("Danger", "Conta bloqueada por 10 minutos.");
-                    }
+                    } 
+                    if (result.IsNotAllowed) 
+                    {
+                        var user = await _userManager.FindByEmailAsync(Input.Email);
+                        if (user != null && !await _userManager.CheckPasswordAsync(user, Input.Password)) {
+                            ModelState.AddModelError("Danger", "Tentativa de Login falhada. Por favor, verifique o seu email ou a sua password.");
+                        } else {
+                            ModelState.AddModelError("Danger", "A sua conta ainda não foi ativada. Por favor, verifique o seu email.");
+                        }
+                    } 
                     else
                     {
                         ModelState.AddModelError("Danger", "Tentativa de Login falhada. Por favor, verifique o seu email ou a sua password.");
