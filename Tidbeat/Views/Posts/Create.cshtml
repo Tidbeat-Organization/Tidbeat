@@ -90,10 +90,17 @@
             var opts = document.getElementById('SongOptions').childNodes;
             var hiddenInput = document.getElementById("answerInputSong");
             var songLink = document.getElementById("SongLink");
+            var bandInput = document.getElementById("Bandsinput");
             var boolCheck = true;
             //hiddenInput.value = val.value;
             hiddenInput.value = "";
             songLink.textContent="";
+            if (val.value.length > 0) {
+                bandInput.disabled= true;
+            }else
+            {
+                bandInput.disabled = false;
+            }
             for (var i = 0; i < opts.length; i++) {
                 if (opts[i].innerText === val.value) {
                     // An item was selected from the list!
@@ -133,6 +140,12 @@
             var opts = document.getElementById('BandOptions').childNodes;
             var hiddenInput = document.getElementById("answerInputband");
             var boolCheck = true;
+            var songInput = document.getElementById("SongIdInput");
+            if (val.value.length > 0) {
+                songInput.disabled = true;
+            } else {
+               songInput.disabled = false;
+            }
             //hiddenInput.value = val.value;
             hiddenInput.value = "";
             for (var i = 0; i < opts.length; i++) {
