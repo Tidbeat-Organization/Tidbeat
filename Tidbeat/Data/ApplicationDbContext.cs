@@ -18,5 +18,7 @@ namespace Tidbeat.Data {
             builder.Entity<Band>().ToTable(nameof(Band));
             builder.Entity<Post>().ToTable(nameof(Post));
         }
+
+        public DbSet<Tidbeat.Models.Comment> Comment { get; set; }
     }
 }

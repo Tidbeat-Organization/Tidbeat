@@ -43,9 +43,23 @@
         <div class="text-start" >@Model.Content</div>
     </div>
     <div class="text-start mt-2 mb-2">Comentários:<hr class="m-0 mb-2"/></div>
-    <form class="w-100 mx-auto d-flex flex-column mb-1" id="account" method="post">
-        <input class="form-control second-phase mt-0 rounded border-primary" id="commentText" autocomplete="text" aria-required="true"/>
+    <form class="w-100 mx-auto d-flex flex-column mb-1" asp-controller="Comments" asp-action="Create" id="account" method="post">
+        <input asp-for="Content" class="form-control second-phase mt-0 rounded border-primary" id="commentText" autocomplete="text" aria-required="true" />
     </form>
+    @if (Model.Comments.Count() > 0)
+    {
+        <div>
+            @foreach (var item in Model.Comments)
+            {
+                <div class="form-control d-flex flex-row">
+                    <div class="align-content-end flex-column">
+                        <div class="font-weigth-bold">@item.User.FullName</div>
+                        <div class="text-primary">Role</div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
     <div class="m-2">
         <a class="bg-primary text-white rounded p-2 m-2 text-decoration-none" asp-action="Edit" asp-route-id="@Model.PostId">Editar</a>
         <a class="bg-primary text-white rounded p-2 m-2 text-decoration-none" asp-action="Delete" asp-route-id="@Model.PostId">Apagar</a>
