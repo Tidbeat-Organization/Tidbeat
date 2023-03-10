@@ -17,8 +17,13 @@ namespace Tidbeat.Services {
 
         public async Task<FullTrack> GetSongAsync(string id) 
         {
-            var track = await _client.Tracks.Get(id);
-            return track;
+            try {                 
+                var track = await _client.Tracks.Get(id);
+                return track;
+            }
+            catch (APIException e) {
+                return null;
+            }
             //return new Song() { SongId = id, Name = track.Name, BandId = track.Artists[0].Id };
         }
 
