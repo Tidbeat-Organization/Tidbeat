@@ -4,7 +4,7 @@
 
 @{
     ViewData["Title"] = "Details";
-    var imageUrl = Model.Images[0].Url;
+    var imageUrl = Model.Images.Count != 0 ? Model.Images[0].Url : "../../images/Empty_Artist_Image.png";
     var spotifyPageURL = SpotifyService.UrlBand + Model.Id;
     List<Post> allPosts = ViewBag.posts;
 }
@@ -16,7 +16,14 @@
             <h4 class="d-flex ms-2">Banda/Artista: @Model.Name</h4>
         </div>
         <div class="d-flex flex-column flex-xl-row justify-content-lg-start align-items-center">
-            <a href="@spotifyPageURL" target="_blank"><img src="@Model.Images[0].Url" height="200" /></a>
+            <a href="@spotifyPageURL" target="_blank">
+                @if (Model.Images.Count > 0)
+                {
+                    <img src="@imageUrl" height="200" />
+                } else {
+                    <img src="@imageUrl" height="200" />
+                }
+            </a>
             <div class="ms-2 text-start w-100">
                 <div class="d-flex flex-column text-start mb-3">
                     <div>Top 3 de Músicas:</div>
