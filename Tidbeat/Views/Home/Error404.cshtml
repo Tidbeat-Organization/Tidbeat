@@ -1,0 +1,15 @@
+﻿@{
+    ViewData["Title"] = "404";
+}
+<h1 style="margin-top: 100px; color: #6610F2; font-weight: bold;">@ViewData["Title"]</h1>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6 text-center">
+            <h3 style="margin-top: 10px;">Página não encontrada</h3>
+            <p style="margin-top: 20px;">Oops! A página que procuras parece não existir.</p>
+            <img src="https://media.istockphoto.com/id/165607905/vector/detective-boy.jpg?s=612x612&w=0&k=20&c=4geuKM6nasFJXBXzp1vhoaciTvczBB34MdKYWI7NKfU=" alt="Detective Boy" style="pointer-events: none; height: 350px;">
+            <a href="@Url.Action("Index", "Home")" class="btn btn-primary">Retornar à página principal</a>
+        </div>
+    </div>
+</div>
