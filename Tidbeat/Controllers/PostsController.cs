@@ -136,14 +136,14 @@ namespace Tidbeat.Controllers
                     var postToSubmit =new Post();
                     if (!string.IsNullOrEmpty(song.SongId))
                     {
-                        postToSubmit = new Post() { User = user, Title = post.Title, Content = post.Content, Band = band, Song = song };
+                        postToSubmit = new Post() { User = user, Title = post.Title, Content = post.Content, Band = band, Song = song, Comments = post.Comments};
                     }
                     else if (!string.IsNullOrEmpty(band.BandId))
                     {
-                        postToSubmit = new Post() { User = user, Title = post.Title, Content = post.Content, Band = band};
+                        postToSubmit = new Post() { User = user, Title = post.Title, Content = post.Content, Band = band, Comments = post.Comments };
                     }
                     else {
-                        postToSubmit = new Post() { User = user, Title = post.Title, Content = post.Content};
+                        postToSubmit = new Post() { User = user, Title = post.Title, Content = post.Content, Comments = post.Comments };
                     }
                     var result = await _context.Posts.AddAsync(postToSubmit);
                     TempData["Sucess"] = "O seu post foi criado com sucesso.";
