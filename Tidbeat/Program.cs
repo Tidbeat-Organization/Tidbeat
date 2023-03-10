@@ -15,6 +15,9 @@ builder.Logging.ClearProviders();
 services.AddAuthentication().AddGoogle(googleOptions => {
     googleOptions.ClientId = configuration["Authentication:Google:ClientId"];
     googleOptions.ClientSecret = configuration["Authentication:Google:ClientSecret"];
+    googleOptions.Scope.Add("email");
+    googleOptions.Scope.Add("profile");
+    googleOptions.SaveTokens = true;
 });
 
 // Add services to the container.
