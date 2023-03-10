@@ -12,7 +12,7 @@ using Tidbeat.Data;
 namespace Tidbeat.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230227120234_Initial")]
+    [Migration("20230305173839_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -291,6 +291,33 @@ namespace Tidbeat.Migrations
                     b.ToTable("Post", (string)null);
                 });
 
+            modelBuilder.Entity("Tidbeat.Models.PostRating", b =>
+                {
+                    b.Property<int>("RatingId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RatingId"), 1L, 1);
+
+                    b.Property<int?>("PostId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("Value")
+                        .HasColumnType("int");
+
+                    b.HasKey("RatingId");
+
+                    b.HasIndex("PostId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("PostRating", (string)null);
+                });
+
             modelBuilder.Entity("Tidbeat.Models.Song", b =>
                 {
                     b.Property<string>("SongId")
@@ -381,6 +408,23 @@ namespace Tidbeat.Migrations
                     b.Navigation("Band");
 
                     b.Navigation("Song");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Tidbeat.Models.PostRating", b =>
+                {
+                    b.HasOne("Tidbeat.Models.Post", "Post")
+                        .WithMany()
+                        .HasForeignKey("PostId");
+
+                    b.HasOne("Tidbeat.Models.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Post");
 
                     b.Navigation("User");
                 });

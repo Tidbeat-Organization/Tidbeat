@@ -81,3 +81,11 @@ nav-link {
 .hover-background-grey:hover {
     background-color: $light-grey;
 }
+
+.rating i {
+    color: $primary;
+}
+
+.hovered-star-color {
+    color: #B79EE3 !important;
+}

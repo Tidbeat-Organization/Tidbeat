@@ -222,6 +222,32 @@ namespace Tidbeat.Migrations
                         principalColumn: "SongId");
                 });
 
+            migrationBuilder.CreateTable(
+                name: "PostRating",
+                columns: table => new
+                {
+                    RatingId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Value = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    PostId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PostRating", x => x.RatingId);
+                    table.ForeignKey(
+                        name: "FK_PostRating_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_PostRating_Post_PostId",
+                        column: x => x.PostId,
+                        principalTable: "Post",
+                        principalColumn: "PostId");
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -277,6 +303,16 @@ namespace Tidbeat.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_PostRating_PostId",
+                table: "PostRating",
+                column: "PostId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PostRating_UserId",
+                table: "PostRating",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Song_BandId",
                 table: "Song",
                 column: "BandId");
@@ -300,10 +336,13 @@ namespace Tidbeat.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Post");
+                name: "PostRating");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "Post");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
