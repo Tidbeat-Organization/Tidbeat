@@ -1,7 +1,14 @@
-﻿using Microsoft.AspNetCore.Identity.UI.Services;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Options;
 using SendGrid;
 using SendGrid.Helpers.Mail;
+using SpotifyAPI.Web.Http;
+using System.Security.Policy;
+using System.Text.Encodings.Web;
+using System.Text;
+using Tidbeat.Models;
 
 namespace Tidbeat.Services {
     public class EmailSender : IEmailSender {
