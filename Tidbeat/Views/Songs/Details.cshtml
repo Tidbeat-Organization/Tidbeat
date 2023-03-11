@@ -33,7 +33,13 @@
             <h4 class="d-flex ms-2">Música: @Model.Name</h4>
         </div>
         <div class="d-flex flex-column flex-xl-row justify-content-lg-start align-items-center">
-            <a href="@spotifyPageURL"><img src="@Model.Album.Images[0].Url" height="200" /></a>
+            <a href="@spotifyPageURL">
+                @if (Model.Album.Images.Count > 0) {
+                    <img src="@Model.Album.Images[0].Url" height="200" />
+                } else {
+                    <img src="~/images/Empty_Song_Image.png" height="200" />
+                }
+            </a>
             <div class="ms-2 text-start">
                 <div>De: <a class="ms-1" href="@Url.Action("Details", "Bands", new { id = Model.Artists[0].Id })">@Model.Artists[0].Name</a></div>
                 <div>Lançado em: @releaseDate</div>
