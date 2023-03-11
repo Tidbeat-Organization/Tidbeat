@@ -51,7 +51,7 @@
                         <img src="~/images/Empty_Song_Image.png" height="200" />
                     }
                 </a>
-                <div id="favoriteHeart" class="bi @(isFavorited ? "bi-heart-fill" : "bi-heart" ) text-danger fs-3 position-absolute top-0 end-0 mt-1 me-2"></div>
+                <div id="favoriteHeart" class="bi @(isFavorited ? "bi-heart-fill" : "bi-heart" ) text-danger fs-3 position-absolute top-0 end-0 mt-1 me-2 bg-black-50 ps-2 pe-2 pt-1"></div>
             </div>
             <div class="ms-2 text-start">
                 <div>De: <a class="ms-1" href="@Url.Action("Details", "Bands", new { id = Model.Artists[0].Id })">@Model.Artists[0].Name</a></div>
