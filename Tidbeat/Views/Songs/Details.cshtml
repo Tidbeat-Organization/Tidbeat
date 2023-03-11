@@ -29,6 +29,14 @@
                     <audio id="myAudio">
                         <source src="@Model.PreviewUrl" type="audio/mpeg">
                     </audio>
+                } else {
+                    <div hidden>
+                        <img id="startAudio"/>
+                        <div id="audioStatus" class="text-nowrap"></div>
+                    </div>
+                    <audio id="myAudio" hidden>
+                        <source type="audio/mpeg">
+                    </audio>
                 }
             </div>
             <h4 class="d-flex ms-2">Música: @Model.Name</h4>
