@@ -12,6 +12,7 @@
         releaseDate = DateTime.ParseExact(Model.Album.ReleaseDate, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture).ToString("dd-MM-yyyy");
     }
     List<Post> allPosts = ViewBag.posts;
+    bool isFavorited = ViewBag.isFavorited;
 }
 
 <!--All music info goes here-->
@@ -33,18 +34,20 @@
             <h4 class="d-flex ms-2">Música: @Model.Name</h4>
         </div>
         <div class="d-flex flex-column flex-xl-row justify-content-lg-start align-items-center">
-            <a href="@spotifyPageURL">
-                @if (Model.Album.Images.Count > 0) {
-                    <img src="@Model.Album.Images[0].Url" height="200" />
-                } else {
-                    <img src="~/images/Empty_Song_Image.png" height="200" />
-                }
-            </a>
+            <div class="position-relative">
+                <a href="@spotifyPageURL">
+                    @if (Model.Album.Images.Count > 0) {
+                        <img src="@Model.Album.Images[0].Url" height="200" />
+                    } else {
+                        <img src="~/images/Empty_Song_Image.png" height="200" />
+                    }
+                </a>
+                <div id="favoriteHeart" class="bi @(isFavorited ? "bi-heart-fill" : "bi-heart" ) text-danger fs-3 position-absolute top-0 end-0 mt-1 me-2"></div>
+            </div>
             <div class="ms-2 text-start">
                 <div>De: <a class="ms-1" href="@Url.Action("Details", "Bands", new { id = Model.Artists[0].Id })">@Model.Artists[0].Name</a></div>
                 <div>Lançado em: @releaseDate</div>
                 <div>Duração: @songLength minutos</div>
-                <!--<div>@(Model.Explicit ? "É" : "Não é") explícito</div>-->
                 <div>Álbum: @Model.Album.Name</div>
             </div>
         </div>
@@ -70,6 +73,29 @@
 </div>
 
 <script>
+    var favoriteHeart = document.getElementById("favoriteHeart");
+    var False = false;
+    var True = true;
+    var isFavorited = @isFavorited;
+    favoriteHeart.onclick = function () {
+        if (favoriteHeart.classList.contains("bi-heart-fill")) {
+            favoriteHeart.classList.remove("bi-heart-fill");
+            favoriteHeart.classList.add("bi-heart");
+            isFavorited = false;
+        } else {
+            favoriteHeart.classList.remove("bi-heart");
+            favoriteHeart.classList.add("bi-heart-fill");
+            isFavorited = true;
+        }
+        setFavorite(isFavorited);
+    }
+    
+    function setFavorite(isFavorite) {
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', `/Songs/SetFavorite?songId=${isFavorite ? '@Model.Id' : null}`);
+        xhr.send();
+    }
+
     var startAudio = document.getElementById("startAudio");
     var myAudio = document.getElementById("myAudio");
     myAudio.volume = 0.4;
