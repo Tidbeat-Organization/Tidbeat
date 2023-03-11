@@ -67,6 +67,10 @@ namespace Tidbeat.Controllers
             }
             ViewBag.isFavorited = isFavorited;
 
+            var users = await _userManager.Users.ToListAsync();
+            var count = users.Count(u => u.FavoriteSongId == id);
+            ViewBag.favoritesAmount = count;
+
             var allPosts = _context.Posts.Include(p => p.User).Include(p => p.Song).Where(p => p.Song != null && p.Song.SongId == id).ToList();
             ViewBag.posts = allPosts;
 
@@ -92,6 +96,12 @@ namespace Tidbeat.Controllers
                     await _userManager.UpdateAsync(loggedUser);
                 }
             }
+        }
+
+        public async Task<int> GetFavoriteCount([FromQuery] string songId) {
+            var users = await _userManager.Users.ToListAsync();
+            var count = users.Count(u => u.FavoriteSongId == songId);
+            return count;
         }
     }
 }
