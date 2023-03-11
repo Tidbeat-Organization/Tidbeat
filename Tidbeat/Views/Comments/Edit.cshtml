@@ -4,30 +4,38 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
 
-<h4>Comment</h4>
+<h3 style="color: #6610F2; margin-top: 100px;">Editar Comentário</h3>
 <hr />
-<div class="row">
-    <div class="col-md-4">
+
+<div class="container d-flex justify-content-center" style="margin-top: 35px;">
+    <div class="col-md-6 col-lg-4" style="margin-right: 250px;">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="CommentId" />
-            <div class="form-group">
-                <label asp-for="Content" class="control-label"></label>
-                <input asp-for="Content" class="form-control" />
+            <input type="hidden" asp-for="CommentId"/>
+
+            <!-- Content -->
+            <div class="form-group" style="margin-top: 10px; display: flex; flex-direction: column;">
+                <!-- <label asp-for="Content" class="control-label" style="color: #6610F2;"></label> -->
+                <textarea asp-for="Content" class="form-control" style="height: 200px; border: 1.5px solid #6610F2; border-radius: 15px; width: 700px;" placeholder="Escreva o conteúdo do seu comentário..." value="@Model.Content"></textarea>
                 <span asp-validation-for="Content" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+
+            <!-- Form submit -->
+            <div class="align-buttons" style="margin-left: 280px;">
+                <div class="form-group update-button" style="margin-top: 25px;">
+                    <input type="submit" value="Atualizar" class="btn btn-primary" />
+                </div>
+                <div class="row" style="margin-top: 20px;">
+                    <div class="col">
+                        <a asp-controller="Posts" asp-action="Details" asp-route-id="@Model?.post.PostId">Editar>Cancelar</a>
+                    </div>
+                </div>
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-controller="Posts" asp-action="Details" asp-route-id="@Model?.post.PostId">Editar>Voltar</a>
-</div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
