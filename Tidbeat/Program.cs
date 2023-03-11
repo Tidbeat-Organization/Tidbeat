@@ -36,6 +36,21 @@ builder.Services.Configure<IdentityOptions>(opts => {
 
 var app = builder.Build();
 
+// 404 Error Handling
+/*
+app.Use(async (context, next) => {
+    await next();
+
+    if (context.Response.StatusCode == 404) {
+        context.Response.Clear();
+        context.Response.StatusCode = 404;
+        context.Request.Path = "/Home/Error404";
+        await next();
+    }
+});
+*/
+app.UseStatusCodePagesWithRedirects("/Home/Error404");
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment()) {
     app.UseMigrationsEndPoint();
@@ -45,18 +60,6 @@ else {
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
-
-// 404 Error Handling
-app.Use(async (context, next) =>
-{
-    await next();
-
-    if (context.Response.StatusCode == 404)
-    {
-        context.Request.Path = "/Home/Error404";
-        await next();
-    }
-});
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
