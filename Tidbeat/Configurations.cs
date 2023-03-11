@@ -11,7 +11,8 @@ namespace Tidbeat {
                 UserName = "afonsosemeano@gmail.com",
                 Email = "afonsosemeano@gmail.com",
                 BirthdayDate = DateTime.Now,
-                Gender = "Masculino"
+                Gender = "Masculino",
+                FavoriteSong = null
             };
 
             var createUser = await userManager.CreateAsync(normalUser, "Password_123");

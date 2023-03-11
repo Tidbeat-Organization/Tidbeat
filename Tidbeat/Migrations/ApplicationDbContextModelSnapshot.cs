@@ -181,6 +181,9 @@ namespace Tidbeat.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<string>("FavoriteSongSongId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("FullName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -223,6 +226,8 @@ namespace Tidbeat.Migrations
                         .HasColumnType("nvarchar(256)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("FavoriteSongSongId");
 
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
@@ -385,6 +390,15 @@ namespace Tidbeat.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Tidbeat.Models.ApplicationUser", b =>
+                {
+                    b.HasOne("Tidbeat.Models.Song", "FavoriteSong")
+                        .WithMany()
+                        .HasForeignKey("FavoriteSongSongId");
+
+                    b.Navigation("FavoriteSong");
                 });
 
             modelBuilder.Entity("Tidbeat.Models.Post", b =>
