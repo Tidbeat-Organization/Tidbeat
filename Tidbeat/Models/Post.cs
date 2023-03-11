@@ -20,7 +20,5 @@ namespace Tidbeat.Models {
         public Band? Band { get; set; }
 
         public ApplicationUser? User { get; set; }
-
-        public IEnumerable<Comment>? Comments { get; set; }
     }
 }

@@ -54,6 +54,8 @@ namespace Tidbeat.Controllers
             {
                 ViewBag.urlSong = _spotifyService.GetSongAsync(post.Song.SongId).Result.PreviewUrl;
             }
+
+            ViewBag.commentsPosts = _context.Comment.Where(s => s.post.PostId == post.PostId);
             return View(post);
         }
 
@@ -136,14 +138,14 @@ namespace Tidbeat.Controllers
                     var postToSubmit =new Post();
                     if (!string.IsNullOrEmpty(song.SongId))
                     {
-                        postToSubmit = new Post() { User = user, Title = post.Title, Content = post.Content, Band = band, Song = song, Comments = post.Comments};
+                        postToSubmit = new Post() { User = user, Title = post.Title, Content = post.Content, Band = band, Song = song};
                     }
                     else if (!string.IsNullOrEmpty(band.BandId))
                     {
-                        postToSubmit = new Post() { User = user, Title = post.Title, Content = post.Content, Band = band, Comments = post.Comments };
+                        postToSubmit = new Post() { User = user, Title = post.Title, Content = post.Content, Band = band};
                     }
                     else {
-                        postToSubmit = new Post() { User = user, Title = post.Title, Content = post.Content, Comments = post.Comments };
+                        postToSubmit = new Post() { User = user, Title = post.Title, Content = post.Content};
                     }
                     var result = await _context.Posts.AddAsync(postToSubmit);
                     TempData["Sucess"] = "O seu post foi criado com sucesso.";

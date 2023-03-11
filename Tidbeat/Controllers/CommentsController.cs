@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization.Formatters;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -38,8 +39,17 @@ namespace Tidbeat.Controllers
                 var user = await _userManager.GetUserAsync(User);
                 if (User?.Identity.IsAuthenticated == true)
                 {
-                    _context.Add(comment);
-                    await _context.SaveChangesAsync();
+                    if (Int32.TryParse(Request.Form["PostId"], out int checker))
+                    {
+                        var post = await _context.Posts.FindAsync(checker);
+                        if (post != null)
+                        {
+                            comment.post = post;
+                            comment.User = user;
+                            _context.Add(comment);
+                            await _context.SaveChangesAsync();
+                        }
+                    }
                 }
             }
             return RedirectToAction("Index","Posts");

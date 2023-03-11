@@ -7,7 +7,7 @@ namespace Tidbeat.Models
         //[Key]
         public int CommentId { get; set; }
 
-        public Post post { get; set; }
+        public Post? post { get; set; }
 
         //[Required(ErrorMessage = "Por favor, adicione texto ao conteúdo do seu post.")]
         [DisplayName("Conteúdo")]
