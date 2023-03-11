@@ -26,7 +26,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-controller="Posts" asp-action="Details" asp-route-id="@Model?.post.PostId">Editar>Voltar</a>
 </div>
 
 @section Scripts {

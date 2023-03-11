@@ -57,6 +57,13 @@
                         <div class="text-primary">Role</div>
                     </div>
                     <div class="border-left border-secondary ml-2">@item.Content</div>
+                    @if (item.User.Id == User)
+                    {
+                        <div>
+                            <a formmethod="get" class="bg-primary text-white rounded p-2 m-2 text-decoration-none" asp-controller="Comments" asp-action="Edit" asp-route-id="@Model.PostId">Editar</a>
+                            <a formmethod="post" class="bg-primary text-white rounded p-2 m-2 text-decoration-none" asp-controller="Comments" asp-action="Delete" asp-route-id="@item.CommentId">Apagar</a>
+                        </div>
+                    }
                 </div>
             }
         </div>

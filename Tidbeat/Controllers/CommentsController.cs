@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Tidbeat.Data;
 using Tidbeat.Models;
 
@@ -55,6 +56,21 @@ namespace Tidbeat.Controllers
             return RedirectToAction("Index","Posts");
         }
 
+        // GET: Posts/Edit/5
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null || _context.Comment == null)
+            {
+                return NotFound();
+            }
+
+            var comment = await _context.Comment.FindAsync(id);
+            if (comment == null)
+            {
+                return NotFound();
+            }
+            return RedirectToAction("Index", "Posts");
+        }
 
         // POST: Comments/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
@@ -72,8 +88,15 @@ namespace Tidbeat.Controllers
             {
                 try
                 {
-                    _context.Update(comment);
-                    await _context.SaveChangesAsync();
+                    if (User?.Identity.IsAuthenticated == true)
+                    {
+                        var user = await _userManager.GetUserAsync(User);
+                        if (user.Equals(comment.User)) //Add for Roles
+                        {
+                            _context.Comment.Update(comment);
+                            await _context.SaveChangesAsync(); 
+                        }
+                    }
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -86,9 +109,9 @@ namespace Tidbeat.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Posts");
             }
-            return View(comment);
+            return RedirectToAction("Index", "Posts");
         }
 
 
