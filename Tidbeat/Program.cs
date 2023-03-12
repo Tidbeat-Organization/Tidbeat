@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
@@ -12,13 +13,15 @@ var services = builder.Services;
 var configuration = builder.Configuration;
 builder.Logging.ClearProviders();
 
-services.AddAuthentication().AddGoogle(googleOptions => {
-    googleOptions.ClientId = configuration["Authentication:Google:ClientId"];
-    googleOptions.ClientSecret = configuration["Authentication:Google:ClientSecret"];
-    googleOptions.Scope.Add("email");
-    googleOptions.Scope.Add("profile");
-    googleOptions.SaveTokens = true;
-});
+services.AddAuthentication().AddGoogle(
+    options =>
+    {
+        options.ClientId = configuration["Authentication:Google:ClientId"];
+        options.ClientSecret = configuration["Authentication:Google:ClientSecret"];
+        options.Scope.Add("https://www.googleapis.com/auth/userinfo.profile");
+        options.ClaimActions.MapJsonKey("name", "name");
+    }
+);
 
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
