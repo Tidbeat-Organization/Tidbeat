@@ -60,8 +60,16 @@ namespace Tidbeat.Controllers
         }
 
         // GET: Posts/Create
-        public async Task<IActionResult> CreateAsync()
+        public async Task<IActionResult> CreateAsync([FromQuery] string IdBand, [FromQuery] string IdSong)
         {
+            if (!string.IsNullOrEmpty(IdBand)) 
+            {
+                ViewBag.chooseBand = _spotifyService.GetBandAsync(IdBand).Result;
+            }
+            if (!string.IsNullOrEmpty(IdSong))
+            {
+                ViewBag.chooseSong = _spotifyService.GetSongAsync(IdSong).Result;
+            }
             ViewBag.songs = _spotifyService.GetMultipleSongsAsync("a").Result.Tracks.Items;
             ViewBag.bands = _spotifyService.GetMultipleBandsAsync("a").Result.Artists.Items;
             return View();
