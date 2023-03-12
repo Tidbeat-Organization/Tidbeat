@@ -15,7 +15,7 @@ namespace Tidbeat {
                 FavoriteSongId = null
             };
 
-            var createUser = await userManager.CreateAsync(normalUser, "Password_123");
+            //var createUser = await userManager.CreateAsync(normalUser, "Password_123");
         }
 
         public static async Task CreateStartingPosts(IServiceProvider serviceProvider) {

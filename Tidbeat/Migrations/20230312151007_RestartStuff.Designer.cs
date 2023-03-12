@@ -12,8 +12,8 @@ using Tidbeat.Data;
 namespace Tidbeat.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230311184213_CorrectedFavorite")]
-    partial class CorrectedFavorite
+    [Migration("20230312151007_RestartStuff")]
+    partial class RestartStuff
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
