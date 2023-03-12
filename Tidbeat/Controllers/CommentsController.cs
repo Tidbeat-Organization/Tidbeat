@@ -91,10 +91,14 @@ namespace Tidbeat.Controllers
                     if (User?.Identity.IsAuthenticated == true)
                     {
                         var user = await _userManager.GetUserAsync(User);
-                        if (user.Equals(comment.User)) //Add for Roles
-                        {
-                            _context.Update(comment);
-                            await _context.SaveChangesAsync(); 
+                        var commentStored = _context.Comment.Find(comment.CommentId);
+                        if (commentStored != null) {
+                            if (user.Id == commentStored.User.Id) //Add for Roles
+                            {
+                                commentStored.Content = comment.Content;
+                                _context.Update(commentStored);
+                                await _context.SaveChangesAsync();
+                            } 
                         }
                     }
                 }
