@@ -15,7 +15,6 @@ namespace TidbeatTests2._0.Services
     public class RatingServiceTest
     {
         private ApplicationDbContext _context;
-        private UserManager<ApplicationUser> _userManager;
 
         public RatingServiceTest()
         {
@@ -54,6 +53,15 @@ namespace TidbeatTests2._0.Services
             _context.Users.Add(normalUser);
             _context.Users.Add(normalUser1);
             _context.SaveChanges();
+
+            var simplePost = new Post() {
+                Title = "Test post",
+                Content = "Im testing this post",
+                User = normalUser
+            };
+
+            _context.Posts.Add(simplePost);
+            _context.SaveChanges();
         }
 
         [Fact]
@@ -70,13 +78,7 @@ namespace TidbeatTests2._0.Services
             _context.Bands.Add(band);
             _context.SaveChanges();
 
-            var simplePost = new Post() {
-                Title = "Test post",
-                Content = "Im testing this post",
-                User = user
-            };
-            _context.Posts.Add(simplePost);
-            _context.SaveChanges();
+            var simplePost = _context.Posts.FirstOrDefault(u => u.Title == "Test post");
 
             ratingService.SetUserRate(Tidbeat.Enums.RatingType.Post, simplePost.PostId, user.Id, 4);
             ratingService.SetUserRate(Tidbeat.Enums.RatingType.Post, simplePost.PostId, user1.Id, 1);
@@ -89,14 +91,7 @@ namespace TidbeatTests2._0.Services
         [Fact]
         public async void HasUserRatedRatingServiceTest() {
             var user = _context.Users.FirstOrDefault(u => u.Email == "user@gmail.com");
-            var simplePost = new Post() {
-                Title = "Test post",
-                Content = "Im testing this post",
-                User = user
-            };
-
-            _context.Posts.Add(simplePost);
-            _context.SaveChanges();
+            var simplePost = _context.Posts.FirstOrDefault(u => u.Title == "Test post");
 
             var ratingService = new RatingService(_context);
 
@@ -117,14 +112,8 @@ namespace TidbeatTests2._0.Services
         [InlineData(1)]
         public async void GetUserRateRatingServiceTest(int value) {
             var user = _context.Users.FirstOrDefault(u => u.Email == "user@gmail.com");
-            var simplePost = new Post() {
-                Title = "Test post",
-                Content = "Im testing this post",
-                User = user
-            };
-
-            _context.Posts.Add(simplePost);
-            _context.SaveChanges();
+            var simplePost = _context.Posts.FirstOrDefault(u => u.Title == "Test post");
+            
 
             var ratingService = new RatingService(_context);
             await ratingService.SetUserRate(Tidbeat.Enums.RatingType.Post, simplePost.PostId, user.Id, value);
@@ -139,15 +128,7 @@ namespace TidbeatTests2._0.Services
         {
             var user = _context.Users.FirstOrDefault(u => u.Email == "user@gmail.com");
 
-            var simplePost = new Post()
-            {
-                Title = "Test post",
-                Content = "Im testing this post",
-                User = user
-            };
-
-            _context.Posts.Add(simplePost);
-            _context.SaveChanges();
+            var simplePost = _context.Posts.FirstOrDefault(u => u.Title == "Test post");
 
             var ratingService = new RatingService(_context);
 
@@ -166,15 +147,7 @@ namespace TidbeatTests2._0.Services
         {
             var user = _context.Users.FirstOrDefault(u => u.Email == "user@gmail.com");
 
-            var simplePost = new Post()
-            {
-                Title = "Test post",
-                Content = "Im testing this post",
-                User = user
-            };
-
-            _context.Posts.Add(simplePost);
-            _context.SaveChanges();
+            var simplePost = _context.Posts.FirstOrDefault(u => u.Title == "Test post");
 
             var ratingService = new RatingService(_context);
 
