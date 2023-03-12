@@ -26,7 +26,7 @@ namespace Tidbeat.Services {
         public async Task<bool> HasUserRated(RatingType type, int id, string userId) {
             switch (type) {
                 case RatingType.Post:
-                    return await _context.PostRatings.AnyAsync(r => r.Post.PostId == id && r.User.Id == userId);
+                    return await _context.PostRatings.Where(r => r.Post.PostId == id && r.User.Id == userId).AnyAsync(r => r.Value > 0);
                 case RatingType.Comment:
                     throw new NotImplementedException("Comment rating type has not been implemented");
                 default:
