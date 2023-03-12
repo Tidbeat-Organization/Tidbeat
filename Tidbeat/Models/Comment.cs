@@ -1,10 +1,11 @@
 ﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace Tidbeat.Models
 {
     public class Comment
     {
-        //[Key]
+        [Key]
         public int CommentId { get; set; }
 
         public Post? post { get; set; }
