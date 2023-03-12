@@ -63,7 +63,13 @@
                         {
                             <div class="align-content-end flex-column">
                                 <a formmethod="get" class="bg-primary text-white rounded text-decoration-none" asp-controller="Comments" asp-action="Edit" asp-route-id="@item.CommentId">Editar</a>
-                                <a formmethod="post" class="bg-primary text-white rounded text-decoration-none" asp-controller="Comments" asp-action="Delete" asp-route-id="@item.CommentId">Apagar</a>
+                            <form method="post" action="@Url.Action("Delete", "Comments", new { id = item.CommentId })">
+                                @Html.AntiForgeryToken()
+
+                                <button type="submit" class="bg-primary text-white rounded text-decoration-none">
+                                    Apagar
+                                </button>
+                            </form>
                             </div>
                         }
                     }
