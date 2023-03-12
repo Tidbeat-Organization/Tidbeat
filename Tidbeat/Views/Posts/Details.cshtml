@@ -62,11 +62,11 @@
                         @if (item.User.Id == ViewBag.currentUser.Id)
                         {
                             <div class="align-content-end flex-column justify-content-end">
-                                <a formmethod="get" class="bg-primary text-white rounded text-decoration-none" asp-controller="Comments" asp-action="Edit" asp-route-id="@item.CommentId">Editar</a>
-                            <form method="post" action="@Url.Action("Delete", "Comments", new { id = item.CommentId })">
+                                <a formmethod="get" class="bg-primary text-white rounded text-decoration-none px-3 pt-1 pb-1" asp-controller="Comments" asp-action="Edit" asp-route-id="@item.CommentId">Editar</a>
+                            <form class="mt-2" style="outline: none;" method="post" action="@Url.Action("Delete", "Comments", new { id = item.CommentId })">
                                 @Html.AntiForgeryToken()
 
-                                <button type="submit" class="bg-primary text-white rounded text-decoration-none">
+                                <button type="submit" style="border: none;" class="bg-primary text-white rounded text-decoration-none px-2 pt-1 pb-1">
                                     Apagar
                                 </button>
                             </form>
