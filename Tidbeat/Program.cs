@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
@@ -7,8 +9,19 @@ using Tidbeat.Models;
 using Tidbeat.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+var services = builder.Services;
+var configuration = builder.Configuration;
 builder.Logging.ClearProviders();
-builder.Logging.AddConsole();
+
+services.AddAuthentication().AddGoogle(
+    options =>
+    {
+        options.ClientId = configuration["Authentication:Google:ClientId"];
+        options.ClientSecret = configuration["Authentication:Google:ClientSecret"];
+        options.Scope.Add("https://www.googleapis.com/auth/userinfo.profile");
+        options.ClaimActions.MapJsonKey("name", "name");
+    }
+);
 
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");

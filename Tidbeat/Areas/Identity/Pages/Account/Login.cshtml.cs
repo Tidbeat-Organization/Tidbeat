@@ -179,5 +179,12 @@ namespace Tidbeat.Areas.Identity.Pages.Account
             TempData["Password"] = Input.Password;
             return Page();
         }
+        /*
+        [HttpGet]
+        public IActionResult Login(string returnUrl = "/")
+        {
+            return Challenge(new AuthenticationProperties { RedirectUri = returnUrl }, "Google");
+        }
+        */
     }
 }
