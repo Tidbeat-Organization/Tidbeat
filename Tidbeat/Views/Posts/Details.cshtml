@@ -56,12 +56,12 @@
                         <div class="font-weigth-bold">@item.User.FullName</div>
                         <div class="text-primary">Role</div>
                     </div>
-                    <div class="border-left border-secondary ml-2">@item.Content</div>
+                    <div class="border-left border-secondary ml-2 w-75 text-start">@item.Content</div>
                 @if (ViewBag.currentUser != null)
                     {
                         @if (item.User.Id == ViewBag.currentUser.Id)
                         {
-                            <div class="align-content-end flex-column">
+                            <div class="align-content-end flex-column justify-content-end">
                                 <a formmethod="get" class="bg-primary text-white rounded text-decoration-none" asp-controller="Comments" asp-action="Edit" asp-route-id="@item.CommentId">Editar</a>
                             <form method="post" action="@Url.Action("Delete", "Comments", new { id = item.CommentId })">
                                 @Html.AntiForgeryToken()

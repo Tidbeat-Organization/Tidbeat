@@ -17,9 +17,13 @@
                 <div class="col-sm-10">
                     <input list="SongOptions" name="SongId1" id="SongIdInput" oninput='onInputSong()' class="form-control" placeholder="Escolha a música..." style="border: 1.5px solid #6610F2; border-radius: 15px; width:625px;" />
                     <datalist id="SongOptions">
-                        @foreach (var item in ViewBag.songs)
+                        @if (ViewBag.songs != null)
                         {
-                            <option data-value="@item.Uri" song-link="@item.Href">@item.Name</option>
+                            @foreach (var item in ViewBag.songs)
+                            {
+                                <option data-value="@item.Uri" song-link="@item.Href">@item.Name</option>
+                            }
+
                         }
                     </datalist>
                     <input type="hidden" name="SongId" id="answerInputSong" value="">
