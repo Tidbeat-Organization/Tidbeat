@@ -57,12 +57,15 @@
                         <div class="text-primary">Role</div>
                     </div>
                     <div class="border-left border-secondary ml-2">@item.Content</div>
-                    @if (item.User.Id == User)
+                @if (ViewBag.currentUser != null)
                     {
-                        <div>
-                            <a formmethod="get" class="bg-primary text-white rounded p-2 m-2 text-decoration-none" asp-controller="Comments" asp-action="Edit" asp-route-id="@Model.PostId">Editar</a>
-                            <a formmethod="post" class="bg-primary text-white rounded p-2 m-2 text-decoration-none" asp-controller="Comments" asp-action="Delete" asp-route-id="@item.CommentId">Apagar</a>
-                        </div>
+                        @if (item.User.Id == ViewBag.currentUser.Id)
+                        {
+                            <div class="align-content-end flex-column">
+                                <a formmethod="get" class="bg-primary text-white rounded text-decoration-none" asp-controller="Comments" asp-action="Edit" asp-route-id="@item.CommentId">Editar</a>
+                                <a formmethod="post" class="bg-primary text-white rounded text-decoration-none" asp-controller="Comments" asp-action="Delete" asp-route-id="@item.CommentId">Apagar</a>
+                            </div>
+                        }
                     }
                 </div>
             }

@@ -54,7 +54,7 @@ namespace Tidbeat.Controllers
             {
                 ViewBag.urlSong = _spotifyService.GetSongAsync(post.Song.SongId).Result.PreviewUrl;
             }
-
+            ViewBag.currentUser = await _userManager.GetUserAsync(User);
             ViewBag.commentsPosts = _context.Comment.Where(s => s.post.PostId == post.PostId);
             return View(post);
         }

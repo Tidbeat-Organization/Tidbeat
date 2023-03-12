@@ -69,7 +69,7 @@ namespace Tidbeat.Controllers
             {
                 return NotFound();
             }
-            return RedirectToAction("Index", "Posts");
+            return View(comment);
         }
 
         // POST: Comments/Edit/5
@@ -131,7 +131,7 @@ namespace Tidbeat.Controllers
             }
             
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Index", "Posts");
         }
 
         private bool CommentExists(int id)
