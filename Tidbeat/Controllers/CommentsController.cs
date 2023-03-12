@@ -93,7 +93,7 @@ namespace Tidbeat.Controllers
                         var user = await _userManager.GetUserAsync(User);
                         if (user.Equals(comment.User)) //Add for Roles
                         {
-                            _context.Comment.Update(comment);
+                            _context.Update(comment);
                             await _context.SaveChangesAsync(); 
                         }
                     }
