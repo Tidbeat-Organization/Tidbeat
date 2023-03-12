@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Tidbeat.Migrations
 {
-    public partial class RestartStuff : Migration
+    public partial class ShoudWorkNow : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
