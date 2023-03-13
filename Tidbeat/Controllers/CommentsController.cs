@@ -49,11 +49,12 @@ namespace Tidbeat.Controllers
                             comment.User = user;
                             _context.Add(comment);
                             await _context.SaveChangesAsync();
+                            return Redirect("/Posts/Details/" + post.PostId);
                         }
                     }
                 }
             }
-            return RedirectToAction("Index","Posts");
+            return Redirect("/Posts/Details/" + Request.Form["PostId"]);
         }
 
         // GET: Posts/Edit/5
@@ -64,7 +65,7 @@ namespace Tidbeat.Controllers
                 return NotFound();
             }
 
-            var comment = await _context.Comment.FindAsync(id);
+            var comment = await _context.Comment.Include(c => c.post).FirstOrDefaultAsync(c => c.CommentId == id);
             if (comment == null)
             {
                 return NotFound();
@@ -91,7 +92,7 @@ namespace Tidbeat.Controllers
                     if (User?.Identity.IsAuthenticated == true)
                     {
                         var user = await _userManager.GetUserAsync(User);
-                        var commentStored = _context.Comment.Find(comment.CommentId);
+                        var commentStored = await _context.Comment.Include(c => c.post).FirstOrDefaultAsync(c => c.CommentId == comment.CommentId);
                         if (commentStored != null) {
                             if (user.Id == commentStored.User.Id) //Add for Roles
                             {
@@ -100,6 +101,7 @@ namespace Tidbeat.Controllers
                                 await _context.SaveChangesAsync();
                             } 
                         }
+                        return Redirect("../../Posts/Details/" + commentStored.post.PostId);
                     }
                 }
                 catch (DbUpdateConcurrencyException)
@@ -128,14 +130,19 @@ namespace Tidbeat.Controllers
             {
                 return Problem("Entity set 'ApplicationDbContext.Comment'  is null.");
             }
-            var comment = await _context.Comment.FindAsync(id);
+            var ratings = await _context.CommentRatings.Where(cr => cr.Comment.CommentId == id).ToListAsync();
+
+            foreach(var rating in ratings) {
+                _context.CommentRatings.Remove(rating);
+            }
+            var comment = await _context.Comment.Include(c => c.post).FirstOrDefaultAsync(c => c.CommentId == id);
             if (comment != null)
             {
                 _context.Comment.Remove(comment);
             }
             
             await _context.SaveChangesAsync();
-            return RedirectToAction("Index", "Posts");
+            return Redirect("/Posts/Details/" + comment.post.PostId.ToString());
         }
 
         private bool CommentExists(int id)
