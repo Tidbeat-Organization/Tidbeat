@@ -62,6 +62,9 @@ namespace Tidbeat.Controllers
         // GET: Posts/Create
         public async Task<IActionResult> CreateAsync([FromQuery] string IdBand, [FromQuery] string IdSong)
         {
+            if (!User.Identity.IsAuthenticated) {
+                return Redirect("/Identity/Account/Login");
+            }
             ViewBag.chooseBand = null;
             ViewBag.chooseSong = null;
             if (!string.IsNullOrEmpty(IdBand)) 

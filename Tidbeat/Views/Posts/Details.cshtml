@@ -9,7 +9,7 @@
 <div class="mt-4 pt-5">
     @if (TempData.ContainsKey("Sucess"))
     {
-        <div class="bg-success w-100">@TempData["Sucess"]</div>
+        <div class="bg-success w-100 mt-2">@TempData["Sucess"]</div>
     }
     @if (TempData.ContainsKey("Insucess"))
     {
@@ -82,7 +82,7 @@
                 </div>
             }
         </div>
-        @if (User.Identity.IsAuthenticated) {
+        @if (Model.User.Id == ViewBag.currentUser.Id) {
         <div class="m-2">
             <a class="bg-primary text-white rounded p-2 m-2 text-decoration-none" asp-action="Edit" asp-route-id="@Model.PostId">Editar</a>
             <a class="bg-primary text-white rounded p-2 m-2 text-decoration-none" asp-action="Delete" asp-route-id="@Model.PostId">Apagar</a>
