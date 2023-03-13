@@ -27,7 +27,7 @@
 
                         }
                     </datalist>
-                    <input type="hidden" name="SongId" id="answerInputSong" value="@if(ViewBag.chooseSong != null){@ViewBag.chooseSong.Uri}">
+                    <input type="hidden" name="SongId" id="answerInputSong" value="@(ViewBag.chooseSong?.Id ?? "")">
                     <span asp-validation-for="Song" class="text-danger"></span>
                 </div>
             </div>
@@ -48,7 +48,7 @@
                             <option data-value="@item.Uri">@item.Name</option>
                         }
                     </datalist>
-                    <input type="hidden" name="BandId" id="answerInputband" value="@if(ViewBag.chooseBand != null){@ViewBag.chooseBand.Uri}">
+                    <input type="hidden" name="BandId" id="answerInputband" value="@(ViewBag.chooseBand?.Id ?? "")">
                     <span asp-validation-for="Band" class="text-danger"></span>
                 </div>
             </div>
