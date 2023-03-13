@@ -15,7 +15,8 @@
             <div class="form-group row">
                 <label asp-for="Song" class="col-sm-2 col-form-label" style="color: #6610F2; font-weight: bold;">Música:</label>
                 <div class="col-sm-10">
-                    <input list="SongOptions" name="SongId1" id="SongIdInput" oninput='onInputSong()' class="form-control" placeholder="Escolha a música..." style="border: 1.5px solid #6610F2; border-radius: 15px; width:625px;" @(ViewBag.chooseSong != null ? "value=" + @ViewBag.chooseSong.Name:"" ) />
+                    <input list="SongOptions" value="@((ViewBag?.chooseSong?.Name ?? ""))" name="SongId1" id="SongIdInput" oninput='onInputSong()' class="form-control" placeholder="Escolha a música..." style="border: 1.5px solid #6610F2; border-radius: 15px; width:625px;" @(ViewBag.chooseSong != null ? "value=" + @ViewBag.chooseSong.Name : "")
+                    @(ViewBag.chooseBand != null ? "disabled" : "") />
                     <datalist id="SongOptions">
                         @if (ViewBag.songs != null)
                         {
@@ -35,7 +36,7 @@
              <div class="form-group row" style="margin-top: 15px;">
                 <label asp-for="Band" class="col-sm-2 col-form-label" style="color: #6610F2; font-weight: bold;">Banda:</label>
                 <div class="col-sm-10">
-                    <input list="BandOptions" name="BandId1" id="Bandsinput" oninput='onInputBand()' class="form-control" placeholder="Escolha a banda..." style="border: 1.5px solid #6610F2; border-radius: 15px; width:625px;"
+                    <input list="BandOptions" value="@((ViewBag?.chooseBand?.Name ?? ""))" name="BandId1" id="Bandsinput" oninput='onInputBand()' class="form-control" placeholder="Escolha a banda..." style="border: 1.5px solid #6610F2; border-radius: 15px; width:625px;"
                     @(ViewBag.chooseSong != null ? "disabled" : "") />
                     <!--@*      @if (ViewBag.chooseSong != null || ViewBag.chooseBand != null)
                            {
