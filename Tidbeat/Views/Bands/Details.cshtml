@@ -47,10 +47,12 @@
     <div class="col-lg-8 col-12 mt-5 pt-5 scrollable-posts">
         <div class="d-flex justify-content-center mb-2">
             <div class="fs-3 me-4">Posts</div>
-            <a class="btn btn-primary" asp-controller="Posts" asp-action="Create" asp-route-Idband="@Model.Id">
-                Criar Post
+            @if (User.Identity.IsAuthenticated)
+            {
+                <a class="btn btn-primary" asp-controller="Posts" asp-action="Create" asp-route-Idband="@Model.Id">
+                    Criar Post
             </a>
-
+            }
         </div>
         @if (allPosts.Count == 0) {
             <div>Não há posts... seja o primeiro a criar um post sobre esta banda!</div>
