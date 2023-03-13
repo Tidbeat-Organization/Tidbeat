@@ -267,6 +267,12 @@ namespace Tidbeat.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime>("EditDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsEdited")
+                        .HasColumnType("bit");
+
                     b.Property<int?>("PostId")
                         .HasColumnType("int");
 
@@ -323,6 +329,12 @@ namespace Tidbeat.Migrations
                     b.Property<string>("Content")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("EditDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsEdited")
+                        .HasColumnType("bit");
 
                     b.Property<string>("SongId")
                         .HasColumnType("nvarchar(450)");

@@ -97,6 +97,8 @@ namespace Tidbeat.Controllers
                             if (user.Id == commentStored.User.Id) //Add for Roles
                             {
                                 commentStored.Content = comment.Content;
+                                commentStored.IsEdited = true;
+                                commentStored.EditDate = DateTime.Now;
                                 _context.Update(commentStored);
                                 await _context.SaveChangesAsync();
                             } 

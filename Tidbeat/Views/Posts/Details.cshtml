@@ -4,7 +4,6 @@
 @{
     ViewData["Title"] = "Details";
 }
-<!-- Falta Comentários-->
 
 <div class="mt-4 pt-5">
     @if (TempData.ContainsKey("Sucess"))
@@ -37,6 +36,11 @@
             {
                 <div class="d-flex flex-row"><div class="text-primary">Artista:</div><div>@Model.Band.Name </div><div class="text-primary">&nbsp;&nbsp;&nbsp;&nbsp;Link:&nbsp;</div><a href="https://open.spotify.com/artist/@Model.Band.BandId" target="_blank">Spotify - @Model.Band.Name</a></div>
             }
+            <div class="text-start">
+                <span>Data da Criação - @Model.CreationDate.Date.ToShortDateString()</span>@if (Model.IsEdited)
+                {
+                    <span>&nbsp;Editado em - @Model.EditDate.Date.ToShortDateString()</span>
+                }</div>
         </div>
     </div>
     <div>

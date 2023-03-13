@@ -54,7 +54,7 @@
             </div>
 
             <!-- Spotify Link -->
-            <div class="form-group row" style="margin-top: 15px;">
+            <div class="form-group row w-100" style="margin-top: 15px;">
                 <label class="col-sm-2 col-form-label w-100 text-start">
                     <span style="color: #6610F2; font-weight: bold;">Link:</span><a id="SongLink" href="@{
                             if (ViewBag.chooseSong != null) {
@@ -137,7 +137,7 @@
                     // yourCallbackHere()
                     hiddenInput.value = opts[i].getAttribute('data-value');
                     songLink.textContent = "Spotify - " + opts[i].innerText;
-                    songLink.setAttribute("href", opts[i].getAttribute('song-link'));
+                    songLink.setAttribute("href", "https://open.spotify.com/track/"+opts[i].getAttribute('data-value'));
                     boolCheck = false;
                     break;
                 }
@@ -183,6 +183,8 @@
                     // An item was selected from the list!
                     // yourCallbackHere()
                     hiddenInput.value = opts[i].getAttribute('data-value');
+                    songLink.textContent = "Spotify - " + opts[i].innerText;
+                    songLink.setAttribute("href", "https://open.spotify.com/artist/" + opts[i].getAttribute('data-value'));
                     boolCheck = false;
                     break;
                 }
