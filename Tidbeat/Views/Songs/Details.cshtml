@@ -68,7 +68,12 @@
 
     <!--All posts goes here-->
     <div class="col-lg-8 col-12 mt-5 pt-5 scrollable-posts">
-        <div class="fs-3">Posts</div>
+        <div class="d-flex justify-content-center mb-2">
+            <div class="fs-3 me-4">Posts</div>
+            <a class="btn btn-primary" asp-controller="Posts" asp-action="Create" asp-route-Idsong="@Model.Id">
+                Criar Post
+            </a>
+        </div>
         @if (allPosts.Count == 0) {
             <div>Não há posts... seja o primeiro a criar um post sobre esta música!</div>
             <img src="~/images/NoPostsImage.png" height="120" class="mt-5"/>

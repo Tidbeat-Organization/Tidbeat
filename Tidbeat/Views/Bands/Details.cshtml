@@ -45,7 +45,13 @@
 
     <!--All posts goes here-->
     <div class="col-lg-8 col-12 mt-5 pt-5 scrollable-posts">
-        <div class="fs-3">Posts</div>
+        <div class="d-flex justify-content-center mb-2">
+            <div class="fs-3 me-4">Posts</div>
+            <a class="btn btn-primary" asp-controller="Posts" asp-action="Create" asp-route-Idband="@Model.Id">
+                Criar Post
+            </a>
+
+        </div>
         @if (allPosts.Count == 0) {
             <div>Não há posts... seja o primeiro a criar um post sobre esta banda!</div>
             <img src="~/images/NoPostsImage.png" height="120" class="mt-5" />
@@ -59,20 +65,5 @@
                 <div class="ms-2">@post.Title</div>
             </div>
             }
-        <div class="d-flex align-items-center border border-2 border-primary p-1 rounded mb-2">
-            <div class="border-end border-2 border-primary pe-2">
-                <div>Placeholder</div>
-                <div>Utilizador</div>
-            </div>
-            <div class="ms-2">Placeholder</div>
-        </div>
-        <div class="d-flex align-items-center border border-2 border-primary p-1 rounded mb-2">
-            <div class="border-end border-2 border-primary pe-2">
-                <div>Placeholder</div>
-                <div>Utilizador</div>
-            </div>
-            <div class="ms-2">Placeholder</div>
-        </div>
-        
     </div>
 </div>
