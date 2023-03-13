@@ -11,7 +11,8 @@ namespace Tidbeat {
                 UserName = "afonsosemeano@gmail.com",
                 Email = "afonsosemeano@gmail.com",
                 BirthdayDate = DateTime.Now,
-                Gender = "Masculino"
+                Gender = "Masculino",
+                FavoriteSongId = null
             };
 
             //var createUser = await userManager.CreateAsync(normalUser, "Password_123");
@@ -38,12 +39,22 @@ namespace Tidbeat {
                 Band = null,
                 User = await userManager.FindByEmailAsync("afonsosemeano@gmail.com")
             };
+            var rating1 = new PostRating() {
+                Value = 5,
+                User = await userManager.FindByEmailAsync("afonsosemeano@gmail.com"),
+                Post = post1,
+            };
             var post2 = new Post() {
                 Title = "Great song",
                 Content = "This is an amazing song",
                 Song = song,
                 Band = null,
                 User = await userManager.FindByEmailAsync("afonsosemeano@gmail.com")
+            };
+            var rating2 = new PostRating() {
+                Value = 2,
+                User = await userManager.FindByEmailAsync("afonsosemeano@gmail.com"),
+                Post = post2,
             };
             var post3 = new Post() {
                 Title = "Incredible song",
@@ -106,6 +117,8 @@ namespace Tidbeat {
             context.Posts.Add(post7);
             context.Posts.Add(post8);
             context.Posts.Add(post9);
+            context.PostRatings.Add(rating1);
+            context.PostRatings.Add(rating2);
             context.SaveChanges();
         }
     }

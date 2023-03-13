@@ -17,15 +17,25 @@ namespace Tidbeat.Services {
 
         public async Task<FullTrack> GetSongAsync(string id) 
         {
-            var track = await _client.Tracks.Get(id);
-            return track;
+            try {                 
+                var track = await _client.Tracks.Get(id);
+                return track;
+            }
+            catch (APIException e) {
+                return null;
+            }
             //return new Song() { SongId = id, Name = track.Name, BandId = track.Artists[0].Id };
         }
 
         public async Task<FullArtist> GetBandAsync(string id) 
         {
-            var band = await _client.Artists.Get(id);
-            return band;
+            try {
+                var band = await _client.Artists.Get(id);
+                return band;
+            }
+            catch (APIException e) {
+                return null;
+            }
             //return new Band() { BandId = id, Name = band.Name, Image = band.Images[0].Url };
         } 
 
@@ -64,19 +74,37 @@ namespace Tidbeat.Services {
                 searchString += Search;
             }
             if (!string.IsNullOrEmpty(Gener)){
-                searchString += "genre:" + Gener;
+                searchString += " genre:" + Gener;
             }
             if (!string.IsNullOrEmpty(band))
             {
-                searchString += "artist:" + band;
+                searchString += " artist:" + band;
             }
             if (!string.IsNullOrEmpty(album))
             {
-                searchString += "album:" + album;
+                searchString += " album:" + album;
             }
-            if (!string.IsNullOrEmpty(yearStart) && yearStart.Length==4 && !string.IsNullOrEmpty(yearEnd) && yearEnd.Length == 4)
+            if (!string.IsNullOrEmpty(yearStart) && yearStart.Length == 4)
             {
-                searchString += "year:" + yearStart + "-"+yearEnd;
+                if (string.IsNullOrEmpty(yearEnd) || yearEnd.Length != 4)
+                {
+                    searchString += " year:" + yearStart + "-" + yearStart;
+                }
+                else
+                {
+                    searchString += " year:" + yearStart + "-" + yearEnd;
+                }
+            }
+            else if (!string.IsNullOrEmpty(yearEnd) && yearEnd.Length == 4)
+            {
+                if (string.IsNullOrEmpty(yearStart) || yearStart.Length != 4)
+                {
+                    searchString += " year:" + yearEnd + "-" + yearEnd;
+                }
+                else
+                {
+                    searchString += " year:" + yearStart + "-" + yearEnd;
+                }
             }
             SearchRequest searchTop = new SearchRequest(SearchRequest.Types.Track, searchString);
             var tracks = await _client.Search.Item(searchTop);
@@ -104,7 +132,7 @@ namespace Tidbeat.Services {
             }
             if (!string.IsNullOrEmpty(gener))
             {
-                searchString += "genre:" + gener;
+                searchString += " genre:" + gener;
             }
             if (string.IsNullOrEmpty(searchString))
             {

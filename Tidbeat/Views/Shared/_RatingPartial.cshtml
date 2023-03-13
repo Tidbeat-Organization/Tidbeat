@@ -1,0 +1,172 @@
+﻿@using Tidbeat.Enums
+@model Tuple<int, RatingType>
+@{
+    var id = Guid.NewGuid().ToString();
+    var averageId = "average-" + id;
+}
+
+@if (User.Identity.IsAuthenticated) {
+<div class="d-flex flex-row justify-content-center">
+    <div id="@averageId" class="me-2">...</div>
+    <div id=@id class="rating">
+    @for (int i = 1; i <= 5; i++) {
+        <i class="bi bi-star" role="button"></i>
+    }
+    </div>
+</div>
+
+
+<script>
+    (function () {
+        let element = document.getElementById('@id');
+        let stars = element.querySelectorAll('i');
+        let hasSelected = false;
+        let highestStarIndex = -1;
+        getUserRate(stars);
+        getAverageRating();
+        
+
+        stars.forEach((star, index) => {
+          let hoveredStarsRef = hoveredStars(index);
+          let resetStarsRef = resetStarsSelected(index);
+
+          star.addEventListener('mouseover', hoveredStarsRef);
+
+          star.addEventListener('mouseout', resetStarsRef);
+
+          star.addEventListener('click', () => {
+            resetStars();
+            hasSelected = false;
+            if (highestStarIndex === index) {
+                highestStarIndex = -1;
+                setUserRate(0);
+                return;
+            }
+            setUserRate(index + 1);
+
+            for (let i = 0; i <= index; i++) {
+                stars[i].classList.add('bi-star-fill');
+                stars[i].classList.remove('bi-star');
+                stars[i].classList.remove('hovered-star-color');
+            }
+
+            
+            highestStarIndex = index;
+            hasSelected = true;
+          });
+        });
+
+        function hoveredStars(index) {
+            return () => {
+                for (let i = 0; i <= index; i++) {
+                    stars[i].classList.add('bi-star-fill');
+                    stars[i].classList.add('hovered-star-color');
+                    stars[i].classList.remove('bi-star');
+                }
+            }
+        }
+
+        function resetStarsSelected(index) {
+            return () => {
+                if (hasSelected) {
+                    resetPreviousState();
+                    return;
+                }
+                resetStars();
+            }
+        }
+
+        function resetStars() {
+            for (let i = 0; i < stars.length; i++) {
+                stars[i].classList.add('bi-star');
+                stars[i].classList.remove('bi-star-fill');
+                stars[i].classList.remove('hovered-star-color');
+            }
+        }
+
+        function resetPreviousState() {
+            if (highestStarIndex === -1) return;
+            resetStars();
+            for (let i = 0; i <= highestStarIndex; i++) {
+                stars[i].classList.add('bi-star-fill');
+                stars[i].classList.remove('bi-star');
+                stars[i].classList.remove('hovered-star-color');
+            }
+        }
+
+        function getAverageRating() {
+            var averageDiv = document.getElementById('@averageId');
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', '/RatingPartial/GetAverageRatings?type=@(Model.Item2)&id=@(Model.Item1)');
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    var response = xhr.responseText;
+                    averageDiv.innerHTML = response;
+                    console.log(response);
+                } else {
+                    console.log('Request failed.  Returned status of ' + xhr.status);
+                }
+            };
+            xhr.send();
+        }
+
+        function getUserRate(stars) {
+            var xhr = new XMLHttpRequest();
+                xhr.open('GET', '/RatingPartial/GetUserRate?type=@(Model.Item2)&id=@(Model.Item1)');
+                xhr.onload = function () {
+                    if (xhr.status === 200) {
+                        var response = parseInt(xhr.responseText);
+                        if (response == 0) return;
+                        for (let i = 0; i < response; i++) {
+                            stars[i].classList.add('bi-star-fill');
+                            stars[i].classList.remove('bi-star');
+                            stars[i].classList.remove('hovered-star-color');
+                        }
+                        hasSelected = true;
+                        highestStarIndex = response - 1;
+                    } else {
+                        console.log('Request failed.  Returned status of ' + xhr.status);
+                    }
+                };
+                xhr.send();
+        }
+
+        function setUserRate(rate) {
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '/RatingPartial/SetUserRate?type=@(Model.Item2)&id=@(Model.Item1)&value=' + rate);
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    getAverageRating();
+                } else {
+                    console.log('Request failed.  Returned status of ' + xhr.status);
+                }
+            };
+            xhr.send();
+        }
+
+    })();
+</script>
+} else {
+    <div class="rating d-flex flex-row justify-content-center">
+        <div id="@averageId" class="me-2">...</div>
+        <i class="bi bi-star-fill"></i>
+    </div>
+
+    <script>
+        (function getAverageRating() {
+            var averageDiv = document.getElementById('@averageId');
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', '/RatingPartial/GetAverageRatings?type=@(Model.Item2)&id=@(Model.Item1)');
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    var response = xhr.responseText;
+                    averageDiv.innerHTML = response;
+                    console.log(response);
+                } else {
+                    console.log('Request failed.  Returned status of ' + xhr.status);
+                }
+            };
+            xhr.send();
+        })();
+    </script>
+}

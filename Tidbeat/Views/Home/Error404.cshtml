@@ -1,0 +1,15 @@
+﻿@{
+    ViewData["Title"] = "404";
+}
+<h1 style="margin-top: 100px; color: #6610F2; font-weight: bold;">@ViewData["Title"]</h1>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6 text-center">
+            <h3 style="margin-top: 10px;">Página não encontrada</h3>
+            <p style="margin-top: 20px;">Oops! A página que procuras parece não existir.</p>
+            <img src="https://icones.pro/wp-content/uploads/2021/06/icone-loupe-violet.png" alt="Detective Boy" style="pointer-events: none; height: 390px;">
+            <a href="@Url.Action("Index", "Home")" class="btn btn-primary" style="margin-left: 26.5px;">Retornar à página principal</a>
+        </div>
+    </div>
+</div>

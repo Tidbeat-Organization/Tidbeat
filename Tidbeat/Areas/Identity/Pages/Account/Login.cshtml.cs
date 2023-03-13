@@ -17,6 +17,9 @@ using Microsoft.Extensions.Logging;
 using Tidbeat.Models;
 using Microsoft.Extensions.FileSystemGlobbing.Internal;
 using System.Text.RegularExpressions;
+using Microsoft.AspNetCore.WebUtilities;
+using System.Text.Encodings.Web;
+using System.Text;
 
 namespace Tidbeat.Areas.Identity.Pages.Account
 {
@@ -24,12 +27,16 @@ namespace Tidbeat.Areas.Identity.Pages.Account
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IEmailSender _emailSender;
         private static string Pattern = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&_-])[A-Za-z\\d@$!%*?&_-]{6,}$";
 
-        public LoginModel(SignInManager<ApplicationUser> signInManager, ILogger<LoginModel> logger)
+        public LoginModel(SignInManager<ApplicationUser> signInManager, ILogger<LoginModel> logger, UserManager<ApplicationUser> userManager, IEmailSender emailSender)
         {
             _signInManager = signInManager;
             _logger = logger;
+            _userManager = userManager;
+            _emailSender = emailSender;
         }
 
         /// <summary>
@@ -140,7 +147,26 @@ namespace Tidbeat.Areas.Identity.Pages.Account
                         _logger.LogWarning("User account locked out.");
                         //return RedirectToPage("./Lockout");
                         ModelState.AddModelError("Danger", "Conta bloqueada por 10 minutos.");
-                    }
+                    } 
+                    if (result.IsNotAllowed) 
+                    {
+                        var user = await _userManager.FindByEmailAsync(Input.Email);
+                        if (user != null && !await _userManager.CheckPasswordAsync(user, Input.Password)) {
+                            ModelState.AddModelError("Danger", "Tentativa de Login falhada. Por favor, verifique o seu email ou a sua password.");
+                        } else {
+                            ModelState.AddModelError("Danger", "A sua conta ainda não foi ativada. Foi enviado um novo pedido de verificação. Por favor, verifique o seu email.");
+                            var userId = await _userManager.GetUserIdAsync(user);
+                            var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                            code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+                            var callbackUrl = Url.Page(
+                                "/Account/ConfirmEmail",
+                                pageHandler: null,
+                                values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
+                                protocol: Request.Scheme);
+                            await _emailSender.SendEmailAsync(Input.Email, "TIDBEAT - Confirmar o teu mail",
+                                $"Por favor, confirma a tua conta através do link, <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicando aqui</a>.");
+                        }
+                    } 
                     else
                     {
                         ModelState.AddModelError("Danger", "Tentativa de Login falhada. Por favor, verifique o seu email ou a sua password.");
@@ -153,5 +179,12 @@ namespace Tidbeat.Areas.Identity.Pages.Account
             TempData["Password"] = Input.Password;
             return Page();
         }
+        /*
+        [HttpGet]
+        public IActionResult Login(string returnUrl = "/")
+        {
+            return Challenge(new AuthenticationProperties { RedirectUri = returnUrl }, "Google");
+        }
+        */
     }
 }

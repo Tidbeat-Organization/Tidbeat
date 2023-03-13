@@ -5,45 +5,74 @@
 
 @{
     ViewData["Title"] = "Bands Page";
+    Console.WriteLine("Total de Items: " + ViewBag.Result.Artists.Items);
 }
 
 <div class="mt-4 pt-5">
-    <div class="mx-3 mt-10">
-        <div id="filter" class="border border-3 border-dark rounded pb-2 mt-10">
+    <div class="mx-3">
+        <div id="filter" class="pb-2">
             <div class="display-6 text-primary text-left d-flex w-2">Filtros</div>
             <div class="d-flex flex-row flex-wrap w-md-100 flex-md-nowrap">
-                <div class="input-group d-flex flex-column px-3">
+                <div class="input-group d-flex flex-column px-3 flex-grow-1">
+                    <div class="text-start">Nome:</div>
+                    <input value="@TempData?["Search"]" type="search" id="formSearching" class="w-100 rounded form-control form-outline d-flex flex-row" placeholder="Search" />
+                </div>
+                <div class="input-group d-flex flex-column px-3 flex-grow-1">
                     <div class="align-self-start">Género:</div>
                     <div class="form-outline d-flex flex-row">
-                        <input type="search" id="formGender" class="form-control" placeholder="Search" value="@if (TempData.ContainsKey("Gener")){
-                        @TempData["Gener"]
-;}" />
+                        <select class="form-control w-100" id="formGender" name="formGender">
+                            <!option selected value="">Escolha um Género</!option>
+                            <!option value="rock" @(TempData["Gener"]?.ToString() == "rock" ? "selected" : "")>Rock</!option>
+                            <!option value="pop" @(TempData["Gener"]?.ToString() == "pop" ? "selected" : "")>Pop</!option>
+                            <!option value="kids" @(TempData["Gener"]?.ToString() == "kids" ? "selected" : "")>Crianças</!option>
+                            <!option value="funk" @(TempData["Gener"]?.ToString() == "funk" ? "selected" : "")>Funk</!option>
+                            <!option value="classical" @(TempData["Gener"]?.ToString() == "classical" ? "selected" : "")>Clássica</!option>
+                            <!option value="country" @(TempData["Gener"]?.ToString() == "country" ? "selected" : "")>Country</!option>
+                            <!option value="dance" @(TempData["Gener"]?.ToString() == "dance" ? "selected" : "")>Dança</!option>
+                            <!option value="metal" @(TempData["Gener"]?.ToString() == "metal" ? "selected" : "")>Metal</!option>
+                            <!option value="disco" @(TempData["Gener"]?.ToString() == "disco" ? "selected" : "")>Disco</!option>
+                            <!option value="folk" @(TempData["Gener"]?.ToString() == "folk" ? "selected" : "")>Folk</!option>
+                            <!option value="hip-hop" @(TempData["Gener"]?.ToString() == "hip-hop" ? "selected" : "")>Hip-Hop</!option>
+                            <!option value="indian" @(TempData["Gener"]?.ToString() == "indian" ? "selected" : "")>Indian</!option>
+                            <!option value="k-pop" @(TempData["Gener"]?.ToString() == "k-pop" ? "selected" : "")>K-Pop</!option>
+                            <!option value="punk" @(TempData["Gener"]?.ToString() == "punk" ? "selected" : "")>Punk</!option>
+                            <!option value="piano" @(TempData["Gener"]?.ToString() == "piano" ? "selected" : "")>Piano</!option>
+                            <!option value="reggae" @(TempData["Gener"]?.ToString() == "reggae" ? "selected" : "")>Reggae</!option>
+                            <!option value="techno" @(TempData["Gener"]?.ToString() == "techno" ? "selected" : "")>Techno</!option>
+                        </select>
                     </div>
                 </div>
-                <div class="input-group d-flex flex-column px-3">
+                <div class="input-group d-flex flex-column px-3 flex-grow-1 rounded">
                     <div class="align-self-start">Ordenar:</div>
-                    <select class="form-control w-100" id="Ordere" name="Orderby">
+                    <select class="form-control w-100 rounded" id="Ordere" name="Orderby">
                         <!option value="1" @(TempData["Order"]?.ToString() == "1" ? "selected" : "")>Alfabeticamente(a-z)</!option>
                         <!option value="2" @(TempData["Order"]?.ToString() == "2" ? "selected" : "")>Alfabeticamente(z-a)</!option>
                         <!option value="3" @(TempData["Order"]?.ToString() == "3" ? "selected" : "")>Mais Popular</!option>
                         <!option value="4" @(TempData["Order"]?.ToString() == "4" ? "selected" : "")>Menos Popular</!option>
                     </select>
                 </div>
-                <div class="align-self-center px-3 pt-3 pt-md-4">
-                    <img id="imgBand" class="no-padding align-self-center px-3" src="~/images/SearchIcon.png" height="37" width="45" onclick="actualEvent()" />
+                <div class="align-self-center px-3 pt-3 pt-md-2">
+                    <button class="btn btn-primary">
+                        <img id="imgBand" class="no-padding align-self-center px-3" src="~/images/SearchIcon.png" height="37" width="45" onclick="actualEvent()" />
+                    </button>
                 </div>
             </div>
         </div>
+        <div class="border border-1 border-light-grey my-4"></div>
         <div>
             @if (ViewBag.Result.Artists.Items.Count > 0)
             {
                 <h2 class="d-flex">Bandas e Artistas</h2>
                 @foreach (var item in ViewBag.Result.Artists.Items)
                 {
-                    <div id="@item.Uri" class="border border-3 border-primary rounded mt-2 d-inline-flex flex-wrap justify-content-between mx-2 mx-md-5 w-25 flex-md-row flex-column">
-                        <img src="@item.Images[0].Url" alt="@item.Name" width="100" height="100">
-                        <div class="d-flex text-start justify-content-start align-content-start align-self-center font-weight-bold w-50">@item.Name</div>
-                    </div>
+                    <a href="@Url.Action("Details", "Bands", new { id = item.Id })" id="@item.Uri" class="hover-background-grey text-decoration-none text-black border border-3 border-primary rounded mt-2 d-inline-flex flex-wrap justify-content-lg-between align-content-center mx-2 mx-md-5 w-25 flex-lg-row flex-column">
+                        @if (item.Images.Count != 0) {
+                            <img src="@item.Images[0].Url" alt="@item.Name" width="100" height="100">
+                        } else {
+                            <img src="~/images/Empty_Artist_Image.png" alt="@item.Name" width="100" height="100">
+                        }
+                        <div class="d-flex text-lg-start text-center justify-content-start align-content-start align-self-center font-weight-bold w-50">@item.Name</div>
+                    </a>
                 }
             }else
             {
@@ -56,11 +85,12 @@
         function actualEvent() {
             let inputOrder = document.getElementById("Ordere");
             let inputGener = document.getElementById("formGender");
+            let inputSearch = document.getElementById("formSearching");
             let path = window.location.href.split("?")[0];
-            if (inputGener.value || inputOrder.value) {
+            if (inputSearch.value || inputGener.value || inputOrder.value) {
                 path += "?";
                 let params = new URLSearchParams({
-                    searchKey: "@if (TempData.ContainsKey("Search")){@TempData["Search"];}",
+                    searchKey: inputSearch.value,
                     gener: inputGener.value,
                     order: inputOrder.value,
                 })
@@ -75,7 +105,8 @@
                 let focusElement = document.activeElement;
                 let inputOrder = document.getElementById("Ordere");
                 let inputGener = document.getElementById("formGender");
-                if (inputGener === focusElement || inputOrder === focusElement) {
+                let inputSearch = document.getElementById("formSearching");
+            if (inputGener === focusElement || inputOrder === focusElement || inputSearch === focusElement) {
                     //only if one of the elements is higthligthed
                     event.preventDefault();
                     actualEvent();
