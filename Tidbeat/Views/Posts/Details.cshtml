@@ -48,9 +48,12 @@
     @if (User.Identity.IsAuthenticated)
     {
         <form class="w-100 mx-auto d-flex flex-column mb-1" asp-controller="Comments" asp-action="Create" id="commentForm" method="post">
-            <input asp-for="Content" class="form-control second-phase mt-0 rounded border-primary" id="commentText" autocomplete="text" aria-required="true" value=""/>
-        <input name="PostId" class="d-none" id="commentPostID" value="@Model.PostId" />
-    </form>
+            <div class="d-flex">
+                <input asp-for="Content" class="form-control second-phase mt-0 rounded border-primary" id="commentText" autocomplete="text" aria-required="true" value=""/>
+                <button type="submit" class="ms-2 btn btn-primary">Submeter</button>
+            </div>
+            <input name="PostId" hidden id="commentPostID" value="@Model.PostId" />
+        </form>
     }
 
         <div>

@@ -49,11 +49,12 @@ namespace Tidbeat.Controllers
                             comment.User = user;
                             _context.Add(comment);
                             await _context.SaveChangesAsync();
+                            return Redirect("/Posts/Details/" + post.PostId);
                         }
                     }
                 }
             }
-            return RedirectToAction("Index","Posts");
+            return Redirect("/Posts/Details/" + Request.Form["PostId"]);
         }
 
         // GET: Posts/Edit/5
@@ -128,14 +129,19 @@ namespace Tidbeat.Controllers
             {
                 return Problem("Entity set 'ApplicationDbContext.Comment'  is null.");
             }
-            var comment = await _context.Comment.FindAsync(id);
+            var ratings = await _context.CommentRatings.Where(cr => cr.Comment.CommentId == id).ToListAsync();
+
+            foreach(var rating in ratings) {
+                _context.CommentRatings.Remove(rating);
+            }
+            var comment = await _context.Comment.Include(c => c.post).FirstOrDefaultAsync(c => c.CommentId == id);
             if (comment != null)
             {
                 _context.Comment.Remove(comment);
             }
             
             await _context.SaveChangesAsync();
-            return RedirectToAction("Index", "Posts");
+            return Redirect("/Posts/Details/" + comment.post.PostId);
         }
 
         private bool CommentExists(int id)
