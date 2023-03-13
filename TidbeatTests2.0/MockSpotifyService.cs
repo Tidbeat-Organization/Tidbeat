@@ -133,18 +133,18 @@ namespace TidbeatTests2._0
                 Name = "Test Song",
                 Uri = "hello"
             };
-            track.Artists.Add(new SimpleArtist
+            /*track.Artists.Add(new SimpleArtist
             {
                 Name = "Artist Name",
                 Id = "66CXWjxzNUsdJxJ2JdwvnR",
                 Uri = "hello"
-            });
+            });*/
             return Task.FromResult(track);
         }
 
         public Task<List<FullTrack>> GetTop3SongsAsync(string artistId)
         {
-            var track1 = new FullTrack
+            /*var track1 = new FullTrack
             {
                 Id = artistId,
                 Name = "Test Song1",
@@ -179,11 +179,11 @@ namespace TidbeatTests2._0
                 Name = "Artist Name3",
                 Id = artistId, 
                 Uri="hello"
-            });
+            });*/
             List<FullTrack> result = new List<FullTrack>();
-            result.Add(track1);
+          /*  result.Add(track1);
             result.Add(track2);
-            result.Add(track3);
+            result.Add(track3);*/
             return Task.FromResult(result);
         }
 

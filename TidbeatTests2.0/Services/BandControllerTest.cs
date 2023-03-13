@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Moq;
 using SpotifyAPI.Web;
 using System;
 using System.Collections.Generic;
@@ -29,9 +32,11 @@ namespace TidbeatTests2._0.Services
         {
             // Arrange
             var controller = new BandsController(_context,_spotify);
+            HttpContext tempDataHttpContext = new HttpContext();
+            controller.TempData = new TempDataDictionary(tempDataHttpContext);
 
             // Act
-            var result = await controller.Index("","","");
+            var result = await controller.Index("name","name","name");
 
             // Assert
             var viewResult = Assert.IsAssignableFrom<IActionResult>(result);
