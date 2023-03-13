@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Tidbeat.Migrations
 {
-    public partial class ShoudWorkNow : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -223,7 +223,6 @@ namespace Tidbeat.Migrations
                 });
 
             migrationBuilder.CreateTable(
-<<<<<<<< HEAD:Tidbeat/Migrations/20230313111119_Initial.cs
                 name: "Comment",
                 columns: table => new
                 {
@@ -243,7 +242,12 @@ namespace Tidbeat.Migrations
                         principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Comment_Post_PostId",
-========
+                        column: x => x.PostId,
+                        principalTable: "Post",
+                        principalColumn: "PostId");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "PostRating",
                 columns: table => new
                 {
@@ -264,7 +268,6 @@ namespace Tidbeat.Migrations
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_PostRating_Post_PostId",
->>>>>>>> dev:Tidbeat/Migrations/20230312210226_ShoudWorkNow.cs
                         column: x => x.PostId,
                         principalTable: "Post",
                         principalColumn: "PostId");
@@ -368,11 +371,10 @@ namespace Tidbeat.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-<<<<<<<< HEAD:Tidbeat/Migrations/20230313111119_Initial.cs
                 name: "Comment");
-========
+
+            migrationBuilder.DropTable(
                 name: "PostRating");
->>>>>>>> dev:Tidbeat/Migrations/20230312210226_ShoudWorkNow.cs
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

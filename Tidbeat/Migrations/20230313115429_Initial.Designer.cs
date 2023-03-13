@@ -12,13 +12,8 @@ using Tidbeat.Data;
 namespace Tidbeat.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-<<<<<<<< HEAD:Tidbeat/Migrations/20230313111119_Initial.Designer.cs
-    [Migration("20230313111119_Initial")]
+    [Migration("20230313115429_Initial")]
     partial class Initial
-========
-    [Migration("20230312210226_ShoudWorkNow")]
-    partial class ShoudWorkNow
->>>>>>>> dev:Tidbeat/Migrations/20230312210226_ShoudWorkNow.Designer.cs
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
