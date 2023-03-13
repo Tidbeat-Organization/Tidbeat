@@ -9,13 +9,13 @@ using Tidbeat.Services;
 
 namespace TidbeatTests2._0.Services
 {
-    public class SpotifyServiceTest
+    public class SpotifyServiceTestPartII
     {
 
         private readonly ISpotifyService _spotifyService;
 
 
-        public SpotifyServiceTest()
+        public SpotifyServiceTestPartII()
         {
             var configuration = new ConfigurationBuilder()
             .AddJsonFile("appsettings.json")
