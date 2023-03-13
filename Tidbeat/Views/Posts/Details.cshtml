@@ -84,6 +84,9 @@
                     }
                 </div>
             }
+            @if (ViewBag.commentsPosts.Count == 0) {
+                <div>Não há comentários... Seja o primeiro a comentar!</div>
+            }
         </div>
         @if (Model.User.Id == ViewBag.currentUser?.Id) {
         <div class="m-2">
