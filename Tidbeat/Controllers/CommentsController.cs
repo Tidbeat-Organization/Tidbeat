@@ -65,7 +65,7 @@ namespace Tidbeat.Controllers
                 return NotFound();
             }
 
-            var comment = await _context.Comment.FindAsync(id);
+            var comment = await _context.Comment.Include(c => c.post).FirstOrDefaultAsync(c => c.CommentId == id);
             if (comment == null)
             {
                 return NotFound();
@@ -92,7 +92,7 @@ namespace Tidbeat.Controllers
                     if (User?.Identity.IsAuthenticated == true)
                     {
                         var user = await _userManager.GetUserAsync(User);
-                        var commentStored = _context.Comment.Find(comment.CommentId);
+                        var commentStored = await _context.Comment.Include(c => c.post).FirstOrDefaultAsync(c => c.CommentId == comment.CommentId);
                         if (commentStored != null) {
                             if (user.Id == commentStored.User.Id) //Add for Roles
                             {
@@ -101,6 +101,7 @@ namespace Tidbeat.Controllers
                                 await _context.SaveChangesAsync();
                             } 
                         }
+                        return Redirect("../../Posts/Details/" + commentStored.post.PostId);
                     }
                 }
                 catch (DbUpdateConcurrencyException)
@@ -141,7 +142,7 @@ namespace Tidbeat.Controllers
             }
             
             await _context.SaveChangesAsync();
-            return Redirect("/Posts/Details/" + comment.post.PostId);
+            return Redirect("/Posts/Details/" + comment.post.PostId.ToString());
         }
 
         private bool CommentExists(int id)
