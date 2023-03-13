@@ -212,38 +212,12 @@ namespace Tidbeat.Controllers
                 try
                 {
                     var user = await _userManager.GetUserAsync(User);
-                    if (user.Equals(post.User)) //Add for Roles
-                    {;
-                        if (post.Band != null)
-                        {
-                            var band = await _context.Bands.FindAsync(post.Band.BandId);
-                            if (band == null)
-                            {
-                                Band newBand = new Band();
-                                var SpotifyBand = await _spotifyService.GetBandAsync(post.Band.BandId);
-                                newBand.BandId = post.Band.BandId;
-                                newBand.Name = SpotifyBand.Name;
-                                newBand.Image = SpotifyBand.Images[0].Url;
-                                band = newBand;
-                                _context.Bands.Add(band);
-                            }
-                        }
-                        if (post.Song != null)
-                        {
-                            var song = await _context.Songs.FindAsync(post.Song.SongId);
-                            if (song == null)
-                            {
-                                Song newSong = new Song();
-                                var SpotifySong = await _spotifyService.GetSongAsync(post.Song.SongId);
-                                newSong.SongId = post.Song.SongId;
-                                newSong.Name = SpotifySong.Name;
-                                var SongBand = await _spotifyService.GetBandAsync(SpotifySong.Artists[0].Id);
-                                newSong.Band = new Band() { Name = SpotifySong.Artists[0].Name, BandId = SpotifySong.Artists[0].Id, Image = SongBand.Images[0].Url };
-                                song = newSong;
-                                _context.Songs.Add(song);
-                            }
-                        }
-                        _context.Update(post);
+                    var ogPost = _context.Posts.Find(post.PostId);
+                    if (user.Id == ogPost.User.Id) //Add for Roles
+                    {
+                        ogPost.Content = post.Content;
+                        ogPost.Title = post.Title;
+                        _context.Update(ogPost);
                         TempData["Sucess"] = "O seu post foi atualizado com sucesso.";
                         await _context.SaveChangesAsync();
                     }
@@ -265,7 +239,7 @@ namespace Tidbeat.Controllers
                 }
                 return Redirect("Details/" + post.PostId);
             }
-            return View(post);
+            return Redirect("Details/" + post.PostId); 
         }
 
         // GET: Posts/Delete/5
@@ -299,6 +273,7 @@ namespace Tidbeat.Controllers
             var post = await _context.Posts.FindAsync(id);
             if (post != null)
             {
+                _context.Comment.RemoveRange(_context.Comment.Where(x => x.post.PostId == post.PostId).ToList());
                 _context.Posts.Remove(post);
                 await _context.SaveChangesAsync();
 
