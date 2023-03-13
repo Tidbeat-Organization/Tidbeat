@@ -202,17 +202,15 @@ namespace Tidbeat.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("PostId,Title,Content")] Post post)
         {
-            if (id != post.PostId)
-            {
-                return NotFound();
-            }
-
             if (ModelState.IsValid)
             {
                 try
                 {
                     var user = await _userManager.GetUserAsync(User);
-                    var ogPost = _context.Posts.Find(post.PostId);
+                    var ogPost = _context.Posts.Find(id);
+                    if (ogPost == null) {
+                        return NotFound();
+                    }
                     if (user.Id == ogPost.User.Id) //Add for Roles
                     {
                         ogPost.Content = post.Content;
@@ -228,7 +226,7 @@ namespace Tidbeat.Controllers
                 catch (DbUpdateConcurrencyException)
                 {
                     TempData["Insucess"] = "Ocorreu um erro";
-                    if (!PostExists(post.PostId))
+                    if (!PostExists(id))
                     {
                         return NotFound();
                     }
@@ -237,9 +235,9 @@ namespace Tidbeat.Controllers
                         throw;
                     }
                 }
-                return Redirect("Details/" + post.PostId);
+                return Redirect("../Details/" + id);
             }
-            return Redirect("Details/" + post.PostId); 
+            return Redirect("../Details/" + id); 
         }
 
         // GET: Posts/Delete/5
