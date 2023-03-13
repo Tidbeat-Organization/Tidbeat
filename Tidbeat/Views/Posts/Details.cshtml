@@ -1,4 +1,5 @@
-﻿@model Tidbeat.Models.Post
+﻿@using Tidbeat.Enums
+@model Tidbeat.Models.Post
 
 @{
     ViewData["Title"] = "Details";
@@ -42,6 +43,7 @@
         <h4 class="d-flex ms-2">@Model.Title</h4>
         <div class="text-start" >@Model.Content</div>
     </div>
+    @Html.RenderPartialAsync("_RatingPartial", Tuple.Create(Model.PostId, RatingType.Post))
     <div class="text-start mt-2 mb-2">Comentários:<hr class="m-0 mb-2"/></div>
     <form class="w-100 mx-auto d-flex flex-column mb-1" asp-controller="Comments" asp-action="Create" id="commentForm" method="post">
         <input asp-for="Content" class="form-control second-phase mt-0 rounded border-primary" id="commentText" autocomplete="text" aria-required="true" value=""/>
