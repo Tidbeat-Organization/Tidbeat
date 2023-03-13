@@ -2,6 +2,7 @@
 using SpotifyAPI.Web;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,14 +21,14 @@ namespace TidbeatTests2._0.Services
         {
             var fixture = new ApplicationDbContextFixture();
             _context = fixture.ApplicationDbContext;
-            _spotify = new SpotifyService();
+            _spotify = new SpotifyService(new Configuration());
         }
 
         [Fact]
         public async Task IndexBandsControllerTestAsync()
         {
             // Arrange
-            var controller = new BandsController(_context,);
+            var controller = new BandsController(_context,_spotify);
 
             // Act
             var result = await controller.Index("","","");
@@ -41,7 +42,7 @@ namespace TidbeatTests2._0.Services
         public async void DetailsBandsControllerTest()
         {
             // Arrange
-            var controller = new BandsController(_context,);
+            var controller = new BandsController(_context, _spotify);
 
             // Act
             var result = await controller.Details("66CXWjxzNUsdJxJ2JdwvnR");

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,7 +24,7 @@ namespace TidbeatTests2._0.Services
             var fixture = new ApplicationDbContextFixture();
             _context = fixture.ApplicationDbContext;
             _userManager = fixture.UserManager;
-            _spotify = new SpotifyService();
+            _spotify = new SpotifyService(new Configuration());
         }
 
         [Fact]
@@ -44,7 +45,7 @@ namespace TidbeatTests2._0.Services
         public async void DetailsBandsControllerTest()
         {
             // Arrange
-            var controller = new SongsController(_context,);
+            var controller = new SongsController(_context, _spotify, _userManager);
 
             // Act
             var result = await controller.Details("6ocbgoVGwYJhOv1GgI9NsF");
