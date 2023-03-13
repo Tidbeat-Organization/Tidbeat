@@ -6,43 +6,33 @@
 }
 
 <div style="margin-top: 100px;">
-<h3>Índice</h3>
+    @if (TempData["Message"] != null)
+    {
+        <div class="alert alert-success">@TempData["Message"]</div>
+    }
 
-<p>
-    <a asp-action="Create">Criar novo post</a>
-</p>
+    <h3 style="color: #6610F2;">Posts Recomendados</h3>
+    <hr />
+    <p>
+        <a asp-action="Create" class="btn btn-primary">Criar novo post</a>
+    </p>
 </div>
 
-<partial>@Html.Partial("_RatingPartial", Tuple.Create(5, RatingType.Post))</partial>
-<partial>@Html.Partial("_RatingPartial", Tuple.Create(6, RatingType.Post))</partial>
-
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Title)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Content)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Content)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.PostId">Editar</a> |
-                <a asp-action="Details" asp-route-id="@item.PostId">Detalhes</a> |
-                <a asp-action="Delete" asp-route-id="@item.PostId">Apagar</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<div class="row">
+    @foreach (var item in Model)
+    {
+        <div class="col-md-4">
+            <div class="card mb-4 shadow-sm">
+                <div class="card-body text-center">
+                    <h5 class="card-title">@Html.DisplayFor(modelItem => item.Title)</h5>
+                    <p class="card-text">@Html.Raw(item.Content.Length > 5 ? item.Content.Substring(0, 15) + "..." : item.Content)</p>
+                    <div class="d-flex justify-content-center align-items-center">
+                        <div class="btn-group">
+                            <a asp-action="Details" asp-route-id="@item.PostId" style="background-color:#6610F2;color:#fff;" class="btn btn-sm btn-outline-secondary">Detalhes</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
