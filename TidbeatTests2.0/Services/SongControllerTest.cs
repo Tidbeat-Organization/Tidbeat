@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Moq;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -32,6 +35,11 @@ namespace TidbeatTests2._0.Services
         {
             // Arrange
             var controller = new SongsController(_context, _spotify, _userManager);
+            var httpContext = new DefaultHttpContext();
+            var tempData = new TempDataDictionary(httpContext, Mock.Of<ITempDataProvider>());
+
+            controller.TempData = tempData;
+
 
             // Act
             var result = await controller.Index("","","","","","");
@@ -46,6 +54,10 @@ namespace TidbeatTests2._0.Services
         {
             // Arrange
             var controller = new SongsController(_context, _spotify, _userManager);
+            var httpContext = new DefaultHttpContext();
+            var tempData = new TempDataDictionary(httpContext, Mock.Of<ITempDataProvider>());
+            controller.TempData = tempData;
+
 
             // Act
             var result = await controller.Details("6ocbgoVGwYJhOv1GgI9NsF");

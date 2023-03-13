@@ -49,41 +49,25 @@ namespace TidbeatTests2._0
                 Name = "Test Song1",
                 Uri = "hello"
             };
-            track1.Artists.Add(new SimpleArtist
-            {
-                Name = "Artist Name1",
-                Id = "1",
-                Uri = "hello"
-            });
+
             var track2 = new FullTrack
             {
                 Id = "1",
                 Name = "Test Song2",
                 Uri = "hello"
             };
-            track2.Artists.Add(new SimpleArtist
-            {
-                Name = "Artist Name2",
-                Id = "1",
-                Uri = "hello"
-            });
+
             var track3 = new FullTrack
             {
                 Id = "1",
                 Name = "Test Song3",
                 Uri = "hello"
             };
-            track2.Artists.Add(new SimpleArtist
-            {
-                Name = "Artist Name3",
-                Id = "1",
-                Uri = "hello"
-            });
             List<FullTrack> result = new List<FullTrack>();
             result.Add(track1);
             result.Add(track2);
             result.Add(track3);
-            response.Tracks.Items = result;
+            //response.Tracks.Items = result;
             return Task.FromResult(response);
         }
 

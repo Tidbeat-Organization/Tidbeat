@@ -31,9 +31,10 @@ namespace TidbeatTests2._0.Services
         public async Task IndexBandsControllerTestAsync()
         {
             // Arrange
-            var controller = new BandsController(_context,_spotify);
-            HttpContext tempDataHttpContext = new HttpContext();
-            controller.TempData = new TempDataDictionary(tempDataHttpContext);
+            var controller = new BandsController(_context, _spotify);
+            var httpContext = new DefaultHttpContext();
+            var tempData = new TempDataDictionary(httpContext, Mock.Of<ITempDataProvider>());
+            controller.TempData = tempData;
 
             // Act
             var result = await controller.Index("name","name","name");
