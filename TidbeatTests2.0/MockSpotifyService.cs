@@ -18,35 +18,76 @@ namespace TidbeatTests2._0
             _mock = new Mock<ISpotifyService>();
         }
 
-        public async Task<int?> GetAmountBandAlbumAsync(string id)
+        public Task<int?> GetAmountBandAlbumAsync(string id)
         {
-            return await Task.FromResult(0);
+            return Task.FromResult((int?)0);
         }
 
-        public async Task<FullArtist> GetBandAsync(string id)
+        public Task<FullArtist> GetBandAsync(string id)
         {
-            return await Task.FromResult(new FullArtist { Id = id, Name = "Test Artist" });
+            return Task.FromResult(new FullArtist { Id = id, Name = "Test Artist" , Uri="hello"});
         }
 
-        public async Task<SearchResponse> GetMultipleBandsAsync(string searchKey)
-        {
-            SearchResponse response = new SearchResponse();
-            return await Task.FromResult(response);
-        }
-
-        public async Task<SearchResponse> GetMultipleSongsAsync(string searchKey)
+        public Task<SearchResponse> GetMultipleBandsAsync(string searchKey)
         {
             SearchResponse response = new SearchResponse();
-            return await Task.FromResult(response);
+            return Task.FromResult(response);
         }
 
-        public async Task<SearchResponse> GetSearchBandsbyValuesAsync(string searchKey, string gener)
+        public Task<SearchResponse> GetMultipleSongsAsync(string searchKey)
         {
             SearchResponse response = new SearchResponse();
-            return await Task.FromResult(response);
+            return Task.FromResult(response);
         }
 
-        public async Task<SearchResponse> GetSearchSongsbyValuesAsync(string Search, string Gener, string band, string album, string yearStart, string yearEnd)
+        public Task<SearchResponse> GetSearchBandsbyValuesAsync(string searchKey, string gener)
+        {
+            SearchResponse response = new SearchResponse();
+            var track1 = new FullTrack
+            {
+                Id = "1",
+                Name = "Test Song1",
+                Uri = "hello"
+            };
+            track1.Artists.Add(new SimpleArtist
+            {
+                Name = "Artist Name1",
+                Id = "1",
+                Uri = "hello"
+            });
+            var track2 = new FullTrack
+            {
+                Id = "1",
+                Name = "Test Song2",
+                Uri = "hello"
+            };
+            track2.Artists.Add(new SimpleArtist
+            {
+                Name = "Artist Name2",
+                Id = "1",
+                Uri = "hello"
+            });
+            var track3 = new FullTrack
+            {
+                Id = "1",
+                Name = "Test Song3",
+                Uri = "hello"
+            };
+            track2.Artists.Add(new SimpleArtist
+            {
+                Name = "Artist Name3",
+                Id = "1",
+                Uri = "hello"
+            });
+            List<FullTrack> result = new List<FullTrack>();
+            result.Add(track1);
+            result.Add(track2);
+            result.Add(track3);
+            response.Tracks.Items = result;
+            return Task.FromResult(response);
+        }
+
+        public Task<SearchResponse> GetSearchSongsbyValuesAsync(string Search, string Gener, string band, string album, string yearStart, string yearEnd)
         {
            /* var track1 = new FullTrack
             {
@@ -81,61 +122,69 @@ namespace TidbeatTests2._0
             result.Add(track1);
             result.Add(track2);*/
             SearchResponse response = new SearchResponse();
-            return await Task.FromResult(response);
+            return Task.FromResult(response);
         }
 
-        public async Task<FullTrack> GetSongAsync(string id)
+        public Task<FullTrack> GetSongAsync(string id)
         {
             var track = new FullTrack
             {
                 Id = id,
-                Name = "Test Song"
+                Name = "Test Song",
+                Uri = "hello"
             };
             track.Artists.Add(new SimpleArtist
             {
                 Name = "Artist Name",
-                Id = "66CXWjxzNUsdJxJ2JdwvnR"
+                Id = "66CXWjxzNUsdJxJ2JdwvnR",
+                Uri = "hello"
             });
-            return await Task.FromResult(track);
+            return Task.FromResult(track);
         }
 
-        public async Task<List<FullTrack>> GetTop3SongsAsync(string artistId)
+        public Task<List<FullTrack>> GetTop3SongsAsync(string artistId)
         {
             var track1 = new FullTrack
             {
                 Id = artistId,
-                Name = "Test Song1"
+                Name = "Test Song1",
+                Uri = "hello"
             };
             track1.Artists.Add(new SimpleArtist
             {
                 Name = "Artist Name1",
-                Id = artistId
+                Id = artistId,
+                Uri = "hello"
             });
             var track2 = new FullTrack
             {
                 Id = artistId,
-                Name = "Test Song2"
+                Name = "Test Song2",
+                Uri = "hello"
             };
             track2.Artists.Add(new SimpleArtist
             {
                 Name = "Artist Name2",
-                Id = artistId
+                Id = artistId,
+                Uri = "hello"
             });
             var track3 = new FullTrack
             {
                 Id = artistId,
-                Name = "Test Song3"
+                Name = "Test Song3",
+                Uri = "hello"
             };
             track2.Artists.Add(new SimpleArtist
             {
                 Name = "Artist Name3",
-                Id = artistId
+                Id = artistId, 
+                Uri="hello"
             });
             List<FullTrack> result = new List<FullTrack>();
             result.Add(track1);
             result.Add(track2);
             result.Add(track3);
-            return await Task.FromResult(result);
+            return Task.FromResult(result);
         }
 
     }
