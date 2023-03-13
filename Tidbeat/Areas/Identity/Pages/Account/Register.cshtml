@@ -81,7 +81,7 @@
         <div class="d-flex flex-row justify-content-evenly mt-5 w-auto">
             <a id="reg-phase-return-btn" class="second-phase btn btn-primary mr-5">Retornar</a>
             <a class="btn btn-primary ml-5" asp-page="./Login">Efetuar Login</a>
-            <a id="reg-phase-btn" class="first-phase btn btn-primary mr-5">Continuar Registo</a>
+            <button id="reg-phase-btn" class="first-phase btn btn-primary mr-5">Continuar Registo</button>
             <a id="registerSubmit" class="second-phase btn btn-primary mr-5" onclick="RegisterFunction()">Efetuar Registo</a>
             <a id="registerFinalSubmit" type="submit" class="hidden" onclick=""></a>
         </div>
@@ -127,10 +127,24 @@
         let secondPhaseLen = document.getElementsByClassName("second-phase").length;
         ResetDanger()
         for (let i = 0; i < firstPhaseLen; i++) {
-            document.getElementsByClassName("first-phase")[i].style.display = phaseOneStyle;
+            let element = document.getElementsByClassName("first-phase")[i];
+            element.style.display = phaseOneStyle;
+            element.addEventListener("keypress", function (event) {
+                if (event.key === "Enter") {
+                    event.preventDefault();
+                    document.getElementById("reg-phase-btn").click();
+                }
+            });
         }
         for (let i = 0; i < secondPhaseLen; i++) {
-            document.getElementsByClassName("second-phase")[i].style.display = phaseTwoStyle;
+            let element = document.getElementsByClassName("second-phase")[i];
+            element.style.display = phaseTwoStyle;
+            element.addEventListener("keypress", function (event) {
+                if (event.key === "Enter") {
+                    event.preventDefault();
+                    document.getElementById("registerSubmit").click();
+                }
+            });
         }
     }
 

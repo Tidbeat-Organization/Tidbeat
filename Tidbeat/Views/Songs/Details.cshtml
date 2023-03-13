@@ -51,7 +51,10 @@
                         <img src="~/images/Empty_Song_Image.png" height="200" />
                     }
                 </a>
-                <div id="favoriteHeart" class="bi @(isFavorited ? "bi-heart-fill" : "bi-heart" ) text-danger fs-3 position-absolute top-0 end-0 mt-1 me-2 bg-black-50 ps-2 pe-2 pt-1"></div>
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <div id="favoriteHeart" class="bi @(isFavorited ? "bi-heart-fill" : "bi-heart" ) text-danger fs-3 position-absolute top-0 end-0 mt-1 me-2 bg-black-50 ps-2 pe-2 pt-1"></div>
+                }
             </div>
             <div class="ms-2 text-start">
                 <div>De: <a class="ms-1" href="@Url.Action("Details", "Bands", new { id = Model.Artists[0].Id })">@Model.Artists[0].Name</a></div>
@@ -81,13 +84,15 @@
             <img src="~/images/NoPostsImage.png" height="120" class="mt-5"/>
         }
         @foreach (Post post in allPosts) {
-            <div class="d-flex align-items-center border border-2 border-primary p-1 rounded mb-2">
-                <div class="border-end border-2 border-primary pe-2">
-                    <div>@post.User.FullName</div>
-                    <div>Utilizador</div>
+            <a class="text-decoration-none text-black" href="@Url.Action("Details", "Posts", new { id = post.PostId })">
+                <div class="d-flex align-items-center border border-2 border-primary p-1 rounded mb-2 hover-background-grey">
+                    <div class="border-end border-2 border-primary pe-2">
+                        <div>@post.User.FullName</div>
+                        <div>Utilizador</div>
+                    </div>
+                    <div class="ms-2">@post.Title</div>
                 </div>
-                <div class="ms-2">@post.Title</div>
-            </div>
+            </a>
         }
     </div>
 </div>
