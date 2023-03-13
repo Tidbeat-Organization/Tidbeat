@@ -43,7 +43,7 @@
         <h4 class="d-flex ms-2">@Model.Title</h4>
         <div class="text-start" >@Model.Content</div>
     </div>
-    @Html.RenderPartialAsync("_RatingPartial", Tuple.Create(Model.PostId, RatingType.Post))
+    <div class="d-flex mt-3">@Html.Partial("_RatingPartial", Tuple.Create(Model.PostId, RatingType.Post))</div>
     <div class="text-start mt-2 mb-2">Comentários:<hr class="m-0 mb-2"/></div>
     <form class="w-100 mx-auto d-flex flex-column mb-1" asp-controller="Comments" asp-action="Create" id="commentForm" method="post">
         <input asp-for="Content" class="form-control second-phase mt-0 rounded border-primary" id="commentText" autocomplete="text" aria-required="true" value=""/>
@@ -57,6 +57,7 @@
                     <div class="align-content-end flex-column w-25">
                         <div class="font-weigth-bold">@item.User.FullName</div>
                         <div class="text-primary">Role</div>
+                    <div>@Html.Partial("_RatingPartial", Tuple.Create((int) item.CommentId , RatingType.Comment))</div>
                     </div>
                     <div class="border-left border-secondary ml-2 w-75 text-start">@item.Content</div>
                 @if (ViewBag.currentUser != null)

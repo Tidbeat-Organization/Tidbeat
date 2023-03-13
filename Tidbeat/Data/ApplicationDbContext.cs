@@ -13,6 +13,8 @@ namespace Tidbeat.Data {
         public DbSet<Band> Bands { get; set; }
         public DbSet<Post> Posts { get; set; }
         public DbSet<PostRating> PostRatings { get; set; }
+        public DbSet<CommentRating> CommentRatings { get; set; }
+        public DbSet<Comment> Comment { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder) {
             base.OnModelCreating(builder);
@@ -20,8 +22,7 @@ namespace Tidbeat.Data {
             builder.Entity<Band>().ToTable(nameof(Band));
             builder.Entity<Post>().ToTable(nameof(Post));
             builder.Entity<PostRating>().ToTable(nameof(PostRating));
+            builder.Entity<CommentRating>().ToTable(nameof(CommentRating));
         }
-
-        public DbSet<Tidbeat.Models.Comment> Comment { get; set; }
     }
 }
