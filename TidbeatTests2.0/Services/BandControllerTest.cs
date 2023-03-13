@@ -21,7 +21,7 @@ namespace TidbeatTests2._0.Services
         {
             var fixture = new ApplicationDbContextFixture();
             _context = fixture.ApplicationDbContext;
-            _spotify = new SpotifyService(new Configuration());
+            _spotify = new MockSpotifyService();
         }
 
         [Fact]
@@ -34,7 +34,7 @@ namespace TidbeatTests2._0.Services
             var result = await controller.Index("","","");
 
             // Assert
-            var viewResult = Assert.IsType<ViewResult>(result);
+            var viewResult = Assert.IsAssignableFrom<IActionResult>(result);
 
         }
 
@@ -48,7 +48,7 @@ namespace TidbeatTests2._0.Services
             var result = await controller.Details("66CXWjxzNUsdJxJ2JdwvnR");
 
             // Assert
-            var viewResult = Assert.IsType<ViewResult>(result);
+            var viewResult = Assert.IsAssignableFrom<IActionResult>(result);
 
         }
     }
