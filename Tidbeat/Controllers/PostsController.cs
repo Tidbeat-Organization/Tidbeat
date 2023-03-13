@@ -217,6 +217,8 @@ namespace Tidbeat.Controllers
                     {
                         ogPost.Content = post.Content;
                         ogPost.Title = post.Title;
+                        ogPost.EditDate = DateTime.Now;
+                        ogPost.IsEdited = true;
                         _context.Update(ogPost);
                         TempData["Sucess"] = "O seu post foi atualizado com sucesso.";
                         await _context.SaveChangesAsync();

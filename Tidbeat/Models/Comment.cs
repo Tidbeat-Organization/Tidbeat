@@ -15,5 +15,11 @@ namespace Tidbeat.Models
         public string Content { get; set; }
 
         public ApplicationUser? User { get; set; }
+
+        public DateTime CreationDate { get; } = DateTime.Now;
+
+        public DateTime EditDate { get; set; }
+
+        public bool IsEdited { get; set; } = false;
     }
 }

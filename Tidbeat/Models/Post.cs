@@ -20,5 +20,11 @@ namespace Tidbeat.Models {
         public Band? Band { get; set; }
 
         public ApplicationUser? User { get; set; }
+        public DateTime CreationDate { get;} = DateTime.Now;
+
+        public DateTime EditDate { get; set; }
+
+        public bool IsEdited { get; set; } = false;
+
     }
 }
