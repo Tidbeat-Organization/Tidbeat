@@ -55,7 +55,7 @@ namespace Tidbeat.Controllers
                 ViewBag.urlSong = _spotifyService.GetSongAsync(post.Song.SongId).Result.PreviewUrl;
             }
             ViewBag.currentUser = await _userManager.GetUserAsync(User);
-            ViewBag.commentsPosts = _context.Comment.Where(s => s.post.PostId == post.PostId);
+            ViewBag.commentsPosts = _context.Comment.Include(user => user.User).Where(s => s.post.PostId == post.PostId);
             return View(post);
         }
 
@@ -276,7 +276,17 @@ namespace Tidbeat.Controllers
             var post = await _context.Posts.FindAsync(id);
             if (post != null)
             {
+                var commentRatings = await _context.CommentRatings.Where(cr => cr.Comment.post.PostId == post.PostId).ToListAsync();
+                foreach (var rating in commentRatings) {
+                    _context.CommentRatings.Remove(rating);
+                }
                 _context.Comment.RemoveRange(_context.Comment.Where(x => x.post.PostId == post.PostId).ToList());
+
+                var postRatings = await _context.PostRatings.Where(pr => pr.Post.PostId == post.PostId).ToListAsync();
+                foreach (var rating in postRatings) {
+                    _context.PostRatings.Remove(rating);
+                }
+
                 _context.Posts.Remove(post);
                 await _context.SaveChangesAsync();
 
