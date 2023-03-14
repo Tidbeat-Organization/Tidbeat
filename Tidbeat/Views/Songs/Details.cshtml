@@ -104,21 +104,23 @@
     var True = true;
     var isFavorited = @isFavorited;
     var favoritesAmount = @favoritesAmount;
-    favoriteHeart.onclick = function () {
-        if (favoriteHeart.classList.contains("bi-heart-fill")) {
-            favoriteHeart.classList.remove("bi-heart-fill");
-            favoriteHeart.classList.add("bi-heart");
-            isFavorited = false;
-            @(favoritesAmount = favoritesAmount - 1)
-                favoriteAmountElement.innerHTML = "Número de favoritos: " + --favoritesAmount;
-        } else {
-            favoriteHeart.classList.remove("bi-heart");
-            favoriteHeart.classList.add("bi-heart-fill");
-            isFavorited = true;
-            @(favoritesAmount = favoritesAmount + 1)
-            favoriteAmountElement.innerHTML = "Número de favoritos: " + ++favoritesAmount;
+    if (favoriteHeart != null) {
+        favoriteHeart.onclick = function () {
+            if (favoriteHeart.classList.contains("bi-heart-fill")) {
+                favoriteHeart.classList.remove("bi-heart-fill");
+                favoriteHeart.classList.add("bi-heart");
+                isFavorited = false;
+                @(favoritesAmount = favoritesAmount - 1)
+                    favoriteAmountElement.innerHTML = "Número de favoritos: " + --favoritesAmount;
+            } else {
+                favoriteHeart.classList.remove("bi-heart");
+                favoriteHeart.classList.add("bi-heart-fill");
+                isFavorited = true;
+                @(favoritesAmount = favoritesAmount + 1)
+                favoriteAmountElement.innerHTML = "Número de favoritos: " + ++favoritesAmount;
+            }
+            setFavorite(isFavorited);
         }
-        setFavorite(isFavorited);
     }
     
     function setFavorite(isFavorite) {
