@@ -7635,6 +7635,10 @@ textarea.form-control-lg {
 }
 
 .fs-6 {
+  font-size: 0.875rem !important;
+}
+
+.fs-7 {
   font-size: 0.75rem !important;
 }
 
