@@ -15,6 +15,8 @@ $font-sizes : (
     7: 12px
 );
 
+$navbar-height: 72px;
+
 //imports
 @import "../lib/bootstrap/scss/bootstrap";
 @import url("https://fonts.google.com/specimen/Poppins");
@@ -67,6 +69,11 @@ nav-link {
         max-height: calc(100vh - 50px);
         overflow: auto;
     }
+
+    .scrollable-comments {
+        max-height: calc(100vh - 155px);
+        overflow: auto;
+    }
 }
 
 @include media-breakpoint-down(md) {
@@ -94,4 +101,8 @@ nav-link {
 .bg-black-50 {
     background-color: rgba(0, 0, 0, 0.7) !important;
     border-radius: 30%;
+}
+
+.vh-100-minus-navbar {
+    height: calc(100vh - $navbar-height);
 }
