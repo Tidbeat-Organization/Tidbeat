@@ -15,9 +15,9 @@
             <div class="form-group row">
                 <label asp-for="Song" class="col-sm-2 col-form-label" style="color: #6610F2; font-weight: bold;">Música:</label>
                 <div class="col-sm-10">
-                   <input list="SongOptions" value="@((ViewBag?.chooseSong?.Name ?? ""))" name="SongId1" id="SongIdInput" oninput='onInputSong()' class="form-control" placeholder="Escolha a música..." style="border: 1.5px solid #6610F2; border-radius: 15px; width:625px;" @(ViewBag.chooseSong != null ? "value=" + @ViewBag.chooseSong.Name : "")
+                    <input autocomplete ="off" role="combobox" list="" value="@((ViewBag?.chooseSong?.Name ?? ""))" name="SongId1" id="SongIdInput" oninput='onInputSong()' class="form-control" placeholder="Escolha a música..." style="border: 1.5px solid #6610F2; border-radius: 15px; width:625px;" @(ViewBag.chooseSong != null ? "value=" + @ViewBag.chooseSong.Name : "")
                     @(ViewBag.chooseBand != null ? "disabled" : "") />
-                    <datalist id="SongOptions">
+                    <datalist id="SongOptions" role="listbox">
                         @if (ViewBag.songs != null)
                         {
                             @foreach (var item in ViewBag.songs)
@@ -49,13 +49,13 @@
              <div class="form-group row" style="margin-top: 15px;">
                 <label asp-for="Band" class="col-sm-2 col-form-label" style="color: #6610F2; font-weight: bold;">Banda:</label>
                 <div class="col-sm-10">
-                    <input list="BandOptions" value="@((ViewBag?.chooseBand?.Name ?? ""))" name="BandId1" id="Bandsinput" oninput='onInputBand()' class="form-control" placeholder="Escolha a banda..." style="border: 1.5px solid #6610F2; border-radius: 15px; width:625px;"
+                    <input autocomplete="off" role="combobox" list="" value="@((ViewBag?.chooseBand?.Name ?? ""))" name="BandId1" id="Bandsinput" oninput='onInputBand()' class="form-control" placeholder="Escolha a banda..." style="border: 1.5px solid #6610F2; border-radius: 15px; width:625px;"
                     @(ViewBag.chooseSong != null ? "disabled" : "") />
                     <!--@*      @if (ViewBag.chooseSong != null || ViewBag.chooseBand != null)
                            {
                            value="@((ViewBag.chooseSong != null) ? ViewBag.chooseSong.Artists[0].Name : ViewBag.chooseBand.Name)"
                     *@}-->
-                    <datalist id="BandOptions">
+                    <datalist id="BandOptions" role="listbox">
                         @foreach (var item in ViewBag.bands)
                         {
                             <option data-value="@item.Uri">@item.Name</option>
@@ -223,6 +223,11 @@
                         var option = document.createElement("option");
                         option.text = item.name;
                         option.setAttribute("data-value", item.id);
+                            option.onclick = function () {
+                                input2.value = option.value;
+                                options.style.display = 'none';
+                                input2.style.borderRadius = "5px";
+                            }
                         options.appendChild(option);
                         // Your code here
                         console.log(item.name);
@@ -258,10 +263,53 @@
             }
         };
 
+        var input2 = document.getElementById("Bandsinput");
+        var optionS2 = document.getElementById('BandOptions');
 
-
-
+        input2.onfocus = function () {
+            optionS2.style.display = 'block';
+            input2.style.borderRadius = "5px 5px 5px 5px";
+        };
+        for (let option of optionS2.options) {
+            option.onclick = function () {
+                input2.value = option.value;
+                optionS2.style.display = 'none';
+                input2.style.borderRadius = "5px";
+            }
+        };
 
 
 
 </script>
+
+<style>
+        datalist {
+            position: absolute;
+            background-color: white;
+            border-radius: 0 0 5px 5px;
+            border-top: none;
+            border-color: #6610F2;
+            font-family: sans-serif;
+            padding: 5px;
+            max-height: 10rem;
+            overflow-y: auto
+        }
+
+            datalist option {
+                color: black;
+                background-color: white;
+                cursor: pointer;
+            }
+
+        option {
+            color: black;
+            background-color: white;
+            cursor: pointer;
+        }
+
+        datalist option:hover, datalist option:focus {
+            color: black;
+            background-color: grey;
+            outline: 0 none;
+        }
+</style>

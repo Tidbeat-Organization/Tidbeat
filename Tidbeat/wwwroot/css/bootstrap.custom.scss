@@ -107,11 +107,30 @@ nav-link {
     height: calc(100vh - $navbar-height);
 }
 
+datalist {
+    position: absolute;
+    background-color: white;
+    border-radius: 0 0 5px 5px;
+    border-top: none;
+    font-family: sans-serif;
+    padding: 5px;
+    max-height: 10rem;
+    overflow-y: auto
+}
+
 datalist option {
-    color: white;
+    color: black;
     background-color: white;
     border-style: solid;
-    border-color: $primary;
+    border-color: #6610F2;
+    cursor: pointer;
+}
+
+option {
+    color: black;
+    background-color: white;
+    border-style: solid;
+    border-color: #6610F2;
     cursor: pointer;
 }
 
