@@ -21,6 +21,16 @@
     <link rel="stylesheet" href="~/TestTemplate.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/bootstrap.custom.min.css" asp-append-version="true" />
 
+    <script src="/lib/tinymce/tinymce.min.js" referrerpolicy="origin"></script>
+    <script>
+        tinymce.init({
+            selector: '#postcreate, #postedit',
+        });
+        tinymce.init({
+            selector: '#commentcreate',
+        });
+    </script>
+
 </head>
 <body>
     <!-- Navigation-->
