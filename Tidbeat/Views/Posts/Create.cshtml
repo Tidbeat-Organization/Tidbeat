@@ -59,11 +59,11 @@
                     <span style="color: #6610F2; font-weight: bold;">Link:</span><a id="SongLink" href="@{
                             if (ViewBag.chooseSong != null) {
                                 string url = $"https://open.spotify.com/track/{ViewBag.chooseSong.Id}";
-                                    @url
+                                            @url
                             }
                             else if (ViewBag.chooseBand != null) {
                                 string url = $"https://open.spotify.com/artist/{ViewBag.chooseBand.Id}";
-                                    @url
+                                            @url
                             }
                         }">
                         @if (ViewBag.chooseSong != null)
@@ -211,4 +211,14 @@
             }
         }
 
+        document.getElementById("SongIdInput").addEventListener("focusout", (event) => {
+            if (document.getElementById("answerInputSong").value === ""){
+                document.getElementById("SongIdInput").value = "";
+            }
+        });
+        document.getElementById("Bandsinput").addEventListener("focusout", (event) => {
+            if (document.getElementById("answerInputband").value === "") {
+                document.getElementById("Bandsinput").value = "";
+            }
+        });
 </script>

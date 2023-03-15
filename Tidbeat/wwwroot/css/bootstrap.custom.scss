@@ -106,3 +106,15 @@ nav-link {
 .vh-100-minus-navbar {
     height: calc(100vh - $navbar-height);
 }
+
+datalist option {
+    color: white;
+    background-color: #6610F2;
+    cursor: pointer;
+}
+
+datalist option:hover, datalist option:focus {
+    color: black;
+    background-color: grey;
+    outline: 0 none;
+}
