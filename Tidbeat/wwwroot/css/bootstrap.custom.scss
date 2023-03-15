@@ -138,3 +138,23 @@ nav-link {
 .tox-promotion, .tox-statusbar {
     display: none !important;
 }
+
+.tox-collection__item-caret > svg > path {
+    fill: $primary !important;
+}
+
+.tox-tbtn__select-chevron > svg > path {
+    fill: $primary !important;
+}
+
+.tox-collection__item-icon > svg > path {
+    fill: $primary !important;
+}
+
+.tox-collection__item-icon > svg > g > path {
+    fill: $primary !important;
+}
+
+.tox-collection__item-checkmark > svg > path {
+    fill: $primary !important;
+}
