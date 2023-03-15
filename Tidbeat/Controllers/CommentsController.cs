@@ -47,6 +47,7 @@ namespace Tidbeat.Controllers
                         {
                             comment.post = post;
                             comment.User = user;
+                            comment.CreationDate = DateTime.Now;
                             _context.Add(comment);
                             await _context.SaveChangesAsync();
                             return Redirect("/Posts/Details/" + post.PostId);

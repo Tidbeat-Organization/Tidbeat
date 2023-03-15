@@ -28,7 +28,6 @@
             <div class="card mb-4 shadow-sm">
                 <div class="card-body text-center">
                     <h5 class="card-title">@Html.DisplayFor(modelItem => item.Title)</h5>
-                    <p class="card-text">@Html.Raw(item.Content.Length > 15 ? item.Content.Substring(0, 15) + "..." : item.Content)</p>
                     <div class="d-flex justify-content-center align-items-center">
                         <div class="btn-group">
                             <a asp-action="Details" asp-route-id="@item.PostId" style="background-color:#6610F2;color:#fff;" class="btn btn-sm btn-outline-secondary">Detalhes</a>

@@ -160,6 +160,7 @@ namespace Tidbeat.Controllers
                     else {
                         postToSubmit = new Post() { User = user, Title = post.Title, Content = post.Content};
                     }
+                    postToSubmit.CreationDate = DateTime.Now;
                     var result = await _context.Posts.AddAsync(postToSubmit);
                     TempData["Sucess"] = "O seu post foi criado com sucesso.";
                     await _context.SaveChangesAsync();

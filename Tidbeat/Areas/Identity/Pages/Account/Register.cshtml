@@ -86,6 +86,19 @@
             <a id="registerFinalSubmit" type="submit" class="hidden" onclick=""></a>
         </div>
         
+        @foreach (var provider in Model.ExternalLogins!) {
+            if (provider.Name == "Google") {
+                <button type="submit" class="btn border hover-background-grey mt-4" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">
+                    <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google logo" width="50" height="50">
+
+                </button>
+            }
+            else {
+                <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">
+                    @provider.DisplayName
+                </button>
+            }
+        }
 
     </form>
 </div>

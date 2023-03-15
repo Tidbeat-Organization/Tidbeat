@@ -50,7 +50,7 @@
         <hr />
         <div class="d-flex flex-column flex-xl-row justify-content-lg-start align-items-center">
             <div class="position-relative">
-                <a href="@spotifyPageURL">
+                <a target="_blank" href="@spotifyPageURL">
                     @if (Model.Album.Images.Count > 0) {
                         <img src="@Model.Album.Images[0].Url" height="200" />
                     } else {
@@ -108,7 +108,7 @@
                 <div class="d-flex align-items-center border border-2 border-primary p-1 rounded mb-2 hover-background-grey">
                     <div class="border-end border-2 border-primary pe-2">
                         <div>@post.User.FullName</div>
-                        <div>Utilizador</div>
+                        <div class="fs-7">Criado em: @post.CreationDate.Date.ToShortDateString()</div>
                     </div>
                     <div class="ms-2">@post.Title</div>
                 </div>
