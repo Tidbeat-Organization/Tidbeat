@@ -18,14 +18,17 @@
 
 <!--All music info goes here-->
 <div class="container-fluid row w-100 d-flex flex-column flex-lg-row mx-0">
-    <div class="d-flex flex-column col-lg-4 col-12">
-        <div class="mt-5 pt-5 mb-3 d-flex align-items-center justify-content-center justify-content-lg-start">
-            <div>
+    <div class="d-flex flex-column col-lg-6 col-8 vh-100-minus-navbar border border-start-0 border-top-0 border-bottom-0 pe-1">
+        <div class="mt-5 pt-5 mb-3 d-flex align-items-center justify-content-center ">
+            <div >
                 @if (Model.PreviewUrl != null)
                 {
-                    <div>
+                    <div class="d-flex flex-row">
                         <img id="startAudio" src="~/images/PlayButton.png" class="pointer-active" />
-                        <div id="audioStatus" class="text-nowrap"></div>
+                        <div id="audioStatus" 
+                             class="text-nowrap border border-start-0 border-end-0 border-primary"
+                             style="min-width: 96pt; min-height: 24pt; max-height: 24pt; padding-top: 2pt; margin-top: 7pt; margin-left: 2pt;">
+                        </div>
                     </div>
                     <audio id="myAudio">
                         <source src="@Model.PreviewUrl" type="audio/mpeg">
@@ -40,8 +43,11 @@
                     </audio>
                 }
             </div>
-            <h4 class="d-flex ms-2">Música: @Model.Name</h4>
+            
         </div>
+        <h4 class="ms-0 fw-bold">Música: </h4>
+        <div class="ms-0 text-primary fw-bold">@Model.Name</div>
+        <hr />
         <div class="d-flex flex-column flex-xl-row justify-content-lg-start align-items-center">
             <div class="position-relative">
                 <a target="_blank" href="@spotifyPageURL">
@@ -57,20 +63,34 @@
                 }
             </div>
             <div class="ms-2 text-start">
-                <div>De: <a class="ms-1" href="@Url.Action("Details", "Bands", new { id = Model.Artists[0].Id })">@Model.Artists[0].Name</a></div>
-                <div>Lançado em: @releaseDate</div>
-                <div>Duração: @songLength minutos</div>
-                <div>Álbum: @Model.Album.Name</div>
+                <div class="d-flex flex-row">
+                    <div class="text-dark fw-bold">De:</div>
+                    <a class="ms-1 fw-semibold" href="@Url.Action("Details", "Bands", new { id = Model.Artists[0].Id })">@Model.Artists[0].Name</a>
+                </div>
+                <div class="d-flex flex-row">
+                    <div class="text-dark fw-bold">Lançado em:</div>
+                    <div class="ms-1 text-primary">@releaseDate</div>
+                </div>
+                <div class="d-flex flex-row">
+                    <div class="text-dark fw-bold">Duração:</div>
+                    <div class="ms-1 text-primary">@songLength minutos</div>
+                </div>
+                <div class="d-flex flex-row">
+                    <div class="text-dark fw-bold">Álbum: </div>
+                    <div class="ms-1 text-primary">@Model.Album.Name</div>
+                </div>
             </div>
         </div>
-        <div class="d-flex align-items-lg-start flex-column mt-5">
-            <div id="favoriteAmount">Número de favoritos: @favoritesAmount</div>
-            <div>Número de posts sobre esta música: @allPosts.Count</div>
+        <hr/>
+        <div class="d-flex align-items-lg-start flex-column mt-1">
+            <div class="text-dark fw-bold">Estatística:</div>
+            <div id="favoriteAmount">Favoritos: @favoritesAmount</div>
+            <div>Posts sobre esta música: @allPosts.Count</div>
         </div>
     </div>
 
     <!--All posts goes here-->
-    <div class="col-lg-8 col-12 mt-5 pt-5 scrollable-posts">
+    <div class="col-lg-6 col-8 mt-5 pt-5 scrollable-posts">
         <div class="d-flex justify-content-center mb-2">
             <div class="fs-3 me-4">Posts</div>
             @if (User.Identity.IsAuthenticated) {
