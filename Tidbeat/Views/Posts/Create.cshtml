@@ -240,11 +240,13 @@
             if (document.getElementById("answerInputSong").value === ""){
                 document.getElementById("SongIdInput").value = "";
             }
+            document.getElementById('SongOptions').style.display = 'none';
         });
         document.getElementById("Bandsinput").addEventListener("focusout", (event) => {
             if (document.getElementById("answerInputband").value === "") {
                 document.getElementById("Bandsinput").value = "";
             }
+            document.getElementById('BandOptions').style.display = 'none';
         });
 
 
