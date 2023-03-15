@@ -14,7 +14,7 @@
             <!-- Song -->
             <div class="form-group row">
                 <label asp-for="Song" class="col-sm-2 col-form-label" style="color: #6610F2; font-weight: bold;">Música:</label>
-                <div class="col-sm-10">
+                <div class="col-sm-10" id="formfromsong">
                     <input autocomplete ="off" role="combobox" list="" value="@((ViewBag?.chooseSong?.Name ?? ""))" name="SongId1" id="SongIdInput" oninput='onInputSong()' class="form-control" placeholder="Escolha a música..." style="border: 1.5px solid #6610F2; border-radius: 15px; width:625px;" @(ViewBag.chooseSong != null ? "value=" + @ViewBag.chooseSong.Name : "")
                     @(ViewBag.chooseBand != null ? "disabled" : "") />
                     <datalist id="SongOptions" role="listbox">
@@ -48,7 +48,7 @@
             <!-- Band -->
              <div class="form-group row" style="margin-top: 15px;">
                 <label asp-for="Band" class="col-sm-2 col-form-label" style="color: #6610F2; font-weight: bold;">Banda:</label>
-                <div class="col-sm-10">
+                <div class="col-sm-10" id="formfromband">
                     <input autocomplete="off" role="combobox" list="" value="@((ViewBag?.chooseBand?.Name ?? ""))" name="BandId1" id="Bandsinput" oninput='onInputBand()' class="form-control" placeholder="Escolha a banda..." style="border: 1.5px solid #6610F2; border-radius: 15px; width:625px;"
                     @(ViewBag.chooseSong != null ? "disabled" : "") />
                     <!--@*      @if (ViewBag.chooseSong != null || ViewBag.chooseBand != null)
@@ -72,11 +72,11 @@
                     <span style="color: #6610F2; font-weight: bold;">Link:</span><a id="SongLink" href="@{
                             if (ViewBag.chooseSong != null) {
                                 string url = $"https://open.spotify.com/track/{ViewBag.chooseSong.Id}";
-                                                @url
+                                                    @url
                             }
                             else if (ViewBag.chooseBand != null) {
                                 string url = $"https://open.spotify.com/artist/{ViewBag.chooseBand.Id}";
-                                                @url
+                                                    @url
                             }
                         }">
                         @if (ViewBag.chooseSong != null)
@@ -173,9 +173,14 @@
                             option.setAttribute("data-value",item.id);
                             option.setAttribute("song-link", item.Href);
                                 option.onclick = function () {
-                                    input.value = option.value;
+                                    bandInput.disabled= true;
+                                    val.innerText = option.value;
                                     options.style.display = 'none';
-                                    input.style.borderRadius = "5px";
+                                    val.style.borderRadius = "5px";
+                                    hiddenInput.value = option.getAttribute('data-value');
+                                    songLink.textContent = "Spotify - " + option.innerText;
+                                    songLink.setAttribute("href", "https://open.spotify.com/track/" + option.getAttribute('data-value'));
+                                document.getElementById('SongOptions').style.display = 'none';
                                 }
                             options.appendChild(option);
                             // Your code here
@@ -191,6 +196,7 @@
             var hiddenInput = document.getElementById("answerInputband");
             var boolCheck = true;
             var songInput = document.getElementById("SongIdInput");
+            var songLink = document.getElementById("SongLink");
             if (val.value.length > 0) {
                 songInput.disabled = true;
             } else {
@@ -215,7 +221,7 @@
                 .then(response => response.json())
                 .then(data => {
                     // Loop through the JSON array and do something with each item
-                        let options = document.getElementById("BandOptions");
+                    let options = document.getElementById("BandOptions");
                     while (options.firstChild) {
                         options.removeChild(options.firstChild);
                     }
@@ -224,9 +230,14 @@
                         option.text = item.name;
                         option.setAttribute("data-value", item.id);
                             option.onclick = function () {
-                                input2.value = option.value;
+                                songInput.disabled = true;
+                                val.value = option.value;
                                 options.style.display = 'none';
-                                input2.style.borderRadius = "5px";
+                                val.style.borderRadius = "5px";
+                                hiddenInput.value = option.getAttribute('data-value');
+                                songLink.textContent = "Spotify - " + option.innerText;
+                                songLink.setAttribute("href", "https://open.spotify.com/artist/" + option.getAttribute('data-value'));
+                                document.getElementById('BandOptions').style.display = 'none';
                             }
                         options.appendChild(option);
                         // Your code here
@@ -236,22 +247,22 @@
             }
         }
 
-        document.getElementById("SongIdInput").addEventListener("focusout", (event) => {
+        document.getElementById("formfromsong").addEventListener("focusout", (event) => {
             if (document.getElementById("answerInputSong").value === ""){
                 document.getElementById("SongIdInput").value = "";
             }
-            document.getElementById('SongOptions').style.display = 'none';
         });
-        document.getElementById("Bandsinput").addEventListener("focusout", (event) => {
+        document.getElementById("formfromband").addEventListener("focusout", (event) => {
             if (document.getElementById("answerInputband").value === "") {
                 document.getElementById("Bandsinput").value = "";
             }
-            document.getElementById('BandOptions').style.display = 'none';
         });
+        
 
-
-
+        const songLink = document.getElementById("SongLink");
+        var input2 = document.getElementById("Bandsinput");
         var input = document.getElementById("SongIdInput");
+        const hiddenInput = document.getElementById("answerInputSong");
         var optionS = document.getElementById('SongOptions');
         input.onfocus = function () {
             optionS.style.display = 'block';
@@ -259,24 +270,34 @@
         };
         for (let option of optionS.options) {
             option.onclick = function () {
+                input2.disabled = true;
                 input.value = option.value;
                 optionS.style.display = 'none';
                 input.style.borderRadius = "5px";
+                hiddenInput.value = option.getAttribute('data-value');
+                songLink.textContent = "Spotify - " + option.innerText;
+                songLink.setAttribute("href", "https://open.spotify.com/track/" + option.getAttribute('data-value'));
+                document.getElementById('SongOptions').style.display = 'none';
             }
         };
 
-        var input2 = document.getElementById("Bandsinput");
         var optionS2 = document.getElementById('BandOptions');
 
         input2.onfocus = function () {
             optionS2.style.display = 'block';
             input2.style.borderRadius = "5px 5px 5px 5px";
         };
+        const hiddenInput2 = document.getElementById("answerInputband");
         for (let option of optionS2.options) {
             option.onclick = function () {
+                input.disabled = true;
                 input2.value = option.value;
                 optionS2.style.display = 'none';
                 input2.style.borderRadius = "5px";
+                hiddenInput2.value = option.getAttribute('data-value');
+                songLink.textContent = "Spotify - " + option.innerText;
+                songLink.setAttribute("href", "https://open.spotify.com/artist/" + option.getAttribute('data-value'));
+                document.getElementById('BandOptions').style.display = 'none';
             }
         };
 
@@ -313,7 +334,7 @@
 
         datalist option:hover, datalist option:focus {
             color: black;
-            background-color: grey;
+            background-color: lightskyblue;
             outline: 0 none;
         }
 </style>
