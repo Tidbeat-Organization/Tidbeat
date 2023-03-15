@@ -89,12 +89,13 @@
                 @foreach (var item in ViewBag.commentsPosts)
                 {
                     <div class="form-control d-flex flex-row">
-                        <div class="align-content-end flex-column w-25">
+                        <div class="align-content-end flex-column w-25 border-end">
+                            <div class="fs-7">Criado em: @item.CreationDate.Date.ToShortDateString()</div>
                             <div class="font-weigth-bold">@item.User.FullName</div>
                             <div class="text-primary">Role</div>
                         <div>@Html.Partial("_RatingPartial", Tuple.Create((int) item.CommentId , RatingType.Comment))</div>
                         </div>
-                        <div class="border-left border-secondary ml-2 w-75 text-start">@item.Content</div>
+                        <div class="border-left border-secondary ml-2 w-75 text-start ms-2">@item.Content</div>
                     @if (ViewBag.currentUser != null)
                         {
                             @if (item.User.Id == ViewBag.currentUser.Id)
