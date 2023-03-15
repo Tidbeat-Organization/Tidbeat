@@ -15,7 +15,7 @@
             <div class="form-group row">
                 <label asp-for="Song" class="col-sm-2 col-form-label" style="color: #6610F2; font-weight: bold;">Música:</label>
                 <div class="col-sm-10">
-                    <input list="SongOptions" value="@((ViewBag?.chooseSong?.Name ?? ""))" name="SongId1" id="SongIdInput" oninput='onInputSong()' class="form-control" placeholder="Escolha a música..." style="border: 1.5px solid #6610F2; border-radius: 15px; width:625px;" @(ViewBag.chooseSong != null ? "value=" + @ViewBag.chooseSong.Name : "")
+                   <input list="SongOptions" value="@((ViewBag?.chooseSong?.Name ?? ""))" name="SongId1" id="SongIdInput" oninput='onInputSong()' class="form-control" placeholder="Escolha a música..." style="border: 1.5px solid #6610F2; border-radius: 15px; width:625px;" @(ViewBag.chooseSong != null ? "value=" + @ViewBag.chooseSong.Name : "")
                     @(ViewBag.chooseBand != null ? "disabled" : "") />
                     <datalist id="SongOptions">
                         @if (ViewBag.songs != null)
@@ -27,6 +27,19 @@
 
                         }
                     </datalist>
+                   <!-- <div class="custom-datalist">
+                        <input type="text" placeholder="Escolha a música..." id="SongIdInput" oninput='onInputSong()' class="form-control" style="border: 1.5px solid #6610F2; border-radius: 15px; width:625px;" @(ViewBag.chooseSong != null ? "value=" + @ViewBag.chooseSong.Name : "") @(ViewBag.chooseBand != null ? "disabled" : "")>
+                        <ul id="SongOptions">
+                            @if (ViewBag.songs != null)
+                            {
+                                @foreach (var item in ViewBag.songs)
+                                {
+                                    <li data-value="@item.Uri" song-link="@item.Href">@item.Name</li>
+                                }
+
+                            }
+                        </ul>
+                    </div>-->
                     <input type="hidden" name="SongId" id="answerInputSong" value="@(ViewBag.chooseSong?.Id ?? "")">
                     <span asp-validation-for="Song" class="text-danger"></span>
                 </div>
@@ -59,11 +72,11 @@
                     <span style="color: #6610F2; font-weight: bold;">Link:</span><a id="SongLink" href="@{
                             if (ViewBag.chooseSong != null) {
                                 string url = $"https://open.spotify.com/track/{ViewBag.chooseSong.Id}";
-                                            @url
+                                                @url
                             }
                             else if (ViewBag.chooseBand != null) {
                                 string url = $"https://open.spotify.com/artist/{ViewBag.chooseBand.Id}";
-                                            @url
+                                                @url
                             }
                         }">
                         @if (ViewBag.chooseSong != null)
@@ -115,6 +128,7 @@
     }
     }
 <script>
+
         function onInputSong() {
             var val = document.getElementById("SongIdInput");
             var opts = document.getElementById('SongOptions').childNodes;
@@ -152,11 +166,17 @@
                         {
                             options.removeChild(options.firstChild);
                         }
+
                         data.forEach(item => {
                             var option = document.createElement("option");
-                            option.text = item.name;
+                            option.innerText = item.name;
                             option.setAttribute("data-value",item.id);
                             option.setAttribute("song-link", item.Href);
+                                option.onclick = function () {
+                                    input.value = option.value;
+                                    options.style.display = 'none';
+                                    input.style.borderRadius = "5px";
+                                }
                             options.appendChild(option);
                             // Your code here
                             console.log(item.name);
@@ -221,4 +241,27 @@
                 document.getElementById("Bandsinput").value = "";
             }
         });
+
+
+
+        var input = document.getElementById("SongIdInput");
+        var optionS = document.getElementById('SongOptions');
+        input.onfocus = function () {
+            optionS.style.display = 'block';
+            input.style.borderRadius = "5px 5px 5px 5px";
+        };
+        for (let option of optionS.options) {
+            option.onclick = function () {
+                input.value = option.value;
+                optionS.style.display = 'none';
+                input.style.borderRadius = "5px";
+            }
+        };
+
+
+
+
+
+
+
 </script>

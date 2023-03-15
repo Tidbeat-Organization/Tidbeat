@@ -109,7 +109,9 @@ nav-link {
 
 datalist option {
     color: white;
-    background-color: #6610F2;
+    background-color: white;
+    border-style: solid;
+    border-color: $primary;
     cursor: pointer;
 }
 
@@ -117,4 +119,47 @@ datalist option:hover, datalist option:focus {
     color: black;
     background-color: grey;
     outline: 0 none;
+}
+
+.custom-datalist {
+    position: relative;
+    display: inline-block;
+}
+
+.custom-datalist input {
+    display: block;
+    width: 100%;
+    padding: 8px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.custom-datalist ul {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1;
+    display: none;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border: 1px solid #ccc;
+    border-top: none;
+    border-radius: 0 0 4px 4px;
+}
+
+.custom-datalist li {
+    display: block;
+    padding: 8px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.custom-datalist li:hover {
+    background-color: #f2f2f2;
+}
+
+.custom-datalist input:focus + ul {
+    display: block;
 }
