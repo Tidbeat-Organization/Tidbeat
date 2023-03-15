@@ -9,6 +9,7 @@ $theme-colors: (
 );
 $primary: #6610F2;
 $light-grey: #e3e3e3;
+$color-text: white;
 
 $font-sizes : (
     6: 14px,
@@ -116,4 +117,24 @@ nav-link {
 
 .tox-tbtn__icon-wrap > svg > path {
     fill: $primary !important;
+}
+
+.tox-notification--warning {
+    background-color: $primary !important;
+}
+
+.tox-notification__body > p {
+    color: $color-text !important;
+}
+
+.tox-notification__icon > svg > path {
+    fill: $color-text !important;
+}
+
+.tox-notification__dismiss > div > svg > path {
+    fill: $color-text !important;
+}
+
+.tox-promotion, .tox-statusbar {
+    display: none !important;
 }

@@ -10561,3 +10561,23 @@ textarea.form-control-lg {
 .tox-tbtn__icon-wrap > svg > path {
   fill: #6610F2 !important;
 }
+
+.tox-notification--warning {
+  background-color: #6610F2 !important;
+}
+
+.tox-notification__body > p {
+  color: white !important;
+}
+
+.tox-notification__icon > svg > path {
+  fill: white !important;
+}
+
+.tox-notification__dismiss > div > svg > path {
+  fill: white !important;
+}
+
+.tox-promotion, .tox-statusbar {
+  display: none !important;
+}
