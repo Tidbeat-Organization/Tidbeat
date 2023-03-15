@@ -257,6 +257,16 @@
             }
         });
 
+        document.getElementById("SongIdInput").addEventListener("blur", () => {
+            setTimeout(() => {
+                optionS.style.display = "none";
+            }, 100)
+        });
+        document.getElementById("Bandsinput").addEventListener("blur", () => {
+            setTimeout(() => {
+                optionS.style.display = "none";
+            }, 100)
+        });
         
 
         const songLink = document.getElementById("SongLink");
