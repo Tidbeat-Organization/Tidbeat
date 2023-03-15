@@ -47,6 +47,15 @@
           color: #6610F2;
           border-color: #6610F2;
     }
+
+    .custom-close {
+        background-color: #6610F2;
+        color: white;
+    }
+
+    .modal-footer button {
+        margin-right: 15px;
+    }
 </style>
 
 
@@ -99,8 +108,8 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="deleteModalLabel">Apagar Post</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+                <button type="button" class="close custom-close" data-dismiss="modal" aria-label="Close">
+                    <i class="bi bi-x font-white" style="font-size: 1.1rem;" aria-hidden="true"></i>
                 </button>
             </div>
             <div class="modal-body">
