@@ -4,6 +4,62 @@
     ViewData["Title"] = "Delete";
 }
 
+<!-- In the head section of your page -->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+<style>
+    .btn-danger {
+        background-color: #e62517;
+        color: white;
+        border-color: #e62517;
+    }
+
+     .btn-danger:hover {
+         background-color: #e62517;
+         color_: white;
+         border-color: #e62517;
+     }
+
+     .btn-danger:active,
+     .btn-danger:focus {
+          background-color: #e62517;
+          color: white;
+          border-color: #e62517;
+     }
+
+    .btn-secondary {
+          background-color: white;
+          color: #6610F2;
+          border-color: #6610F2;
+    }
+
+    .btn-secondary:hover {
+          background-color: white;
+          color: #6610F2;
+          border-color: #6610F2;
+    }
+
+    .btn-secondary:active,
+    .btn-secondary:focus {
+          background-color: white;
+          color: #6610F2;
+          border-color: #6610F2;
+    }
+
+    .custom-close {
+        background-color: #6610F2;
+        color: white;
+    }
+
+    .modal-footer button {
+        margin-right: 15px;
+    }
+</style>
+
+
+
 <h3 style="color: #6610F2; margin-top: 100px;">Apagar Post</h3>
 <hr />
 
@@ -40,9 +96,32 @@
 </div>
 
 <div class="container d-flex justify-content-center" style="margin-top:20px;">
-    <form asp-action="Delete" onsubmit="return confirm('De certeza que pretende apagar este post?');">
-        <input type="hidden" asp-for="PostId" />
-        <input type="submit" value="Apagar" style="background-color: #6610F2; color: #FFFFFF; border: none; padding: 5px 10px; border-radius: 5px;" />
-        <a asp-action="Index" style="margin-left: 50px; margin-right: 10px;">Cancelar</a>
-    </form>
+    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">
+        Apagar
+    </button>
+    <a asp-action="Index" style="margin-left: 50px; margin-right: 10px; margin-top:4px;">Cancelar</a>
+</div>
+
+<!-- Modal Box-->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Apagar Post</h5>
+                <button type="button" class="close custom-close rounded btn btn-primary" data-dismiss="modal" aria-label="Close">
+                    <i class="bi bi-x font-white" style="font-size: 1.1rem;" aria-hidden="true"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                De certeza que pretende apagar este post?
+            </div>
+            <div class="modal-footer">
+                <form asp-action="Delete">
+                    <input type="hidden" asp-for="PostId" />
+                    <button type="submit" class="btn btn-danger">Apagar</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
