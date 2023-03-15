@@ -1,0 +1,179 @@
+﻿@model SpotifyAPI.Web.FullTrack
+@using Tidbeat.Services
+
+@{
+    ViewData["Title"] = "Details";
+    var songLength = Model.DurationMs / 60000;
+    var spotifyPageURL = SpotifyService.UrlSong + Model.Id;
+    var releaseDate = "";
+    if (Model.Album.ReleaseDate.Length == 4) {
+        releaseDate = Model.Album.ReleaseDate;
+    } else {
+        releaseDate = DateTime.ParseExact(Model.Album.ReleaseDate, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture).ToString("dd-MM-yyyy");
+    }
+    List<Post> allPosts = ViewBag.posts;
+    bool isFavorited = ViewBag.isFavorited;
+    int favoritesAmount = ViewBag.favoritesAmount;
+}
+
+<!--All music info goes here-->
+<div class="container-fluid row w-100 d-flex flex-column flex-lg-row mx-0">
+    <div class="d-flex flex-column col-lg-4 col-12">
+        <div class="mt-5 pt-5 mb-3 d-flex align-items-center justify-content-center justify-content-lg-start">
+            <div>
+                @if (Model.PreviewUrl != null)
+                {
+                    <div>
+                        <img id="startAudio" src="~/images/PlayButton.png" class="pointer-active" />
+                        <div id="audioStatus" class="text-nowrap"></div>
+                    </div>
+                    <audio id="myAudio">
+                        <source src="@Model.PreviewUrl" type="audio/mpeg">
+                    </audio>
+                } else {
+                    <div hidden>
+                        <img id="startAudio"/>
+                        <div id="audioStatus" class="text-nowrap"></div>
+                    </div>
+                    <audio id="myAudio" hidden>
+                        <source type="audio/mpeg">
+                    </audio>
+                }
+            </div>
+            <h4 class="d-flex ms-2">Música: @Model.Name</h4>
+        </div>
+        <div class="d-flex flex-column flex-xl-row justify-content-lg-start align-items-center">
+            <div class="position-relative">
+                <a href="@spotifyPageURL">
+                    @if (Model.Album.Images.Count > 0) {
+                        <img src="@Model.Album.Images[0].Url" height="200" />
+                    } else {
+                        <img src="~/images/Empty_Song_Image.png" height="200" />
+                    }
+                </a>
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <div id="favoriteHeart" class="bi @(isFavorited ? "bi-heart-fill" : "bi-heart" ) text-danger fs-3 position-absolute top-0 end-0 mt-1 me-2 bg-black-50 ps-2 pe-2 pt-1"></div>
+                }
+            </div>
+            <div class="ms-2 text-start">
+                <div>De: <a class="ms-1" href="@Url.Action("Details", "Bands", new { id = Model.Artists[0].Id })">@Model.Artists[0].Name</a></div>
+                <div>Lançado em: @releaseDate</div>
+                <div>Duração: @songLength minutos</div>
+                <div>Álbum: @Model.Album.Name</div>
+            </div>
+        </div>
+        <div class="d-flex align-items-lg-start flex-column mt-5">
+            <div id="favoriteAmount">Número de favoritos: @favoritesAmount</div>
+            <div>Número de posts sobre esta música: @allPosts.Count</div>
+        </div>
+    </div>
+
+    <!--All posts goes here-->
+    <div class="col-lg-8 col-12 mt-5 pt-5 scrollable-posts">
+        <div class="d-flex justify-content-center mb-2">
+            <div class="fs-3 me-4">Posts</div>
+            @if (User.Identity.IsAuthenticated) {
+            <a class="btn btn-primary" asp-controller="Posts" asp-action="Create" asp-route-Idsong="@Model.Id">
+                Criar Post
+            </a>
+            }
+        </div>
+        @if (allPosts.Count == 0) {
+            <div>Não há posts... seja o primeiro a criar um post sobre esta música!</div>
+            <img src="~/images/NoPostsImage.png" height="120" class="mt-5"/>
+        }
+        @foreach (Post post in allPosts) {
+            <a class="text-decoration-none text-black" href="@Url.Action("Details", "Posts", new { id = post.PostId })">
+                <div class="d-flex align-items-center border border-2 border-primary p-1 rounded mb-2 hover-background-grey">
+                    <div class="border-end border-2 border-primary pe-2">
+                        <div>@post.User.FullName</div>
+                        <div>Utilizador</div>
+                    </div>
+                    <div class="ms-2">@post.Title</div>
+                </div>
+            </a>
+        }
+    </div>
+</div>
+
+<script>
+    var favoriteHeart = document.getElementById("favoriteHeart");
+    var favoriteAmountElement = document.getElementById("favoriteAmount");
+    var False = false;
+    var True = true;
+    var isFavorited = @isFavorited;
+    var favoritesAmount = @favoritesAmount;
+    if (favoriteHeart != null) {
+        favoriteHeart.onclick = function () {
+            if (favoriteHeart.classList.contains("bi-heart-fill")) {
+                favoriteHeart.classList.remove("bi-heart-fill");
+                favoriteHeart.classList.add("bi-heart");
+                isFavorited = false;
+                @(favoritesAmount = favoritesAmount - 1)
+                    favoriteAmountElement.innerHTML = "Número de favoritos: " + --favoritesAmount;
+            } else {
+                favoriteHeart.classList.remove("bi-heart");
+                favoriteHeart.classList.add("bi-heart-fill");
+                isFavorited = true;
+                @(favoritesAmount = favoritesAmount + 1)
+                favoriteAmountElement.innerHTML = "Número de favoritos: " + ++favoritesAmount;
+            }
+            setFavorite(isFavorited);
+        }
+    }
+    
+    function setFavorite(isFavorite) {
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', `/Songs/SetFavorite?songId=${isFavorite ? '@Model.Id' : null}`);
+        xhr.send();
+    }
+
+    var startAudio = document.getElementById("startAudio");
+    var myAudio = document.getElementById("myAudio");
+    myAudio.volume = 0.4;
+    var audioStatus = document.getElementById("audioStatus");
+
+    var isPlaying = false;
+
+    startAudio.onclick = function () {
+        if (isPlaying) {
+            myAudio.pause();
+            isPlaying = false;
+            startAudio.src = "../../images/PlayButton.png";
+            audioStatus.innerHTML = "Pausado: " + (30 - myAudio.currentTime.toFixed(0)) + "s";
+            myAudio.removeEventListener("timeupdate", updateTime);
+        } else {
+            myAudio.play();
+            isPlaying = true;
+            startAudio.src = "../../images/StopButton.png";
+            myAudio.addEventListener("timeupdate", updateTime);
+        }
+    }
+
+    function updateTime() {
+        audioStatus.innerHTML = "A correr: " + (30 - myAudio.currentTime.toFixed(0)) + "s";
+    }
+
+    startAudio.addEventListener("mouseover", function () {
+        if (isPlaying) {
+            startAudio.src = "../../images/StopButtonHover.png";
+        } else {
+            startAudio.src = "../../images/PlayButtonHover.png";
+        }
+    });
+
+    startAudio.addEventListener("mouseout", function () {
+        if (isPlaying) {
+            startAudio.src = "../../images/StopButton.png";
+        } else {
+            startAudio.src = "../../images/PlayButton.png";
+        }
+    });
+
+    myAudio.addEventListener("ended", function () {
+        isPlaying = false;
+        startAudio.src = "../../images/PlayButton.png";
+        audioStatus.innerHTML = "";
+    });
+</script>

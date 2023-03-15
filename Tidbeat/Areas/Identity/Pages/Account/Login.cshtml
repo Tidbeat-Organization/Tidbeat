@@ -30,7 +30,7 @@
                     ;
                 }
             </div>
-            <div id="emailHelp" class="form-text">Nunca partilharemos o seu email com outros.</div>
+            <div id="emailHelp" class="form-text">Nunca partilharemos o teu email com outros.</div>
         </div>
         <div class="mb-3">
             <label asp-for="Input.Password" class="form-label text-primary">Palavra-Passe</label>
@@ -56,18 +56,62 @@
         <p>
             <a id="forgot-password" asp-page="./ForgotPassword">Esqueceste-te da palavra-passe?</a>
         </p>
+        <!--
         <div class="border border-2 border-primary rounded-3 w-20 d-flex align-self-center justify-content-center mb-3">
-            <img src="~/images/GoogleIcon.png" width="60" height="55" />
-        </div>
+            <a href="/signin-google">
+                <img src="~/images/GoogleIcon.png" width="55" height="55" />
+            </a>
+        </div>-->
+        
         <asp:Button id="loginFinalSubmit" type="submit" class="hidden" ></asp:Button>
         <asp:Button id="login-submit" class="btn btn-primary" onclick="LoginFunction()">Efetuar Login</asp:Button>
         <p class="mt-2">
             <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Não tenho conta no TidBeat. Criar conta.</a>
         </p>
     </form>
+    <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
+        <div>
+            <p>
+                @foreach (var provider in Model.ExternalLogins!) {
+                    if (provider.Name == "Google") {
+                        <button type="submit" class="btn border hover-background-grey" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">
+                            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google logo" width="50" height="50">
+                            
+                        </button>
+                    }
+                    else {
+                        <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">
+                            @provider.DisplayName
+                        </button>
+                    }
+                }
+            </p>
+        </div>
+    </form>
 </div>
 <script>
     "use strict";
+    document.getElementById("InputEmail1").addEventListener("keypress", function (event) {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            document.getElementById("login-submit").click();
+        }
+    });
+
+    document.getElementById("InputPassword1").addEventListener("keypress", function (event) {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            document.getElementById("login-submit").click();
+        }
+    });
+
+    element.addEventListener("keypress", function (event) {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            document.getElementById("reg-phase-btn").click();
+        }
+    });
+
     function LoginFunction() {
         let pattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@@$!%*?&_-])[A-Za-z\d@@$!%*?&_-]{6,}$/;
         let email = document.getElementById('InputEmail1').value;

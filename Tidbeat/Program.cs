@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
@@ -7,8 +9,19 @@ using Tidbeat.Models;
 using Tidbeat.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+var services = builder.Services;
+var configuration = builder.Configuration;
 builder.Logging.ClearProviders();
-builder.Logging.AddConsole();
+
+services.AddAuthentication().AddGoogle(
+    options =>
+    {
+        options.ClientId = configuration["Authentication:Google:ClientId"];
+        options.ClientSecret = configuration["Authentication:Google:ClientSecret"];
+        options.Scope.Add("https://www.googleapis.com/auth/userinfo.profile");
+        options.ClaimActions.MapJsonKey("name", "name");
+    }
+);
 
 builder.Configuration.AddEnvironmentVariables();
 builder.Configuration.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
@@ -22,7 +35,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 // N�o necessita de conta confirmada: ALTERAR DEPOIS PARA true
-builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
+builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
 
@@ -32,6 +45,10 @@ builder.Services.Configure<AuthMessageSenderOptions>(options => {
 });
 //builder.Services.Configure<AuthMessageSenderOptions>(builder.Configuration);
 
+builder.Services.AddScoped<IMusicService, MusicService>();
+builder.Services.AddScoped<ISpotifyService, SpotifyService>();
+builder.Services.AddScoped<IRatingService, RatingService>();
+
 builder.Services.Configure<IdentityOptions>(opts => {
     opts.Lockout.AllowedForNewUsers = true;
     opts.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(10);
@@ -39,6 +56,21 @@ builder.Services.Configure<IdentityOptions>(opts => {
 });
 
 var app = builder.Build();
+
+// 404 Error Handling
+/*
+app.Use(async (context, next) => {
+    await next();
+
+    if (context.Response.StatusCode == 404) {
+        context.Response.Clear();
+        context.Response.StatusCode = 404;
+        context.Request.Path = "/Home/Error404";
+        await next();
+    }
+});
+*/
+app.UseStatusCodePagesWithRedirects("/Home/Error404");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment()) {
@@ -65,5 +97,6 @@ app.MapRazorPages();
 
 using var scope = app.Services.CreateScope();
 await Configurations.CreateStartingUsers(scope.ServiceProvider);
+//await Configurations.CreateStartingPosts(scope.ServiceProvider);
 
 app.Run();

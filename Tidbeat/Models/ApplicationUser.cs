@@ -11,5 +11,8 @@ namespace Tidbeat.Models {
 
         [PersonalData]
         public string Gender { get; set; }
+
+        [PersonalData]
+        public string? FavoriteSongId { get; set; }
     }
 }

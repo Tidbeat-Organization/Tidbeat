@@ -21,12 +21,42 @@
     <link rel="stylesheet" href="~/TestTemplate.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/bootstrap.custom.min.css" asp-append-version="true" />
 
+    <script src="/lib/tinymce/tinymce.min.js" referrerpolicy="origin"></script>
+    <script>
+        tinymce.init({
+            selector: '#postcreate, #postedit',
+            setup: function (editor) {
+                var maxChars = 1500;
+
+                editor.on('keyup', function (event) {
+                    var content = editor.getContent({ format: 'text' });
+                    var strippedContent = content.replace(/<[^>]+>/g, '');
+                    var charCount = strippedContent.length;
+                    if (charCount > maxChars) {
+                        var bookmark = editor.selection.getBookmark(2, true);
+                        var trimmedContent = strippedContent.substring(0, maxChars);
+                        editor.setContent(trimmedContent);
+                        editor.selection.moveToBookmark(bookmark);
+                        var warningMsg = 'O limite de carateres (' + maxChars + ') foi excedido.';
+                        editor.notificationManager.open({
+                            text: warningMsg,
+                            type: 'warning',
+                        });
+                    }
+                });
+            }
+        });
+        tinymce.init({
+            selector: '#commentcreate',
+        });
+    </script>
+
 </head>
 <body>
     <!-- Navigation-->
     <nav class="navbar navbar-expand-lg navbar-light fixed-top shadow-sm" id="mainNav">
         <div class="container-fluid">
-            <a class="navbar-brand fw-bold d-flex flex-row">
+            <a href="/" class="navbar-brand fw-bold d-flex flex-row">
                 <img src="~/images/Logo.png" width="60" height="55" />
                 <h1 class="text-primary mt-1">Tidbeat</h1>
             </a>
@@ -37,7 +67,7 @@
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav me-2 my-3 my-lg-0">
                     <li class="nav-item me-1 rounded text-center bg-white">
-                        <a class="nav-link text-black" href="#features">Posts Recomendados</a>
+                        <a class="nav-link text-black" href="@Url.Action("Index", "Posts")">Posts Recomendados</a>
                     </li>
                 </ul>
                 <div class="dropdown me-3" style="background-color: white; color: black;">
@@ -46,19 +76,31 @@
                     </button>
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="#">Utilizadores</a></li>
-                        <li><a class="dropdown-item" href="#">Músicas</a></li>
-                        <li><a class="dropdown-item" href="#">Bandas</a></li>
+                        <li><a class="dropdown-item" href="/Songs">Músicas</a></li>
+                        <li><a class="dropdown-item" href="/Bands">Bandas</a></li>
                     </ul>
                 </div>
                 <div class="d-flex flex-row">
+                    <!--
                     <div class="btn btn-primary">
                         <img src="~/images/FilterIcon.png" height="26" width="31" />
                     </div>
-                    <div class="input-group">
-                        <div class="form-outline">
-                            <input type="search" id="form1" class="form-control" placeholder="Search" />
+                    -->
+                    <!-- Search bar with dropdown menu -->
+                    <div class="input-group d-flex flex-row flex-nowrap">
+                        <div class="dropdown">
+                            <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="margin-top: 1.5px;">
+                                <span id="searchTypeText">Músicas</span>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="#" id="search-songs">Músicas</a></li>
+                                <li><a class="dropdown-item" href="#" id="search-bands">Bandas e Artistas</a></li>
+                            </ul>
                         </div>
-                        <button type="button" class="btn btn-primary">
+                        <div class="form-outline">
+                            <input type="search" id="searchInput" class="form-control" placeholder="Search" />
+                        </div>
+                        <button type="button" id="searchButton" class="btn btn-primary">
                             <img class="no-padding" src="~/images/SearchIcon.png" height="26" width="30" />
                         </button>
                     </div>
@@ -91,7 +133,7 @@
             </div>
         </div>
     </nav>
-    <div class="row filldiv">
+    <div class="row filldiv mx-0">
         <main role="main" class="text-center">
             @RenderBody()
         </main>
@@ -238,5 +280,43 @@
 
     <script src="https://apis.google.com/js/platform.js" async defer></script>
     @await RenderSectionAsync("Scripts", required: false)
+
+    <!-- This scripts implements all the searchbar dropdown menu logic-->
+    <script>
+        var searchButton = document.getElementById('searchButton');
+        var searchInput = document.getElementById('searchInput');
+        var searchType = 'songs'; // Default to searching for songs
+        var searchTypeText = document.getElementById('searchTypeText'); // Get the search type text element
+
+        document.getElementById('search-songs').addEventListener('click', function (e) {
+            e.preventDefault(); // Prevent the default behavior of the anchor element
+            searchType = 'songs';
+            searchTypeText.textContent = 'Músicas'; // Update the search type text
+        });
+
+        document.getElementById('search-bands').addEventListener('click', function (e) {
+            e.preventDefault(); // Prevent the default behavior of the anchor element
+            searchType = 'bands';
+            searchTypeText.textContent = 'Bandas e Artistas'; // Update the search type text
+        });
+
+        searchButton.addEventListener('click', function () {
+            var searchQuery = searchInput.value.trim();
+            if (searchQuery !== '') {
+                var newUrl = '/' + searchType + '?searchKey=' + encodeURIComponent(searchQuery) + '&gener=&band=&album=&yearStart=&yearEnd=';
+                window.location.href = newUrl;
+            }
+        });
+
+        searchInput.addEventListener("keypress", function (event) {
+            // If the user presses the "Enter" key on the keyboard
+            if (event.key === "Enter") {
+                // Cancel the default action, if needed
+                event.preventDefault();
+                // Trigger the button element with a click
+                document.getElementById('searchButton').click();
+            }
+        });
+    </script>
 </body>
 </html>

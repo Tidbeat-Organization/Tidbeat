@@ -1,0 +1,41 @@
+﻿@using Tidbeat.Enums
+@model IEnumerable<Tidbeat.Models.Post>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div style="margin-top: 100px;">
+    @if (TempData["Message"] != null)
+    {
+        <div class="alert alert-success">@TempData["Message"]</div>
+    }
+
+    <h3 style="color: #6610F2;">Posts Recomendados</h3>
+    <hr />
+    @if (User.Identity.IsAuthenticated)
+    {
+        <p>
+            <a asp-action="Create" class="btn btn-primary">Criar novo post</a>
+        </p>
+    }
+</div>
+
+<div class="row">
+    @foreach (var item in Model)
+    {
+        <div class="col-md-4">
+            <div class="card mb-4 shadow-sm">
+                <div class="card-body text-center">
+                    <h5 class="card-title">@Html.DisplayFor(modelItem => item.Title)</h5>
+                    <p class="card-text">@Html.Raw(item.Content.Length > 15 ? item.Content.Substring(0, 15) + "..." : item.Content)</p>
+                    <div class="d-flex justify-content-center align-items-center">
+                        <div class="btn-group">
+                            <a asp-action="Details" asp-route-id="@item.PostId" style="background-color:#6610F2;color:#fff;" class="btn btn-sm btn-outline-secondary">Detalhes</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>

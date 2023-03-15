@@ -1,0 +1,145 @@
+﻿@using Tidbeat.Controllers
+@using Tidbeat.Services
+@inject IMusicService MusicService
+@inject ISpotifyService SpotifyService
+
+@{
+    ViewData["Title"] = "Musics Page";
+    var gender = TempData["Gener"]?.ToString();
+}
+
+<div class="mt-4 pt-5">
+    <div class="mx-3 mt-10">
+        <div id="filter" class="pb-2 mt-10">
+            <div class="display-6 text-primary text-left d-flex w-2">Filtros</div>
+            <div class="d-flex flex-xl-row flex-column w-md-100 justify-content-center">
+                <div class="input-group d-flex flex-column px-3">
+                    <div class="text-start">Nome:</div>
+                    <input type="text" id="formSearch" class="form-control w-100 rounded" placeholder="Nome" value="@TempData?["Search"]">
+                </div>
+                <div class="input-group d-flex flex-column px-3">
+                    <div class="align-self-start">Género:</div>
+                    <div class="form-outline d-flex flex-row">
+                    <select class="form-control w-100" id="formGender" name="formGender">
+                            <!option selected value="">Escolha um Género</!option>
+                            <!option value="rock" @(gender == "rock" ? "selected" : "")>Rock</!option>
+                            <!option value="pop" @(gender == "pop" ? "selected" : "")>Pop</!option>
+                            <!option value="kids" @(gender == "kids" ? "selected" : "")>Crianças</!option>
+                            <!option value="funk" @(gender == "funk" ? "selected" : "")>Funk</!option>
+                            <!option value="classical" @(gender == "classical" ? "selected" : "")>Clássica</!option>
+                            <!option value="country" @(gender == "country" ? "selected" : "")>Country</!option>
+                            <!option value="dance" @(gender == "dance" ? "selected" : "")>Dança</!option>
+                            <!option value="metal" @(gender == "metal" ? "selected" : "")>Metal</!option>
+                            <!option value="disco" @(gender == "disco" ? "selected" : "")>Disco</!option>
+                            <!option value="folk" @(gender == "folk" ? "selected" : "")>Folk</!option>
+                            <!option value="hip-hop" @(gender == "hip-hop" ? "selected" : "")>Hip-Hop</!option>
+                            <!option value="indian" @(gender == "indian" ? "selected" : "")>Indian</!option>
+                            <!option value="k-pop" @(gender == "k-pop" ? "selected" : "")>K-Pop</!option>
+                            <!option value="punk" @(gender == "punk" ? "selected" : "")>Punk</!option>
+                            <!option value="piano" @(gender == "piano" ? "selected" : "")>Piano</!option>
+                            <!option value="reggae" @(gender == "reggae" ? "selected" : "")>Reggae</!option>
+                            <!option value="techno" @(gender == "techno" ? "selected" : "")>Techno</!option>
+                        </select>
+                    </div>
+                </div>
+                <div class="input-group d-flex flex-column px-3">
+                    <div class="align-self-start">Banda/Artista:</div>
+                    <div class="form-outline  d-flex flex-row">
+                        <input type="search" id="formBand" class="form-control" placeholder="Search" value="@TempData?["Band"]"/>
+                    </div>
+                </div>
+                <div class="input-group d-flex flex-column px-3">
+                    <div class="align-self-start">Álbum:</div>
+                    <div class="form-outline  d-flex flex-row">
+                        <input type="search" id="formAlbum" class="form-control" placeholder="Search" value="@TempData?["Album"]" />
+                    </div>
+                </div>
+                <div class="input-group d-flex flex-column px-3">  
+                            <div class="align-self-start">Ano de Lançamento:</div>
+                    <div class="input-group d-flex flex-row h-50 align-items-end">
+                        <div class="align-items-end d-flex">    
+                            <input id="formStartYear" type="number" class="form-control form-outline" placeholder="YYYY" min="1950" max="@DateTime.Now.Year" value=@TempData?["YearStar"]>
+                            <div class="align-self-center px-1">a</div>
+                            <input id="formEndYear" type="number" class="form-control form-outline" placeholder="YYYY" min="1950" max="@DateTime.Now.Year" value=@TempData?["YearEnd"]>
+                        </div>
+                    </div>
+                </div>
+                <div class="px-3 pt-3 pt-md-2">
+                    <button class="btn btn-primary">
+                        <img id="imgBand" class="no-padding align-self-center px-3" src="~/images/SearchIcon.png" height="37" width="45" onclick="actualEvent()" />
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="border border-1 border-light-grey my-4"></div>
+        <div>
+            @if (ViewBag.Result.Tracks.Items.Count > 0)
+            {
+                <h2 class="d-flex">Músicas</h2>
+                @foreach (var item in ViewBag.Result.Tracks.Items)
+                {
+                    <a href="@Url.Action("Details", "Songs", new { id = item.Id })" id="@item.Uri" class="hover-background-grey text-decoration-none text-black border border-3 border-primary rounded mt-2 d-flex  mx-2 mx-md-5">
+                        @if (item.Album.Images.Count != 0) {
+                            <img class="align-self-center"src="@item.Album.Images[0].Url" alt="@item.Album.Name" width="70" height="70">
+                        } else {
+                            <img class="align-self-center" src="../../images/Empty_Song_Image.png" alt="@item.Album.Name" width="70" height="70">
+                        }
+                        <div class="d-flex text-start justify-content-start align-content-start align-self-center font-weight-bold w-25 ms-3">@item.Name</div>
+                        <div class="d-flex text-start justify-content-start align-content-start align-self-center w-25">
+                            <div class="mr-5 text-start justify-content-start align-content-start"> de: @item.Artists[0].Name</div>
+                        </div>
+                        <div class="btn btn-primary align-self-center ms-auto me-3">Detalhes</div>
+                    </a>
+                }
+
+            }else
+            {
+                <div class="text-danger" id="Danger">Não existe nenhuma música com esses filtros</div>
+            }
+        </div>
+    </div>
+</div>
+
+<script>
+        function actualEvent(){
+            let inputSearch = document.getElementById("formSearch");
+            let inputGener = document.getElementById("formGender");
+            let inputAlbum = document.getElementById("formAlbum");
+            let inputArtist = document.getElementById("formBand");
+            let inputStartYear = document.getElementById("formStartYear");
+            let inputEndYear = document.getElementById("formEndYear");
+            let path = window.location.href.split("?")[0];
+        if (inputSearch.value || inputGener.value || inputAlbum.value || inputArtist.value || inputStartYear.value.length === 4 || inputEndYear.value.length === 4) {
+                path+="?";
+                let params = new URLSearchParams({
+                searchKey: inputSearch.value,
+                    gener: inputGener.value,
+                    band: inputArtist.value,
+                    album: inputAlbum.value,
+                    yearStart: inputStartYear.value,
+                    yearEnd: inputEndYear.value,
+                })
+                path+=params.toString();
+                console.log(window.location.href)
+                window.location.href = path;
+            }
+            event.preventDefault();
+        }
+        document.getElementById("filter").addEventListener("keypress", function (event) {
+               if(event.key === "Enter"){
+                let focusElement = document.activeElement;
+                let inputSearch = document.getElementById("formSearch");
+                let inputGener = document.getElementById("formGender");
+                let inputAlbum = document.getElementById("formAlbum");
+                let inputArtist = document.getElementById("formBand");
+                let inputStartYear = document.getElementById("formStartYear");
+                let inputEndYear = document.getElementById("formEndYear");
+            if (inputSearch === focusElement || inputGener === focusElement || inputAlbum === focusElement || inputArtist === focusElement || inputStartYear === focusElement || inputEndYear === focusElement){
+                    //only if one of the elements is higthligthed
+                            event.preventDefault();
+                            actualEvent();
+                    }
+               }
+            }
+        );
+</script>

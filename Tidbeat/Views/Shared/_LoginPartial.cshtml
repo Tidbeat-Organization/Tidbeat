@@ -1,16 +1,22 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
+@{
+    var loggedUserName = (await UserManager.GetUserAsync(User))?.FullName.Split(' ')[0];
+}
 
 <ul class="navbar-nav">
 @if (SignInManager.IsSignedIn(User))
 {
     <li class="nav-item">
-        <a  class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Olá, @User.Identity?.Name!.Split('@')[0]</a>
+        <a class="nav-link text-dark mt-2" asp-area="Identity" asp-page="/Account/Manage/Index"
+            title="Manage" style="margin-top: 1.5px;">
+                Olá, @((loggedUserName.Length > 9) ? loggedUserName.Substring(0, 9) + "..." : loggedUserName)!
+        </a>
     </li>
     <li class="nav-item">
         <form  class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-            <button  type="submit" class="nav-link btn btn-link text-dark">Terminar sessão</button>
+            <button  type="submit" class="nav-link btn btn-link text-dark bg-info bi-box-arrow-right bg-white fs-4"></button>
         </form>
     </li>
 }
@@ -22,5 +28,6 @@ else
     <li class="nav-item">
         <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Login</a>
     </li>
+    
 }
 </ul>
