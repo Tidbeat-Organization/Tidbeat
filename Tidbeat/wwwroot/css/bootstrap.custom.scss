@@ -108,6 +108,10 @@ nav-link {
     height: calc(100vh - $navbar-height);
 }
 
+#post-content > * {
+    overflow-wrap: break-word !important;
+}
+
 .tox-tinymce {
     border: 1px solid $primary !important;
 }

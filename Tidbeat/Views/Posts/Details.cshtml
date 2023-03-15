@@ -63,9 +63,9 @@
                     </audio>
                 </div>
             }
-            <div class="ms-2">
+            <div class="ms-2 w-100">
                 <h4 class="d-flex fw-bold fs-1">@Model.Title</h4>
-                <div class="text-start pb-4">@Html.Raw(Model.Content)</div>
+                <div id="post-content" class="text-start pb-4">@Html.Raw(Model.Content)</div>
             </div>
         </div>
         <div class="d-flex">@Html.Partial("_RatingPartial", Tuple.Create(Model.PostId, RatingType.Post))</div>
