@@ -12,8 +12,8 @@ using Tidbeat.Data;
 namespace Tidbeat.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230313215312_initial")]
-    partial class initial
+    [Migration("20230315162307_2Sprint")]
+    partial class _2Sprint
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Tidbeat.Migrations
 {
-    public partial class initial : Migration
+    public partial class _2Sprint : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
