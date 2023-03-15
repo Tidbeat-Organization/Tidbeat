@@ -2,15 +2,14 @@
 @{
     ViewData["Title"] = "Create";
 }
-}
 
 <h3 style="color: #6610F2; margin-top: 100px;">Criar Post</h3>
 <hr />
 
 <div class="container d-flex justify-content-center" style="margin-top: 35px;">
     <div class="col-md-6 col-lg-4" style="margin-right: 250px;">
-        <div class="input-group" style="background-color: white; color: black;">
-            <div class="align-self-start d-flex" style="color: #6610F2; font-weight: bold;">Opções Extra:</div>
+        <div class="input-group d-flex flex-row" style="background-color: white; color: black;">
+            <div class="align-self-start d-flex flex-row" style="color: #6610F2; font-weight: bold;">Opções Extra:</div>
                     <select class="form-control w-100" id="formOptional" name="formOpp">
                             <!option selected value="none">Nenhuma</!option>
                             <!option value="complete" @(TempData["Gener"]?.ToString() == "rock" ? "selected" : "")>Música</!option>
@@ -80,11 +79,11 @@
                     <span style="color: #6610F2; font-weight: bold;">Link:</span><a id="SongLink" href="@{
                             if (ViewBag.chooseSong != null) {
                                 string url = $"https://open.spotify.com/track/{ViewBag.chooseSong.Id}";
-                                                                    @url
+                                                                        @url
                             }
                             else if (ViewBag.chooseBand != null) {
                                 string url = $"https://open.spotify.com/artist/{ViewBag.chooseBand.Id}";
-                                                                    @url
+                                                                        @url
                             }
                         }">
                         @if (ViewBag.chooseSong != null)
@@ -257,6 +256,7 @@
                 document.getElementById("Bandsinput").value = "";
             }
         });
+
         
 
         const songLink = document.getElementById("SongLink");
