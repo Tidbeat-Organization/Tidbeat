@@ -26,8 +26,8 @@
                 </div>
                 @if (Model.Song != null) {
                     <div class="d-flex flex-row ms-2 fs-6">
-                        <div class="text-primary">Música:</div>
-                        <a class="text-black-hover" asp-controller="Songs" asp-action="Details" asp-route-id="@Model.Song.SongId">&nbsp;@Model.Song.Name</a>
+                        <div class="text-primary">Música:&nbsp;</div>
+                        <a class="text-black-hover" asp-controller="Songs" asp-action="Details" asp-route-id="@Model.Song.SongId">@Model.Song.Name</a>
                         <div class="text-primary">&nbsp;de&nbsp;</div>
                         <a class="text-black-hover" asp-controller="Bands" asp-action="Details" asp-route-id="@Model.Band.BandId">@Model.Band.Name </a>
                         <!--<div class="text-primary">&nbsp;&nbsp;&nbsp;&nbsp;Link:&nbsp;</div>
@@ -47,7 +47,7 @@
             {
             <div class="d-flex flex-column border  border-top-0 border-primary me-2">
                     <a class="text-primary rounded text-decoration-none bi bi-pencil-fill fs-6 px-2 py-1 mb-1 hover-background-grey" asp-action="Edit" asp-route-id="@Model.PostId"></a>
-                    <a class="text-primary rounded text-decoration-none bi bi-trash-fill fs-6 px-2 py-1 hover-background-grey" asp-action="Delete" asp-route-id="@Model.PostId"></a>
+                    <a class="text-danger rounded text-decoration-none bi bi-trash-fill fs-6 px-2 py-1 hover-background-grey" asp-action="Delete" asp-route-id="@Model.PostId"></a>
             </div>
             }
         </div>
