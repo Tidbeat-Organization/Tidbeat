@@ -106,3 +106,14 @@ nav-link {
 .vh-100-minus-navbar {
     height: calc(100vh - $navbar-height);
 }
+
+.tox-tinymce {
+    border: 1px solid $primary !important;
+}
+.tox-mbtn__select-label, .tox-tbtn__select-label, .tox-collection__item-label {
+    color: $primary !important;
+}
+
+.tox-tbtn__icon-wrap > svg > path {
+    fill: $primary !important;
+}

@@ -25,6 +25,26 @@
     <script>
         tinymce.init({
             selector: '#postcreate, #postedit',
+            setup: function (editor) {
+                var maxChars = 1500;
+
+                editor.on('keyup', function (event) {
+                    var content = editor.getContent({ format: 'text' });
+                    var strippedContent = content.replace(/<[^>]+>/g, '');
+                    var charCount = strippedContent.length;
+                    if (charCount > maxChars) {
+                        var bookmark = editor.selection.getBookmark(2, true);
+                        var trimmedContent = strippedContent.substring(0, maxChars);
+                        editor.setContent(trimmedContent);
+                        editor.selection.moveToBookmark(bookmark);
+                        var warningMsg = 'O limite de carateres (' + maxChars + ') foi excedido.';
+                        editor.notificationManager.open({
+                            text: warningMsg,
+                            type: 'warning',
+                        });
+                    }
+                });
+            }
         });
         tinymce.init({
             selector: '#commentcreate',

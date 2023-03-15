@@ -10549,3 +10549,15 @@ textarea.form-control-lg {
 .vh-100-minus-navbar {
   height: calc(100vh - 72px);
 }
+
+.tox-tinymce {
+  border: 1px solid #6610F2 !important;
+}
+
+.tox-mbtn__select-label, .tox-tbtn__select-label, .tox-collection__item-label {
+  color: #6610F2 !important;
+}
+
+.tox-tbtn__icon-wrap > svg > path {
+  fill: #6610F2 !important;
+}
