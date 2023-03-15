@@ -10546,6 +10546,16 @@ textarea.form-control-lg {
   border-radius: 30%;
 }
 
+.text-black-hover {
+  color: rgba(0, 0, 0, 0.7);
+  text-decoration: none;
+}
+
+.text-black-hover:hover {
+  color: black;
+  text-decoration: underline;
+}
+
 .vh-100-minus-navbar {
   height: calc(100vh - 72px);
 }

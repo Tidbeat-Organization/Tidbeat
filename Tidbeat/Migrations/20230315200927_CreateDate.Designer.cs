@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Tidbeat.Data;
 
@@ -11,9 +12,15 @@ using Tidbeat.Data;
 namespace Tidbeat.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+<<<<<<<< HEAD:Tidbeat/Migrations/20230315200927_CreateDate.Designer.cs
+    [Migration("20230315200927_CreateDate")]
+    partial class CreateDate
+========
+    [Migration("20230315152720_initial")]
+    partial class initial
+>>>>>>>> Create-Post-Fixes:Tidbeat/Migrations/20230315152720_initial.Designer.cs
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

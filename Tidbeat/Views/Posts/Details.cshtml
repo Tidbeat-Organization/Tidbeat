@@ -26,10 +26,10 @@
                 </div>
                 @if (Model.Song != null) {
                     <div class="d-flex flex-row ms-2 fs-6">
-                        <div class="text-primary">Música:</div>
-                        <div>&nbsp;@Model.Song.Name</div>
+                        <div class="text-primary">Música:&nbsp;</div>
+                        <a class="text-black-hover" asp-controller="Songs" asp-action="Details" asp-route-id="@Model.Song.SongId">@Model.Song.Name</a>
                         <div class="text-primary">&nbsp;de&nbsp;</div>
-                        <div>@Model.Band.Name</div>
+                        <a class="text-black-hover" asp-controller="Bands" asp-action="Details" asp-route-id="@Model.Band.BandId">@Model.Band.Name </a>
                         <!--<div class="text-primary">&nbsp;&nbsp;&nbsp;&nbsp;Link:&nbsp;</div>
                         <a href="https://open.spotify.com/track/@Model.Song.SongId" target="_blank">Spotify - @Model.Song.Name by @Model.Band.Name</a>-->
                     </div>
@@ -37,7 +37,7 @@
                 else if (Model.Band != null) {
                     <div class="d-flex flex-row ms-2 fs-6">
                         <div class="text-primary">Artista:</div>
-                        <div>@Model.Band.Name </div>
+                        <a class="text-black-hover" asp-controller="Bands" asp-action="Details" asp-route-id="@Model.Band.BandId">@Model.Band.Name </a>
                         <div class="text-primary">&nbsp;&nbsp;&nbsp;&nbsp;Link:&nbsp;</div>
                         <a href="https://open.spotify.com/artist/@Model.Band.BandId" target="_blank">Spotify - @Model.Band.Name</a>
                     </div>
@@ -47,7 +47,7 @@
             {
             <div class="d-flex flex-column border  border-top-0 border-primary me-2">
                     <a class="text-primary rounded text-decoration-none bi bi-pencil-fill fs-6 px-2 py-1 mb-1 hover-background-grey" asp-action="Edit" asp-route-id="@Model.PostId"></a>
-                    <a class="text-primary rounded text-decoration-none bi bi-trash-fill fs-6 px-2 py-1 hover-background-grey" asp-action="Delete" asp-route-id="@Model.PostId"></a>
+                    <a class="text-danger rounded text-decoration-none bi bi-trash-fill fs-6 px-2 py-1 hover-background-grey" asp-action="Delete" asp-route-id="@Model.PostId"></a>
             </div>
             }
         </div>
@@ -89,22 +89,23 @@
                 @foreach (var item in ViewBag.commentsPosts)
                 {
                     <div class="form-control d-flex flex-row">
-                        <div class="align-content-end flex-column w-25">
+                        <div class="align-content-end flex-column w-25 border-end">
+                            <div class="fs-7">Criado em: @item.CreationDate.Date.ToShortDateString()</div>
                             <div class="font-weigth-bold">@item.User.FullName</div>
                             <div class="text-primary">Role</div>
                         <div>@Html.Partial("_RatingPartial", Tuple.Create((int) item.CommentId , RatingType.Comment))</div>
                         </div>
-                        <div class="border-left border-secondary ml-2 w-75 text-start">@item.Content</div>
+                        <div class="border-left border-secondary ml-2 w-75 text-start ms-2">@item.Content</div>
                     @if (ViewBag.currentUser != null)
                         {
                             @if (item.User.Id == ViewBag.currentUser.Id)
                             {
                                 <div class="align-content-end flex-column justify-content-end">
-                                <a formmethod="get" class="bg-primary text-white rounded text-decoration-none px-2 pt-1 pb-1 bi bi-pencil-fill" asp-controller="Comments" asp-action="Edit" asp-route-id="@item.CommentId"></a>
+                                <a formmethod="get" class="text-primary hover-background-grey rounded text-decoration-none px-2 pt-1 pb-1 bi bi-pencil-fill" asp-controller="Comments" asp-action="Edit" asp-route-id="@item.CommentId"></a>
                                 <form class="mt-2" style="outline: none;" method="post" action="@Url.Action("Delete", "Comments", new { id = item.CommentId })">
                                     @Html.AntiForgeryToken()
 
-                                    <button type="submit" style="border: none;" class="bg-primary text-white rounded text-decoration-none px-2 py-1 bg-info bi-trash-fill"></button>
+                                    <div class="hover-background-grey rounded"><button type="submit" style="border: none;" class="bg-transparent text-danger text-decoration-none px-2 py-1 bg-info bi-trash-fill"></button></div>
                                 </form>
                                 </div>
                             }
