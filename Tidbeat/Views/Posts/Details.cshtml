@@ -27,9 +27,9 @@
                 @if (Model.Song != null) {
                     <div class="d-flex flex-row ms-2 fs-6">
                         <div class="text-primary">Música:</div>
-                        <div>&nbsp;@Model.Song.Name</div>
+                        <a class="text-black-hover" asp-controller="Songs" asp-action="Details" asp-route-id="@Model.Song.SongId">&nbsp;@Model.Song.Name</a>
                         <div class="text-primary">&nbsp;de&nbsp;</div>
-                        <div>@Model.Band.Name</div>
+                        <a class="text-black-hover" asp-controller="Bands" asp-action="Details" asp-route-id="@Model.Band.BandId">@Model.Band.Name </a>
                         <!--<div class="text-primary">&nbsp;&nbsp;&nbsp;&nbsp;Link:&nbsp;</div>
                         <a href="https://open.spotify.com/track/@Model.Song.SongId" target="_blank">Spotify - @Model.Song.Name by @Model.Band.Name</a>-->
                     </div>
@@ -37,7 +37,7 @@
                 else if (Model.Band != null) {
                     <div class="d-flex flex-row ms-2 fs-6">
                         <div class="text-primary">Artista:</div>
-                        <div>@Model.Band.Name </div>
+                        <a class="text-black-hover" asp-controller="Bands" asp-action="Details" asp-route-id="@Model.Band.BandId">@Model.Band.Name </a>
                         <div class="text-primary">&nbsp;&nbsp;&nbsp;&nbsp;Link:&nbsp;</div>
                         <a href="https://open.spotify.com/artist/@Model.Band.BandId" target="_blank">Spotify - @Model.Band.Name</a>
                     </div>
