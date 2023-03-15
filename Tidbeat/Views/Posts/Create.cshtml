@@ -8,7 +8,7 @@
 
 <div class="container d-flex justify-content-center" style="margin-top: 35px;">
     <div class="col-md-6 col-lg-4" style="margin-right: 250px;">
-        <div class="input-group d-flex flex-row" style="background-color: white; color: black;">
+        <div class="input-group d-flex flex-row d-inline-flex" style="background-color: white; color: black;">
             <div class="align-self-start d-flex flex-row" style="color: #6610F2; font-weight: bold;">Opções Extra:</div>
                     <select class="form-control w-100" id="formOptional" name="formOpp">
                             <!option selected value="none">Nenhuma</!option>
@@ -264,7 +264,7 @@
         });
         document.getElementById("Bandsinput").addEventListener("blur", () => {
             setTimeout(() => {
-                optionS.style.display = "none";
+                optionS2.style.display = "none";
             }, 100)
         });
         
