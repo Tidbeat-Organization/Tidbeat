@@ -9,10 +9,18 @@
 
 <div class="container d-flex justify-content-center" style="margin-top: 35px;">
     <div class="col-md-6 col-lg-4" style="margin-right: 250px;">
+        <div class="input-group" style="background-color: white; color: black;">
+            <div class="align-self-start d-flex" style="color: #6610F2; font-weight: bold;">Opções Extra:</div>
+                    <select class="form-control w-100" id="formOptional" name="formOpp">
+                            <!option selected value="none">Nenhuma</!option>
+                            <!option value="complete" @(TempData["Gener"]?.ToString() == "rock" ? "selected" : "")>Música</!option>
+                            <!option value="incomplete" @(TempData["Gener"]?.ToString() == "pop" ? "selected" : "")>Banda</!option>
+                        </select>
+        </div>
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <!-- Song -->
-            <div class="form-group row">
+            <div class="form-group row" id="CheckerFormMusic">
                 <label asp-for="Song" class="col-sm-2 col-form-label" style="color: #6610F2; font-weight: bold;">Música:</label>
                 <div class="col-sm-10" id="formfromsong">
                     <input autocomplete ="off" role="combobox" list="" value="@((ViewBag?.chooseSong?.Name ?? ""))" name="SongId1" id="SongIdInput" oninput='onInputSong()' class="form-control" placeholder="Escolha a música..." style="border: 1.5px solid #6610F2; border-radius: 15px; width:625px;" @(ViewBag.chooseSong != null ? "value=" + @ViewBag.chooseSong.Name : "")
@@ -22,7 +30,7 @@
                         {
                             @foreach (var item in ViewBag.songs)
                             {
-                                <option data-value="@item.Uri" song-link="@item.Href">@item.Name</option>
+                                <option data-value="@item.Uri" song-link="@item.Href" band-value="@item.Artists[0].Name">@item.Name</option>
                             }
 
                         }
@@ -46,7 +54,7 @@
             </div>
 
             <!-- Band -->
-             <div class="form-group row" style="margin-top: 15px;">
+             <div class="form-group row" style="margin-top: 15px;" id="CheckerFormBand">
                 <label asp-for="Band" class="col-sm-2 col-form-label" style="color: #6610F2; font-weight: bold;">Banda:</label>
                 <div class="col-sm-10" id="formfromband">
                     <input autocomplete="off" role="combobox" list="" value="@((ViewBag?.chooseBand?.Name ?? ""))" name="BandId1" id="Bandsinput" oninput='onInputBand()' class="form-control" placeholder="Escolha a banda..." style="border: 1.5px solid #6610F2; border-radius: 15px; width:625px;"
@@ -67,16 +75,16 @@
             </div>
 
             <!-- Spotify Link -->
-            <div class="form-group row w-100" style="margin-top: 15px;">
+            <div class="form-group row w-100" style="margin-top: 15px;" id="CheckFormLink">
                 <label class="col-sm-2 col-form-label w-100 text-start">
                     <span style="color: #6610F2; font-weight: bold;">Link:</span><a id="SongLink" href="@{
                             if (ViewBag.chooseSong != null) {
                                 string url = $"https://open.spotify.com/track/{ViewBag.chooseSong.Id}";
-                                                    @url
+                                                                    @url
                             }
                             else if (ViewBag.chooseBand != null) {
                                 string url = $"https://open.spotify.com/artist/{ViewBag.chooseBand.Id}";
-                                                    @url
+                                                                    @url
                             }
                         }">
                         @if (ViewBag.chooseSong != null)
@@ -139,12 +147,6 @@
             //hiddenInput.value = val.value;
             hiddenInput.value = "";
             songLink.textContent="";
-            if (val.value.length > 0) {
-                bandInput.disabled= true;
-            }else
-            {
-                bandInput.disabled = false;
-            }
             for (var i = 0; i < opts.length; i++) {
                 if (opts[i].innerText === val.value) {
                     // An item was selected from the list!
@@ -152,6 +154,7 @@
                     hiddenInput.value = opts[i].getAttribute('data-value');
                     songLink.textContent = "Spotify - " + opts[i].innerText;
                     songLink.setAttribute("href", "https://open.spotify.com/track/"+opts[i].getAttribute('data-value'));
+                    //bandInput.value =opts[i].getAttribute('band-value');
                     boolCheck = false;
                     break;
                 }
@@ -172,15 +175,17 @@
                             option.innerText = item.name;
                             option.setAttribute("data-value",item.id);
                             option.setAttribute("song-link", item.Href);
+                            option.setAttribute("band-value",item.artists[0].name);
                                 option.onclick = function () {
                                     bandInput.disabled= true;
-                                    val.innerText = option.value;
+                                    val.value = option.value;
                                     options.style.display = 'none';
                                     val.style.borderRadius = "5px";
                                     hiddenInput.value = option.getAttribute('data-value');
                                     songLink.textContent = "Spotify - " + option.innerText;
-                                    songLink.setAttribute("href", "https://open.spotify.com/track/" + option.getAttribute('data-value'));
-                                document.getElementById('SongOptions').style.display = 'none';
+                                    bandInput.value = option.getAttribute('band-value');
+                                    songLink.setAttribute("href", "https://open.spotify.com/track/" + option.getAttribute('data-value'));   
+                                   document.getElementById('SongOptions').style.display = 'none';
                                 }
                             options.appendChild(option);
                             // Your code here
@@ -197,11 +202,6 @@
             var boolCheck = true;
             var songInput = document.getElementById("SongIdInput");
             var songLink = document.getElementById("SongLink");
-            if (val.value.length > 0) {
-                songInput.disabled = true;
-            } else {
-               songInput.disabled = false;
-            }
             //hiddenInput.value = val.value;
             hiddenInput.value = "";
             for (var i = 0; i < opts.length; i++) {
@@ -278,6 +278,7 @@
                 songLink.textContent = "Spotify - " + option.innerText;
                 songLink.setAttribute("href", "https://open.spotify.com/track/" + option.getAttribute('data-value'));
                 document.getElementById('SongOptions').style.display = 'none';
+                input2.value = option.getAttribute('band-value');
             }
         };
 
@@ -301,8 +302,59 @@
             }
         };
 
+        //For the Optional
+        var optionalChecker = document.getElementById("formOptional");
+        if (optionalChecker.value === "complete") {
+            document.getElementById("CheckerFormMusic").style.display = 'flex';
+            document.getElementById("CheckerFormBand").style.display = 'flex';
+            document.getElementById("CheckFormLink").style.display = 'flex';
+            document.getElementById("Bandsinput").disabled= true;
+            document.getElementById("SongIdInput").disabled=false;
 
+        } else if (optionalChecker.value === "incomplete") {
+            document.getElementById("Bandsinput").disabled= false;
+            document.getElementById("SongIdInput").disabled=true;
+            document.getElementById("CheckerFormMusic").style.display = 'none';
+            document.getElementById("CheckerFormBand").style.display = 'flex';
+            document.getElementById("CheckFormLink").style.display = 'flex';
+        }else
+        {
+            document.getElementById("CheckerFormMusic").style.display = 'none';
+            document.getElementById("CheckerFormBand").style.display = 'none';
+            document.getElementById("CheckFormLink").style.display = 'none';
+        }
+       optionalChecker.addEventListener("change", (event) => {
+        if (optionalChecker.value === "complete") {document.getElementById("CheckerFormMusic").style.display = 'flex';
+            document.getElementById("CheckerFormBand").style.display = 'flex';
+            document.getElementById("CheckFormLink").style.display = 'flex';
+            document.getElementById("Bandsinput").disabled= true;
+            document.getElementById("SongIdInput").disabled=false;
+                clean()
 
+        } else if (optionalChecker.value === "incomplete") {
+            document.getElementById("Bandsinput").disabled= false;
+            document.getElementById("SongIdInput").disabled=true;
+            document.getElementById("CheckerFormMusic").style.display = 'none';
+            document.getElementById("CheckerFormBand").style.display = 'flex';
+                document.getElementById("CheckFormLink").style.display = 'flex';
+                clean()
+        }else
+        {
+            document.getElementById("CheckerFormMusic").style.display = 'none';
+            document.getElementById("CheckerFormBand").style.display = 'none';
+            document.getElementById("CheckFormLink").style.display = 'none';
+            clean()
+        }
+       });
+       //cleanupFunction
+       function clean()
+       {
+           document.getElementById("SongLink").textContent="";
+            document.getElementById("answerInputband").value = "";
+            document.getElementById("Bandsinput").value = "";
+            document.getElementById("answerInputSong").value = "";
+            document.getElementById('SongIdInput').value = "";
+       }
 </script>
 
 <style>
