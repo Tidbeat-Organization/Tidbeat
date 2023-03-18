@@ -1,0 +1,60 @@
+﻿@page
+@model PersonalDataModel
+@{
+    ViewData["Title"] = "Apagar Conta";
+    ViewData["ActivePage"] = ManageNavPages.PersonalData;
+}
+<style>
+    .btn-danger {
+        background-color: #e62517;
+        color: white;
+        border-color: #e62517;
+    }
+
+     .btn-danger:hover {
+         background-color: #e62517;
+         color_: white;
+         border-color: #e62517;
+     }
+
+     .btn-danger:active,
+     .btn-danger:focus {
+          background-color: #e62517;
+          color: white;
+          border-color: #e62517;
+     }
+    }
+</style>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+            <h3 style="color: #6610F2;">@ViewData["Title"]</h3>
+        </div>   
+    </div>
+    <div class="row mt-3">
+
+        <div class="col-md-8">
+            <p>A sua conta contém dados pessoais que você nos forneceu. Caso deseje, poderá apagar a sua conta ou então fazer download dos seus dados.</p>
+            <p>
+                <strong>Ao apagar a sua conta, irá excluir também permanentemente os seus dados. A sua conta não poderá ser recuperada.</strong>
+            </p>
+        </div>
+
+        <div class="col-md-6" style="margin-top: 20px;">
+            <div class="d-flex justify-content-end">
+                <form id="download-data" asp-page="DownloadPersonalData" method="post">
+                    <button class="btn btn-primary" type="submit">Download dos meus dados</button>
+                </form>
+                <p style="margin-left: 10px;">
+                    <a id="delete" asp-page="DeletePersonalData" class="btn btn-danger">Apagar conta</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
