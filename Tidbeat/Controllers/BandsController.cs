@@ -11,8 +11,7 @@ using Tidbeat.Services;
 
 namespace Tidbeat.Controllers
 {
-    public class BandsController : Controller
-    {
+    public class BandsController : Controller {
         private readonly ApplicationDbContext _context;
         private readonly ISpotifyService _spotifyService;
 

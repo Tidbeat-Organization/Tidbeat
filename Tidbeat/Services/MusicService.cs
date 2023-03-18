@@ -2,7 +2,6 @@
 using Tidbeat.Models;
 using SpotifyAPI.Web;
 
-
 namespace Tidbeat.Services {
     public class MusicService : IMusicService {
         private readonly ApplicationDbContext _context;

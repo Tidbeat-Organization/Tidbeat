@@ -1,4 +1,7 @@
-﻿@{
+﻿@using Microsoft.Extensions.Localization;
+@using Microsoft.AspNetCore.Mvc.Localization;
+@inject IViewLocalizer Localizer;
+@{
     ViewData["Title"] = "Home Page";
 }
 
@@ -11,7 +14,7 @@
                 <div class="position-absolute w-100 text-center" style="top: 50%; transform: translateY(-50%);">
                     <div class="d-flex justify-content-center">
                         <div class="mx-1 text-left" style="margin-right: 400px;">
-                            <span class="text-white" style="font-size: 32px; font-weight: 600;">Bem-vindo ao Tidbeat.<br> A rede social feita para os fãs de música.</span>
+                            <span class="text-white" style="font-size: 32px; font-weight: 600;">@Localizer["welcome_banner"]<br> A rede social feita para os fãs de música.</span>
                         </div>
                         <div class="mx-7 text-right" style="margin-left: 400px;">
                             <span class="text-white font-weight-bold" style="font-size: 24px;">Registe-se já para se juntar à comunidade</span>
@@ -59,3 +62,10 @@
         </div>
     </div>
 </div>
+<form asp-controller="Language" asp-action="SetLanguage" method="post">
+    <select name="language" onchange="this.form.submit()">
+        <option value="">-x-</option>
+        <option value="en-US">English</option>
+        <option value="pt-PT">Portuguese</option>
+    </select>
+</form>
