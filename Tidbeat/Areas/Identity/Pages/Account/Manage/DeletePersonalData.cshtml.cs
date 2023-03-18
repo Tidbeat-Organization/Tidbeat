@@ -82,7 +82,7 @@ namespace Tidbeat.Areas.Identity.Pages.Account.Manage
             {
                 if (!await _userManager.CheckPasswordAsync(user, Input.Password))
                 {
-                    ModelState.AddModelError(string.Empty, "A password que inseriu está incorreta.");
+                    ModelState.AddModelError("Input.Password", "A password que inseriu está incorreta.");
                     return Page();
                 }
             }
