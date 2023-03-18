@@ -1,4 +1,6 @@
 ﻿@page
+@using Microsoft.AspNetCore.Mvc.Localization;
+@inject IViewLocalizer Localizer;
 @model RegisterModel
 @{
     ViewData["Title"] = "Register";
@@ -22,7 +24,7 @@
     }
 </style>
 <div class="text-center d-flex flex-column temporary-margin">
-    <div class="display-4 text-primary">Regista-te no TidBeat!</div>
+    <div class="display-4 text-primary">@Localizer["register_in_tidbeat"]</div>
     <form class="mt-3 mx-auto w-25" id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="text-danger" id="Danger">

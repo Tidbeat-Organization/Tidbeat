@@ -1,6 +1,8 @@
 ﻿@model SpotifyAPI.Web.FullArtist
 @using Tidbeat.Services
 @using SpotifyAPI.Web
+@using Microsoft.AspNetCore.Mvc.Localization;
+@inject IViewLocalizer Localizer;
 
 @{
     ViewData["Title"] = "Details";
@@ -13,7 +15,7 @@
 <div class="container-fluid row w-100 d-flex flex-column flex-lg-row mx-0">
     <div class="d-flex flex-column col-lg-6 col-8 vh-100-minus-navbar border border-start-0 border-top-0 border-bottom-0 pe-1">
         <div class="mt-5 pt-5 mb-3 d-flex flex-column align-items-center justify-content-center justify-content-lg-start">
-            <h4 class="ms-2 text-dark fw-bold">Banda / Artista:</h4> 
+            <h4 class="ms-2 text-dark fw-bold">@Localizer["band_artist"]:</h4>
             <div class="text-primary fw-bold"> @Model.Name</div>
         </div>
         <hr/>
@@ -28,7 +30,7 @@
             </a>
             <div class="ms-2 text-start w-100">
                 <div class="d-flex flex-column text-start mb-3">
-                    <div class="text-dark fw-bold">Top 3 de Músicas:</div>
+                    <div class="text-dark fw-bold">@Localizer["top_3"]:</div>
                     @foreach (FullTrack track in ViewBag.top3Songs) {
                         <div class="d-flex flex-row w-50">
                             <a href=@Url.Action("Details", "Songs", new { id = track.Id }) class="text-nowrap overflow-hidden text-truncate text-primary fw-bold ps-2">@track.Name</a>
@@ -37,18 +39,18 @@
                 </div>
                 <hr/>
                 <div class="d-flex flex-row">
-                    <div class="text-dark fw-bold">Seguidores:</div>
+                    <div class="text-dark fw-bold">@Localizer["followers"]:</div>
                     <div class="text-primary ms-2">@Model.Followers.Total</div>
                 </div>
                 <div class="d-flex flex-row">
-                    <div class="text-dark fw-bold">Álbuns lançados:</div>
+                    <div class="text-dark fw-bold">@Localizer["released_albums"]:</div>
                     <div class="text-primary ms-2">@ViewBag.albumAmount</div>
                 </div>
             </div>
         </div>
         <hr style="height: 1px"/>
         <div class="d-flex align-items-lg-start flex-column mt-1">
-            <div>Número de posts sobre esta banda: 0</div>
+            <div>@Localizer["post_amount"]: 0</div>
         </div>
         
     </div>
@@ -56,16 +58,16 @@
     <!--All posts goes here-->
     <div class="col-lg-6 col-8 mt-5 pt-5 scrollable-posts">
         <div class="d-flex justify-content-center mb-2">
-            <div class="fs-3 me-4">Posts</div>
+            <div class="fs-3 me-4">@Localizer["posts"]</div>
             @if (User.Identity.IsAuthenticated)
             {
             <a class="btn btn-primary" asp-controller="Posts" asp-action="Create" asp-route-Idband="@Model.Id">
-                Criar Post
+                    @Localizer["create_post"]
             </a>
             }
         </div>
         @if (allPosts.Count == 0) {
-            <div>Não há posts... seja o primeiro a criar um post sobre esta banda!</div>
+            <div>@Localizer["no_posts"]</div>
             <img src="~/images/NoPostsImage.png" height="120" class="mt-5" />
         }
         @foreach (Post post in allPosts) {
@@ -73,7 +75,7 @@
                 <div class="d-flex align-items-center border border-2 border-primary p-1 rounded mb-2 hover-background-grey">
                     <div class="border-end border-2 border-primary pe-2">
                         <div>@post.User.FullName</div>
-                        <div>Utilizador</div>
+                        <div class="fs-7">@Localizer["created_in"]: @post.CreationDate.Date.ToShortDateString()</div>
                     </div>
                     <div class="ms-2">@post.Title</div>
                 </div>
