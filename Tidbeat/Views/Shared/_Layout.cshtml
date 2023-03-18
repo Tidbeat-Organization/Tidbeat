@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Mvc.Localization;
+@inject IViewLocalizer Localizer;
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -67,17 +69,17 @@
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav me-2 my-3 my-lg-0">
                     <li class="nav-item me-1 rounded text-center bg-white">
-                        <a class="nav-link text-black" href="@Url.Action("Index", "Posts")">Posts Recomendados</a>
+                        <a class="nav-link text-black" href="@Url.Action("Index", "Posts")">@Localizer["recommended_posts"]</a>
                     </li>
                 </ul>
                 <div class="dropdown me-3" style="background-color: white; color: black;">
                     <button class="btn dropdown-toggle py-2 border-0" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="background-color: white; color: black;">
-                        Outros Conteúdos
+                        @Localizer["other_contents"]
                     </button>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">Utilizadores</a></li>
-                        <li><a class="dropdown-item" href="/Songs">Músicas</a></li>
-                        <li><a class="dropdown-item" href="/Bands">Bandas</a></li>
+                        <li><a class="dropdown-item" href="#">@Localizer["users"]</a></li>
+                        <li><a class="dropdown-item" href="/Songs">@Localizer["songs"]</a></li>
+                        <li><a class="dropdown-item" href="/Bands">@Localizer["bands"]</a></li>
                     </ul>
                 </div>
                 <div class="d-flex flex-row">
@@ -90,15 +92,15 @@
                     <div class="input-group d-flex flex-row flex-nowrap">
                         <div class="dropdown">
                             <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="margin-top: 1.5px;">
-                                <span id="searchTypeText">Músicas</span>
+                                <span id="searchTypeText">@Localizer["songs"]</span>
                             </button>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#" id="search-songs">Músicas</a></li>
-                                <li><a class="dropdown-item" href="#" id="search-bands">Bandas e Artistas</a></li>
+                                <li><a class="dropdown-item" href="#" id="search-songs">@Localizer["songs"]</a></li>
+                                <li><a class="dropdown-item" href="#" id="search-bands">@Localizer["bands"]</a></li>
                             </ul>
                         </div>
                         <div class="form-outline">
-                            <input type="search" id="searchInput" class="form-control" placeholder="Procurar" />
+                            <input type="search" id="searchInput" class="form-control" placeholder="@Localizer["search"]" />
                         </div>
                         <button type="button" id="searchButton" class="btn btn-primary">
                             <img class="no-padding" src="~/images/SearchIcon.png" height="26" width="30" />

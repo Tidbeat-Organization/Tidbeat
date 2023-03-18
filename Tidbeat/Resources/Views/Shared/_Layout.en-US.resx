@@ -117,25 +117,22 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="acess_to_thousands" xml:space="preserve">
-    <value>Acess to&lt;br /&gt; thousands of&lt;br /&gt; songs</value>
+  <data name="bands" xml:space="preserve">
+    <value>Bands</value>
   </data>
-  <data name="community_with_thousands" xml:space="preserve">
-    <value>Community&lt;br /&gt; with thousands&lt;br /&gt; of users</value>
+  <data name="other_contents" xml:space="preserve">
+    <value>Other Contents</value>
   </data>
-  <data name="exchange_ideas" xml:space="preserve">
-    <value>Exchange ideas&lt;br /&gt; about your&lt;br /&gt; favorite songs</value>
+  <data name="recommended_posts" xml:space="preserve">
+    <value>Recommended Posts</value>
   </data>
-  <data name="register_now_banner" xml:space="preserve">
-    <value>Register now to join the community</value>
+  <data name="search" xml:space="preserve">
+    <value>Search</value>
   </data>
-  <data name="welcome_banner" xml:space="preserve">
-    <value>Welcome to Tidbeat!</value>
+  <data name="songs" xml:space="preserve">
+    <value>Songs</value>
   </data>
-  <data name="welcome_banner1" xml:space="preserve">
-    <value>The social network made for fans of music.</value>
-  </data>
-  <data name="why_use_tidbeat" xml:space="preserve">
-    <value>Why use Tidbeat?</value>
+  <data name="users" xml:space="preserve">
+    <value>Users</value>
   </data>
 </root>

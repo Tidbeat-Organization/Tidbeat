@@ -118,13 +118,13 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="acess_to_thousands" xml:space="preserve">
-    <value>Acesso a milhares de músicas</value>
+    <value>Acesso a &lt;br /&gt; milhares de &lt;/br&gt;músicas</value>
   </data>
   <data name="community_with_thousands" xml:space="preserve">
-    <value>Comunidade com milhares de utilizadores</value>
+    <value>Comunidade com&lt;br /&gt; milhares de&lt;br /&gt; utilizadores</value>
   </data>
   <data name="exchange_ideas" xml:space="preserve">
-    <value>Troque ideias sobre as suas músicas favoritas</value>
+    <value>Troque ideias&lt;br /&gt; sobre as suas&lt;br /&gt; músicas favoritas</value>
   </data>
   <data name="register_now_banner" xml:space="preserve">
     <value>Registe-se já para se juntar à comunidade</value>
