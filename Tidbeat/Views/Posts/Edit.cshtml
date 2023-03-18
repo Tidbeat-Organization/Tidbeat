@@ -1,10 +1,12 @@
-﻿@model Tidbeat.Models.Post
+﻿@using Microsoft.AspNetCore.Mvc.Localization;
+@inject IViewLocalizer Localizer;
+@model Tidbeat.Models.Post
 
 @{
     ViewData["Title"] = "Edit";
 }
 
-<h3 style="color: #6610F2; margin-top: 100px;">Editar Post</h3>
+<h3 style="color: #6610F2; margin-top: 100px;">@Localizer["edit_post"]</h3>
 <hr />
 
 <div class="container d-flex justify-content-center" style="margin-top: 35px;">
@@ -41,9 +43,9 @@
 
             <!-- Title -->
             <div class="form-group row" style="margin-top: 20px;">
-                <label asp-for="Title" class="col-sm-2 col-form-label" style="color: #6610F2; font-weight: bold;">Título:</label>
+                <label asp-for="Title" class="col-sm-2 col-form-label" style="color: #6610F2; font-weight: bold;">@Localizer["title"]:</label>
                 <div class="col-sm-10">
-                    <input asp-for="Title" class="form-control" placeholder="Escreva o título do seu post..." style="border: 1.5px solid #6610F2; border-radius: 15px; width:625px;" value="@Model.Title" />
+                    <input asp-for="Title" class="form-control" placeholder="@Localizer["type_title"]..." style="border: 1.5px solid #6610F2; border-radius: 15px; width:625px;" value="@Model.Title" />
                     <span asp-validation-for="Title" class="text-danger"></span>
                 </div>
             </div>
@@ -51,18 +53,18 @@
             <!-- Content -->
             <div class="form-group" style="margin-top: 10px; display: flex; flex-direction: column;">
                 <!-- <label asp-for="Content" class="control-label" style="color: #6610F2;"></label> -->
-                <textarea asp-for="Content" id="postedit" class="form-control" style="height: 200px; border: 1.5px solid #6610F2; border-radius: 15px; width: 700px;" placeholder="Escreva o conteúdo do seu post..." value="@Model.Content"></textarea>
+                <textarea asp-for="Content" id="postedit" class="form-control" style="height: 200px; border: 1.5px solid #6610F2; border-radius: 15px; width: 700px;" placeholder="@Localizer["type_content"]..." value="@Model.Content"></textarea>
                 <span asp-validation-for="Content" class="text-danger"></span>
             </div>
 
             <!-- Form submit -->
             <div class="align-buttons" style="margin-left: 280px;">
                 <div class="form-group update-button" style="margin-top: 25px;">
-                    <input type="submit" value="Atualizar" class="btn btn-primary" />
+                    <input type="submit" value="@Localizer["update"]" class="btn btn-primary" />
                 </div>
                 <div class="row" style="margin-top: 20px;">
                     <div class="col">
-                        <a asp-action="Index">Cancelar</a>
+                        <a asp-action="Index">@Localizer["cancel"]</a>
                     </div>
                 </div>
             </div>

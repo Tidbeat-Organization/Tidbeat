@@ -1,4 +1,6 @@
 ﻿@using Tidbeat.Enums
+@using Microsoft.AspNetCore.Mvc.Localization;
+@inject IViewLocalizer Localizer;
 @model IEnumerable<Tidbeat.Models.Post>
 
 @{
@@ -11,12 +13,12 @@
         <div class="alert alert-success">@TempData["Message"]</div>
     }
 
-    <h3 style="color: #6610F2;">Posts Recomendados</h3>
+    <h3 style="color: #6610F2;">@Localizer["recommended_posts"]</h3>
     <hr />
     @if (User.Identity.IsAuthenticated)
     {
         <p>
-            <a asp-action="Create" class="btn btn-primary">Criar novo post</a>
+            <a asp-action="Create" class="btn btn-primary">@Localizer["create_new_post"]</a>
         </p>
     }
 </div>
@@ -30,7 +32,7 @@
                     <h5 class="card-title">@Html.DisplayFor(modelItem => item.Title)</h5>
                     <div class="d-flex justify-content-center align-items-center">
                         <div class="btn-group">
-                            <a asp-action="Details" asp-route-id="@item.PostId" style="background-color:#6610F2;color:#fff;" class="btn btn-sm btn-outline-secondary">Detalhes</a>
+                            <a asp-action="Details" asp-route-id="@item.PostId" style="background-color:#6610F2;color:#fff;" class="btn btn-sm btn-outline-secondary">@Localizer["details"]</a>
                         </div>
                     </div>
                 </div>
