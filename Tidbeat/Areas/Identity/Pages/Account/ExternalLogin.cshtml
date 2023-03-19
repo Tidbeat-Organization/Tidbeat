@@ -1,17 +1,17 @@
 ﻿@page
 @model ExternalLoginModel
+@using Microsoft.AspNetCore.Mvc.Localization;
+@inject IViewLocalizer Localizer;
 @{
-    ViewData["Title"] = "Register";
+    ViewData["Title"] = Localizer["registo"].Value;
 }
 
-<h1 class="mt-lg-1">@ViewData["Title"]</h1>
-<h2 id="external-login-title">Associate your @Model.ProviderDisplayName account.</h2>
+<h2 id="external-login-title" class="mt-5 pt-5">@Model.ProviderDisplayName - @Localizer["associate_your_account"]</h2>
 <hr />
 
 <p id="external-login-description" class="text-info">
-    You've successfully authenticated with <strong>@Model.ProviderDisplayName</strong>.
-    Please enter an email address for this site below and click the Register button to finish
-    logging in.
+    @Localizer["you_sucessfully_authenticated_with"] <strong>@Model.ProviderDisplayName</strong>.
+    @Localizer["please_enter_credentials"]
 </p>
 
 <div class="text-center d-flex  flex-column temporary-margin">
@@ -25,24 +25,24 @@
                 
                 <span asp-validation-for="Input.Email" class="text-danger mt-1"></span>
             
-                <label asp-for="Input.FullName" class="form-label mt-1 mb-0">Nome Completo</label>
+                <label asp-for="Input.FullName" class="form-label mt-1 mb-0">@Localizer["full_name"]</label>
                 <input asp-for="Input.FullName" class="form-control mt-1" />
                 
-                <label asp-for="Input.BirthdayDate" class="form-label mt-1 mb-0">Data de Nascimento</label>
+                <label asp-for="Input.BirthdayDate" class="form-label mt-1 mb-0">@Localizer["birthday_date"]</label>
                 <input asp-for="Input.BirthdayDate" type="date" class="form-control mt-1" aria-required="true" id="birthField" value=@if (TempData.ContainsKey("Date"))
                        { 
                     @TempData["Date"];
                 }/>
                 
-                <label asp-for="Input.Gender" class="form-label mt-1 mb-0">Género</label>
+                <label asp-for="Input.Gender" class="form-label mt-1 mb-0">@Localizer["gender"]</label>
                 <select asp-for="Input.Gender" class="form-control mt-1">
-                    <option>Masculino</option>
-					<option>Feminino</option>
-                    <option>Não-Binário</option>
+                    <option value="Masculino">@Localizer["male"]</option>
+					<option value="Feminino">@Localizer["female"]</option>
+                    <option value="Não-Binário">@Localizer["non_binary"]</option>
                 </select>
                 
             <!-- </div> -->
-            <button type="submit" class="w-100 btn btn-lg mt-3 btn-primary">Register</button>
+            <button type="submit" class="w-100 btn btn-lg mt-3 btn-primary">@Localizer["register"]</button>
         </form>
     </div>
 </div>
