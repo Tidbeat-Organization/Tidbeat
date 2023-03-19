@@ -6,9 +6,9 @@
     ViewData["Title"] = "Register";
     List<SelectListItem> genders = new()
     {
-        new SelectListItem {Text = "Masculino", Value="Masculino"},
-        new SelectListItem {Text = "Feminino", Value="Feminino"},
-        new SelectListItem {Text = "Não Binário", Value="Não Binário"}
+        new SelectListItem {Text = Localizer["male"].Value, Value="Masculino"},
+        new SelectListItem {Text = Localizer["female"].Value, Value="Feminino"},
+        new SelectListItem {Text = Localizer["non_binary"].Value, Value="Não Binário"}
     };
 
 
@@ -34,14 +34,14 @@
                 ;
             }
             </div>
-        <label asp-for="Input.Email" class="first-phase form-label text-primary mb-0 ">Email</label>
+        <label asp-for="Input.Email" class="first-phase form-label text-primary mb-0 ">@Localizer["email"]</label>
         <input asp-for="Input.Email" class="form-control first-phase mt-0" autocomplete="username" aria-required="true" id="registerEmailField" value=@if (TempData.ContainsKey("Email")) 
     { 
         @TempData["Email"]; 
     }/>
         <div asp-validation-for="Input.Email" class="text-danger" id="emailDanger">  @if (ModelState.ContainsKey("EmailRed")) { @ViewData.ModelState["EmailRed"].Errors.FirstOrDefault().ErrorMessage.ToString(); }</div>
 
-        <label asp-for="Input.Password" class="first-phase form-label text-primary mt-3 mb-0"></label>
+        <label asp-for="Input.Password" class="first-phase form-label text-primary mt-3 mb-0">@Localizer["password"]</label>
         <input asp-for="Input.Password" class="form-control first-phase mt-0" autocomplete="new-password" aria-required="true" id="registerPasswordField" value=@if (TempData.ContainsKey("Password"))
                {
                @TempData["Password"]
@@ -49,7 +49,7 @@
                } />
         <div asp-validation-for="Input.Password" class="text-danger" id="passDanger"> @if (ViewData.ModelState.ContainsKey("PasswordRed")) {@ViewData.ModelState["PasswordRed"].Errors.FirstOrDefault().ErrorMessage.ToString(); }</div>
 
-        <label asp-for="Input.ConfirmPassword" class="first-phase form-label text-primary mt-3 mb-0"></label>
+        <label asp-for="Input.ConfirmPassword" class="first-phase form-label text-primary mt-3 mb-0">@Localizer["confirm_password"]</label>
         <input asp-for="Input.ConfirmPassword" class="form-control first-phase mt-0" autocomplete="new-password" aria-required="true" id="registerConfirmPasswordField" value=@if (TempData.ContainsKey("ConfirmPassword"))
                {
                @TempData["ConfirmPassword"]
@@ -57,7 +57,7 @@
                } />
         <div asp-validation-for="Input.ConfirmPassword" class="text-danger" id="passConfirmDanger">@if (ViewData.ModelState.ContainsKey("ConfirmPasswordRed")){@ViewData.ModelState["ConfirmPasswordRed"].Errors.FirstOrDefault().ErrorMessage.ToString();}</div>
 
-        <label asp-for="Input.FullName" class="second-phase form-label text-primary mb-0"></label>
+        <label asp-for="Input.FullName" class="second-phase form-label text-primary mb-0">@Localizer["full_name"]</label>
         <input asp-for="Input.FullName" class="form-control second-phase mt-0" id="nicknameField" autocomplete="username" aria-required="true" value=@if (TempData.ContainsKey("Name"))
                {
                @TempData["Name"]
@@ -65,11 +65,11 @@
                } />
         <div asp-validation-for="Input.FullName" class="text-danger" id="nameDanger">@if (ViewData.ModelState.ContainsKey("NameRed")){@ViewData.ModelState["NameRed"].Errors.FirstOrDefault().ErrorMessage.ToString();}</div>
 
-        <label asp-for="Input.Gender" class="second-phase form-label text-primary mt-3 mb-0"></label>
+        <label asp-for="Input.Gender" class="second-phase form-label text-primary mt-3 mb-0">@Localizer["gender"]</label>
         <select asp-for="Input.Gender" asp-items="genders" class="form-control second-phase form-select mt-0" id="genderField"></select>
         <div asp-validation-for="Input.Gender" class="text-danger" id="genderDanger">@if (ViewData.ModelState.ContainsKey("GenderRed")){@ViewData.ModelState["GenderRed"].Errors.FirstOrDefault().ErrorMessage.ToString();}</div>
 
-        <label asp-for="Input.BirthdayDate" class="second-phase form-label text-primary mt-3 mb-0"></label>
+        <label asp-for="Input.BirthdayDate" class="second-phase form-label text-primary mt-3 mb-0">@Localizer["birthday_date"]</label>
         <input asp-for="Input.BirthdayDate" type="date" class="form-control second-phase mt-0" autocomplete="username" aria-required="true" id="birthField" value=@if (TempData.ContainsKey("Date")) 
     { 
         @TempData["Date"];
@@ -81,10 +81,10 @@
             }</div>
 
         <div class="d-flex flex-row justify-content-evenly mt-5 w-auto">
-            <a id="reg-phase-return-btn" class="second-phase btn btn-primary mr-5">Retornar</a>
-            <a class="btn btn-primary ml-5" asp-page="./Login">Efetuar Login</a>
-            <button id="reg-phase-btn" class="first-phase btn btn-primary mr-5">Continuar Registo</button>
-            <a id="registerSubmit" class="second-phase btn btn-primary mr-5" onclick="RegisterFunction()">Efetuar Registo</a>
+            <a id="reg-phase-return-btn" class="second-phase btn btn-primary mr-5">@Localizer["back"]</a>
+            <a class="btn btn-primary ml-5" asp-page="./Login">@Localizer["go_to_login"]</a>
+            <button id="reg-phase-btn" class="first-phase btn btn-primary mr-5">@Localizer["continue_register"]</button>
+            <a id="registerSubmit" class="second-phase btn btn-primary mr-5" onclick="RegisterFunction()">@Localizer["register"]</a>
             <a id="registerFinalSubmit" type="submit" class="hidden" onclick=""></a>
         </div>
         
@@ -118,19 +118,19 @@
         let confirmPassword = document.getElementById('registerConfirmPasswordField').value;
         if (!email.includes("@@")) {
             ResetDanger();
-            document.getElementById('emailDanger').innerHTML = "O email é inválido";
+            document.getElementById('emailDanger').innerHTML = "@Localizer["invalid_email"].Value";
             console.log("Email Wrong");
             return
         }
         if (!pattern.test(password)) {
             ResetDanger();
-            document.getElementById('passDanger').innerHTML = "A palavra-passe deve conter, pelo menos 6 caracteres, dos quais têm que ter um número [0-9],uma letra minuscula [a-z], uma letra maiuscula [A-Z] e um caracter especial [@@&?%]";
+            document.getElementById('passDanger').innerHTML = "@Localizer["invalid_password"].Value";
             console.log("Password Wrong");
             return
         }
         if (!(password === confirmPassword)) {
             ResetDanger();
-            document.getElementById('passConfirmDanger').innerHTML = "A palavra-passe e a confirmação de palavra-passe não são iguais.";
+            document.getElementById('passConfirmDanger').innerHTML = "@Localizer["password_mismatch"].Value";
             console.log("Password and ConfirmPassword Different");
             return
         }
@@ -217,21 +217,21 @@
         let username = document.getElementById("nicknameField");
         if (!birthDate.value) {
             ResetDanger();
-            document.getElementById('birthDanger').innerHTML = "Não selecionou uma data de aniversário válida";
+            document.getElementById('birthDanger').innerHTML = "@Localizer["invalid_birthday_date"].Value";
             event.preventDefault();
             console.log(birthDate);
             return false
         }
         if(compareDates()){
             ResetDanger();
-            document.getElementById('birthDanger').innerHTML = "Para criar a Conta têm que ter 13 anos";
+            document.getElementById('birthDanger').innerHTML = "@Localizer["too_young_birthday_date"].Value";
             event.preventDefault();
             console.log(birthDate);
             return false
         }
         if (!username || username.value === "") {
             ResetDanger();
-            document.getElementById('nameDanger').innerHTML = "Não um nome válido";
+            document.getElementById('nameDanger').innerHTML = "@Localizer["invalid_name"].Value";
             event.preventDefault();
             console.log(username);
             return false

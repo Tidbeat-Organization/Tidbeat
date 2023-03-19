@@ -22,6 +22,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.FileSystemGlobbing.Internal;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Localization;
 using NuGet.Protocol;
 using Tidbeat.Models;
 using System.Text.RegularExpressions;
@@ -37,13 +38,15 @@ namespace Tidbeat.Areas.Identity.Pages.Account
         private readonly IUserEmailStore<ApplicationUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly IStringLocalizer<RegisterModel> _localizer;
 
         public RegisterModel(
             UserManager<ApplicationUser> userManager,
             IUserStore<ApplicationUser> userStore,
             SignInManager<ApplicationUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            IStringLocalizer<RegisterModel> localizer)
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -51,6 +54,7 @@ namespace Tidbeat.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _localizer = localizer;
         }
 
         /// <summary>
@@ -135,30 +139,30 @@ namespace Tidbeat.Areas.Identity.Pages.Account
             {
                 if (!Input.Email.Contains("@"))
                 {
-                    ModelState.AddModelError("EmailRed", "O email é inválido");
+                    ModelState.AddModelError("EmailRed", _localizer["invalid_email"]);
                 }
                 else
                 if (!Regex.IsMatch(Input.Password, Pattern))
                 {
-                    ModelState.AddModelError("PasswordRed", "A palavra-passe deve conter, pelo menos 6 caracteres, dos quais têm que ter um número [0-9],uma letra minuscula [a-z], uma letra maiuscula [A-Z] e um caracter especial [@&?%]");
+                    ModelState.AddModelError("PasswordRed", _localizer["invalid_password"]);
                 }
                 else
                 if (Input.Password != Input.ConfirmPassword)
                 {
-                    ModelState.AddModelError("ConfirmPasswordRed", "A palavra-passe e a confirmação de palavra-passe não são iguais.");
+                    ModelState.AddModelError("ConfirmPasswordRed", _localizer["password_mismatch"]);
                 }
                 else
                 if (String.IsNullOrEmpty(Input.FullName))
                 {
-                    ModelState.AddModelError("NameRed", "Não um nome válido");
+                    ModelState.AddModelError("NameRed", _localizer["invalid_name"]);
                 } else
                 if (Input.Gender != "Masculino" && Input.Gender != "Feminino" && Input.Gender != "Não Binário")
                 {
-                    ModelState.AddModelError("GenderRed", "Não é um género válido");
+                    ModelState.AddModelError("GenderRed", _localizer["invalid_gender"]);
                 }else
                 if( DateTime.Compare(Input.BirthdayDate.AddYears(13),DateTime.Now) > 0)
                 {
-                    ModelState.AddModelError("AgeRed", "Para criar a Conta têm que ter 13 anos");
+                    ModelState.AddModelError("AgeRed", _localizer["invalid_birthday_date"]);
                 }
                 else
                 {
@@ -184,8 +188,8 @@ namespace Tidbeat.Areas.Identity.Pages.Account
                             values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
                             protocol: Request.Scheme);
 
-                        await _emailSender.SendEmailAsync(Input.Email, "TIDBEAT - Confirmar o teu mail",
-                            $"Por favor, confirma a tua conta através do link, <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicando aqui</a>.");
+                        await _emailSender.SendEmailAsync(Input.Email, _localizer["confirm_mail"],
+                            $"{_localizer["please_confirm_link"]}, <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>{_localizer["clicking_here"]}</a>.");
 
                         if (_userManager.Options.SignIn.RequireConfirmedAccount)
                         {
@@ -202,29 +206,29 @@ namespace Tidbeat.Areas.Identity.Pages.Account
 
                         if (error.Code == "DuplicateUserName")
                         {
-                            ModelState.AddModelError("EmailRed", "O email já se encontra registado");
+                            ModelState.AddModelError("EmailRed", _localizer["email_already_exists"]);
                         } else
                         if (error.Code == "DefaultError") 
                         {
-                            ModelState.AddModelError("Danger", "Erro: Ocorreu um erro, por favor tente mais tarde");
+                            ModelState.AddModelError("Danger", _localizer["default_error"]);
                         } else
                         if (error.Code == "ConcurrencyFailure") {
-                            ModelState.AddModelError("Danger", "Erro: Multiplas pessoas estão a modificar a conta");
+                            ModelState.AddModelError("Danger", _localizer["concurrency_failure"]);
                         }
                         else
                         if (error.Code == "InvalidEmail")
                         {
-                            ModelState.AddModelError("EmailRed", "O email é inválido");
+                            ModelState.AddModelError("EmailRed", _localizer["invalid_email"]);
                         }
                         else
                         if (error.Code == "PasswordMismatch")
                         {
-                            ModelState.AddModelError("ConfirmPasswordRed", "A palavra-passe e a confirmação de palavra-passe não são iguais.");
+                            ModelState.AddModelError("ConfirmPasswordRed", _localizer["password_mismatch"]);
                         }
                         else
                         if (error.Code == "PasswordTooShort" || error.Code == "PasswordRequiresNonAlphanumeric" || error.Code == "PasswordRequiresDigit" || error.Code == "PasswordRequiresLower" || error.Code == "PasswordRequiresUpper")
                         {
-                            ModelState.AddModelError("PasswordRed", "A palavra-passe deve conter, pelo menos 6 caracteres, dos quais têm que ter um número [0-9],uma letra minuscula [a-z], uma letra maiuscula [A-Z] e um caracter especial [@&?%]");
+                            ModelState.AddModelError("PasswordRed", _localizer["invalid_password"]);
                         }
                         else
                         {

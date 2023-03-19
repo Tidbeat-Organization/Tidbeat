@@ -132,19 +132,52 @@
   <data name="email" xml:space="preserve">
     <value>Email</value>
   </data>
+  <data name="email_already_exists" xml:space="preserve">
+    <value>O email já está a ser utilizado!</value>
+  </data>
+  <data name="female" xml:space="preserve">
+    <value>Feminino</value>
+  </data>
+  <data name="full_name" xml:space="preserve">
+    <value>Nome Completo</value>
+  </data>
   <data name="gender" xml:space="preserve">
     <value>Género</value>
   </data>
   <data name="go_to_login" xml:space="preserve">
     <value>Ir para Login</value>
   </data>
+  <data name="invalid_birthday_date" xml:space="preserve">
+    <value>A data escolhida não é válida!</value>
+  </data>
+  <data name="invalid_email" xml:space="preserve">
+    <value>O email é inválido!</value>
+  </data>
+  <data name="invalid_name" xml:space="preserve">
+    <value>O nome é inválido.</value>
+  </data>
+  <data name="invalid_password" xml:space="preserve">
+    <value>A palavra-passe deve conter, pelo menos 6 caracteres, dos quais têm que ter um número [0-9], uma letra minuscula [a-z], uma letra maiuscula [A-Z] e um caracter especial [@&amp;?_%]</value>
+  </data>
+  <data name="male" xml:space="preserve">
+    <value>Masculino</value>
+  </data>
+  <data name="non_binary" xml:space="preserve">
+    <value>Não-Binário</value>
+  </data>
   <data name="password" xml:space="preserve">
     <value>Palavra-Passe</value>
+  </data>
+  <data name="password_mismatch" xml:space="preserve">
+    <value>A password e a confirmação não são iguais.</value>
   </data>
   <data name="register" xml:space="preserve">
     <value>Efetuar Registo</value>
   </data>
   <data name="register_in_tidbeat" xml:space="preserve">
     <value>Regista-te no Tidbeat!</value>
+  </data>
+  <data name="too_young_birthday_date" xml:space="preserve">
+    <value>Para criar uma conta, tens que ter 13 anos ou mais.</value>
   </data>
 </root>

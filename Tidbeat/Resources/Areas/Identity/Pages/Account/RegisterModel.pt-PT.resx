@@ -117,67 +117,40 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="back" xml:space="preserve">
-    <value>Back</value>
+  <data name="clicking_here" xml:space="preserve">
+    <value>clicando aqui</value>
   </data>
-  <data name="birthday_date" xml:space="preserve">
-    <value>Birthday Date</value>
+  <data name="concurrency_failure" xml:space="preserve">
+    <value>Erro: várias pessoas estão a modificar a conta delas.</value>
   </data>
-  <data name="confirm_password" xml:space="preserve">
-    <value>Confirm Password</value>
+  <data name="confirm_mail" xml:space="preserve">
+    <value>Confirmar o teu mail</value>
   </data>
-  <data name="continue_register" xml:space="preserve">
-    <value>Continue Register</value>
-  </data>
-  <data name="email" xml:space="preserve">
-    <value>Email</value>
+  <data name="default_error" xml:space="preserve">
+    <value>Erro: ocorreu um erro, por favor tente novamente mais tarde.</value>
   </data>
   <data name="email_already_exists" xml:space="preserve">
-    <value>The email is already used!</value>
-  </data>
-  <data name="female" xml:space="preserve">
-    <value>Female</value>
-  </data>
-  <data name="full_name" xml:space="preserve">
-    <value>Full Name</value>
-  </data>
-  <data name="gender" xml:space="preserve">
-    <value>Gender</value>
-  </data>
-  <data name="go_to_login" xml:space="preserve">
-    <value>Go to Login</value>
+    <value>O email já está a ser utilizado!</value>
   </data>
   <data name="invalid_birthday_date" xml:space="preserve">
-    <value>The chosen date is not valid!</value>
+    <value>Para criar uma conta, tens que ter 13 anos ou mais.</value>
   </data>
   <data name="invalid_email" xml:space="preserve">
-    <value>The email is invalid!</value>
+    <value>O email é inválido!</value>
+  </data>
+  <data name="invalid_gender" xml:space="preserve">
+    <value>O género é inválido.</value>
   </data>
   <data name="invalid_name" xml:space="preserve">
-    <value>The full name is invalid!</value>
+    <value>O nome é inválido.</value>
   </data>
   <data name="invalid_password" xml:space="preserve">
-    <value>The password must contain at least 6 characters, and they should have at least a number [0-9], a lowercase letter [a-z], a uppercase letter [A-Z] and a special character [@&amp;?_%]</value>
-  </data>
-  <data name="male" xml:space="preserve">
-    <value>Male</value>
-  </data>
-  <data name="non_binary" xml:space="preserve">
-    <value>Non-Binary</value>
-  </data>
-  <data name="password" xml:space="preserve">
-    <value>Password</value>
+    <value>A palavra-passe deve conter, pelo menos 6 caracteres, dos quais têm que ter um número [0-9], uma letra minuscula [a-z], uma letra maiuscula [A-Z] e um caracter especial [@&amp;?_%]</value>
   </data>
   <data name="password_mismatch" xml:space="preserve">
-    <value>The password and the confirmation are not the same.</value>
+    <value>A password e a confirmação não são iguais.</value>
   </data>
-  <data name="register" xml:space="preserve">
-    <value>Register</value>
-  </data>
-  <data name="register_in_tidbeat" xml:space="preserve">
-    <value>Register in Tidbeat!</value>
-  </data>
-  <data name="too_young_birthday_date" xml:space="preserve">
-    <value>To create an account, you must be 13 years or older.</value>
+  <data name="please_confirm_link" xml:space="preserve">
+    <value>Por favor, confirme a sua conta</value>
   </data>
 </root>
