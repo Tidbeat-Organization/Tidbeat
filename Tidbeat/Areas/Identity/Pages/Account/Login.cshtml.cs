@@ -14,12 +14,14 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Localization;
 using Tidbeat.Models;
 using Microsoft.Extensions.FileSystemGlobbing.Internal;
 using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.WebUtilities;
 using System.Text.Encodings.Web;
 using System.Text;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace Tidbeat.Areas.Identity.Pages.Account
 {
@@ -30,13 +32,15 @@ namespace Tidbeat.Areas.Identity.Pages.Account
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IEmailSender _emailSender;
         private static string Pattern = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&_-])[A-Za-z\\d@$!%*?&_-]{6,}$";
+        private readonly IStringLocalizer<LoginModel> _localizer;
 
-        public LoginModel(SignInManager<ApplicationUser> signInManager, ILogger<LoginModel> logger, UserManager<ApplicationUser> userManager, IEmailSender emailSender)
+        public LoginModel(SignInManager<ApplicationUser> signInManager, ILogger<LoginModel> logger, UserManager<ApplicationUser> userManager, IEmailSender emailSender, IStringLocalizer<LoginModel> localizer)
         {
             _signInManager = signInManager;
             _logger = logger;
             _userManager = userManager;
             _emailSender = emailSender;
+            _localizer = localizer;
         }
 
         /// <summary>
@@ -124,12 +128,12 @@ namespace Tidbeat.Areas.Identity.Pages.Account
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
                 if (!Input.Email.Contains("@"))
                 {
-                    ModelState.AddModelError("EmailRed", "O email é inválido");
+                    ModelState.AddModelError("EmailRed", _localizer["invalid_email"]);
                 }
                 else
                 if (!Regex.IsMatch(Input.Password, Pattern))
                 {
-                    ModelState.AddModelError("PasswordRed", "A palavra-passe deve conter, pelo menos 6 caracteres, dos quais têm que ter um número [0-9],uma letra minuscula [a-z], uma letra maiuscula [A-Z] e um caracter especial [@$!%*?&_-]");
+                    ModelState.AddModelError("PasswordRed", _localizer["invalid_password"]);
                 }
                 else {
                     var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: true);
@@ -146,15 +150,15 @@ namespace Tidbeat.Areas.Identity.Pages.Account
                     {
                         _logger.LogWarning("User account locked out.");
                         //return RedirectToPage("./Lockout");
-                        ModelState.AddModelError("Danger", "Conta bloqueada por 10 minutos.");
+                        ModelState.AddModelError("Danger", _localizer["blocked_account"] + " 10 " + _localizer["minutes"]);
                     } 
                     if (result.IsNotAllowed) 
                     {
                         var user = await _userManager.FindByEmailAsync(Input.Email);
                         if (user != null && !await _userManager.CheckPasswordAsync(user, Input.Password)) {
-                            ModelState.AddModelError("Danger", "Tentativa de Login falhada. Por favor, verifique o seu email ou a sua password.");
+                            ModelState.AddModelError("Danger", _localizer["failed_login"]);
                         } else {
-                            ModelState.AddModelError("Danger", "A sua conta ainda não foi ativada. Foi enviado um novo pedido de verificação. Por favor, verifique o seu email.");
+                            ModelState.AddModelError("Danger", _localizer["account_not_activated"]);
                             var userId = await _userManager.GetUserIdAsync(user);
                             var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                             code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
@@ -163,13 +167,13 @@ namespace Tidbeat.Areas.Identity.Pages.Account
                                 pageHandler: null,
                                 values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
                                 protocol: Request.Scheme);
-                            await _emailSender.SendEmailAsync(Input.Email, "TIDBEAT - Confirmar o teu mail",
-                                $"Por favor, confirma a tua conta através do link, <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicando aqui</a>.");
+                            await _emailSender.SendEmailAsync(Input.Email, "TIDBEAT - " + _localizer["confirm_mail"],
+                                $"{_localizer["please_confirm_link"]}, <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>{_localizer["clicking_here"]}</a>.");
                         }
                     } 
                     else
                     {
-                        ModelState.AddModelError("Danger", "Tentativa de Login falhada. Por favor, verifique o seu email ou a sua password.");
+                        ModelState.AddModelError("Danger", _localizer["failed_login"]);
                     } 
                 }
             }
