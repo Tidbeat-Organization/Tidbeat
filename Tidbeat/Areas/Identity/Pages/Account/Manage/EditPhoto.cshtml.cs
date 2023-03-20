@@ -43,8 +43,15 @@ namespace Tidbeat.Areas.Identity.Pages.Account.Manage {
 
         public async Task<IActionResult> OnPostDelete() {
             var currentUser = await _userManager.GetUserAsync(User);
-            currentUser.ImagePath = null;
-            await _userManager.UpdateAsync(currentUser);
+            if (!string.IsNullOrEmpty(currentUser.ImagePath)) {
+                var currentDirectory = Directory.GetCurrentDirectory();
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", currentUser.ImagePath.TrimStart('\\'));
+                if (System.IO.File.Exists(filePath)) {
+                    System.IO.File.Delete(filePath);
+                    currentUser.ImagePath = null;
+                    await _userManager.UpdateAsync(currentUser);
+                }
+            }
             return RedirectToPage("/Photos/Index");
         }
 
