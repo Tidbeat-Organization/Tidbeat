@@ -22,7 +22,7 @@
                     <img src="~/images/StarImage.png" class="ml-auto" height="20" />
                 @if (TempData.ContainsKey("user"))
                             {
-                        <a formmethod="get" class="mr-auto text-primary hover-background-grey rounded text-decoration-none px-2 pt-1 pb-1 bi bi-pencil-fill"></a>
+                        <a formmethod="get" asp-area="Identity" asp-page="/Account/Manage/Index" class=" mr-auto text-primary hover-background-grey rounded text-decoration-none px-2 pt-1 pb-1 bi bi-pencil-fill"></a>
                             }
                 </div>
                 <h1 class="text-primary">@user.FullName</h1>
@@ -45,7 +45,7 @@
         <div>
             <h1 class="text-left text-primary">@Localizer["about_me"]:</h1>
             <div>
-                @user.AboutMe
+                @Html.Raw(@user.AboutMe)
             </div>
         </div>
     </div>
