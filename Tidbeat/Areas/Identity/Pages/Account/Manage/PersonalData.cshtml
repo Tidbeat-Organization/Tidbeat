@@ -1,17 +1,31 @@
 ﻿@page
 @model PersonalDataModel
 @{
-    ViewData["Title"] = "Personal Data";
+    ViewData["Title"] = "Apagar Conta";
     ViewData["ActivePage"] = ManageNavPages.PersonalData;
 }
 
-<div class="row justify-content-center">
-    <div class="col-md-6 w-100">
-        <h3 >Têm a certeza que deseja apagar o seu Perfil?</h3>
-        <a id="delete" asp-page="DeletePersonalData" class="btn btn-danger text-white bg-danger">Delete</a>
-        <a id="cancel" class="btn btn-danger border border-warning text-danger">Cancelar</a>
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 w-100">
+            <h3 style="color: #6610F2;">@ViewData["Title"]</h3>
+        </div>
+    </div>
+    <div class="row mt-3">
+
+        <div class="col-md-6 w-100">
+            <p>A sua conta contém dados pessoais que nos forneceu. Caso deseje, poderá apagar a sua conta.</p>
+            <p>
+                <strong>Ao apagar a sua conta, irá excluir também permanentemente os seus dados. A sua conta não poderá ser recuperada.</strong>
+            </p>
+            <p style="margin-top: 35px;">
+                <a id="delete" asp-page="DeletePersonalData" class="btn btn-danger text-white bg-danger">Apagar conta</a>
+            </p>
+        </div>
     </div>
 </div>
+</div>
+
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
