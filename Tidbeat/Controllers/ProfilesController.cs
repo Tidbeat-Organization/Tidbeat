@@ -39,9 +39,12 @@ namespace Tidbeat.Controllers
             {
                 return NotFound();
             }
-            if (profile.Id == currentuser.Id)
+            if (currentuser != null)
             {
-                TempData["user"] = true; 
+                if (profile.Id == currentuser.Id)
+                {
+                    TempData["user"] = true;
+                }
             }
             ViewBag.Posts = _context.Posts.Include(p => p.User).Where(p=> p.User.Id == profile.Id).ToList();
             return View(profile);

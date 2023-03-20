@@ -26,8 +26,8 @@
                             }
                 </div>
                 <h1 class="text-primary">@user.FullName</h1>
-                <div> <span class="text-primary">Género:</span> @user.Gender</div>
-                <div> <span class="text-primary">Data de Nascimento:</span> @user.BirthdayDate.Date.ToShortDateString()</div>
+                <div> <span class="text-primary">@Localizer["gender"]:</span> @user.Gender</div>
+                <div> <span class="text-primary">@Localizer["birth_date"]:</span> @user.BirthdayDate.Date.ToShortDateString()</div>
             </div>
         </div>
         <hr style="height: 1px" />
@@ -43,7 +43,7 @@
         </div>
         <hr style="height: 1px" />
         <div>
-            <h1 class="text-left text-primary">Sobre mim:</h1>
+            <h1 class="text-left text-primary">@Localizer["about_me"]:</h1>
             <div>
                 @user.AboutMe
             </div>
@@ -52,7 +52,7 @@
     <!--All posts goes here-->
     <div class="col-lg-6 col-8 mt-5 pt-5 scrollable-posts">
         <div class="d-flex justify-content-center mb-2">
-            <div class="fs-3 me-4">@Localizer["posts"]</div> <!--Change to my Posts-->
+            <div class="fs-3 me-4">@Localizer["my_posts"]</div> <!--Change to my Posts-->
         </div>
         @if (allPosts.Count == 0)
         {
