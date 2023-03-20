@@ -4,14 +4,17 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using System.Text.Encodings.Web;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.Extensions.Localization;
 using Tidbeat.Models;
 
 namespace Tidbeat.Areas.Identity.Pages.Account.Manage
@@ -21,15 +24,17 @@ namespace Tidbeat.Areas.Identity.Pages.Account.Manage
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IEmailSender _emailSender;
+        private readonly IStringLocalizer<EmailModel> _localizer;
 
         public EmailModel(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
-            IEmailSender emailSender)
+            IEmailSender emailSender, IStringLocalizer<EmailModel> localizer)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
+            _localizer = localizer;
         }
 
         /// <summary>
@@ -72,6 +77,12 @@ namespace Tidbeat.Areas.Identity.Pages.Account.Manage
             [EmailAddress]
             [Display(Name = "New email")]
             public string NewEmail { get; set; }
+
+            [AllowNull]
+            public string NewPassword { get; set; }
+
+            [AllowNull]
+            public string ConfirmNewPassword { get; set; }
         }
 
         private async Task LoadAsync(ApplicationUser user)
@@ -116,6 +127,25 @@ namespace Tidbeat.Areas.Identity.Pages.Account.Manage
             var email = await _userManager.GetEmailAsync(user);
             if (Input.NewEmail != email)
             {
+                if (user.PasswordHash == null) {
+                    if(Input.NewPassword == null) {
+                        ModelState.AddModelError(string.Empty, "You must enter a password to change your email.");
+                        await LoadAsync(user);
+                        return Page();
+                    } else
+                    if (!Regex.IsMatch(Input.NewPassword, RegisterModel.Pattern)) {
+                        ModelState.AddModelError(string.Empty, "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character.");
+                        await LoadAsync(user);
+                        return Page();
+                    }
+                    else if (Input.NewPassword != Input.ConfirmNewPassword) {
+                        ModelState.AddModelError("ConfirmPasswordRed", _localizer["password_mismatch"]);
+                        await LoadAsync(user);
+                        return Page();
+                    } else {
+                        await _userManager.AddPasswordAsync(user, Input.NewPassword);
+                    }
+                }
                 var userId = await _userManager.GetUserIdAsync(user);
                 var code = await _userManager.GenerateChangeEmailTokenAsync(user, Input.NewEmail);
                 code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
