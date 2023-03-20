@@ -142,10 +142,15 @@ namespace Tidbeat.Areas.Identity.Pages.Account.Manage
                         ModelState.AddModelError("ConfirmPasswordRed", _localizer["password_mismatch"]);
                         await LoadAsync(user);
                         return Page();
-                    } else {
-                        await _userManager.AddPasswordAsync(user, Input.NewPassword);
                     }
                 }
+                var foundUser = await _userManager.FindByEmailAsync(Input.NewEmail);
+                if (foundUser != null) {
+                    ModelState.AddModelError(string.Empty, "Email already taken.");
+                    await LoadAsync(user);
+                    return Page();
+                }
+                await _userManager.AddPasswordAsync(user, Input.NewPassword);
                 var userId = await _userManager.GetUserIdAsync(user);
                 var code = await _userManager.GenerateChangeEmailTokenAsync(user, Input.NewEmail);
                 code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
