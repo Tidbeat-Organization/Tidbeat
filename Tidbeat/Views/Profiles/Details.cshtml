@@ -12,12 +12,19 @@
     <div class="d-flex flex-column col-lg-6 col-8 vh-100-minus-navbar border border-start-0 border-top-0 border-bottom-0 pe-1 mt-4 pt-5">
         <div class="d-flex flex-column flex-xl-row justify-content-lg-start align-items-center">
             @if (!string.IsNullOrEmpty(user.ImagePath)) {
-                <img src="@user.ImagePath" height="200" class="border" />
+                <img src="@user.ImagePath" height="200" class="border border-dark rounded" />
             }else
             {
-                <img src="~/images/UnknownUser.jpg" height="200" class="border"/>
+                <img src="~/images/UnknownUser.jpg" height="200" class="border border-dark rounded" />
             }
             <div class="ms-2 text-start w-100">
+                <div>
+                    <img src="~/images/StarImage.png" class="ml-auto" height="20" />
+                @if (TempData.ContainsKey("user"))
+                            {
+                        <a formmethod="get" class="mr-auto text-primary hover-background-grey rounded text-decoration-none px-2 pt-1 pb-1 bi bi-pencil-fill"></a>
+                            }
+                </div>
                 <h1 class="text-primary">@user.FullName</h1>
                 <div> <span class="text-primary">Género:</span> @user.Gender</div>
                 <div> <span class="text-primary">Data de Nascimento:</span> @user.BirthdayDate.Date.ToShortDateString()</div>
@@ -36,7 +43,7 @@
         </div>
         <hr style="height: 1px" />
         <div>
-            <h1 class="text-primary">Sobre mim:</h1>
+            <h1 class="text-left text-primary">Sobre mim:</h1>
             <div>
                 @user.AboutMe
             </div>

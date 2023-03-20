@@ -32,11 +32,16 @@ namespace Tidbeat.Controllers
             {
                 return NotFound();
             }
+            var currentuser = await _userManager.GetUserAsync(User);
             var profile = await _context.Users
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (profile == null)
             {
                 return NotFound();
+            }
+            if (profile.Id == currentuser.Id)
+            {
+                TempData["user"] = true; 
             }
             ViewBag.Posts = _context.Posts.Include(p => p.User).Where(p=> p.User.Id == profile.Id).ToList();
             return View(profile);
