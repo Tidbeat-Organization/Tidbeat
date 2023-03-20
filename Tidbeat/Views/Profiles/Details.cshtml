@@ -1,0 +1,62 @@
+﻿@model Tidbeat.Models.Profile
+@using Microsoft.AspNetCore.Mvc.Localization;
+@inject IViewLocalizer Localizer;
+@{
+    ViewData["Title"] = "Details";
+    List<Post> allPosts = ViewBag.posts;
+    ApplicationUser user = Model.User;
+}
+
+<!--All music info goes here-->
+<div class="container-fluid row w-100 d-flex flex-column flex-lg-row mx-0">
+    <div class="d-flex flex-column col-lg-6 col-8 vh-100-minus-navbar border border-start-0 border-top-0 border-bottom-0 pe-1">
+        <div class="d-flex flex-column flex-xl-row justify-content-lg-start align-items-center">
+            <img src="~/images/UnknownUser.jpg" height="200" />
+            <div class="ms-2 text-start w-100">
+                <h1>@user.FullName</h1>
+                <div>Género: @user.Gender</div>
+                <div>Data de Nascimento: @user.BirthdayDate.Date.ToShortDateString()</div>
+            </div>
+        </div>
+        <hr style="height: 1px" />
+        <div class="scrollable-posts h-25">
+            <div>Músicas Favoritas</div>
+            <div>Músicas Favoritas</div>
+            <div>Músicas Favoritas</div>
+            <div>Músicas Favoritas</div>
+            <div>Músicas Favoritas</div>
+            <div>Músicas Favoritas</div>
+            <div>Músicas Favoritas</div>
+            <div>Músicas Favoritas</div>
+        </div>
+        <div>
+            <h1>Sobre mim:</h1>
+            <div>
+            
+            </div>
+        </div>
+    </div>
+    <!--All posts goes here-->
+    <div class="col-lg-6 col-8 mt-5 pt-5 scrollable-posts">
+        <div class="d-flex justify-content-center mb-2">
+            <div class="fs-3 me-4">@Localizer["posts"]</div> <!--Change to my Posts-->
+        </div>
+        @if (allPosts.Count == 0)
+        {
+            <div>@Localizer["no_posts"]</div>
+            <img src="~/images/NoPostsImage.png" height="120" class="mt-5" />
+        }
+        @foreach (Post post in allPosts)
+        {
+            <a class="text-decoration-none text-black" href="@Url.Action("Details", "Posts", new { id = post.PostId })">
+                <div class="d-flex align-items-center border border-2 border-primary p-1 rounded mb-2 hover-background-grey">
+                    <div class="border-end border-2 border-primary pe-2">
+                        <div>@post.User.FullName</div>
+                        <div class="fs-7">@Localizer["created_in"]: @post.CreationDate.Date.ToShortDateString()</div>
+                    </div>
+                    <div class="ms-2">@post.Title</div>
+                </div>
+            </a>
+        }
+    </div>
+</div>

@@ -24,5 +24,7 @@ namespace Tidbeat.Data {
             builder.Entity<PostRating>().ToTable(nameof(PostRating));
             builder.Entity<CommentRating>().ToTable(nameof(CommentRating));
         }
+
+        public DbSet<Tidbeat.Models.Profile>? Profile { get; set; }
     }
 }
