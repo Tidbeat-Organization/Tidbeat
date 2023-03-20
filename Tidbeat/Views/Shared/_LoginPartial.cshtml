@@ -13,7 +13,7 @@
     <li class="nav-item">
         <a class="nav-link text-dark mt-2" asp-area="Identity" asp-page="/Account/Manage/Index"
             title="Manage" style="margin-top: 1.5px;">
-                @Localizer["hello"], @((loggedUserName.Length > 9) ? loggedUserName.Substring(0, 9) + "..." : loggedUserName)!
+                @Localizer["hello"], @((loggedUserName?.Length > 9) ? loggedUserName.Substring(0, 9) + "..." : loggedUserName)!
         </a>
     </li>
     <li class="nav-item">
