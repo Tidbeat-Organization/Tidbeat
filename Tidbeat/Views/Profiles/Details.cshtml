@@ -1,21 +1,26 @@
-﻿@model Tidbeat.Models.Profile
+﻿@model ApplicationUser
 @using Microsoft.AspNetCore.Mvc.Localization;
 @inject IViewLocalizer Localizer;
 @{
     ViewData["Title"] = "Details";
     List<Post> allPosts = ViewBag.posts;
-    ApplicationUser user = Model.User;
+    ApplicationUser user = Model;
 }
 
 <!--All music info goes here-->
 <div class="container-fluid row w-100 d-flex flex-column flex-lg-row mx-0">
-    <div class="d-flex flex-column col-lg-6 col-8 vh-100-minus-navbar border border-start-0 border-top-0 border-bottom-0 pe-1">
+    <div class="d-flex flex-column col-lg-6 col-8 vh-100-minus-navbar border border-start-0 border-top-0 border-bottom-0 pe-1 mt-4 pt-5">
         <div class="d-flex flex-column flex-xl-row justify-content-lg-start align-items-center">
-            <img src="~/images/UnknownUser.jpg" height="200" />
+            @if (!string.IsNullOrEmpty(user.ImagePath)) {
+                <img src="@user.ImagePath" height="200" class="border" />
+            }else
+            {
+                <img src="~/images/UnknownUser.jpg" height="200" class="border"/>
+            }
             <div class="ms-2 text-start w-100">
-                <h1>@user.FullName</h1>
-                <div>Género: @user.Gender</div>
-                <div>Data de Nascimento: @user.BirthdayDate.Date.ToShortDateString()</div>
+                <h1 class="text-primary">@user.FullName</h1>
+                <div> <span class="text-primary">Género:</span> @user.Gender</div>
+                <div> <span class="text-primary">Data de Nascimento:</span> @user.BirthdayDate.Date.ToShortDateString()</div>
             </div>
         </div>
         <hr style="height: 1px" />
@@ -29,10 +34,11 @@
             <div>Músicas Favoritas</div>
             <div>Músicas Favoritas</div>
         </div>
+        <hr style="height: 1px" />
         <div>
-            <h1>Sobre mim:</h1>
+            <h1 class="text-primary">Sobre mim:</h1>
             <div>
-            
+                @user.AboutMe
             </div>
         </div>
     </div>
