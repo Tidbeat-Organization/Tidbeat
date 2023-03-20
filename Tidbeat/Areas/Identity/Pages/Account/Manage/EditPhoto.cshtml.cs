@@ -59,7 +59,7 @@ namespace Tidbeat.Areas.Identity.Pages.Account.Manage {
             if (Request.Form.ContainsKey("saveButton")) {
                 return await OnPostEditAsync();
             }
-            else if (Request.Form.ContainsKey("deleteButton")) {
+            else if (Request.Form.ContainsKey("deleteButtonModal")) {
                 return await OnPostDelete();
             }
             else {

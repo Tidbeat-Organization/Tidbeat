@@ -25,8 +25,28 @@
         <div class="">
             <button id="cancelButton" name="cancelButton" class="btn btn-danger my-2 text-danger" style="outline: thick solid #DC3545; outline-width: 3px">@Localizer["cancel"]</button>
         </div>
-        <div class="form-group">
-            <button id="deleteButton" type="submit" name="deleteButton" class="btn btn-danger text-danger @(currentPhoto == null ? "d-none" : "")" style="outline: thick solid #DC3545; outline-width: 3px">@Localizer["delete_photo"]</button>
+        <div class="">
+            <button type="button" id="deleteButton" data-bs-toggle="modal" data-bs-target="#deleteModal" class="btn btn-danger text-danger @(currentPhoto == null ? "d-none" : "")" style="outline: thick solid #DC3545; outline-width: 3px">@Localizer["delete_photo"]</button>
+        </div>
+    </div>
+    <!--Modal box here-->
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel">@Localizer["delete_photo"]</h5>
+                    <button type="button" class="close custom-close rounded btn btn-primary" data-bs-dismiss="modal" aria-label="Close">
+                        <i class="bi bi-x font-white" style="font-size: 1.1rem;" aria-hidden="true"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    @Localizer["are_you_sure"]
+                </div>
+                <div class="modal-footer">
+                    <button id="deleteButtonModal" name="deleteButtonModal" type="submit" class="btn btn-danger text-danger" style="outline: thick solid #DC3545; outline-width: 3px">@Localizer["delete"]</button>
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">@Localizer["cancel"]</button>
+                </div>
+            </div>
         </div>
     </div>
 </form>
