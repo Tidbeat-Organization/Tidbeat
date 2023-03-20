@@ -8,6 +8,12 @@
         <label for="photoFile">Select a photo to upload:</label>
         <input type="file" id="photoFile" name="photoFile">
     </div>
+    @if (Model.User != null) {
+        <div class="form-group">
+            <label>Current Photo:</label>
+            <img src="@await Model.GetUserPhotoUrlAsync()" alt="User photo" width="200">
+        </div>
+    }
     <div class="form-group">
         <button type="submit" name="editButton" class="btn btn-primary">Edit Photo</button>
     </div>
