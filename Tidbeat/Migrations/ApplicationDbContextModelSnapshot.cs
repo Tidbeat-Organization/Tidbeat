@@ -396,6 +396,24 @@ namespace Tidbeat.Migrations
                     b.ToTable("PostRating", (string)null);
                 });
 
+            modelBuilder.Entity("Tidbeat.Models.Profile", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Profile");
+                });
+
             modelBuilder.Entity("Tidbeat.Models.Song", b =>
                 {
                     b.Property<string>("SongId")
@@ -533,6 +551,15 @@ namespace Tidbeat.Migrations
                         .IsRequired();
 
                     b.Navigation("Post");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Tidbeat.Models.Profile", b =>
+                {
+                    b.HasOne("Tidbeat.Models.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
 
                     b.Navigation("User");
                 });
