@@ -6,7 +6,6 @@
 @{
     var loggedUserName = (await UserManager.GetUserAsync(User))?.FullName.Split(' ')[0];
 }
-
 <ul class="navbar-nav">
 @if (SignInManager.IsSignedIn(User))
 {
