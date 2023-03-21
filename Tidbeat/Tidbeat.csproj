@@ -41,8 +41,4 @@
     <PackageReference Include="TinyMCE" Version="6.3.2" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="wwwroot\images\user_images\" />
-  </ItemGroup>
-
 </Project>

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Tidbeat.Models;
 
 namespace Tidbeat.Areas.Identity.Pages.Account.Manage {
+    [IgnoreAntiforgeryToken]
     public class EditPhotoModel : PageModel {
         private readonly UserManager<ApplicationUser> _userManager;
         public ApplicationUser ApplicationUser { get; private set; }
@@ -21,8 +22,7 @@ namespace Tidbeat.Areas.Identity.Pages.Account.Manage {
             return Page();
         }
 
-        [HttpPost]
-        public IActionResult SaveImage(string ImgStr, string ImgName) {   //Here you can replace ImgStr with croppedImage
+        public async Task<IActionResult> OnPostSaveImage(string ImgStr, string ImgName) {   //Here you can replace ImgStr with croppedImage
             string imageName = Guid.NewGuid() + "_" + ImgName + ".jpg";
 
             //set the image path
@@ -35,7 +35,13 @@ namespace Tidbeat.Areas.Identity.Pages.Account.Manage {
                 stream.Write(imageBytes, 0, imageBytes.Length);
             }
 
-            return File(imageBytes, "image/jpeg", imageName);
+            await OnPostDelete();
+
+            var currentUser = await _userManager.GetUserAsync(User);
+            currentUser.ImagePath = "\\" + Path.Combine("images", "user_images", imageName);
+            await _userManager.UpdateAsync(currentUser);
+
+            return Page();
         }
 
         public async Task<IActionResult> OnPostEditAsync() {
@@ -73,8 +79,8 @@ namespace Tidbeat.Areas.Identity.Pages.Account.Manage {
         }
 
         public async Task<IActionResult> OnPost() {
-            if (Request.Form.ContainsKey("saveButton")) {
-                return await OnPostEditAsync();
+            if (Request.Form.ContainsKey("saveButtonSubmit")) {
+                return await OnPostSaveImage(Request.Form["photoString"], Request.Form["photoName"]);
             }
             else if (Request.Form.ContainsKey("deleteButtonModal")) {
                 return await OnPostDelete();

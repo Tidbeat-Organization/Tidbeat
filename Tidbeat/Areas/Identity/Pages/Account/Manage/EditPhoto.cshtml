@@ -8,7 +8,7 @@
 <h1>@Localizer["edit_photo"]</h1>
 
 <div id="imageErrors" class="text-danger mb-2"></div>
-<form method="post" enctype="multipart/form-data">
+<form id="editPhotoForm" method="post" enctype="multipart/form-data">
     <div>
         <div id="croppie-container" class="my-croppie" style="max-width: none!important; width: auto!important;"></div>
     </div>
@@ -23,7 +23,8 @@
     </div>
     <div class="d-flex align-items-center flex-column">
         <div class="form-group mt-2">
-            <button id="saveButton" type="submit" name="saveButton" class="btn btn-primary">@Localizer["save_photo"]</button>
+            <button id="saveButton" type="button" class="btn btn-primary">@Localizer["save_photo"]</button>
+            <button id="saveButtonSubmit" name="saveButtonSubmit" hidden type="submit" class="btn btn-primary"></button>
         </div>
         <div class="">
             <button id="cancelButton" name="cancelButton" class="btn btn-danger my-2 text-danger" style="outline: thick solid #DC3545; outline-width: 3px">@Localizer["cancel"]</button>
@@ -31,6 +32,10 @@
         <div class="">
             <button type="button" id="deleteButton" data-bs-toggle="modal" data-bs-target="#deleteModal" class="btn btn-danger text-danger @(currentPhoto == null ? "d-none" : "")" style="outline: thick solid #DC3545; outline-width: 3px">@Localizer["delete_photo"]</button>
         </div>
+    </div>
+    <div>
+        <input id="photoString" name="photoString" hidden />
+        <input id="photoName" name="photoName" hidden />
     </div>
     <!--Modal box here-->
     <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
@@ -62,11 +67,17 @@
     let saveButton = document.getElementById("saveButton");
     let deleteButton = document.getElementById("deleteButton");
     let imageErrors = document.getElementById("imageErrors");
+    let photoString = document.getElementById("photoString");
+    let photoName = document.getElementById("photoName");
+    let editPhotoForm = document.getElementById("editPhotoForm");
+    let saveButtonSubmit = document.getElementById("saveButtonSubmit");
+    let croppieContainer = document.getElementById("croppie-container");
     var editingMode = false;
 
     saveButton.style.display = "none";
     cancelButton.style.display = "none";
     uploadPhoto.style.display = "none";
+    croppieContainer.style.display = "none";
 
     editButton.addEventListener("click", function (e) {
         e.preventDefault();
@@ -88,16 +99,20 @@
         deleteButton.style.display = "block";
         photoFile.value = "";
         uploadPhoto.style.display = "none";
+        croppieContainer.style.display = "none";
+        preview.style.display = "block";
     });
 
     photoFile.addEventListener("change", function () {
         if (event.target.files[0].size > 512000) {
-            //imageErrors.innerHTML = "Nao pode ser maior que 500kb.";
+            imageErrors.innerHTML = "@Localizer["image_cannot_be_higher_than"] 500kb.";
             photoFile.value = "";
             return;
         }
         saveButton.style.display = "block";
+        croppieContainer.style.display = "block";
         imageErrors.innerHTML = "";
+        preview.style.display = "none";
         var reader = new FileReader();
         reader.onload = function () {
             var imageSrc = reader.result;
@@ -134,18 +149,20 @@
         });
     }
 
-    initCroppie('/Images/FAT_IMAGE.jpg');
+    initCroppie('/images/user_images/FAT_IMAGE.jpg');
 
     $("#saveButton").click(function () {
         mycroppiedemo.croppie('result', {
             type: 'canvas',
             size: { width: 300, height: 300 }
         }).then(function (croppedImage) {
-           
-
+            photoString.value = croppedImage;
+            photoName.value = photoFile.value.split('\\').pop().split('/').pop().split('.')[0]
+            saveButtonSubmit.click();
+            /*
             $.ajax({
                 type: 'POST',
-                url: '/EditPhoto/SaveImage',
+                url: '/?handler=SaveImae',
                 data: {
                     ImgStr: croppedImage,
                     ImgName: photoFile.value.split('\\').pop().split('/').pop().split('.')[0]
@@ -157,6 +174,7 @@
                     console.log('Error saving image');
                 }
             })
+            */
         });
     });
 </script>
