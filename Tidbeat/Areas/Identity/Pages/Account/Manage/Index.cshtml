@@ -3,7 +3,7 @@
 @using Microsoft.AspNetCore.Mvc.Localization;
 @inject IViewLocalizer Localizer;
 @{
-    ViewData["Title"] = Localizer["profile"];
+    ViewData["Title"] = "Profile";
     ViewData["ActivePage"] = ManageNavPages.Index;
     List<SelectListItem> genders = new()
     {
@@ -15,30 +15,31 @@
 
 <h3>@ViewData["Title"]</h3>
 <partial name="_StatusMessage" for="StatusMessage" />
-<div class="row justify-content-center">
+<div class="row">
     <div class="col-md-6">
-        <form id="profile-form" method="post" class="w-100">
+        <form id="profile-form" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="mt-3">
-                <label asp-for="Input.FullName" class="form-label text-primary">@Localizer["name"]</label>
+            <div class="form-floating">
                 <input asp-for="Input.FullName" class="form-control" />
+                <label asp-for="Input.FullName" class="form-label"></label>
                 <span asp-validation-for="Input.FullName" class="text-danger"></span>
             </div>
-            <div class="mt-3">
-                <label asp-for="Input.BirthdayDate" class="form-label text-primary">@Localizer["birth"]</label>
+            <div class="form-floating">
+                
                 <input asp-for="Input.BirthdayDate" type="date" class="form-control second-phase mt-0" autocomplete="username" aria-required="true" id="birthField"/>
+                <label asp-for="Input.BirthdayDate" class="form-label"></label>
                 <span asp-validation-for="Input.BirthdayDate" class="text-danger"></span>
             </div>
-            <div class="mt-3">
-                <label asp-for="Input.Gender" class="form-label text-primary">@Localizer["gender"]</label>
+            <div class="form-floating">
                 <select asp-for="Input.Gender" asp-items="genders" class="form-control second-phase form-select mt-0" id="genderField"></select>
+                <label asp-for="Input.Gender" class="form-label">@Localizer["gender"]</label>
                 <span asp-validation-for="Input.Gender" class="text-danger"></span>
             </div>
-            <div class="mt-3 align-rigth">
+            <div class="form-floating">
                 <textarea asp-for="Input.AboutMe" id="postcreate" class="form-control" style="height: 200px; border: 1.5px solid #6610F2; border-radius: 15px; width: 700px;" placeholder="@Localizer["about_me"]..."></textarea>
                 <span asp-validation-for="Input.AboutMe" class="text-danger"></span>                
             </div>
-            <button id="update-profile-button" type="submit" class="w-100 mt-3 btn btn-lg btn-primary">@Localizer["save"]</button>
+            <button id="update-profile-button" type="submit" class="w-100 btn btn-lg btn-primary">Save</button>
         </form>
     </div>
 </div>

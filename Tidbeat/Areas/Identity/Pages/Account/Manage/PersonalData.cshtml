@@ -1,31 +1,26 @@
 ﻿@page
 @model PersonalDataModel
 @{
-    ViewData["Title"] = "Apagar Conta";
+    ViewData["Title"] = "Personal Data";
     ViewData["ActivePage"] = ManageNavPages.PersonalData;
 }
 
-<div class="container">
-    <div class="row">
-        <div class="col-md-6 w-100">
-            <h3 style="color: #6610F2;">@ViewData["Title"]</h3>
-        </div>
-    </div>
-    <div class="row mt-3">
+<h3>@ViewData["Title"]</h3>
 
-        <div class="col-md-6 w-100">
-            <p>A sua conta contém dados pessoais que forneceu. Caso deseje, poderá apagar a sua conta.</p>
-            <p>
-                <strong>Ao apagar a sua conta, irá excluir também permanentemente os seus dados. A sua conta não poderá ser recuperada.</strong>
-            </p>
-            <p style="margin-top: 35px;">
-                <a id="delete" asp-page="DeletePersonalData" class="btn btn-danger text-white bg-danger">Apagar conta</a>
-            </p>
-        </div>
+<div class="row">
+    <div class="col-md-6">
+        <p>Your account contains personal data that you have given us. This page allows you to download or delete that data.</p>
+        <p>
+            <strong>Deleting this data will permanently remove your account, and this cannot be recovered.</strong>
+        </p>
+        <form id="download-data" asp-page="DownloadPersonalData" method="post">
+            <button class="btn btn-primary" type="submit">Download</button>
+        </form>
+        <p>
+            <a id="delete" asp-page="DeletePersonalData" class="btn btn-danger">Delete</a>
+        </p>
     </div>
 </div>
-</div>
-
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

@@ -37,7 +37,7 @@ namespace Tidbeat.Areas.Identity.Pages.Account.Manage {
             }
 
             // Redirect back to the index page
-            return Redirect("~/Identity/Account/Manage/EditPhoto");
+            return RedirectToPage("/Photos/Index");
         }
 
 
@@ -52,14 +52,14 @@ namespace Tidbeat.Areas.Identity.Pages.Account.Manage {
                     await _userManager.UpdateAsync(currentUser);
                 }
             }
-            return Redirect("~/Identity/Account/Manage/EditPhoto");
+            return RedirectToPage("/Photos/Index");
         }
 
         public async Task<IActionResult> OnPost() {
-            if (Request.Form.ContainsKey("saveButton")) {
+            if (Request.Form.ContainsKey("editButton")) {
                 return await OnPostEditAsync();
             }
-            else if (Request.Form.ContainsKey("deleteButtonModal")) {
+            else if (Request.Form.ContainsKey("deleteButton")) {
                 return await OnPostDelete();
             }
             else {
