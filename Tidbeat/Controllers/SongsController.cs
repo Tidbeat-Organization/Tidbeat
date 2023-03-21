@@ -25,6 +25,27 @@ namespace Tidbeat.Controllers
             _userManager = userManager;
         }
 
+        private async Task AddAsFavoriteAsync(ApplicationUser user, string songId)
+        {
+            var songIds = user.DeserializeFavoriteSongIds();
+            if (songIds.Contains(songId))
+            {
+                return;
+            }
+            songIds.Add(songId);
+            user.SerializeFavoriteSongIds(songIds);
+            await _userManager.UpdateAsync(user);
+        }
+
+        private async Task<bool> RemoveAsFavoriteAsync(ApplicationUser user, string songId)
+        {
+            var songIds = user.DeserializeFavoriteSongIds();
+            var success = songIds.Remove(songId);
+            user.SerializeFavoriteSongIds(songIds);
+            await _userManager.UpdateAsync(user);
+            return success;
+        }
+
         // GET: Songs
         public async Task<IActionResult> Index([FromQuery] string searchKey, [FromQuery] string gener, [FromQuery] string band, [FromQuery] string album, [FromQuery] string yearStart, [FromQuery] string yearEnd) {
             TempData["Search"] = searchKey;
@@ -60,7 +81,7 @@ namespace Tidbeat.Controllers
             var loggedUser = await _userManager.GetUserAsync(User);
             bool isFavorited;
             if (loggedUser != null) {
-                isFavorited = loggedUser.FavoriteSongId == song.Id;
+                isFavorited = loggedUser.FavoriteSongIds.Contains(song.Id);
             }
             else {
                 isFavorited = false;
@@ -68,7 +89,7 @@ namespace Tidbeat.Controllers
             ViewBag.isFavorited = isFavorited;
 
             var users = await _userManager.Users.ToListAsync();
-            var count = users.Count(u => u.FavoriteSongId == id);
+            var count = users.Count(u => u.FavoriteSongIds.Contains(id));
             ViewBag.favoritesAmount = count;
 
             var allPosts = _context.Posts.Include(p => p.User).Include(p => p.Song).Where(p => p.Song != null && p.Song.SongId == id).ToList();
@@ -85,14 +106,16 @@ namespace Tidbeat.Controllers
             }
 
             if (songId == null || songId == "null") {
-                loggedUser.FavoriteSongId = null;
+                // loggedUser.FavoriteSongId = null;
+                // await RemoveAsFavoriteAsync(loggedUser, songId);
                 await _userManager.UpdateAsync(loggedUser);
             } else {
                 var song = await _spotifyService.GetSongAsync(songId);
                 if (song == null) {
                     return;
                 } else {
-                    loggedUser.FavoriteSongId = song.Id;
+                    // loggedUser.FavoriteSongId = song.Id;
+                    await AddAsFavoriteAsync(loggedUser, song.Id);
                     await _userManager.UpdateAsync(loggedUser);
                 }
             }
@@ -100,7 +123,7 @@ namespace Tidbeat.Controllers
 
         public async Task<int> GetFavoriteCount([FromQuery] string songId) {
             var users = await _userManager.Users.ToListAsync();
-            var count = users.Count(u => u.FavoriteSongId == songId);
+            var count = users.Count(u => u.FavoriteSongIds.Contains(songId));
             return count;
         }
     }
