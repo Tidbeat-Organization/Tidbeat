@@ -9,6 +9,9 @@
 
 <div id="imageErrors" class="text-danger mb-2"></div>
 <form method="post" enctype="multipart/form-data">
+    <div>
+        <div id="croppie-container" class="my-croppie" style="max-width: none!important; width: auto!important;"></div>
+    </div>
     <div class="form-group d-flex justify-content-center">
         <img id="preview" src="@(!string.IsNullOrEmpty(currentPhoto) ? currentPhoto : "/images/UnknownUser.jpg")" alt="User photo" width="200" height="200" class="rounded" style="object-fit: cover; outline: thick solid #000000; outline-width: 3px">
     </div>
@@ -89,18 +92,71 @@
 
     photoFile.addEventListener("change", function () {
         if (event.target.files[0].size > 512000) {
-            imageErrors.innerHTML = "@Localizer["image_cannot_be_higher_than"] 500kb.";
+            //imageErrors.innerHTML = "Nao pode ser maior que 500kb.";
             photoFile.value = "";
             return;
         }
+        saveButton.style.display = "block";
+        imageErrors.innerHTML = "";
         var reader = new FileReader();
         reader.onload = function () {
-            var preview = document.getElementById('preview');
-            preview.src = reader.result;
-            preview.style.display = 'block';
+            var imageSrc = reader.result;
+            initCroppie(imageSrc);
         }
         reader.readAsDataURL(event.target.files[0]);
-        saveButton.style.display = "block";
     });
 
+    var mycroppiedemo = null;
+
+    function initCroppie(imageSrc) {
+        if (mycroppiedemo) {
+            // Destroy previous croppie object
+            mycroppiedemo.croppie('destroy');
+        }
+
+        mycroppiedemo = $('#croppie-container').croppie({
+            enableExif: false,
+            showZoomer: true,
+            enforceBoundary: true,
+            boundary: {
+                width: 400,
+                height: 400
+            },
+            viewport: {
+                width: 200,
+                height: 200,
+                type: 'square'
+            }
+        });
+
+        mycroppiedemo.croppie('bind', {
+            url: imageSrc
+        });
+    }
+
+    initCroppie('/Images/FAT_IMAGE.jpg');
+
+    $("#saveButton").click(function () {
+        mycroppiedemo.croppie('result', {
+            type: 'canvas',
+            size: { width: 300, height: 300 }
+        }).then(function (croppedImage) {
+           
+
+            $.ajax({
+                type: 'POST',
+                url: '/EditPhoto/SaveImage',
+                data: {
+                    ImgStr: croppedImage,
+                    ImgName: photoFile.value.split('\\').pop().split('/').pop().split('.')[0]
+                },
+                success: function (response) {
+                    console.log('Image saved successfully');
+                },
+                error: function (xhr, textStatus, errorThrow) {
+                    console.log('Error saving image');
+                }
+            })
+        });
+    });
 </script>

@@ -21,6 +21,23 @@ namespace Tidbeat.Areas.Identity.Pages.Account.Manage {
             return Page();
         }
 
+        [HttpPost]
+        public IActionResult SaveImage(string ImgStr, string ImgName) {   //Here you can replace ImgStr with croppedImage
+            string imageName = Guid.NewGuid() + "_" + ImgName + ".jpg";
+
+            //set the image path
+            string imgPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", "user_images", imageName);
+
+            var base64Data = ImgStr.Split(',')[1];
+
+            byte[] imageBytes = Convert.FromBase64String(base64Data);
+            using (var stream = new FileStream(imgPath, FileMode.Create)) {
+                stream.Write(imageBytes, 0, imageBytes.Length);
+            }
+
+            return File(imageBytes, "image/jpeg", imageName);
+        }
+
         public async Task<IActionResult> OnPostEditAsync() {
             var photoFile = Request.Form.Files.GetFile("photoFile");
             if (photoFile != null && photoFile.Length > 0) {
