@@ -1,4 +1,5 @@
-﻿@{
+﻿<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+@{
     if (ViewData.TryGetValue("ParentLayout", out var parentLayout) && parentLayout !=  null)
     {
         Layout = parentLayout.ToString();
