@@ -16,6 +16,9 @@
         <img id="preview" src="@(!string.IsNullOrEmpty(currentPhoto) ? currentPhoto : "/images/UnknownUser.jpg")" alt="User photo" width="200" height="200" class="rounded" style="object-fit: cover; outline: thick solid #000000; outline-width: 3px">
     </div>
     <div id="uploadPhoto" class="form-group mt-2">
+        <label for="photoFile" class="btn btn-primary">
+            Adicionar Imagem
+        </label>
         <input type="file" id="photoFile" name="photoFile">
     </div>
     <div class="mt-2">
