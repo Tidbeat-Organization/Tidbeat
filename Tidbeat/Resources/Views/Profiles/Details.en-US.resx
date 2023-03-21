@@ -126,6 +126,9 @@
   <data name="created_in" xml:space="preserve">
     <value>Created in</value>
   </data>
+  <data name="first_post" xml:space="preserve">
+    <value>Create yout first Post</value>
+  </data>
   <data name="gender" xml:space="preserve">
     <value>Gender</value>
   </data>

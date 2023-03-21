@@ -52,11 +52,16 @@
     <!--All posts goes here-->
     <div class="col-lg-6 col-8 mt-5 pt-5 scrollable-posts">
         <div class="d-flex justify-content-center mb-2">
-            <div class="fs-3 me-4">@Localizer["my_posts"]</div> <!--Change to my Posts-->
+            <div class="fs-3 me-4">@Localizer["my_posts"]</div>
         </div>
         @if (allPosts.Count == 0)
         {
             <div>@Localizer["no_posts"]</div>
+            <div>
+                <a class="btn btn-primary" asp-controller="Posts" asp-action="Create">
+                    @Localizer["first_post"]
+                </a>
+            </div>
             <img src="~/images/NoPostsImage.png" height="120" class="mt-5" />
         }
         @foreach (Post post in allPosts)
