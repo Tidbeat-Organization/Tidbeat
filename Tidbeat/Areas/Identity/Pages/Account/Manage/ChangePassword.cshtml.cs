@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.FileSystemGlobbing.Internal;
+using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using Tidbeat.Models;
 
@@ -22,15 +23,17 @@ namespace Tidbeat.Areas.Identity.Pages.Account.Manage
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ILogger<ChangePasswordModel> _logger;
-
+        private readonly IStringLocalizer<ChangePasswordModel> _localizer;
         public ChangePasswordModel(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
-            ILogger<ChangePasswordModel> logger)
+            ILogger<ChangePasswordModel> logger,
+            IStringLocalizer<ChangePasswordModel> localizer)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
+            _localizer = localizer;
         }
 
         /// <summary>
@@ -107,7 +110,7 @@ namespace Tidbeat.Areas.Identity.Pages.Account.Manage
             }
             if (Input.NewPassword != Input.ConfirmPassword)
             {
-                ModelState.AddModelError("ConfirmPassword", "password_mismatch");
+                ModelState.AddModelError("ConfirmPassword", _localizer["password_mismatch"]);
                 TempData["OldPassword"] = Input.OldPassword;
                 TempData["NewPassword"] = Input.NewPassword;
                 TempData["ConfirmPassword"] = Input.ConfirmPassword;
@@ -115,7 +118,7 @@ namespace Tidbeat.Areas.Identity.Pages.Account.Manage
             }
             if (!Regex.IsMatch(Input.NewPassword, Pattern))
             {
-                ModelState.AddModelError("NewPassword", "invalid_password");
+                ModelState.AddModelError("NewPassword", _localizer["invalid_password"]);
                 TempData["OldPassword"] = Input.OldPassword;
                 TempData["NewPassword"] = Input.NewPassword;
                 TempData["ConfirmPassword"] = Input.ConfirmPassword;
@@ -132,7 +135,30 @@ namespace Tidbeat.Areas.Identity.Pages.Account.Manage
             {
                 foreach (var error in changePasswordResult.Errors)
                 {
-                    ModelState.AddModelError(string.Empty, error.Description);
+                    if (error.Code == "DefaultError")
+                    {
+                        ModelState.AddModelError("Danger", _localizer["default_error"]);
+                    }
+                    else
+                        if (error.Code == "ConcurrencyFailure")
+                    {
+                        ModelState.AddModelError("Danger", _localizer["concurrency_failure"]);
+                    }
+                    else
+                        if (error.Code == "PasswordMismatch")
+                    {
+                        ModelState.AddModelError("Danger", _localizer["password_mismatch_alt"]);
+                    }
+                    else
+                        if (error.Code == "PasswordTooShort" || error.Code == "PasswordRequiresNonAlphanumeric" || error.Code == "PasswordRequiresDigit" || error.Code == "PasswordRequiresLower" || error.Code == "PasswordRequiresUpper")
+                    {
+                        ModelState.AddModelError("Danger", _localizer["invalid_password"]);
+                    }
+                    else
+                    {
+                        Console.WriteLine(error.Code);
+                        ModelState.AddModelError("Danger", error.Description);
+                    }
                 }
                 TempData["OldPassword"] = Input.OldPassword;
                 TempData["NewPassword"] = Input.NewPassword;
@@ -141,7 +167,7 @@ namespace Tidbeat.Areas.Identity.Pages.Account.Manage
             }
 
             await _signInManager.RefreshSignInAsync(user);
-            _logger.LogInformation("User changed their password successfully.");
+            _logger.LogInformation(_localizer["confirmation"]);
             StatusMessage = "Your password has been changed.";
 
             return RedirectToPage();
