@@ -104,6 +104,11 @@
     });
 
     photoFile.addEventListener("change", function () {
+        if (event.target.files[0].type != "image/jpeg" && event.target.files[0].type != "image/png") {
+            imageErrors.innerHTML = "@Localizer["image_must_be_jpeg_or_png"]";
+            photoFile.value = "";
+            return;
+        }
         if (event.target.files[0].size > 512000) {
             imageErrors.innerHTML = "@Localizer["image_cannot_be_higher_than"] 500kb.";
             photoFile.value = "";
