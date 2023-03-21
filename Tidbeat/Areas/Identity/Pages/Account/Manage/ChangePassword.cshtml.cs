@@ -4,10 +4,12 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.FileSystemGlobbing.Internal;
 using Microsoft.Extensions.Logging;
 using Tidbeat.Models;
 
@@ -15,6 +17,8 @@ namespace Tidbeat.Areas.Identity.Pages.Account.Manage
 {
     public class ChangePasswordModel : PageModel
     {
+        public static string Pattern = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&_-])[A-Za-z\\d@$!%*?&_-]{6,}$";
+
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ILogger<ChangePasswordModel> _logger;
@@ -101,7 +105,22 @@ namespace Tidbeat.Areas.Identity.Pages.Account.Manage
             {
                 return Page();
             }
-
+            if (Input.NewPassword != Input.ConfirmPassword)
+            {
+                ModelState.AddModelError("ConfirmPassword", "password_mismatch");
+                TempData["OldPassword"] = Input.OldPassword;
+                TempData["NewPassword"] = Input.NewPassword;
+                TempData["ConfirmPassword"] = Input.ConfirmPassword;
+                return Page();
+            }
+            if (!Regex.IsMatch(Input.NewPassword, Pattern))
+            {
+                ModelState.AddModelError("NewPassword", "invalid_password");
+                TempData["OldPassword"] = Input.OldPassword;
+                TempData["NewPassword"] = Input.NewPassword;
+                TempData["ConfirmPassword"] = Input.ConfirmPassword;
+                return Page();
+            }
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
@@ -115,6 +134,9 @@ namespace Tidbeat.Areas.Identity.Pages.Account.Manage
                 {
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
+                TempData["OldPassword"] = Input.OldPassword;
+                TempData["NewPassword"] = Input.NewPassword;
+                TempData["ConfirmPassword"] = Input.ConfirmPassword;
                 return Page();
             }
 
