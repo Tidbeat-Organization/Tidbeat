@@ -14,14 +14,14 @@ namespace Tidbeat.Controllers
     public class ProfilesController : Controller
     {
         private readonly ApplicationDbContext _context;
-        private readonly IServiceProvider _serviceProvider;
+        //private readonly IServiceProvider _serviceProvider;
         private readonly UserManager<ApplicationUser> _userManager;
 
-        public ProfilesController(ApplicationDbContext context, IServiceProvider serviceProvider)
+        public ProfilesController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
-            _serviceProvider = serviceProvider;
-            _userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+            //_serviceProvider = serviceProvider;
+            _userManager = userManager;
         }
 
         public async Task<List<Song>> GetFavoriteSongsAsync(ApplicationUser user)
