@@ -41,7 +41,7 @@ namespace Tidbeat.Controllers
             }
             if (currentuser != null)
             {
-                if (profile.Id == currentuser.Id)
+                if (profile.Id.Equals(currentuser.Id))
                 {
                     TempData["user"] = true;
                 }

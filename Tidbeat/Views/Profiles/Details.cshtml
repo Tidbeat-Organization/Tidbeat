@@ -5,6 +5,7 @@
     ViewData["Title"] = "Details";
     List<Post> allPosts = ViewBag.posts;
     ApplicationUser user = Model;
+    var tempval = TempData["user"];
 }
 
 <!--All music info goes here-->
@@ -20,10 +21,10 @@
             <div class="ms-2 text-start w-100">
                 <div>
                     <img src="~/images/StarImage.png" class="ml-auto" height="20" />
-                @if (TempData.ContainsKey("user"))
-                            {
-                        <a formmethod="get" asp-area="Identity" asp-page="/Account/Manage/Index" class=" mr-auto text-primary hover-background-grey rounded text-decoration-none px-2 pt-1 pb-1 bi bi-pencil-fill"></a>
-                            }
+                @if (tempval != null)
+                    {
+                            <a formmethod="get" asp-area="Identity" asp-page="/Account/Manage/Index" class=" mr-auto text-primary hover-background-grey rounded text-decoration-none px-2 pt-1 pb-1 bi bi-pencil-fill"></a>
+                    }
                 </div>
                 <h1 class="text-primary">@user.FullName</h1>
                 <div> <span class="text-primary">@Localizer["gender"]:</span> @user.Gender</div>
