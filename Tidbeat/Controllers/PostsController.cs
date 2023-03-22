@@ -181,7 +181,7 @@ namespace Tidbeat.Controllers
                 }
             }
 
-            return View(post);
+            return RedirectToAction("Create");
         }
 
         // GET: Posts/Edit/5
