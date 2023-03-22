@@ -39,7 +39,7 @@
             </div>
         </div>
         <hr style="height: 1px" />
-        <div class="text-primary">Músicas Favoritas</div>
+        <div class="text-primary">@Localizer["favorite_songs"]</div>
         <div class="scrollable-posts h-25">
             @if (ViewBag.FavoriteSongs.Count != 0) {
                 @foreach (Song song in ViewBag.FavoriteSongs)
@@ -68,13 +68,13 @@
                                 }
                             }
                             <span class="text-primary fw-semibold">@songNameString</span>
-                            , de
+                            , @Localizer["from"]
                             <span class="text-primary fw-semibold">@song.Band.Name</span>
                         </span>
                     </div>
                 }
             } else {
-                <div class="border border-top-0 border-bottom-0 border-end-0">Não tem qualquer música favorita ainda.</div>
+                <div class="border border-top-0 border-bottom-0 border-end-0">@Localizer["no_favorited_song_yet"]</div>
             }
             
         </div>
@@ -93,10 +93,10 @@
         </div>
         @if (allPosts.Count == 0)
         {
-            <div>@Localizer["no_posts"]</div>
+            <div>@Localizer["first_post"]</div>
             <div>
                 <a class="btn btn-primary" asp-controller="Posts" asp-action="Create">
-                    @Localizer["first_post"]
+                    @Localizer["create_post"]
                 </a>
             </div>
             <img src="~/images/NoPostsImage.png" height="120" class="mt-5" />

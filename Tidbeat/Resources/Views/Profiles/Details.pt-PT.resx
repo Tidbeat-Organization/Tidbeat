@@ -135,6 +135,9 @@
   <data name="created_in" xml:space="preserve">
     <value>Criado em</value>
   </data>
+  <data name="create_post" xml:space="preserve">
+    <value>Criar Post</value>
+  </data>
   <data name="dance" xml:space="preserve">
     <value>Dança</value>
   </data>
@@ -144,14 +147,20 @@
   <data name="favorite_genre" xml:space="preserve">
     <value>Género Favorito</value>
   </data>
+  <data name="favorite_songs" xml:space="preserve">
+    <value>Músicas Favoritas</value>
+  </data>
   <data name="female" xml:space="preserve">
     <value>Feminino</value>
   </data>
   <data name="first_post" xml:space="preserve">
-    <value>Cria  o teu primeiro post</value>
+    <value>Ainda não postaste nada... Cria o teu primeiro post!</value>
   </data>
   <data name="folk" xml:space="preserve">
     <value>Folk</value>
+  </data>
+  <data name="from" xml:space="preserve">
+    <value>de</value>
   </data>
   <data name="funk" xml:space="preserve">
     <value>Funk</value>
@@ -182,6 +191,9 @@
   </data>
   <data name="non_binary" xml:space="preserve">
     <value>Não Binário</value>
+  </data>
+  <data name="no_favorited_song_yet" xml:space="preserve">
+    <value>Não tem qualquer música favoritada ainda.</value>
   </data>
   <data name="no_posts" xml:space="preserve">
     <value>Sem posts</value>
