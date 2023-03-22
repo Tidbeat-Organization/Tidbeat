@@ -28,12 +28,12 @@ namespace Tidbeat.Controllers
         {
             var songIds = user.DeserializeFavoriteSongIds();
             // Print all song Ids
-            Console.WriteLine("\nList of favorite songs:");
+            Console.WriteLine("\nList of favorite song IDs (async):");
             foreach (var songString in songIds)
                 Console.WriteLine($"| {songString}");
             var songs = await _context.Songs.Where(s => songIds.Contains(s.SongId)).ToListAsync();
             // Print all songs
-            Console.WriteLine("Favorite songs:");
+            Console.WriteLine("Favorite songs (async):");
             foreach (var song in songs)
                 Console.WriteLine($"| {song.Name} by {song.Band}");
             return songs;
@@ -69,15 +69,15 @@ namespace Tidbeat.Controllers
                 }
             }
             
-            ViewBag.Posts = _context.Posts.Include(p => p.User).Where(p => p.User.Id == profile.Id).ToList();
+            ViewBag.Posts = await _context.Posts.Include(p => p.User).Where(p => p.User.Id == profile.Id).ToListAsync();
             ViewBag.FavoriteSongs = await GetFavoriteSongsAsync(profile);
             var testFS = await GetFavoriteSongsAsync(profile);
-            Console.WriteLine("\nList of favorite songs:");
+            Console.WriteLine("\nList of favorite song IDs (Details):");
             foreach (var songString in profile.DeserializeFavoriteSongIds())
             {
                 Console.WriteLine($"| {songString}");
             }
-            Console.WriteLine("Favorite songs:");
+            Console.WriteLine("Favorite songs (Details):");
             Console.WriteLine($"  object: {testFS}");
             foreach (var song in testFS)
             {
