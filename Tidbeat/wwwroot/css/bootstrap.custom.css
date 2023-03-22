@@ -10506,6 +10506,21 @@ textarea.form-control-lg {
   margin-top: 12vh;
 }
 
+.profile-remove-song {
+  width: 18pt !important;
+  height: 19pt !important;
+  border-width: 1pt !important;
+  border-color: #e3e3e3 !important;
+}
+
+.profile-remove-song:hover {
+  border-color: #6610F2 !important;
+}
+
+.test-red {
+  color: red !important;
+}
+
 .no-padding {
   padding: 0 !important;
 }
