@@ -25,7 +25,7 @@ namespace Tidbeat.Controllers
             _userManager = userManager;
         }
 
-        private async Task AddAsFavoriteAsync(ApplicationUser user, string songId)
+        public async Task AddAsFavoriteAsync(ApplicationUser user, string songId)
         {
             var songIds = user.DeserializeFavoriteSongIds();
             if (songIds.Contains(songId))
@@ -37,7 +37,7 @@ namespace Tidbeat.Controllers
             await _userManager.UpdateAsync(user);
         }
 
-        private async Task<bool> RemoveAsFavoriteAsync(ApplicationUser user, string songId)
+        public async Task<bool> RemoveAsFavoriteAsync(ApplicationUser user, string songId)
         {
             var songIds = user.DeserializeFavoriteSongIds();
             var success = songIds.Remove(songId);

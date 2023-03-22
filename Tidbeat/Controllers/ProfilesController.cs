@@ -24,14 +24,22 @@ namespace Tidbeat.Controllers
             _userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
         }
 
-        private async Task<List<Song>> GetFavoriteSongsAsync(ApplicationUser user)
+        public async Task<List<Song>> GetFavoriteSongsAsync(ApplicationUser user)
         {
             var songIds = user.DeserializeFavoriteSongIds();
+            // Print all song Ids
+            Console.WriteLine("\nList of favorite songs:");
+            foreach (var songString in songIds)
+                Console.WriteLine($"| {songString}");
             var songs = await _context.Songs.Where(s => songIds.Contains(s.SongId)).ToListAsync();
+            // Print all songs
+            Console.WriteLine("Favorite songs:");
+            foreach (var song in songs)
+                Console.WriteLine($"| {song.Name} by {song.Band}");
             return songs;
         }
 
-        private async Task<bool> RemoveSingleSongAsync(ApplicationUser user, string songId)
+        public async Task<bool> RemoveSingleSongAsync(ApplicationUser user, string songId)
         {
             var songIds = user.DeserializeFavoriteSongIds();
             bool success = songIds.Remove(songId);
@@ -60,8 +68,21 @@ namespace Tidbeat.Controllers
                     TempData["user"] = true;
                 }
             }
+            
             ViewBag.Posts = _context.Posts.Include(p => p.User).Where(p => p.User.Id == profile.Id).ToList();
             ViewBag.FavoriteSongs = await GetFavoriteSongsAsync(profile);
+            var testFS = await GetFavoriteSongsAsync(profile);
+            Console.WriteLine("\nList of favorite songs:");
+            foreach (var songString in profile.DeserializeFavoriteSongIds())
+            {
+                Console.WriteLine($"| {songString}");
+            }
+            Console.WriteLine("Favorite songs:");
+            Console.WriteLine($"  object: {testFS}");
+            foreach (var song in testFS)
+            {
+                Console.WriteLine($"-- {song.Name} by {song.Band}");
+            }
             return View(profile);
         }
 
