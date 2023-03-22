@@ -18,12 +18,12 @@ namespace TidbeatTests2._0.Services
     public class ProfileTest
     {
         private ApplicationDbContext _context;
-        private UserManager<ApplicationUser> _userManager;
+        private readonly Mock<UserManager<ApplicationUser>> _userManagerMock;
         public ProfileTest()
         {
             var fixture = new ApplicationDbContextFixture();
             _context = fixture.ApplicationDbContext;
-            _userManager = fixture.UserManager;
+            _userManagerMock = new Mock<UserManager<ApplicationUser>>(Mock.Of<IUserStore<ApplicationUser>>(), null, null, null, null, null, null, null, null);
             var normalUser = new ApplicationUser
             {
                 FullName = "Utilizador Normal",
@@ -47,7 +47,7 @@ namespace TidbeatTests2._0.Services
         public async Task DetailsProfilesControllerTestAsync()
         {
             // Arrange
-            var controller = new ProfilesController(_context, _userManager);
+            var controller = new ProfilesController(_context, _userManagerMock.Object);
             var httpContext = new DefaultHttpContext();
             var tempData = new TempDataDictionary(httpContext, Mock.Of<ITempDataProvider>());
             controller.TempData = tempData;
@@ -60,4 +60,5 @@ namespace TidbeatTests2._0.Services
 
         }
     }
+
 }
