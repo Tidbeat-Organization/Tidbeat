@@ -1,21 +1,23 @@
-﻿@inject UserManager<ApplicationUser> userManager
+﻿@using Microsoft.AspNetCore.Mvc.Localization;
+@inject IViewLocalizer Localizer;
+@inject UserManager<ApplicationUser> userManager
 @{
 
 }
 <ul class="nav nav-pills flex-column">
-    <li class="nav-item"><a class="text-decoration-none text-primary" asp-controller="Profiles" asp-action="Details" asp-route-id="@((userManager.GetUserAsync(User)).Result.Id)">Voltar</a></li>
+    <li class="nav-item"><a class="text-decoration-none text-primary" asp-controller="Profiles" asp-action="Details" asp-route-id="@((userManager.GetUserAsync(User)).Result.Id)">@Localizer["back"]</a></li>
     <hr />
-    <li class="nav-item"><a class="text-decoration-none text-black @ManageNavPages.EditPhotoNavClass(ViewContext)" id="editphoto" asp-page="./EditPhoto">Alterar foto</a></li>
+    <li class="nav-item"><a class="text-decoration-none text-black @ManageNavPages.EditPhotoNavClass(ViewContext)" id="editphoto" asp-page="./EditPhoto">@Localizer["change_photo"]</a></li>
     <hr />
-    <li class="nav-item"><a class="text-decoration-none text-black @ManageNavPages.IndexNavClass(ViewContext)" id="profile" asp-page="./Index">Profile</a></li>
+    <li class="nav-item"><a class="text-decoration-none text-black @ManageNavPages.IndexNavClass(ViewContext)" id="profile" asp-page="./Index">@Localizer["edit_profile"]</a></li>
     <hr />
-    <li class="nav-item"><a class="text-decoration-none text-black @ManageNavPages.EmailNavClass(ViewContext)" id="email" asp-page="./Email">Alterar Email</a></li>
+    <li class="nav-item"><a class="text-decoration-none text-black @ManageNavPages.EmailNavClass(ViewContext)" id="email" asp-page="./Email">@Localizer["change_email"]</a></li>
     <hr />
     @if ((await userManager.GetUserAsync(User)).PasswordHash != null)
     {
-        <li class="nav-item"><a class="text-decoration-none text-black @ManageNavPages.ChangePasswordNavClass(ViewContext)" id="change-password" asp-page="./ChangePassword">Alterar Password</a></li>
+        <li class="nav-item"><a class="text-decoration-none text-black @ManageNavPages.ChangePasswordNavClass(ViewContext)" id="change-password" asp-page="./ChangePassword">@Localizer["change_password"]</a></li>
         <hr />
     }
-    <li class="nav-item"><a class="text-decoration-none text-black @ManageNavPages.PersonalDataNavClass(ViewContext)" id="personal-data" asp-page="./PersonalData">Apagar Perfil</a></li>
+    <li class="nav-item"><a class="text-decoration-none text-black @ManageNavPages.PersonalDataNavClass(ViewContext)" id="personal-data" asp-page="./PersonalData">@Localizer["delete_profile"]</a></li>
     <hr />
 </ul>

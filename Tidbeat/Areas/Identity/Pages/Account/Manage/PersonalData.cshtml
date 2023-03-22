@@ -1,7 +1,9 @@
 ﻿@page
+@using Microsoft.AspNetCore.Mvc.Localization;
+@inject IViewLocalizer Localizer;
 @model PersonalDataModel
 @{
-    ViewData["Title"] = "Apagar Conta";
+    ViewData["Title"] = Localizer["delete_account"];
     ViewData["ActivePage"] = ManageNavPages.PersonalData;
 }
 
@@ -14,12 +16,12 @@
     <div class="row mt-3">
 
         <div class="col-md-6 w-100">
-            <p>A sua conta contém dados pessoais que forneceu. Caso deseje, poderá apagar a sua conta.</p>
+            <p>@Localizer["your_account_has_personal_data"]</p>
             <p>
-                <strong>Ao apagar a sua conta, irá excluir também permanentemente os seus dados. A sua conta não poderá ser recuperada.</strong>
+                <strong>@Localizer["when_deleting_account_cannot_be_recovered"]</strong>
             </p>
             <p style="margin-top: 35px;">
-                <a id="delete" asp-page="DeletePersonalData" class="btn btn-danger text-white bg-danger">Apagar conta</a>
+                <a id="delete" asp-page="DeletePersonalData" class="btn btn-danger text-white bg-danger">@Localizer["delete_account"]</a>
             </p>
         </div>
     </div>

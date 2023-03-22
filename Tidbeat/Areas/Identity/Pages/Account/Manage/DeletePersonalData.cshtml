@@ -1,7 +1,9 @@
 ﻿@page
+@using Microsoft.AspNetCore.Mvc.Localization;
+@inject IViewLocalizer Localizer;
 @model DeletePersonalDataModel
 @{
-    ViewData["Title"] = "Apagar Conta";
+    ViewData["Title"] = Localizer["delete_account"];
     ViewData["ActivePage"] = ManageNavPages.PersonalData;
 }
 
@@ -63,7 +65,7 @@
     <div class="col-md-6 w-100">
         <div class="alert alert-warning" role="alert">
             <p>
-                <strong>Atenção, ao apagar a sua conta, os dados serão permanentemente removidos e não poderá recuperar a sua conta.</strong>
+                <strong>@Localizer["attention_after_deleting_will_be_removed"]</strong>
             </p>
         </div>
     </div>
@@ -75,13 +77,13 @@
 
 
                 <div class="form-group">
-                    <label asp-for="Input.Password"> Palavra-passe</label>
+                    <label asp-for="Input.Password">@Localizer["password"]</label>
                     <input asp-for="Input.Password" type="password" class="form-control" />
                     <span asp-validation-for="Input.Password" class="text-danger"></span>
                 </div>
 
             }
-            <button id="delete-account-btn" class="btn btn-danger text-white bg-danger" data-toggle="modal" data-target="#deleteModal" style="margin-top: 35px;">Apagar conta</button>
+            <button id="delete-account-btn" class="btn btn-danger text-white bg-danger" data-toggle="modal" data-target="#deleteModal" style="margin-top: 35px;">@Localizer["delete_account"]</button>
         </form>
     </div>
 </div>
@@ -91,17 +93,17 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="confirm-delete-label">Confirmar exclusão</h5>
+                <h5 class="modal-title" id="confirm-delete-label">@Localizer["confirm_deletion"]</h5>
                 <button type="button" class="close custom-close rounded btn btn-primary" data-dismiss="modal" aria-label="Close" id="close-modal">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                Tem a certeza que deseja apagar a sua conta?
+                @Localizer["are_you_sure_you_want_to_delete"]
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="cancel-delete">Cancelar</button>
-                <button type="button" class="btn btn-danger" id="delete-account-btn-modal">Apagar conta</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="cancel-delete">@Localizer["cancel"]</button>
+                <button type="button" class="btn btn-danger" id="delete-account-btn-modal">@Localizer["delete_account"]</button>
             </div>
         </div>
     </div>
