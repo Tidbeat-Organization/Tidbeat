@@ -25,7 +25,7 @@
         <div class="d-flex justify-content-between">
             <div>
                 <div class="d-flex ms-2">
-                    <div class="text-start text fs-6 border-end pe-2">@fromUpper: @Model.User.FullName</div>
+                    <div class="text-start text fs-6 border-end pe-2">@fromUpper: <a class="text-decoration-none" asp-Controller="Profiles" asp-Action="Details" asp-route-id="@Model.User.Id">@Model.User.FullName</a></div>
                     <div class="text-start text fs-6 ms-2">@Localizer["created_in"]: @Model.CreationDate.Date.ToShortDateString()</div>
                     @if (Model.IsEdited) {
                         <span class="fs-6 ">&nbsp;(@Localizer["edited_in"] - @Model.EditDate.Date.ToShortDateString())</span>
@@ -98,7 +98,7 @@
                     <div class="form-control d-flex flex-row">
                         <div class="align-content-end flex-column w-25 border-end">
                             <div class="fs-7">@Localizer["created_in"]: @item.CreationDate.Date.ToShortDateString()</div>
-                            <div class="font-weigth-bold">@item.User.FullName</div>
+                            <div class="font-weigth-bold"><a class="text-decoration-none" asp-Controller="Profiles" asp-Action="Details" asp-route-id="@item.User.Id">@item.User.FullName</a></div>
                             <div class="text-primary">Role</div>
                         <div>@Html.Partial("_RatingPartial", Tuple.Create((int) item.CommentId , RatingType.Comment))</div>
                         </div>
