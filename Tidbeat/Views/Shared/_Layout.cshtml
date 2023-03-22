@@ -1,4 +1,5 @@
 ﻿@using Microsoft.AspNetCore.Mvc.Localization;
+@using System.Globalization;
 @inject IViewLocalizer Localizer;
 <!DOCTYPE html>
 <html lang="en">
@@ -135,6 +136,17 @@
                     -->
                     <partial name="_LoginPartial" />
                 </div>
+                <form asp-controller="Language" asp-action="SetLanguage" method="post">
+                    <select class="border-0 bg-white" name="language" onchange="this.form.submit()">
+                        <!option value="en-US" class="fs-3" @((CultureInfo.CurrentCulture.Name == "en-US") ? "selected" : "")>🇺🇸</!option>
+                        <!option value="pt-PT" class="fs-3" @((CultureInfo.CurrentCulture.Name == "pt-PT") ? "selected" : "")>🇵🇹</!option>
+                    </select>
+                </form>
+                <select class="form-control w-100 border-primary rounded" id="formOptional" name="formOpp">
+                    <!option selected value="none">@Localizer["none"]</!option>
+                    <!option value="complete" @(ViewBag.chooseSong != null ? "selected" : "")>@Localizer["song"]</!option>
+                    <!option value="incomplete" @(ViewBag.chooseBand != null ? "selected" : "")>@Localizer["band"]</!option>
+                </select>
             </div>
         </div>
     </nav>
