@@ -31,7 +31,7 @@
                         {
                             @foreach (var item in ViewBag.songs)
                             {
-                                <option data-value="@item.Uri" song-link="@item.Href" band-value="@item.Artists[0].Name">@item.Name</option>
+                                <option data-value="@item.Id" song-link="@item.Href" band-value="@item.Artists[0].Name">@item.Name</option>
                             }
 
                         }
@@ -67,7 +67,7 @@
                     <datalist id="BandOptions" role="listbox" class="zindex-dropdown" style="position: absolute; z-index: 999">
                         @foreach (var item in ViewBag.bands)
                         {
-                            <option data-value="@item.Uri">@item.Name</option>
+                            <option data-value="@item.Id">@item.Name</option>
                         }
                     </datalist>
                     <input type="hidden" name="BandId" id="answerInputband" value="@(ViewBag.chooseBand?.Id ?? "")">
