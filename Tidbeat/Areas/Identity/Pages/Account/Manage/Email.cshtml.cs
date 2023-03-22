@@ -119,54 +119,53 @@ namespace Tidbeat.Areas.Identity.Pages.Account.Manage
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
 
-            if (!ModelState.IsValid)
-            {
+            if (!ModelState.IsValid) {
                 await LoadAsync(user);
-                return Page();
             }
-
-            var email = await _userManager.GetEmailAsync(user);
-            if (Input.NewEmail != email)
-            {
-                if (user.PasswordHash == null) {
-                    if(Input.NewPassword == null) {
-                        ModelState.AddModelError(string.Empty, _localizer["you_must_enter_password_to_change_email"]);
-                        await LoadAsync(user);
-                        return Page();
-                    } else
-                    if (!Regex.IsMatch(Input.NewPassword, RegisterModel.Pattern)) {
-                        ModelState.AddModelError(string.Empty, _localizer["password_must_contain_at_least"]);
+            else {
+                var email = await _userManager.GetEmailAsync(user);
+                if (Input.NewEmail != email) {
+                    if (user.PasswordHash == null) {
+                        if (Input.NewPassword == null) {
+                            ModelState.AddModelError("NewPassword", _localizer["you_must_enter_password_to_change_email"]);
+                            await LoadAsync(user);
+                            return Page();
+                        }
+                        else
+                        if (!Regex.IsMatch(Input.NewPassword, RegisterModel.Pattern)) {
+                            ModelState.AddModelError("NewPassword", _localizer["password_must_contain_at_least"]);
+                            await LoadAsync(user);
+                            return Page();
+                        }
+                        else if (Input.NewPassword != Input.ConfirmNewPassword) {
+                            ModelState.AddModelError("ConfirmNewPassword", _localizer["password_mismatch"]);
+                            await LoadAsync(user);
+                            return Page();
+                        }
+                    }
+                    var foundUser = await _userManager.FindByEmailAsync(Input.NewEmail);
+                    if (foundUser != null) {
+                        ModelState.AddModelError("NewEmail", _localizer["email_already_taken"]);
                         await LoadAsync(user);
                         return Page();
                     }
-                    else if (Input.NewPassword != Input.ConfirmNewPassword) {
-                        ModelState.AddModelError("ConfirmPasswordRed", _localizer["password_mismatch"]);
-                        await LoadAsync(user);
-                        return Page();
-                    }
-                }
-                var foundUser = await _userManager.FindByEmailAsync(Input.NewEmail);
-                if (foundUser != null) {
-                    ModelState.AddModelError(string.Empty, _localizer["email_already_taken"]);
-                    await LoadAsync(user);
-                    return Page();
-                }
-                await _userManager.AddPasswordAsync(user, Input.NewPassword);
-                var userId = await _userManager.GetUserIdAsync(user);
-                var code = await _userManager.GenerateChangeEmailTokenAsync(user, Input.NewEmail);
-                code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-                var callbackUrl = Url.Page(
-                    "/Account/ConfirmEmailChange",
-                    pageHandler: null,
-                    values: new { area = "Identity", userId = userId, email = Input.NewEmail, code = code },
-                    protocol: Request.Scheme);
-                await _emailSender.SendEmailAsync(
-                    Input.NewEmail,
-                    _localizer["confirm_mail"],
-                    $"{_localizer["please_confirm_link"]} <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>{_localizer["clicking_here"]}</a>.");
+                    await _userManager.AddPasswordAsync(user, Input.NewPassword);
+                    var userId = await _userManager.GetUserIdAsync(user);
+                    var code = await _userManager.GenerateChangeEmailTokenAsync(user, Input.NewEmail);
+                    code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+                    var callbackUrl = Url.Page(
+                        "/Account/ConfirmEmailChange",
+                        pageHandler: null,
+                        values: new { area = "Identity", userId = userId, email = Input.NewEmail, code = code },
+                        protocol: Request.Scheme);
+                    await _emailSender.SendEmailAsync(
+                        Input.NewEmail,
+                        _localizer["confirm_mail"],
+                        $"{_localizer["please_confirm_link"]} <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>{_localizer["clicking_here"]}</a>.");
 
-                StatusMessage = _localizer["confirmation_link_sent"];
-                return RedirectToPage();
+                    StatusMessage = _localizer["confirmation_link_sent"];
+                    return RedirectToPage();
+                }
             }
 
             StatusMessage = _localizer["email_unchanged"];
