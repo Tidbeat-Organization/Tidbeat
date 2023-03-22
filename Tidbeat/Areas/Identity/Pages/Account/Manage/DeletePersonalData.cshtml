@@ -1,0 +1,144 @@
+﻿@page
+@using Microsoft.AspNetCore.Mvc.Localization;
+@inject IViewLocalizer Localizer;
+@model DeletePersonalDataModel
+@{
+    ViewData["Title"] = Localizer["delete_account"];
+    ViewData["ActivePage"] = ManageNavPages.PersonalData;
+}
+
+<style>
+    .btn-danger {
+        background-color: #e62517;
+        color: white;
+        border-color: #e62517;
+    }
+
+        .btn-danger:hover {
+            background-color: #e62517;
+            color_: white;
+            border-color: #e62517;
+        }
+
+        .btn-danger:active,
+        .btn-danger:focus {
+            background-color: #e62517;
+            color: white;
+            border-color: #e62517;
+        }
+
+    .btn-secondary {
+        background-color: white;
+        color: #6610F2;
+        border-color: #6610F2;
+    }
+
+        .btn-secondary:hover {
+            background-color: white;
+            color: #6610F2;
+            border-color: #6610F2;
+        }
+
+        .btn-secondary:active,
+        .btn-secondary:focus {
+            background-color: white;
+            color: #6610F2;
+            border-color: #6610F2;
+        }
+
+    .custom-close {
+        background-color: #6610F2;
+        color: white;
+    }
+
+    .modal-footer button {
+        margin-right: 15px;
+    }
+</style>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 w-100">
+            <h3 style="color: #6610F2;">@ViewData["Title"]</h3>
+        </div>
+    </div>
+    <div class="col-md-6 w-100">
+        <div class="alert alert-warning" role="alert">
+            <p>
+                <strong>@Localizer["attention_after_deleting_will_be_removed"]</strong>
+            </p>
+        </div>
+    </div>
+    <div class="col-md-6 w-100">
+        <form id="delete-user" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            @if (Model.RequirePassword)
+            {
+
+
+                <div class="form-group">
+                    <label asp-for="Input.Password">@Localizer["password"]</label>
+                    <input asp-for="Input.Password" type="password" class="form-control" />
+                    <span asp-validation-for="Input.Password" class="text-danger"></span>
+                </div>
+
+            }
+            <button id="delete-account-btn" class="btn btn-danger text-white bg-danger" data-toggle="modal" data-target="#deleteModal" style="margin-top: 35px;">@Localizer["delete_account"]</button>
+        </form>
+    </div>
+</div>
+
+<!-- Add the following code to your page -->
+<div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="confirm-delete-label" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirm-delete-label">@Localizer["confirm_deletion"]</h5>
+                <button type="button" class="close custom-close rounded btn btn-primary" data-dismiss="modal" aria-label="Close" id="close-modal">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                @Localizer["are_you_sure_you_want_to_delete"]
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="cancel-delete">@Localizer["cancel"]</button>
+                <button type="button" class="btn btn-danger" id="delete-account-btn-modal">@Localizer["delete_account"]</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('#delete-account-btn-modal').on('click', function (event) {
+            event.preventDefault(); // Prevent the default form submission
+
+            // Get the value of the password input
+            var password = $('#Input_Password').val();
+
+            // Check if the password is empty
+            if (password === '') {
+                // Display the error message
+                $('.text-danger').text('Por favor, introduza a sua palavra-passe.');
+            } else {
+                // Submit the form
+                $('#delete-user').submit();
+            }
+        });
+
+        $('#delete-account-btn').on('click', function (event) {
+            event.preventDefault(); // Prevent the default form submission
+            $('#confirm-delete').modal('show'); // Show the modal dialog
+        });
+
+        $('#close-modal').on('click', function (event) {
+            event.preventDefault(); // Prevent the default behavior
+            $('#confirm-delete').modal('hide'); // Hide the modal dialog
+        });
+        $('#cancel-delete').on('click', function (event) {
+            event.preventDefault(); // Prevent the default behavior
+            $('#confirm-delete').modal('hide'); // Hide the modal dialog
+        });
+    });
+</script>

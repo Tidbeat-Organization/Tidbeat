@@ -15,8 +15,7 @@ using Tidbeat.Services;
 
 namespace Tidbeat.Controllers
 {
-    public class PostsController : Controller
-    {
+    public class PostsController : Controller {
         private readonly ApplicationDbContext _context;
         private readonly IServiceProvider _serviceProvider;
         private readonly UserManager<ApplicationUser> _userManager;

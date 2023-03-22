@@ -1,4 +1,6 @@
-﻿@model SpotifyAPI.Web.FullTrack
+﻿@using Microsoft.AspNetCore.Mvc.Localization;
+@inject IViewLocalizer Localizer;
+@model SpotifyAPI.Web.FullTrack
 @using Tidbeat.Services
 
 @{
@@ -45,7 +47,7 @@
             </div>
             
         </div>
-        <h4 class="ms-0 fw-bold">Música: </h4>
+        <h4 class="ms-0 fw-bold">@Localizer["song"]: </h4>
         <div class="ms-0 text-primary fw-bold">@Model.Name</div>
         <hr />
         <div class="d-flex flex-column flex-xl-row justify-content-lg-start align-items-center">
@@ -64,43 +66,43 @@
             </div>
             <div class="ms-2 text-start">
                 <div class="d-flex flex-row">
-                    <div class="text-dark fw-bold">De:</div>
+                    <div class="text-dark fw-bold">@Localizer["from"]:</div>
                     <a class="ms-1 fw-semibold" href="@Url.Action("Details", "Bands", new { id = Model.Artists[0].Id })">@Model.Artists[0].Name</a>
                 </div>
                 <div class="d-flex flex-row">
-                    <div class="text-dark fw-bold">Lançado em:</div>
+                    <div class="text-dark fw-bold">@Localizer["released_in"]:</div>
                     <div class="ms-1 text-primary">@releaseDate</div>
                 </div>
                 <div class="d-flex flex-row">
-                    <div class="text-dark fw-bold">Duração:</div>
-                    <div class="ms-1 text-primary">@songLength minutos</div>
+                    <div class="text-dark fw-bold">@Localizer["duration"]:</div>
+                    <div class="ms-1 text-primary">@songLength @Localizer["minutes"]</div>
                 </div>
                 <div class="d-flex flex-row">
-                    <div class="text-dark fw-bold">Álbum: </div>
+                    <div class="text-dark fw-bold">@Localizer["album"]: </div>
                     <div class="ms-1 text-primary">@Model.Album.Name</div>
                 </div>
             </div>
         </div>
         <hr/>
         <div class="d-flex align-items-lg-start flex-column mt-1">
-            <div class="text-dark fw-bold">Estatística:</div>
-            <div id="favoriteAmount">Favoritos: @favoritesAmount</div>
-            <div>Posts sobre esta música: @allPosts.Count</div>
+            <div class="text-dark fw-bold">@Localizer["stats"]:</div>
+            <div id="favoriteAmount">@Localizer["favorites"]: @favoritesAmount</div>
+            <div>@Localizer["posts_about_song"]: @allPosts.Count</div>
         </div>
     </div>
 
     <!--All posts goes here-->
     <div class="col-lg-6 col-8 mt-5 pt-5 scrollable-posts">
         <div class="d-flex justify-content-center mb-2">
-            <div class="fs-3 me-4">Posts</div>
+            <div class="fs-3 me-4">@Localizer["posts"]</div>
             @if (User.Identity.IsAuthenticated) {
             <a class="btn btn-primary" asp-controller="Posts" asp-action="Create" asp-route-Idsong="@Model.Id">
-                Criar Post
+                    @Localizer["create_post"]
             </a>
             }
         </div>
         @if (allPosts.Count == 0) {
-            <div>Não há posts... seja o primeiro a criar um post sobre esta música!</div>
+            <div>@Localizer["no_posts"]</div>
             <img src="~/images/NoPostsImage.png" height="120" class="mt-5"/>
         }
         @foreach (Post post in allPosts) {
@@ -108,7 +110,7 @@
                 <div class="d-flex align-items-center border border-2 border-primary p-1 rounded mb-2 hover-background-grey">
                     <div class="border-end border-2 border-primary pe-2">
                         <div>@post.User.FullName</div>
-                        <div class="fs-7">Criado em: @post.CreationDate.Date.ToShortDateString()</div>
+                        <div class="fs-7">@Localizer["created_in"]: @post.CreationDate.Date.ToShortDateString()</div>
                     </div>
                     <div class="ms-2">@post.Title</div>
                 </div>
@@ -131,13 +133,13 @@
                 favoriteHeart.classList.add("bi-heart");
                 isFavorited = false;
                 @(favoritesAmount = favoritesAmount - 1)
-                    favoriteAmountElement.innerHTML = "Número de favoritos: " + --favoritesAmount;
+                    favoriteAmountElement.innerHTML = "@Localizer["favorites"]: " + --favoritesAmount;
             } else {
                 favoriteHeart.classList.remove("bi-heart");
                 favoriteHeart.classList.add("bi-heart-fill");
                 isFavorited = true;
                 @(favoritesAmount = favoritesAmount + 1)
-                favoriteAmountElement.innerHTML = "Número de favoritos: " + ++favoritesAmount;
+                    favoriteAmountElement.innerHTML = "@Localizer["favorites"]: " + ++favoritesAmount;
             }
             setFavorite(isFavorited);
         }
@@ -161,7 +163,7 @@
             myAudio.pause();
             isPlaying = false;
             startAudio.src = "../../images/PlayButton.png";
-            audioStatus.innerHTML = "Pausado: " + (30 - myAudio.currentTime.toFixed(0)) + "s";
+            audioStatus.innerHTML = "@Localizer["paused"]: " + (30 - myAudio.currentTime.toFixed(0)) + "s";
             myAudio.removeEventListener("timeupdate", updateTime);
         } else {
             myAudio.play();
@@ -172,7 +174,7 @@
     }
 
     function updateTime() {
-        audioStatus.innerHTML = "A correr: " + (30 - myAudio.currentTime.toFixed(0)) + "s";
+        audioStatus.innerHTML = "@Localizer["running"]: " + (30 - myAudio.currentTime.toFixed(0)) + "s";
     }
 
     startAudio.addEventListener("mouseover", function () {

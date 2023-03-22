@@ -13,6 +13,35 @@ namespace Tidbeat.Models {
         public string Gender { get; set; }
 
         [PersonalData]
-        public string? FavoriteSongId { get; set; }
+        public string? FavoriteSongIds { get; set; }
+
+        [PersonalData]
+        public string? AboutMe { get; set; }
+
+        [PersonalData]
+        public string? ImagePath { get; set; }
+
+        [PersonalData]
+        public string? FavoriteGenre { get; set; }
+
+        [PersonalData]
+        public string? Country { get; set; }
+        public List<string> DeserializeFavoriteSongIds()
+        {
+            if (string.IsNullOrEmpty(FavoriteSongIds))
+            {
+                return new List<string>();
+            }
+
+            return FavoriteSongIds.Split(',').Where(s => s.Length > 1).ToList();
+        }
+
+        public void SerializeFavoriteSongIds(List<string> songIds)
+        {
+            FavoriteSongIds = string.Join(',', songIds.Where(s => s.Length > 1));
+
+            // Workaround to not allow invalid IDs (considering them IDs with one character or less)
+
+        }
     }
 }

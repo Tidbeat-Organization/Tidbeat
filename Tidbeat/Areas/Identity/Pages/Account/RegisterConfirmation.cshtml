@@ -1,5 +1,7 @@
 ﻿@page
 @model RegisterConfirmationModel
+@using Microsoft.AspNetCore.Mvc.Localization;
+@inject IViewLocalizer Localizer;
 @{
     ViewData["Title"] = "Confirmação do registo";
 }
@@ -16,10 +18,10 @@
     else
     {
 <p>
-        Por favor, verifique o seu mail para confirmar a conta.
+        @Localizer["please_check_email"]
 </p>
 <p>
-    Confirme o mail para poder aceder à sua conta e interagir com a comunidade.
+        @Localizer["confirm_email_to_interact"]
 </p>
     }
 }

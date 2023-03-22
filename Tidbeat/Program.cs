@@ -2,9 +2,14 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
+using System.Globalization;
 using Tidbeat;
 using Tidbeat.Data;
+using Tidbeat.Middlewares;
 using Tidbeat.Models;
 using Tidbeat.Services;
 
@@ -37,7 +42,7 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 // N�o necessita de conta confirmada: ALTERAR DEPOIS PARA true
 builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ApplicationDbContext>();
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews().AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix);
 
 builder.Services.AddTransient<IEmailSender, EmailSender>();
 builder.Services.Configure<AuthMessageSenderOptions>(options => {
@@ -55,7 +60,20 @@ builder.Services.Configure<IdentityOptions>(opts => {
     opts.Lockout.MaxFailedAccessAttempts = 5;
 });
 
+services.AddLocalization(options => options.ResourcesPath = "Resources");
+services.AddRazorPages().AddDataAnnotationsLocalization();
+builder.Services.Configure<RequestLocalizationOptions>(options => {
+    var supportedCultures = new[] {
+        new CultureInfo("en-US"),
+        new CultureInfo("pt-PT")
+    };
+    options.DefaultRequestCulture = new RequestCulture("en-US");
+    options.SupportedUICultures = supportedCultures;
+});
+
 var app = builder.Build();
+app.UseRequestLocalization();
+app.UseMiddleware<CultureMiddleware>();
 
 // 404 Error Handling
 /*

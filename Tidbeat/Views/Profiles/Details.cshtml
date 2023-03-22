@@ -1,0 +1,164 @@
+﻿@model ApplicationUser
+@using Microsoft.AspNetCore.Mvc.Localization;
+@inject IViewLocalizer Localizer;
+@{
+    ViewData["Title"] = "Details";
+    List<Post> allPosts = ViewBag.posts;
+    ApplicationUser user = Model;
+    var tempval = TempData["user"];
+    string songNameString = "";
+    int songNameLimit = 48;
+
+    string songDivId = "";
+    string removeFavoriteSpanId = "";
+}
+
+<!--All music info goes here-->
+<div class="container-fluid row w-100 d-flex flex-column flex-lg-row mx-0">
+    <div class="d-flex flex-column col-lg-6 col-8 vh-100-minus-navbar border border-start-0 border-top-0 border-bottom-0 pe-1 mt-4 pt-5">
+        <div class="d-flex flex-column flex-xl-row justify-content-lg-start align-items-center">
+            @if (!string.IsNullOrEmpty(user.ImagePath)) {
+                <img src="@user.ImagePath" height="200" class="border border-dark rounded" />
+            }else
+            {
+                <img src="~/images/UnknownUser.jpg" height="200" class="border border-dark rounded" />
+            }
+            <div class="ms-2 text-start w-100">
+                <div>
+                    <img src="~/images/StarImage.png" class="ml-auto" height="20" />
+                @if (tempval != null)
+                    {
+                            <a formmethod="get" asp-area="Identity" asp-page="/Account/Manage/Index" class=" mr-auto text-primary hover-background-grey rounded text-decoration-none px-2 pt-1 pb-1 bi bi-pencil-fill"></a>
+                    }
+                </div>
+                <h1 class="text-primary">@user.FullName</h1>
+                <div> <span class="text-primary">@Localizer["gender"]:</span> @Localizer[user.Gender]</div>
+                <div> <span class="text-primary">@Localizer["birth_date"]:</span> @user.BirthdayDate.Date.ToShortDateString()</div>
+                <div><span class="text-primary">@Localizer["favorite_genre"]:</span> @Localizer[user.FavoriteGenre ?? ""]</div>
+                <div><span class="text-primary">@Localizer["nation"]:</span> @user.Country</div>
+            </div>
+        </div>
+        <hr style="height: 1px" />
+        <div class="text-primary">@Localizer["favorite_songs"]</div>
+        <div class="scrollable-posts h-25">
+            @if (ViewBag.FavoriteSongs.Count != 0) {
+                @foreach (Song song in ViewBag.FavoriteSongs)
+                {
+                        
+					songDivId = "song-div--" + song.SongId;
+					removeFavoriteSpanId = "remove-favorite-span--" + song.SongId;
+                    
+                    <div
+                        id=@songDivId
+                        class="border-0 border-2 border-start border-dark mb-2 d-flex flex-row">
+                        @if (ViewBag.IsCurrentUser) {
+                            <span id=@removeFavoriteSpanId
+                      class="bi bi-x-lg text-primary ms-1 border profile-remove-song pointer-active"></span>
+                        }
+                        
+                        <span class="w-auto ms-1 fs-6">
+                            @{
+                                if (song.Name.Length < songNameLimit)
+                                {
+                                    songNameString = "" + song.Name;
+                                }
+                                else
+                                {
+                                    songNameString = song.Name.Substring(0, songNameLimit) + " (...)";
+                                }
+                            }
+                            <span class="text-primary fw-semibold">@songNameString</span>
+                            , @Localizer["from"]
+                            <span class="text-primary fw-semibold">@song.Band.Name</span>
+                        </span>
+                    </div>
+                }
+            } else {
+                <div class="border border-top-0 border-bottom-0 border-end-0">@Localizer["no_favorited_song_yet"]</div>
+            }
+            
+        </div>
+        <hr style="height: 1px" />
+        <div>
+            <h1 class="text-left text-primary">@Localizer["about_me"]:</h1>
+            <div>
+                @Html.Raw(user.AboutMe)
+            </div>
+        </div>
+    </div>
+    <!--All posts goes here-->
+    <div class="col-lg-6 col-8 mt-5 pt-5 scrollable-posts">
+        <div class="d-flex justify-content-center mb-2">
+            <div class="fs-3 me-4">@Localizer["my_posts"]</div>
+        </div>
+        @if (allPosts.Count == 0)
+        {
+            <div>@Localizer["first_post"]</div>
+            <div>
+                <a class="btn btn-primary" asp-controller="Posts" asp-action="Create">
+                    @Localizer["create_post"]
+                </a>
+            </div>
+            <img src="~/images/NoPostsImage.png" height="120" class="mt-5" />
+        }
+        @foreach (Post post in allPosts)
+        {
+            <a class="text-decoration-none text-black" href="@Url.Action("Details", "Posts", new { id = post.PostId })">
+                <div class="d-flex align-items-center border border-2 border-primary p-1 rounded mb-2 hover-background-grey">
+                    <div class="border-end border-2 border-primary pe-2">
+                        <div>@post.User.FullName</div>
+                        <div class="fs-7">@Localizer["created_in"]: @post.CreationDate.Date.ToShortDateString()</div>
+                    </div>
+                    <div class="ms-2">@post.Title</div>
+                </div>
+            </a>
+        }
+    </div>
+</div>
+
+<script>
+    /*
+    $(document).ready(function () {
+		$(".profile-remove-song").click(function () {
+			var songId = $(this).attr("id").split("--")[1];
+			var songDivId = "#song-div--" + songId;
+			var removeFavoriteSpanId = "#remove-favorite-span--" + songId;
+			$.ajax({
+				url: "/Profiles/RemoveFavoriteSong",
+				type: "POST",
+				data: { songId: songId },
+				success: function (data) {
+					if (data == "success") {
+						$(songDivId).remove();
+						$(removeFavoriteSpanId).remove();
+					}
+				},
+			});
+		});
+	});
+    */
+   
+    // Do this without JQuery
+    let removeFavoriteSpans = document.getElementsByClassName("profile-remove-song");
+	for (let i = 0; i < removeFavoriteSpans.length; i++) {
+		removeFavoriteSpans[i].addEventListener("click", function () {
+			console.log(`Running for element number ${i}`);
+			let songId = this.id.split("--")[1];
+			let songDivId = "#song-div--" + songId;
+			let removeFavoriteSpanId = "#remove-favorite-span--" + songId;
+            console.log(`| Song Id: ${songId}`);
+            var xhr = new XMLHttpRequest();
+            xhr.open('PUT', `/Profiles/RemoveFavoriteSong?songId=${songId}`);
+            xhr.send();
+            xhr.onload = function() {
+				if (xhr.status != 200) {
+					console.log(`Error ${xhr.status}: ${xhr.statusText}`);
+				} else {
+					console.log(`Removed song with id ${songId}`);
+					document.querySelector(songDivId).remove();
+				}
+			};
+		});
+	}
+    
+</script>

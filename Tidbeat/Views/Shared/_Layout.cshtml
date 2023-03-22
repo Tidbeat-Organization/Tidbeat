@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Mvc.Localization;
+@using System.Globalization
+@inject IViewLocalizer Localizer;
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -12,6 +15,7 @@
     <!-- Google fonts-->
     <link rel="preconnect" href="https://fonts.gstatic.com" />
     <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,600;1,600&amp;display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.css" />
     <link href="https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,300;0,500;0,600;0,700;1,300;1,500;1,600;1,700&amp;display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,400;1,400&amp;display=swap" rel="stylesheet" />
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Poppins" />
@@ -21,6 +25,8 @@
     <link rel="stylesheet" href="~/TestTemplate.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/bootstrap.custom.min.css" asp-append-version="true" />
 
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.js"></script>
     <script src="/lib/tinymce/tinymce.min.js" referrerpolicy="origin"></script>
     <script>
         tinymce.init({
@@ -67,17 +73,17 @@
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav me-2 my-3 my-lg-0">
                     <li class="nav-item me-1 rounded text-center bg-white">
-                        <a class="nav-link text-black" href="@Url.Action("Index", "Posts")">Posts Recomendados</a>
+                        <a class="nav-link text-black" href="@Url.Action("Index", "Posts")">@Localizer["recommended_posts"]</a>
                     </li>
                 </ul>
                 <div class="dropdown me-3" style="background-color: white; color: black;">
                     <button class="btn dropdown-toggle py-2 border-0" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="background-color: white; color: black;">
-                        Outros Conteúdos
+                        @Localizer["other_contents"]
                     </button>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">Utilizadores</a></li>
-                        <li><a class="dropdown-item" href="/Songs">Músicas</a></li>
-                        <li><a class="dropdown-item" href="/Bands">Bandas</a></li>
+                        <li><a class="dropdown-item" href="#">@Localizer["users"]</a></li>
+                        <li><a class="dropdown-item" href="/Songs">@Localizer["songs"]</a></li>
+                        <li><a class="dropdown-item" href="/Bands">@Localizer["bands"]</a></li>
                     </ul>
                 </div>
                 <div class="d-flex flex-row">
@@ -90,15 +96,15 @@
                     <div class="input-group d-flex flex-row flex-nowrap">
                         <div class="dropdown">
                             <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="margin-top: 1.5px;">
-                                <span id="searchTypeText">Músicas</span>
+                                <span id="searchTypeText">@Localizer["songs"]</span>
                             </button>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#" id="search-songs">Músicas</a></li>
-                                <li><a class="dropdown-item" href="#" id="search-bands">Bandas e Artistas</a></li>
+                                <li><a class="dropdown-item" href="#" id="search-songs">@Localizer["songs"]</a></li>
+                                <li><a class="dropdown-item" href="#" id="search-bands">@Localizer["bands"]</a></li>
                             </ul>
                         </div>
                         <div class="form-outline">
-                            <input type="search" id="searchInput" class="form-control" placeholder="Procurar" />
+                            <input type="search" id="searchInput" class="form-control" placeholder="@Localizer["search"]" />
                         </div>
                         <button type="button" id="searchButton" class="btn btn-primary">
                             <img class="no-padding" src="~/images/SearchIcon.png" height="26" width="30" />
@@ -129,6 +135,12 @@
                     </ul>
                     -->
                     <partial name="_LoginPartial" />
+                    <form asp-controller="Language" asp-action="SetLanguage" method="post" class="d-flex align-self-center">
+                        <select id="changeLanguage" class="border-0 bg-white pointer-active" name="language" onchange="this.form.submit()">
+                            <option value="en-US" class="fs-3">🇺🇸</option>
+                            <option value="pt-PT" class="fs-3">🇵🇹</option>
+                        </select>
+                    </form>
                 </div>
             </div>
         </div>
@@ -268,8 +280,13 @@
             </div>
         </div>
     </div>
+    <script>
+        const changeLanguage = document.getElementById('changeLanguage');
+        changeLanguage.value = "@CultureInfo.CurrentCulture.Name";
+    </script>
     <!-- Bootstrap core JS-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.js"></script>
     <!-- Core theme JS-->
     <script src="js/scripts.js"></script>
     <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->

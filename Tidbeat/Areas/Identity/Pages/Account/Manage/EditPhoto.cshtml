@@ -1,0 +1,188 @@
+﻿@page
+@model EditPhotoModel
+@using Microsoft.AspNetCore.Mvc.Localization;
+@inject IViewLocalizer Localizer;
+@{
+    string currentPhoto = await Model.GetUserPhotoUrlAsync();
+}
+<h1>@Localizer["edit_photo"]</h1>
+
+<div id="imageErrors" class="text-danger mb-2"></div>
+<form id="editPhotoForm" method="post" enctype="multipart/form-data">
+    <div>
+        <div id="croppie-container" class="my-croppie" style="max-width: none!important; width: auto!important;"></div>
+    </div>
+    <div class="form-group d-flex justify-content-center">
+        <img id="preview" src="@(!string.IsNullOrEmpty(currentPhoto) ? currentPhoto : "/images/UnknownUser.jpg")" alt="User photo" width="200" height="200" class="rounded" style="object-fit: cover; outline: thick solid #000000; outline-width: 3px">
+    </div>
+    <div id="uploadPhoto" class="form-group mt-2">
+        <label for="photoFile" class="btn btn-primary">
+            Adicionar Imagem
+        </label>
+        <input type="file" id="photoFile" name="photoFile">
+    </div>
+    <div class="mt-2">
+        <button id="editButton" name="editButton" class="btn btn-primary">@Localizer["change_photo"]</button>
+    </div>
+    <div class="d-flex align-items-center flex-column">
+        <div class="form-group mt-2">
+            <button id="saveButton" type="button" class="btn btn-primary">@Localizer["save_photo"]</button>
+            <button id="saveButtonSubmit" name="saveButtonSubmit" hidden type="submit" class="btn btn-primary"></button>
+        </div>
+        <div class="">
+            <button id="cancelButton" name="cancelButton" class="btn btn-danger my-2 text-danger" style="outline: thick solid #DC3545; outline-width: 3px">@Localizer["cancel"]</button>
+        </div>
+        <div class="">
+            <button type="button" id="deleteButton" data-bs-toggle="modal" data-bs-target="#deleteModal" class="btn btn-danger text-danger @(currentPhoto == null ? "d-none" : "")" style="outline: thick solid #DC3545; outline-width: 3px">@Localizer["delete_photo"]</button>
+        </div>
+    </div>
+    <div>
+        <input id="photoString" name="photoString" hidden />
+        <input id="photoName" name="photoName" hidden />
+    </div>
+    <!--Modal box here-->
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel">@Localizer["delete_photo"]</h5>
+                    <button type="button" class="close custom-close rounded btn btn-primary" data-bs-dismiss="modal" aria-label="Close">
+                        <i class="bi bi-x font-white" style="font-size: 1.1rem;" aria-hidden="true"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    @Localizer["are_you_sure"]
+                </div>
+                <div class="modal-footer">
+                    <button id="deleteButtonModal" name="deleteButtonModal" type="submit" class="btn btn-danger text-danger" style="outline: thick solid #DC3545; outline-width: 3px">@Localizer["delete"]</button>
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">@Localizer["cancel"]</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<script>
+    let uploadPhoto = document.getElementById("uploadPhoto");
+    let photoFile = document.getElementById("photoFile");
+    let editButton = document.getElementById("editButton");
+    let cancelButton = document.getElementById("cancelButton");
+    let saveButton = document.getElementById("saveButton");
+    let deleteButton = document.getElementById("deleteButton");
+    let imageErrors = document.getElementById("imageErrors");
+    let photoString = document.getElementById("photoString");
+    let photoName = document.getElementById("photoName");
+    let editPhotoForm = document.getElementById("editPhotoForm");
+    let saveButtonSubmit = document.getElementById("saveButtonSubmit");
+    let croppieContainer = document.getElementById("croppie-container");
+    var editingMode = false;
+
+    saveButton.style.display = "none";
+    cancelButton.style.display = "none";
+    uploadPhoto.style.display = "none";
+    croppieContainer.style.display = "none";
+
+    editButton.addEventListener("click", function (e) {
+        e.preventDefault();
+        editingMode = true;
+        editButton.style.display = "none";
+        cancelButton.style.display = "block";
+        if (photoFile.value != "") {
+            saveButton.style.display = "block";
+        }
+        deleteButton.style.display = "none";
+        uploadPhoto.style.display = "block";
+    });
+    cancelButton.addEventListener("click", function () {
+        e.preventDefault();
+        editingMode = false;
+        editButton.style.display = "block";
+        cancelButton.style.display = "none";
+        saveButton.style.display = "none";
+        deleteButton.style.display = "block";
+        photoFile.value = "";
+        uploadPhoto.style.display = "none";
+        croppieContainer.style.display = "none";
+        preview.style.display = "block";
+    });
+
+    photoFile.addEventListener("change", function () {
+        if (event.target.files[0].type != "image/jpeg" && event.target.files[0].type != "image/png") {
+            imageErrors.innerHTML = "@Localizer["image_must_be_jpeg_or_png"]";
+            photoFile.value = "";
+            return;
+        }
+        if (event.target.files[0].size > 512000) {
+            imageErrors.innerHTML = "@Localizer["image_cannot_be_higher_than"] 500kb.";
+            photoFile.value = "";
+            return;
+        }
+        saveButton.style.display = "block";
+        croppieContainer.style.display = "block";
+        imageErrors.innerHTML = "";
+        preview.style.display = "none";
+        var reader = new FileReader();
+        reader.onload = function () {
+            var imageSrc = reader.result;
+            initCroppie(imageSrc);
+        }
+        reader.readAsDataURL(event.target.files[0]);
+    });
+
+    var mycroppiedemo = null;
+
+    function initCroppie(imageSrc) {
+        if (mycroppiedemo) {
+            // Destroy previous croppie object
+            mycroppiedemo.croppie('destroy');
+        }
+
+        mycroppiedemo = $('#croppie-container').croppie({
+            enableExif: false,
+            showZoomer: true,
+            enforceBoundary: true,
+            boundary: {
+                width: 400,
+                height: 400
+            },
+            viewport: {
+                width: 200,
+                height: 200,
+                type: 'square'
+            }
+        });
+
+        mycroppiedemo.croppie('bind', {
+            url: imageSrc
+        });
+    }
+
+    initCroppie('/images/user_images/FAT_IMAGE.jpg');
+
+    $("#saveButton").click(function () {
+        mycroppiedemo.croppie('result', {
+            type: 'canvas',
+            size: { width: 300, height: 300 }
+        }).then(function (croppedImage) {
+            photoString.value = croppedImage;
+            photoName.value = photoFile.value.split('\\').pop().split('/').pop().split('.')[0]
+            saveButtonSubmit.click();
+            /*
+            $.ajax({
+                type: 'POST',
+                url: '/?handler=SaveImae',
+                data: {
+                    ImgStr: croppedImage,
+                    ImgName: photoFile.value.split('\\').pop().split('/').pop().split('.')[0]
+                },
+                success: function (response) {
+                    console.log('Image saved successfully');
+                },
+                error: function (xhr, textStatus, errorThrow) {
+                    console.log('Error saving image');
+                }
+            })
+            */
+        });
+    });
+</script>
