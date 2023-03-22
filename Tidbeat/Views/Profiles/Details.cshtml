@@ -6,6 +6,11 @@
     List<Post> allPosts = ViewBag.posts;
     ApplicationUser user = Model;
     var tempval = TempData["user"];
+    string songNameString = "";
+    int songNameLimit = 48;
+
+    string songDivId = "";
+    string removeFavoriteSpanId = "";
 }
 
 <!--All music info goes here-->
@@ -32,15 +37,44 @@
             </div>
         </div>
         <hr style="height: 1px" />
+        <div class="text-primary">Músicas Favoritas</div>
         <div class="scrollable-posts h-25">
-            <div>Músicas Favoritas</div>
-            <div>Músicas Favoritas</div>
-            <div>Músicas Favoritas</div>
-            <div>Músicas Favoritas</div>
-            <div>Músicas Favoritas</div>
-            <div>Músicas Favoritas</div>
-            <div>Músicas Favoritas</div>
-            <div>Músicas Favoritas</div>
+            @if (ViewBag.FavoriteSongs.Count != 0) {
+                @foreach (Song song in ViewBag.FavoriteSongs)
+                {
+                        
+					songDivId = "song-div--" + song.SongId;
+					removeFavoriteSpanId = "remove-favorite-span--" + song.SongId;
+                    
+                    <div
+                        id=@songDivId
+                        class="border-0 border-2 border-start border-dark mb-2 d-flex flex-row">
+                        @if (ViewBag.IsCurrentUser) {
+                            <span id=@removeFavoriteSpanId
+                      class="bi bi-x-lg text-primary ms-1 border profile-remove-song pointer-active"></span>
+                        }
+                        
+                        <span class="w-auto ms-1 fs-6">
+                            @{
+                                if (song.Name.Length < songNameLimit)
+                                {
+                                    songNameString = "" + song.Name;
+                                }
+                                else
+                                {
+                                    songNameString = song.Name.Substring(0, songNameLimit) + " (...)";
+                                }
+                            }
+                            <span class="text-primary fw-semibold">@songNameString</span>
+                            , de
+                            <span class="text-primary fw-semibold">@song.Band.Name</span>
+                        </span>
+                    </div>
+                }
+            } else {
+                <div class="border border-top-0 border-bottom-0 border-end-0">Não tem qualquer música favorita ainda.</div>
+            }
+            
         </div>
         <hr style="height: 1px" />
         <div>
@@ -79,3 +113,50 @@
         }
     </div>
 </div>
+
+<script>
+    /*
+    $(document).ready(function () {
+		$(".profile-remove-song").click(function () {
+			var songId = $(this).attr("id").split("--")[1];
+			var songDivId = "#song-div--" + songId;
+			var removeFavoriteSpanId = "#remove-favorite-span--" + songId;
+			$.ajax({
+				url: "/Profiles/RemoveFavoriteSong",
+				type: "POST",
+				data: { songId: songId },
+				success: function (data) {
+					if (data == "success") {
+						$(songDivId).remove();
+						$(removeFavoriteSpanId).remove();
+					}
+				},
+			});
+		});
+	});
+    */
+   
+    // Do this without JQuery
+    let removeFavoriteSpans = document.getElementsByClassName("profile-remove-song");
+	for (let i = 0; i < removeFavoriteSpans.length; i++) {
+		removeFavoriteSpans[i].addEventListener("click", function () {
+			console.log(`Running for element number ${i}`);
+			let songId = this.id.split("--")[1];
+			let songDivId = "#song-div--" + songId;
+			let removeFavoriteSpanId = "#remove-favorite-span--" + songId;
+            console.log(`| Song Id: ${songId}`);
+            var xhr = new XMLHttpRequest();
+            xhr.open('PUT', `/Profiles/RemoveFavoriteSong?songId=${songId}`);
+            xhr.send();
+            xhr.onload = function() {
+				if (xhr.status != 200) {
+					console.log(`Error ${xhr.status}: ${xhr.statusText}`);
+				} else {
+					console.log(`Removed song with id ${songId}`);
+					document.querySelector(songDivId).remove();
+				}
+			};
+		});
+	}
+    
+</script>

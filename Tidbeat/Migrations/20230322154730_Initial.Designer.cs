@@ -12,7 +12,11 @@ using Tidbeat.Data;
 namespace Tidbeat.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
+<<<<<<<< HEAD:Tidbeat/Migrations/20230322154730_Initial.Designer.cs
     [Migration("20230322154730_Initial")]
+========
+    [Migration("20230322153044_Initial")]
+>>>>>>>> IQ2022-121-Nova-Tentativa:Tidbeat/Migrations/20230322153044_Initial.Designer.cs
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -186,7 +190,7 @@ namespace Tidbeat.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<string>("FavoriteSongId")
+                    b.Property<string>("FavoriteSongIds")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FullName")
