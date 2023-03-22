@@ -281,8 +281,10 @@
         </div>
     </div>
     <script>
-        const changeLanguage = document.getElementById('changeLanguage');
-        changeLanguage.value = "@CultureInfo.CurrentCulture.Name";
+        window.onload = (event) => {
+            const changeLanguage = document.getElementById('changeLanguage');
+            changeLanguage.value = "@(CultureInfo.CurrentCulture.Name)";
+        }
     </script>
     <!-- Bootstrap core JS-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
