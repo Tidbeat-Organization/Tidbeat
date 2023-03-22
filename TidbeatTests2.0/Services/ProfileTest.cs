@@ -31,7 +31,7 @@ namespace TidbeatTests2._0.Services
                 Email = "user@gmail.com",
                 BirthdayDate = DateTime.Now,
                 Gender = "Masculino",
-                FavoriteSongId = null,
+                FavoriteSongIds = null,
                 PasswordHash = null,
                 EmailConfirmed = false,
                 PhoneNumberConfirmed = false,
