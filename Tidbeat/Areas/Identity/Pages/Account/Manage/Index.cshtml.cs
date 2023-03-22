@@ -53,12 +53,12 @@ namespace Tidbeat.Areas.Identity.Pages.Account.Manage
         /// </summary>
         public class InputModel
         {
-            [Required]
+            [Required(ErrorMessage = "please_enter_a_valid_name")]
             [DataType(DataType.Text)]
             [Display(Name = "Full name")]
             public string FullName { get; set; }
 
-            [Required]
+            [Required(ErrorMessage = "please_enter_a_valid_birthday_date")]
             [DataType(DataType.Date)]
             [Display(Name = "Birthday Date")]
             public DateTime BirthdayDate { get; set; }

@@ -29,7 +29,8 @@ namespace Tidbeat.Areas.Identity.Pages.Account.Manage
         public EmailModel(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
-            IEmailSender emailSender, IStringLocalizer<EmailModel> localizer)
+            IEmailSender emailSender, 
+            IStringLocalizer<EmailModel> localizer)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -73,8 +74,8 @@ namespace Tidbeat.Areas.Identity.Pages.Account.Manage
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
-            [Required]
-            [EmailAddress]
+            [Required(ErrorMessage = "please_enter_a_valid_email_address")]
+            [EmailAddress(ErrorMessage = "invalid_email_address_format")]
             [Display(Name = "New email")]
             public string NewEmail { get; set; }
 
@@ -129,12 +130,12 @@ namespace Tidbeat.Areas.Identity.Pages.Account.Manage
             {
                 if (user.PasswordHash == null) {
                     if(Input.NewPassword == null) {
-                        ModelState.AddModelError(string.Empty, "You must enter a password to change your email.");
+                        ModelState.AddModelError(string.Empty, _localizer["you_must_enter_password_to_change_email"]);
                         await LoadAsync(user);
                         return Page();
                     } else
                     if (!Regex.IsMatch(Input.NewPassword, RegisterModel.Pattern)) {
-                        ModelState.AddModelError(string.Empty, "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character.");
+                        ModelState.AddModelError(string.Empty, _localizer["password_must_contain_at_least"]);
                         await LoadAsync(user);
                         return Page();
                     }
@@ -146,7 +147,7 @@ namespace Tidbeat.Areas.Identity.Pages.Account.Manage
                 }
                 var foundUser = await _userManager.FindByEmailAsync(Input.NewEmail);
                 if (foundUser != null) {
-                    ModelState.AddModelError(string.Empty, "Email already taken.");
+                    ModelState.AddModelError(string.Empty, _localizer["email_already_taken"]);
                     await LoadAsync(user);
                     return Page();
                 }
@@ -161,14 +162,14 @@ namespace Tidbeat.Areas.Identity.Pages.Account.Manage
                     protocol: Request.Scheme);
                 await _emailSender.SendEmailAsync(
                     Input.NewEmail,
-                    "Confirm your email",
-                    $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    _localizer["confirm_mail"],
+                    $"{_localizer["please_confirm_link"]} <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>{_localizer["clicking_here"]}</a>.");
 
-                StatusMessage = "Confirmation link to change email sent. Please check your email.";
+                StatusMessage = _localizer["confirmation_link_sent"];
                 return RedirectToPage();
             }
 
-            StatusMessage = "Your email is unchanged.";
+            StatusMessage = _localizer["email_unchanged"];
             return RedirectToPage();
         }
 
@@ -197,10 +198,10 @@ namespace Tidbeat.Areas.Identity.Pages.Account.Manage
                 protocol: Request.Scheme);
             await _emailSender.SendEmailAsync(
                 email,
-                "Confirm your email",
-                $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                _localizer["confirm_mail"],
+                $"{_localizer["please_confirm_link"]} <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>{_localizer["clicking_here"]}</a>.");
 
-            StatusMessage = "Verification email sent. Please check your email.";
+            StatusMessage = _localizer["verification_email_sent"];
             return RedirectToPage();
         }
     }
