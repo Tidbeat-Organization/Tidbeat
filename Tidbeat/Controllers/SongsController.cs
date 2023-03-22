@@ -64,7 +64,7 @@ namespace Tidbeat.Controllers
             {
                 return;
             }
-            AddSong(songId);
+            await AddSong(songId);
             songIds.Add(songId);
             user.SerializeFavoriteSongIds(songIds);
             
@@ -115,7 +115,7 @@ namespace Tidbeat.Controllers
 
             var loggedUser = await _userManager.GetUserAsync(User);
             bool isFavorited;
-            if (loggedUser != null)
+            if (loggedUser != null && loggedUser.FavoriteSongIds != null)
             {
                 isFavorited = loggedUser.FavoriteSongIds.Contains(song.Id);
             }
@@ -126,7 +126,7 @@ namespace Tidbeat.Controllers
             ViewBag.isFavorited = isFavorited;
 
             var users = await _userManager.Users.ToListAsync();
-            var count = users.Count(u => u.FavoriteSongIds.Contains(id));
+            var count = users.Count(u => string.IsNullOrEmpty(u.FavoriteSongIds) ? false : u.FavoriteSongIds.Contains(id));
             ViewBag.favoritesAmount = count;
 
             var allPosts = _context.Posts.Include(p => p.User).Include(p => p.Song).Where(p => p.Song != null && p.Song.SongId == id).ToList();
