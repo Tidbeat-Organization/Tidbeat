@@ -117,28 +117,31 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="concurrency_failure" xml:space="preserve">
-    <value>Erro: várias pessoas estão a modificar a conta delas.</value>
+  <data name="clicking_here" xml:space="preserve">
+    <value>clicking here</value>
   </data>
-  <data name="confirmation" xml:space="preserve">
-    <value>O utilizador alterou a sua password com sucesso</value>
+  <data name="confirmation_link_sent" xml:space="preserve">
+    <value>Confirmation link to change email sent. Please check your email.</value>
   </data>
-  <data name="default_error" xml:space="preserve">
-    <value>Erro: ocorreu um erro, por favor tente novamente mais tarde.</value>
+  <data name="confirm_mail" xml:space="preserve">
+    <value>Confirm your email</value>
   </data>
-  <data name="invalid_password" xml:space="preserve">
-    <value>A palavra-passe deve conter, pelo menos 6 caracteres, dos quais tem que ter um numero [0-9], uma letra minuscula [a-z], uma letra maiuscula [A-Z] e um caracter especial [&amp;@?_%]</value>
+  <data name="email_already_taken" xml:space="preserve">
+    <value>Email already taken.</value>
   </data>
-  <data name="manage_password" xml:space="preserve">
-    <value>Alterar Password</value>
+  <data name="email_unchanged" xml:space="preserve">
+    <value>Your email is unchanged.</value>
   </data>
-  <data name="password_mismatch" xml:space="preserve">
-    <value>A password e a confirmação não são iguais.</value>
+  <data name="password_must_contain_at_least" xml:space="preserve">
+    <value>Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character.</value>
   </data>
-  <data name="password_mismatch_alt" xml:space="preserve">
-    <value>A password esta incorreta</value>
+  <data name="please_confirm_link" xml:space="preserve">
+    <value>Please, confirm your account by</value>
   </data>
-  <data name="update_password" xml:space="preserve">
-    <value>Atualizar password</value>
+  <data name="verification_email_sent" xml:space="preserve">
+    <value>Verification email sent. Please check your email.</value>
+  </data>
+  <data name="you_must_enter_password_to_change_email" xml:space="preserve">
+    <value>You must enter a password to change your email.</value>
   </data>
 </root>

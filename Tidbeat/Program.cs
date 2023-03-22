@@ -53,6 +53,7 @@ builder.Services.Configure<IdentityOptions>(opts => {
 });
 
 services.AddLocalization(options => options.ResourcesPath = "Resources");
+services.AddRazorPages().AddDataAnnotationsLocalization();
 builder.Services.Configure<RequestLocalizationOptions>(options => {
     var supportedCultures = new[] {
         new CultureInfo("en-US"),

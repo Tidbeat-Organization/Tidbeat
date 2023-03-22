@@ -12,8 +12,8 @@ using Tidbeat.Data;
 namespace Tidbeat.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230320135905_initial")]
-    partial class initial
+    [Migration("20230322163418_NullableFix")]
+    partial class NullableFix
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -179,12 +179,18 @@ namespace Tidbeat.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Country")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Email")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
+
+                    b.Property<string>("FavoriteGenre")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FavoriteSongId")
                         .HasColumnType("nvarchar(max)");

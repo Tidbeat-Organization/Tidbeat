@@ -123,25 +123,88 @@
   <data name="birth" xml:space="preserve">
     <value>Birth Date</value>
   </data>
+  <data name="children" xml:space="preserve">
+    <value>Children</value>
+  </data>
+  <data name="classical" xml:space="preserve">
+    <value>Classical</value>
+  </data>
+  <data name="country" xml:space="preserve">
+    <value>Country</value>
+  </data>
+  <data name="dance" xml:space="preserve">
+    <value>Dance</value>
+  </data>
+  <data name="disco" xml:space="preserve">
+    <value>Disco</value>
+  </data>
+  <data name="favorite_genre" xml:space="preserve">
+    <value>Favorite Genre</value>
+  </data>
   <data name="female" xml:space="preserve">
     <value>Female</value>
+  </data>
+  <data name="folk" xml:space="preserve">
+    <value>Folk</value>
+  </data>
+  <data name="funk" xml:space="preserve">
+    <value>Funk</value>
   </data>
   <data name="gender" xml:space="preserve">
     <value>Gender</value>
   </data>
+  <data name="gender1" xml:space="preserve">
+    <value>Gender</value>
+  </data>
+  <data name="genders" xml:space="preserve">
+    <value>Genders</value>
+  </data>
+  <data name="hip-hop" xml:space="preserve">
+    <value>Hip Hop</value>
+  </data>
+  <data name="indian" xml:space="preserve">
+    <value>Indian</value>
+  </data>
+  <data name="k-pop" xml:space="preserve">
+    <value>K-Pop</value>
+  </data>
   <data name="male" xml:space="preserve">
     <value>Male</value>
+  </data>
+  <data name="metal" xml:space="preserve">
+    <value>Metal</value>
   </data>
   <data name="name" xml:space="preserve">
     <value>Name</value>
   </data>
+  <data name="nation" xml:space="preserve">
+    <value>Country</value>
+  </data>
   <data name="non_binary" xml:space="preserve">
     <value>Non Binary</value>
+  </data>
+  <data name="piano" xml:space="preserve">
+    <value>Piano</value>
+  </data>
+  <data name="pop" xml:space="preserve">
+    <value>Pop</value>
   </data>
   <data name="profile" xml:space="preserve">
     <value>Profile</value>
   </data>
+  <data name="punk" xml:space="preserve">
+    <value>Punk</value>
+  </data>
+  <data name="reggae" xml:space="preserve">
+    <value>Reggae</value>
+  </data>
+  <data name="rock" xml:space="preserve">
+    <value>Rock</value>
+  </data>
   <data name="save" xml:space="preserve">
     <value>Save</value>
+  </data>
+  <data name="techno" xml:space="preserve">
+    <value>Techno</value>
   </data>
 </root>

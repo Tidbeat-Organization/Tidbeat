@@ -20,5 +20,11 @@ namespace Tidbeat.Models {
 
         [PersonalData]
         public string? ImagePath { get; set; }
+
+        [PersonalData]
+        public string? FavoriteGenre { get; set; }
+
+        [PersonalData]
+        public string? Country { get; set; }
     }
 }

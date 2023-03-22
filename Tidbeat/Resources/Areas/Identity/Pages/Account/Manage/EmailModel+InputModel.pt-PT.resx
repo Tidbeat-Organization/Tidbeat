@@ -117,28 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="concurrency_failure" xml:space="preserve">
-    <value>Erro: várias pessoas estão a modificar a conta delas.</value>
+  <data name="invalid_email_address_format" xml:space="preserve">
+    <value>Formato do endereço de email inválido</value>
   </data>
-  <data name="confirmation" xml:space="preserve">
-    <value>O utilizador alterou a sua password com sucesso</value>
-  </data>
-  <data name="default_error" xml:space="preserve">
-    <value>Erro: ocorreu um erro, por favor tente novamente mais tarde.</value>
-  </data>
-  <data name="invalid_password" xml:space="preserve">
-    <value>A palavra-passe deve conter, pelo menos 6 caracteres, dos quais tem que ter um numero [0-9], uma letra minuscula [a-z], uma letra maiuscula [A-Z] e um caracter especial [&amp;@?_%]</value>
-  </data>
-  <data name="manage_password" xml:space="preserve">
-    <value>Alterar Password</value>
-  </data>
-  <data name="password_mismatch" xml:space="preserve">
-    <value>A password e a confirmação não são iguais.</value>
-  </data>
-  <data name="password_mismatch_alt" xml:space="preserve">
-    <value>A password esta incorreta</value>
-  </data>
-  <data name="update_password" xml:space="preserve">
-    <value>Atualizar password</value>
+  <data name="please_enter_a_valid_email_address" xml:space="preserve">
+    <value>Por favor introduz um endereço de email válido</value>
   </data>
 </root>

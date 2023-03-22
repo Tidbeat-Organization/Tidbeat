@@ -38,5 +38,10 @@ namespace Tidbeat.Services {
             _context.Songs.Add(new Song() { SongId = song.Id, Name = song.Name, Band = _context.Bands.Find(artist.Id) });
             _context.SaveChanges();
         }
+
+        public static List<string> AllGenres() {
+            List<string> values = new List<string>() { "rock", "pop", "kids", "funk", "classical", "country", "dance", "metal", "disco", "folk", "hip-hop", "indian", "k-pop", "punk", "piano", "reggae", "techno" };
+            return values;
+        }
     }
 }
