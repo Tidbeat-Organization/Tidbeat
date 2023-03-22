@@ -1,5 +1,6 @@
 ﻿@using Microsoft.Extensions.Localization;
 @using Microsoft.AspNetCore.Mvc.Localization;
+@using System.Globalization;
 @inject IViewLocalizer Localizer;
 @{
     ViewData["Title"] = "Home Page";
@@ -62,10 +63,3 @@
         </div>
     </div>
 </div>
-<form asp-controller="Language" asp-action="SetLanguage" method="post">
-    <select name="language" onchange="this.form.submit()">
-        <option value="">-x-</option>
-        <option value="en-US">English</option>
-        <option value="pt-PT">Portuguese</option>
-    </select>
-</form>
