@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Tidbeat.Migrations
 {
-    public partial class initial : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -31,7 +31,7 @@ namespace Tidbeat.Migrations
                     FullName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     BirthdayDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Gender = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    FavoriteSongId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    FavoriteSongIds = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     AboutMe = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ImagePath = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),

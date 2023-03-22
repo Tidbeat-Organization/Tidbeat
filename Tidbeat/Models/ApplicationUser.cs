@@ -13,12 +13,27 @@ namespace Tidbeat.Models {
         public string Gender { get; set; }
 
         [PersonalData]
-        public string? FavoriteSongId { get; set; }
+        public string? FavoriteSongIds { get; set; }
 
         [PersonalData]
         public string? AboutMe { get; set; }
 
         [PersonalData]
         public string? ImagePath { get; set; }
+
+        public List<string> DeserializeFavoriteSongIds()
+        {
+            if (FavoriteSongIds == null)
+            {
+                return new List<string>();
+            }
+
+            return FavoriteSongIds.Split(',').ToList();
+        }
+
+        public void SerializeFavoriteSongIds(List<string> songIds)
+        {
+            FavoriteSongIds = string.Join(',', songIds);
+        }
     }
 }

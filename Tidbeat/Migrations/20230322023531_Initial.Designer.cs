@@ -12,8 +12,8 @@ using Tidbeat.Data;
 namespace Tidbeat.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230320135905_initial")]
-    partial class initial
+    [Migration("20230322023531_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -186,7 +186,7 @@ namespace Tidbeat.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<string>("FavoriteSongId")
+                    b.Property<string>("FavoriteSongIds")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FullName")

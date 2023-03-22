@@ -184,7 +184,7 @@ namespace Tidbeat.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<string>("FavoriteSongId")
+                    b.Property<string>("FavoriteSongIds")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FullName")

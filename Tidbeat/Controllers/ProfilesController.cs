@@ -24,8 +24,22 @@ namespace Tidbeat.Controllers
             _userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
         }
 
+        private async Task<List<Song>> GetFavoriteSongsAsync(ApplicationUser user)
+        {
+            var songIds = user.DeserializeFavoriteSongIds();
+            var songs = await _context.Songs.Where(s => songIds.Contains(s.SongId)).ToListAsync();
+            return songs;
+        }
 
-        // GET: Profiles/Details/5
+        private async Task<bool> RemoveSingleSongAsync(ApplicationUser user, string songId)
+        {
+            var songIds = user.DeserializeFavoriteSongIds();
+            bool success = songIds.Remove(songId);
+            user.SerializeFavoriteSongIds(songIds);
+            await _userManager.UpdateAsync(user);
+
+            return success;
+        }
         public async Task<IActionResult> Details(string? id)
         {
             if (id == null)
@@ -46,8 +60,18 @@ namespace Tidbeat.Controllers
                     TempData["user"] = true;
                 }
             }
-            ViewBag.Posts = _context.Posts.Include(p => p.User).Where(p=> p.User.Id == profile.Id).ToList();
+            ViewBag.Posts = _context.Posts.Include(p => p.User).Where(p => p.User.Id == profile.Id).ToList();
+            ViewBag.FavoriteSongs = await GetFavoriteSongsAsync(profile);
             return View(profile);
+        }
+
+        // PUT to /Profiles/RemoveFavoriteSong
+        [HttpPut]
+        public async Task<IActionResult> RemoveFavoriteSong(string songId)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            var success = await RemoveSingleSongAsync(user, songId);
+            return success ? Ok() : NotFound("Could not remove song from favorites");
         }
 
 
