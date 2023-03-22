@@ -112,7 +112,7 @@ namespace Tidbeat.Controllers
                     var song = new Song();
                     if (!string.IsNullOrEmpty(Request.Form["SongId"]))
                     {
-                        song = await _context.Songs.FindAsync(Request.Form["SongId"]);
+                        song = await _context.Songs.Include(s => s.Band).FirstOrDefaultAsync(s => s.SongId.Equals(Request.Form["SongId"]));
                         if (song == null)
                         {
                             Song newSong = new Song();
