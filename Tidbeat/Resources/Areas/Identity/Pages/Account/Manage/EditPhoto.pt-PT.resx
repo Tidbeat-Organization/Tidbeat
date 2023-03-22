@@ -138,6 +138,9 @@
   <data name="image_cannot_be_higher_than" xml:space="preserve">
     <value>O tamanho da imagem não pode ter mais de</value>
   </data>
+  <data name="image_must_be_jpeg_or_png" xml:space="preserve">
+    <value>A imagem tem de ser do tipo JPEG ou PNG!</value>
+  </data>
   <data name="save_photo" xml:space="preserve">
     <value>Guardar Foto</value>
   </data>

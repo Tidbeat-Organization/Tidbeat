@@ -246,3 +246,7 @@ datalist option:hover, datalist option:focus {
 .custom-datalist input:focus + ul {
     display: block;
 }
+
+input[type="file"] {
+    display: none;
+}
