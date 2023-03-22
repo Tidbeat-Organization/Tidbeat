@@ -48,10 +48,11 @@
                     <div
                         id=@songDivId
                         class="border-0 border-2 border-start border-dark mb-2 d-flex flex-row">
-                        <span
-                            id=@removeFavoriteSpanId
-                            class="bi bi-x-lg text-primary ms-1 border profile-remove-song pointer-active"
-                        ></span>
+                        @if (ViewBag.IsCurrentUser) {
+                            <span id=@removeFavoriteSpanId
+                      class="bi bi-x-lg text-primary ms-1 border profile-remove-song pointer-active"></span>
+                        }
+                        
                         <span class="w-auto ms-1 fs-6">
                             @{
                                 if (song.Name.Length < songNameLimit)

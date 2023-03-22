@@ -38,7 +38,7 @@ namespace Tidbeat.Controllers
             Console.WriteLine($"Song count (async): {favoriteSongs.Count}");
             foreach (var song in favoriteSongs)
                 Console.WriteLine($"| {song.Name} by {song.Band}");
-            return songs;
+            return favoriteSongs;
         }
 
         public async Task<List<Band>> GetBandsOfSongs(List<Song> songs)
@@ -111,6 +111,7 @@ namespace Tidbeat.Controllers
             ViewBag.Posts = await _context.Posts.Include(p => p.User).Where(p => p.User.Id == profile.Id).ToListAsync();
             ViewBag.FavoriteSongs = await GetFavoriteSongsAsync(profile);
             ViewBag.BandsOfSongs = await GetBandsOfSongs(ViewBag.FavoriteSongs);
+            ViewBag.IsCurrentUser = profile.Id == currentuser?.Id;
             // Print bands of songs.
             /*
             Console.WriteLine("Bands of songs:");
