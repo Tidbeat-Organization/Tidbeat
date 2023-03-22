@@ -31,10 +31,12 @@ namespace Tidbeat.Controllers
             Console.WriteLine("\nList of favorite song IDs (async):");
             foreach (var songString in songIds)
                 Console.WriteLine($"| {songString}");
-            var songs = await _context.Songs.Where(s => songIds.Contains(s.SongId)).ToListAsync();
+            var songs = await _context.Songs.ToListAsync();
+            var favoriteSongs = songs.Where(s => songIds.Contains(s.SongId)).ToList();
             // Print all songs
             Console.WriteLine("Favorite songs (async):");
-            foreach (var song in songs)
+            Console.WriteLine($"Song count (async): {favoriteSongs.Count}");
+            foreach (var song in favoriteSongs)
                 Console.WriteLine($"| {song.Name} by {song.Band}");
             return songs;
         }

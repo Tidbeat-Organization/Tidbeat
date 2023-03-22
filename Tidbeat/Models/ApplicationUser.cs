@@ -13,7 +13,7 @@ namespace Tidbeat.Models {
         public string Gender { get; set; }
 
         [PersonalData]
-        public string? FavoriteSongIds { get; set; } = "";
+        public string? FavoriteSongIds { get; set; }
 
         [PersonalData]
         public string? AboutMe { get; set; }
@@ -23,7 +23,7 @@ namespace Tidbeat.Models {
 
         public List<string> DeserializeFavoriteSongIds()
         {
-            if (FavoriteSongIds == null)
+            if (string.IsNullOrEmpty(FavoriteSongIds))
             {
                 return new List<string>();
             }

@@ -24,7 +24,39 @@ namespace Tidbeat.Controllers
             _spotifyService = spotifyService;
             _userManager = userManager;
         }
+        private async Task<bool> AddSong(string songId)
+        {
+            if (_context.Songs.Any(s => s.SongId == songId))
+            {
+                return false;
+            }
+            
+            var spotifySong = await _spotifyService.GetSongAsync(songId);
+            var bandIfAvailable = await _context.Bands.FindAsync(spotifySong.Artists[0].Id);
+            if (bandIfAvailable == null)
+            {
+                var spotifyBand = await _spotifyService.GetBandAsync(spotifySong.Artists[0].Id);
+                bandIfAvailable = new Band() {
+                    BandId = spotifyBand.Id,
+                    Image = spotifyBand.Images[0].Url,
+                    Name = spotifyBand.Name
+                };
+                _context.Bands.Add(bandIfAvailable);
+                _context.SaveChanges();
+            }
 
+            var song = new Song()
+            {
+                SongId = songId,
+                Band = bandIfAvailable,
+                Name = spotifySong.Name
+            };
+
+            _context.Songs.Add(song);
+            _context.SaveChanges();
+
+            return true;
+        } 
         public async Task AddAsFavoriteAsync(ApplicationUser user, string songId)
         {
             var songIds = user.DeserializeFavoriteSongIds();
@@ -32,9 +64,12 @@ namespace Tidbeat.Controllers
             {
                 return;
             }
+            AddSong(songId);
             songIds.Add(songId);
             user.SerializeFavoriteSongIds(songIds);
+            
             await _userManager.UpdateAsync(user);
+            
         }
 
         public async Task<bool> RemoveAsFavoriteAsync(ApplicationUser user, string songId)
