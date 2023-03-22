@@ -1,5 +1,6 @@
 ﻿@page
 @model IndexModel
+@using Tidbeat.Services
 @using Microsoft.AspNetCore.Mvc.Localization;
 @inject IViewLocalizer Localizer;
 @{
@@ -11,6 +12,10 @@
         new SelectListItem {Text = Localizer["female"].Value, Value="Feminino"},
         new SelectListItem {Text = Localizer["non_binary"].Value, Value="Não Binário"}
     };
+    List<SelectListItem> countries = new List<SelectListItem> { new SelectListItem { Text = "", Value = "" } };
+    countries.AddRange(GlobalizationService.CountryList().Select(c => new SelectListItem { Text = c, Value = c}).ToList());
+    List<SelectListItem> genres = new List<SelectListItem> { new SelectListItem { Text = "", Value = "" } };
+    genres.AddRange(MusicService.AllGenres().Select(g => new SelectListItem { Text = Localizer[g].Value, Value = g}).ToList());
 }
 
 <h3>@ViewData["Title"]</h3>
@@ -33,6 +38,16 @@
                 <label asp-for="Input.Gender" class="form-label text-primary">@Localizer["gender"]</label>
                 <select asp-for="Input.Gender" asp-items="genders" class="form-control second-phase form-select mt-0" id="genderField"></select>
                 <span asp-validation-for="Input.Gender" class="text-danger"></span>
+            </div>
+            <div class="mt-3">
+                <label asp-for="Input.FavoriteGenre" class="form-label text-primary">@Localizer["favorite_genre"]</label>
+                <select asp-for="Input.FavoriteGenre" asp-items="genres" class="form-control second-phase form-select mt-0" id="genderField"></select>
+                <span asp-validation-for="Input.FavoriteGenre" class="text-danger"></span>
+            </div>
+            <div class="mt-3">
+                <label asp-for="Input.Country" class="form-label text-primary">@Localizer["country"]</label>
+                <select asp-for="Input.Country" asp-items="countries" class="form-control second-phase form-select mt-0" id="genderField"></select>
+                <span asp-validation-for="Input.Country" class="text-danger"></span>
             </div>
             <div class="mt-3 align-rigth">
                 <textarea asp-for="Input.AboutMe" id="postcreate" class="form-control" style="height: 200px; border: 1.5px solid #6610F2; border-radius: 15px; width: 700px;" placeholder="@Localizer["about_me"]..."></textarea>

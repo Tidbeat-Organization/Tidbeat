@@ -147,7 +147,7 @@ namespace Tidbeat.Areas.Identity.Pages.Account.Manage
                     else
                         if (error.Code == "PasswordMismatch")
                     {
-                        ModelState.AddModelError("Danger", _localizer["password_mismatch_alt"]);
+                        ModelState.AddModelError("OldPassword", _localizer["password_mismatch_alt"]);
                     }
                     else
                         if (error.Code == "PasswordTooShort" || error.Code == "PasswordRequiresNonAlphanumeric" || error.Code == "PasswordRequiresDigit" || error.Code == "PasswordRequiresLower" || error.Code == "PasswordRequiresUpper")

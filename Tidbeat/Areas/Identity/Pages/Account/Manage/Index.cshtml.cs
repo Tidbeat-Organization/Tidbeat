@@ -71,6 +71,13 @@ namespace Tidbeat.Areas.Identity.Pages.Account.Manage
             [DataType(DataType.Text)]
             [Display(Name = "About Me")]
             public string AboutMe { get; set; }
+
+            [Display(Name = "Favorite Genre")]
+            public string FavoriteGenre { get; set; }
+
+            [Display(Name = "Country")]
+            public string Country { get; set; }
+
         }
 
         private async Task LoadAsync(ApplicationUser user)
@@ -82,6 +89,8 @@ namespace Tidbeat.Areas.Identity.Pages.Account.Manage
                 BirthdayDate = currentUser.BirthdayDate,
                 Gender = currentUser.Gender,
                 AboutMe = currentUser.AboutMe,
+                FavoriteGenre = currentUser.FavoriteGenre,
+                Country = currentUser.Country
             };
         }
 
@@ -115,6 +124,8 @@ namespace Tidbeat.Areas.Identity.Pages.Account.Manage
             user.BirthdayDate = Input.BirthdayDate;
             user.Gender = Input.Gender;
             user.AboutMe = Input.AboutMe;
+            user.FavoriteGenre = Input.FavoriteGenre;
+            user.Country = Input.Country;
             await _userManager.UpdateAsync(user);
 
             await _signInManager.RefreshSignInAsync(user);
