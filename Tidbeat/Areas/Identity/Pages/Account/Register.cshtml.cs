@@ -156,7 +156,7 @@ namespace Tidbeat.Areas.Identity.Pages.Account
                 {
                     ModelState.AddModelError("NameRed", _localizer["invalid_name"]);
                 } else
-                if (Input.Gender != "Masculino" && Input.Gender != "Feminino" && Input.Gender != "Não Binário")
+                if (Input.Gender != "male" && Input.Gender != "female" && Input.Gender != "non_binary")
                 {
                     ModelState.AddModelError("GenderRed", _localizer["invalid_gender"]);
                 }else

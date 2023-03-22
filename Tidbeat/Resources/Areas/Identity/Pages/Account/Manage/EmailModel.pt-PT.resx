@@ -127,13 +127,13 @@
     <value>Confirmar o teu mail</value>
   </data>
   <data name="email_already_taken" xml:space="preserve">
-    <value>Email já existente.</value>
+    <value>Email existente.</value>
   </data>
   <data name="email_unchanged" xml:space="preserve">
     <value>O teu email não foi alterado.</value>
   </data>
   <data name="password_must_contain_at_least" xml:space="preserve">
-    <value>A Palavra-passe tem de conter pelo menos uma letra maiúscula, uma minúscula, um número e um caracter especial.</value>
+    <value>A Palavra-passe tem de conter pelo menos uma letra maiuscula, uma minuscula, um numero e um caracter especial.</value>
   </data>
   <data name="please_confirm_link" xml:space="preserve">
     <value>Por favor, confirme a sua conta</value>

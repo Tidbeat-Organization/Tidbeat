@@ -8,9 +8,9 @@
     ViewData["ActivePage"] = ManageNavPages.Index;
     List<SelectListItem> genders = new()
     {
-        new SelectListItem {Text = Localizer["male"].Value, Value="Masculino"},
-        new SelectListItem {Text = Localizer["female"].Value, Value="Feminino"},
-        new SelectListItem {Text = Localizer["non_binary"].Value, Value="Não Binário"}
+        new SelectListItem {Text = Localizer["male"].Value, Value="male"},
+        new SelectListItem {Text = Localizer["female"].Value, Value="female"},
+        new SelectListItem {Text = Localizer["non_binary"].Value, Value="non_binary"}
     };
     List<SelectListItem> countries = new List<SelectListItem> { new SelectListItem { Text = "", Value = "" } };
     countries.AddRange(GlobalizationService.CountryList().Select(c => new SelectListItem { Text = c, Value = c}).ToList());
