@@ -26,8 +26,10 @@
                             }
                 </div>
                 <h1 class="text-primary">@user.FullName</h1>
-                <div> <span class="text-primary">@Localizer["gender"]:</span> @user.Gender</div>
+                <div> <span class="text-primary">@Localizer["gender"]:</span> @Localizer[user.Gender]</div>
                 <div> <span class="text-primary">@Localizer["birth_date"]:</span> @user.BirthdayDate.Date.ToShortDateString()</div>
+                <div><span class="text-primary">@Localizer["favorite_genre"]:</span> @Localizer[user.FavoriteGenre ?? ""]</div>
+                <div><span class="text-primary">@Localizer["nation"]:</span> @user.Country</div>
             </div>
         </div>
         <hr style="height: 1px" />
