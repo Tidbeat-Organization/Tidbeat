@@ -102,6 +102,7 @@ namespace Tidbeat.Controllers
 
         public async Task SetFavorite([FromQuery] string? songId)
         {
+            Console.WriteLine($"\nId: {songId}");
             var loggedUser = await _userManager.GetUserAsync(User);
 
             if (loggedUser == null)
@@ -118,6 +119,7 @@ namespace Tidbeat.Controllers
             else
             {
                 var song = await _spotifyService.GetSongAsync(songId);
+                Console.WriteLine($"Song: {song.Name}");
                 if (song == null)
                 {
                     return;
@@ -126,6 +128,11 @@ namespace Tidbeat.Controllers
                 {
                     // loggedUser.FavoriteSongId = song.Id;
                     await AddAsFavoriteAsync(loggedUser, song.Id);
+                    Console.WriteLine($"Favorite songs now:\n");
+                    foreach (var songString in loggedUser.DeserializeFavoriteSongIds())
+                    {
+                        Console.WriteLine($"__ {songString}");
+                    }
                     await _userManager.UpdateAsync(loggedUser);
                 }
             }
