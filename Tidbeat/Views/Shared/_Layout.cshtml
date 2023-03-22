@@ -282,8 +282,28 @@
     </div>
     <script>
         window.onload = (event) => {
+            function getCookie(name) {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.startsWith(name + '=')) {
+                        return cookie.substring(name.length + 1);
+                    }
+                }
+                return null;
+            }
+
+            const cultureCookie = getCookie('.AspNetCore.Culture');
+            var cultureValue = null;
+            if (cultureCookie) {
+                cultureValue = decodeURIComponent(cultureCookie).split('|')[0].split('=')[1];
+                console.log(cultureValue);
+            }
+
             const changeLanguage = document.getElementById('changeLanguage');
-            changeLanguage.value = "@(CultureInfo.CurrentCulture.Name)";
+            changeLanguage.value = cultureValue;
+            const currentLanguage = cultureValue;
+            console.log("Current Language!!! : " + cultureValue + "#################")
         }
     </script>
     <!-- Bootstrap core JS-->
