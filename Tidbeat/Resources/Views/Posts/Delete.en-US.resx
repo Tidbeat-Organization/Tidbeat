@@ -138,7 +138,13 @@
   <data name="song" xml:space="preserve">
     <value>Song</value>
   </data>
+  <data name="the_title_is" xml:space="preserve">
+    <value>The post's title is</value>
+  </data>
   <data name="title" xml:space="preserve">
     <value>Title</value>
+  </data>
+  <data name="you_will_delete_the_post" xml:space="preserve">
+    <value>You will delete the post. When you delete, the post and the comments will no longer be recoverable!</value>
   </data>
 </root>

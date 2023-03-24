@@ -60,40 +60,12 @@
 <h3 style="color: #6610F2; margin-top: 100px;">@Localizer["delete_post"]</h3>
 <hr />
 
-<div class="container d-flex justify-content-center">
-    <dl class="row">
-        <dt class="col-sm-2" style="color: #6610F2;">
-            @Localizer["song"]
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Song)
-        </dd>
 
-        <dt class="col-sm-2" style="color: #6610F2; margin-top:10px;">
-            @Localizer["band"]
-        </dt>
-        <dd class="col-sm-10" style="margin-top:10px;">
-            @Html.DisplayFor(model => model.Band)
-        </dd>
-
-        <dt class="col-sm-2" style="color: #6610F2; margin-top:10px;">
-            @Localizer["title"]
-        </dt>
-        <dd class="col-sm-10" style="margin-top:10px;">
-            @Html.DisplayFor(model => model.Title)
-        </dd>
-
-        <dt class="col-sm-2" style="color: #6610F2; margin-top:10px;">
-            @Localizer["content"]
-        </dt>
-        <dd class="col-sm-10" style="margin-top:10px;">
-            @Html.DisplayFor(model => model.Content)
-        </dd>
-    </dl>
-</div>
+<h5>@Localizer["you_will_delete_the_post"]</h5>
+<div>@Localizer["the_title_is"] "@Model.Title". @Localizer["are_you_sure"]</div>
 
 <div class="container d-flex justify-content-center" style="margin-top:20px;">
-    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">
+    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">
         @Localizer["delete"]
     </button>
     <a asp-action="Index" style="margin-left: 50px; margin-right: 10px; margin-top:4px;">@Localizer["cancel"]</a>
@@ -105,7 +77,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="deleteModalLabel">@Localizer["delete_post"]</h5>
-                <button type="button" class="close custom-close rounded btn btn-primary" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close custom-close rounded btn btn-primary" data-bs-dismiss="modal" aria-label="Close">
                     <i class="bi bi-x font-white" style="font-size: 1.1rem;" aria-hidden="true"></i>
                 </button>
             </div>
@@ -116,7 +88,7 @@
                 <form asp-action="Delete">
                     <input type="hidden" asp-for="PostId" />
                     <button type="submit" class="btn btn-danger">@Localizer["delete"]</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">@Localizer["cancel"]</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">@Localizer["cancel"]</button>
                 </form>
             </div>
         </div>
