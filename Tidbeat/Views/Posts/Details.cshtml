@@ -93,36 +93,56 @@
         }
 
         <div class="scrollable-comments">
-                @foreach (var item in ViewBag.commentsPosts)
-                {
-                    <div class="form-control d-flex flex-row">
-                        <div class="align-content-end flex-column w-25 border-end">
-                            <div class="fs-7">@Localizer["created_in"]: @item.CreationDate.Date.ToShortDateString()</div>
-                            <div class="font-weigth-bold"><a class="text-decoration-none" asp-Controller="Profiles" asp-Action="Details" asp-route-id="@item.User.Id">@item.User.FullName</a></div>
-                            <div class="text-primary">Role</div>
+            @foreach (var item in ViewBag.commentsPosts)
+            {
+                <div class="form-control d-flex flex-row">
+                    <div class="align-content-end flex-column w-25 border-end">
+                        <div class="fs-7">@Localizer["created_in"]: @item.CreationDate.Date.ToShortDateString()</div>
+                        <div class="font-weigth-bold"><a class="text-decoration-none" asp-Controller="Profiles" asp-Action="Details" asp-route-id="@item.User.Id">@item.User.FullName</a></div>
+                        <div class="text-primary">Role</div>
                         <div>@Html.Partial("_RatingPartial", Tuple.Create((int) item.CommentId , RatingType.Comment))</div>
-                        </div>
-                        <div class="border-left border-secondary ml-2 w-75 text-start ms-2">@item.Content</div>
-                    @if (ViewBag.currentUser != null)
-                        {
-                            @if (item.User.Id == ViewBag.currentUser.Id)
-                            {
-                                <div class="align-content-end flex-column justify-content-end">
-                                <a formmethod="get" class="text-primary hover-background-grey rounded text-decoration-none px-2 pt-1 pb-1 bi bi-pencil-fill" asp-controller="Comments" asp-action="Edit" asp-route-id="@item.CommentId"></a>
-                                <form class="mt-2" style="outline: none;" method="post" action="@Url.Action("Delete", "Comments", new { id = item.CommentId })">
-                                    @Html.AntiForgeryToken()
+                    </div>
+                    <div class="border-left border-secondary ml-2 w-75 text-start ms-2">@item.Content</div>
 
-                                    <div class="hover-background-grey rounded"><button type="submit" style="border: none;" class="bg-transparent text-danger text-decoration-none px-2 py-1 bg-info bi-trash-fill"></button></div>
-                                </form>
-                                </div>
-                            }
-                        }
+                @if (ViewBag.currentUser != null && item.User.Id == ViewBag.currentUser.Id) {
+                    <div class="align-content-end flex-column justify-content-end">
+                    <a formmethod="get" class="text-primary hover-background-grey rounded text-decoration-none px-2 pt-1 pb-1 bi bi-pencil-fill" asp-controller="Comments" asp-action="Edit" asp-route-id="@item.CommentId"></a>
+                    <form class="mt-2" style="outline: none;" method="post" >
+                        @Html.AntiForgeryToken()
+                        <div class="hover-background-grey rounded">
+                            <button type="button" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick="(() => selectComment(@item.CommentId))()" style="border: none;" class="bg-transparent text-danger text-decoration-none px-2 py-1 bg-info bi-trash-fill"></button>
+                        </div>
+                    </form>
                     </div>
                 }
-                @if (ViewBag.commentsPosts.Count == 0) {
-                    <div>@Localizer["no_comments"]</div>
-                }
-            </div>
+                </div>
+            }
+            @if (ViewBag.commentsPosts.Count == 0) {
+                <div>@Localizer["no_comments"]</div>
+            }
+            <input id="selectedCommentId" hidden />
+            <form id="delete-comment-modal" style="outline: none;" method="post">
+                <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="deleteModalLabel">@Localizer["delete_comment"]</h5>
+                                <button type="button" class="close custom-close rounded btn btn-primary" data-bs-dismiss="modal" aria-label="Close">
+                                    <i class="bi bi-x font-white" style="font-size: 1.1rem;" aria-hidden="true"></i>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                @Localizer["are_you_sure_delete_comment"]
+                            </div>
+                            <div class="modal-footer">
+                                <button id="deleteButtonModal" name="deleteButtonModal" type="submit" class="btn btn-danger text-danger" style="outline: thick solid #DC3545; outline-width: 3px">@Localizer["delete"]</button>
+                                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">@Localizer["cancel"]</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
     <!--<a class="text-primary" asp-action="Index">Voltar</a>-->
 </div>
@@ -183,6 +203,11 @@
             document.getElementById("commentForm").submit();
         }
     });
+
+    function selectComment(commentId) {
+        var modalForm = document.getElementById('delete-comment-modal');
+        modalForm.setAttribute('action', '/Comments/Delete/' + commentId);
+    }
 </script>
 <!--
 <h3 style="color: #6610F2; margin-top: 100px;" >Detalhes do Post</h3>
