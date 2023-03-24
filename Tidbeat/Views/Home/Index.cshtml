@@ -4,9 +4,10 @@
 @inject IViewLocalizer Localizer;
 @{
     ViewData["Title"] = "Home Page";
+    var isUserLogged = User.Identity.IsAuthenticated;
 }
 
-<div class="">
+<div class="mb-2">
     <div>
         <!-- Top image with texts -->
         <div class="row">
@@ -17,8 +18,8 @@
                         <div class="mx-1 text-left" style="margin-right: 400px;">
                             <span class="text-white" style="font-size: 32px; font-weight: 600;">@Localizer["welcome_banner"]<br> @Localizer["welcome_banner1"]</span>
                         </div>
-                        <div class="mx-7 text-right" style="margin-left: 400px;">
-                            <span class="text-white font-weight-bold" style="font-size: 24px;">@Localizer["register_now_banner"]</span>
+                        <div class="mx-7 text-right pointer-active" style="margin-left: 400px;" onclick="@(isUserLogged ? "" : "window.location.href='/Identity/Account/Register';")">
+                            <span class="text-white font-weight-bold text-black-hover" style="font-size: 24px;">@Localizer["register_now_banner"]</span>
                         </div>
                     </div>
                 </div>
@@ -38,7 +39,7 @@
         <div class="row justify-content-center">
             <div class="col-md-2 pt-5">
                 <div class="card">
-                    <div class="card-body" style="border: 1.5px solid black;">
+                    <div class="card-body hover-background-grey pointer-active" style="border: 1.5px solid black;" onclick="window.location.href='/Songs';" ;>
                         <h4 class="card-title" style="color: black; font-weight: bold;">1</h4>
                         <p class="card-text" style="color: #6610F2; font-weight: bold;">@(Localizer["acess_to_thousands"])</p>
                     </div>
@@ -46,7 +47,7 @@
             </div>
             <div class="col-md-2 pt-5">
                 <div class="card">
-                    <div class="card-body" style="border: 1.5px solid black;">
+                    <div class="card-body hover-background-grey pointer-active" style="border: 1.5px solid black;" onclick="window.location.href='/Posts';">
                         <h4 class="card-title" style="color: black; font-weight: bold;">2</h4>
                         <p class="card-text" style="color: #6610F2; font-weight: bold;">@Localizer["exchange_ideas"]</p>
                     </div>
@@ -54,7 +55,7 @@
             </div>
             <div class="col-md-2 pt-5">
                 <div class="card">
-                    <div class="card-body" style="border: 1.5px solid black;">
+                    <div class="card-body hover-background-grey pointer-active" style="border: 1.5px solid black;" onclick="window.location.href='/Posts';" ;>
                         <h4 class="card-title" style="color: black; font-weight: bold;">3</h4>
                         <p class="card-text" style="color: #6610F2; font-weight: bold;">@Localizer["community_with_thousands"]</p>
                     </div>

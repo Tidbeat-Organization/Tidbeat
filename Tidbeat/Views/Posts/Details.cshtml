@@ -13,13 +13,21 @@
 }
 
 <div class="mt-4 pt-5 row">
-    @if (TempData.ContainsKey("Sucess"))
-    {
-        <div class="bg-success w-100 mt-2">@TempData["Sucess"]</div>
+    @if (TempData.ContainsKey("Sucess")) {
+        <div id="success-alert" class="alert alert-success mt-2 alert-dismissible fade show position-relative d-flex justify-content-center align-items-center" role="alert">
+            @TempData["Sucess"]
+            <button type="button" class="close btn position-absolute end-0" data-dismiss="alert" aria-label="Close">
+                <span class="fs-4" aria-hidden="true">&times;</span>
+            </button>
+        </div>
     }
-    @if (TempData.ContainsKey("Insucess"))
-    {
-        <div class="bg-danger w-100">@TempData["Insucess"]</div>
+    @if (TempData.ContainsKey("Error")) {
+        <div id="error-alert" class="alert alert-danger mt-2 alert-dismissible fade show" role="alert">
+            @TempData["Error"]
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
     }
     <div class="col-6 border-end vh-100-minus-navbar pe-0">
         <div class="d-flex justify-content-between">
@@ -208,6 +216,17 @@
         var modalForm = document.getElementById('delete-comment-modal');
         modalForm.setAttribute('action', '/Comments/Delete/' + commentId);
     }
+</script>
+<script>
+    $(document).ready(function () {
+        // Hide the success and error messages after 5 seconds
+        $("#success-alert, #error-alert").delay(5000).fadeOut(500);
+
+        // Dismiss the success and error messages when the close button is clicked
+        $(".close").click(function () {
+            $("#success-alert, #error-alert").alert("close");
+        });
+    });
 </script>
 <!--
 <h3 style="color: #6610F2; margin-top: 100px;" >Detalhes do Post</h3>

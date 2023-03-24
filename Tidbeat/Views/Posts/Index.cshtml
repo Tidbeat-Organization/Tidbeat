@@ -10,7 +10,12 @@
 <div style="margin-top: 100px;">
     @if (TempData["Message"] != null)
     {
-        <div class="alert alert-success">@TempData["Message"]</div>
+        <div id="success-alert" class="alert alert-success mt-2 alert-dismissible fade show position-relative d-flex justify-content-center align-items-center" role="alert">
+            @TempData["Message"]
+            <button type="button" class="close btn position-absolute end-0" data-dismiss="alert" aria-label="Close">
+                <span class="fs-4" aria-hidden="true">&times;</span>
+            </button>
+        </div>
     }
 
     <h3 style="color: #6610F2;">@Localizer["recommended_posts"]</h3>
@@ -40,3 +45,14 @@
         </div>
     }
 </div>
+<script>
+    $(document).ready(function () {
+        // Hide the success and error messages after 5 seconds
+        $("#success-alert, #error-alert").delay(5000).fadeOut(500);
+
+        // Dismiss the success and error messages when the close button is clicked
+        $(".close").click(function () {
+            $("#success-alert, #error-alert").alert("close");
+        });
+    });
+</script>
