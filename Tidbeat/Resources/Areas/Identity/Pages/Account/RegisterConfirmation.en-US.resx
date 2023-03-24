@@ -123,4 +123,7 @@
   <data name="please_check_email" xml:space="preserve">
     <value>Please, check your email to confirm your account.</value>
   </data>
+  <data name="register_confirmation" xml:space="preserve">
+    <value>Register Confirmation</value>
+  </data>
 </root>
