@@ -42,19 +42,28 @@
         <div asp-validation-for="Input.Email" class="text-danger" id="emailDanger">  @if (ModelState.ContainsKey("EmailRed")) { @ViewData.ModelState["EmailRed"].Errors.FirstOrDefault().ErrorMessage.ToString(); }</div>
 
         <label asp-for="Input.Password" class="first-phase form-label text-primary mt-3 mb-0">@Localizer["password"]</label>
-        <input asp-for="Input.Password" class="form-control first-phase mt-0" autocomplete="new-password" aria-required="true" id="registerPasswordField" value=@if (TempData.ContainsKey("Password"))
-               {
-               @TempData["Password"]
-;
-               } />
+        <div class="d-flex">
+            <input asp-for="Input.Password" class="form-control first-phase mt-0" autocomplete="new-password" aria-required="true" id="registerPasswordField" value=@if (TempData.ContainsKey("Password"))
+                {
+                @TempData["Password"];
+                } />
+            <div class="position-relative">
+                <div id="password-eye" class="bi bi-eye fs-4 text-primary pointer-active ms-1 position-absolute" onclick="togglePasswordVisibility()"></div>
+            </div>
+        </div>
         <div asp-validation-for="Input.Password" class="text-danger" id="passDanger"> @if (ViewData.ModelState.ContainsKey("PasswordRed")) {@ViewData.ModelState["PasswordRed"].Errors.FirstOrDefault().ErrorMessage.ToString(); }</div>
-
+            
+            
         <label asp-for="Input.ConfirmPassword" class="first-phase form-label text-primary mt-3 mb-0">@Localizer["confirm_password"]</label>
-        <input asp-for="Input.ConfirmPassword" class="form-control first-phase mt-0" autocomplete="new-password" aria-required="true" id="registerConfirmPasswordField" value=@if (TempData.ContainsKey("ConfirmPassword"))
-               {
-               @TempData["ConfirmPassword"]
-;
-               } />
+        <div class="d-flex">
+            <input asp-for="Input.ConfirmPassword" class="form-control first-phase mt-0" autocomplete="new-password" aria-required="true" id="registerConfirmPasswordField" value=@if (TempData.ContainsKey("ConfirmPassword"))
+                   {
+                   @TempData["ConfirmPassword"];
+                   } />
+            <div class="position-relative">
+                <div id="confirm-password-eye" class="bi bi-eye fs-4 text-primary pointer-active ms-1 position-absolute" onclick="toggleConfirmPasswordVisibility()"></div>
+            </div>
+        </div>
         <div asp-validation-for="Input.ConfirmPassword" class="text-danger" id="passConfirmDanger">@if (ViewData.ModelState.ContainsKey("ConfirmPasswordRed")){@ViewData.ModelState["ConfirmPasswordRed"].Errors.FirstOrDefault().ErrorMessage.ToString();}</div>
 
         <label asp-for="Input.FullName" class="second-phase form-label text-primary mb-0">@Localizer["full_name"]</label>
@@ -248,6 +257,28 @@
         document.getElementById('emailDanger').innerHTML = "";
         document.getElementById('genderDanger').innerHTML = "";
 
+    }
+
+    function toggleVisibility(inputName, eyeName) {
+        var x = document.getElementById(inputName);
+        var passwordEye = document.getElementById(eyeName);
+        if (x.type === "password") {
+            x.type = "text";
+            passwordEye.classList.remove("bi-eye");
+            passwordEye.classList.add("bi-eye-slash");
+        } else {
+            passwordEye.classList.remove("bi-eye-slash");
+            passwordEye.classList.add("bi-eye");
+            x.type = "password";
+        }
+    }
+
+    function togglePasswordVisibility() {
+        toggleVisibility("registerPasswordField", "password-eye");
+    }
+
+    function toggleConfirmPasswordVisibility() {
+        toggleVisibility("registerConfirmPasswordField", "confirm-password-eye");
     }
 </script>
 

@@ -54,14 +54,14 @@
             <div class="position-relative">
                 <a target="_blank" href="@spotifyPageURL">
                     @if (Model.Album.Images.Count > 0) {
-                        <img src="@Model.Album.Images[0].Url" height="200" />
+                        <img src="@Model.Album.Images[0].Url" height="200" class="btn btn-outline-primary border-0 p-1" />
                     } else {
                         <img src="~/images/Empty_Song_Image.png" height="200" />
                     }
                 </a>
                 @if (User.Identity.IsAuthenticated)
                 {
-                    <div id="favoriteHeart" class="bi @(isFavorited ? "bi-heart-fill" : "bi-heart" ) text-danger fs-3 position-absolute top-0 end-0 mt-1 me-2 bg-black-50 ps-2 pe-2 pt-1"></div>
+                    <div id="favoriteHeart" class="bi @(isFavorited ? "bi-heart-fill" : "bi-heart" ) pointer-active text-danger fs-3 position-absolute bottom-0 end-0 mb-2 me-2 bg-black-50 ps-2 pe-2 pt-1"></div>
                 }
             </div>
             <div class="ms-2 text-start">
@@ -96,9 +96,9 @@
         <div class="d-flex justify-content-center mb-2">
             <div class="fs-3 me-4">@Localizer["posts"]</div>
             @if (User.Identity.IsAuthenticated) {
-            <a class="btn btn-primary" asp-controller="Posts" asp-action="Create" asp-route-Idsong="@Model.Id">
+                <a class="position-absolute bottom-0 end-0 me-4 mb-4 btn btn-primary" asp-controller="Posts" asp-action="Create" asp-route-Idsong="@Model.Id">
                     @Localizer["create_post"]
-            </a>
+                </a>
             }
         </div>
         @if (allPosts.Count == 0) {

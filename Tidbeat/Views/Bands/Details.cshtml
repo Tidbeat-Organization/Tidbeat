@@ -21,12 +21,7 @@
         <hr/>
         <div class="d-flex flex-column flex-xl-row justify-content-lg-start align-items-center">
             <a href="@spotifyPageURL" target="_blank">
-                @if (Model.Images.Count > 0)
-                {
-                    <img src="@imageUrl" height="200" />
-                } else {
-                    <img src="@imageUrl" height="200" />
-                }
+                <img src="@imageUrl" height="200" class="btn btn-outline-primary border-0 p-1" />
             </a>
             <div class="ms-2 text-start w-100">
                 <div class="d-flex flex-column text-start mb-3">
@@ -61,7 +56,7 @@
             <div class="fs-3 me-4">@Localizer["posts"]</div>
             @if (User.Identity.IsAuthenticated)
             {
-            <a class="btn btn-primary" asp-controller="Posts" asp-action="Create" asp-route-Idband="@Model.Id">
+                <a class="position-absolute bottom-0 end-0 me-4 mb-4 btn btn-primary" asp-controller="Posts" asp-action="Create" asp-route-Idband="@Model.Id">
                     @Localizer["create_post"]
             </a>
             }

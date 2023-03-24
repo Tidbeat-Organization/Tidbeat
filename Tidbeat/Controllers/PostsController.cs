@@ -187,15 +187,21 @@ namespace Tidbeat.Controllers
         // GET: Posts/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+            if (!User.Identity.IsAuthenticated) {
+                return Redirect("/Identity/Account/Login");
+            }
             if (id == null || _context.Posts == null)
             {
                 return NotFound();
             }
 
-            var post = await _context.Posts.FindAsync(id);
+            var post = await _context.Posts.Include(p => p.User).FirstOrDefaultAsync(p => p.PostId == id);
             if (post == null)
             {
                 return NotFound();
+            }
+            if (post.User.Id != (await _userManager.GetUserAsync(User)).Id) {
+                return Redirect("/");
             }
             return View(post);
         }

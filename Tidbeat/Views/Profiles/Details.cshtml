@@ -94,13 +94,13 @@
         @if (allPosts.Count == 0)
         {
             <div>@Localizer["first_post"]</div>
-            <div>
-                <a class="btn btn-primary" asp-controller="Posts" asp-action="Create">
-                    @Localizer["create_post"]
-                </a>
-            </div>
             <img src="~/images/NoPostsImage.png" height="120" class="mt-5" />
         }
+        <div class="position-absolute bottom-0 end-0 me-4 mb-4">
+            <a class="btn btn-primary" asp-controller="Posts" asp-action="Create">
+                @Localizer["create_post"]
+            </a>
+        </div>
         @foreach (Post post in allPosts)
         {
             <a class="text-decoration-none text-black" href="@Url.Action("Details", "Posts", new { id = post.PostId })">
