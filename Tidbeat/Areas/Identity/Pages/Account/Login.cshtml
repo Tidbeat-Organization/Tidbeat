@@ -36,11 +36,16 @@
         </div>
         <div class="mb-3">
             <label asp-for="Input.Password" class="form-label text-primary">@Localizer["password"]</label>
-            <input asp-for="Input.Password" type="password" class="form-control" id="InputPassword1" value=@if (TempData.ContainsKey("Password"))
-                   {
-                   @TempData["Password"]
-;
-                   }>
+            <div class="d-flex">
+                <input asp-for="Input.Password" type="password" class="form-control" id="InputPassword1" value=@if (TempData.ContainsKey("Password"))
+                       {
+                       @TempData["Password"]
+    ;
+                       }>
+                <div class="position-relative">
+                    <div id="password-eye" class="bi bi-eye fs-4 text-primary pointer-active ms-1 position-absolute" onclick="toggleLoginPasswordVisibility()"></div>
+                </div>
+            </div>
             <div asp-validation-for="Input.Password" class="text-danger" id="passDanger">
                 @if (ViewData.ModelState.ContainsKey("PasswordRed"))
                 {
@@ -137,6 +142,10 @@
         document.getElementById('Danger').innerHTML = "";
         document.getElementById('passDanger').innerHTML = "";
         document.getElementById('emailDanger').innerHTML = "";
+    }
+
+    function toggleLoginPasswordVisibility() {
+        togglePasswordVisibility("InputPassword1", "password-eye");
     }
 </script>
 <!--
