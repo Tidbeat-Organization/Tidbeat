@@ -117,14 +117,26 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="are_you_sure_delete_comment" xml:space="preserve">
+    <value>Tem a certeza que deseja apagar o comentário?</value>
+  </data>
   <data name="band" xml:space="preserve">
     <value>Banda</value>
+  </data>
+  <data name="cancel" xml:space="preserve">
+    <value>Cancelar</value>
   </data>
   <data name="comments" xml:space="preserve">
     <value>Comentários</value>
   </data>
   <data name="created_in" xml:space="preserve">
     <value>Criado em</value>
+  </data>
+  <data name="delete" xml:space="preserve">
+    <value>Apagar</value>
+  </data>
+  <data name="delete_comment" xml:space="preserve">
+    <value>Apagar Comentário</value>
   </data>
   <data name="edited_in" xml:space="preserve">
     <value>Editado em</value>
