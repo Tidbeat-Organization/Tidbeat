@@ -87,16 +87,17 @@ namespace Tidbeat.Areas.Identity.Pages.Account
             public string Email { get; set; }
 
             // Full Name
-            [Required]
+            [MaxLength(30, ErrorMessage = "name_too_long")]
+            [Required(ErrorMessage = "name_required")]
             public string FullName { get; set; }
 
             // Birthday Date
-            [Required]
+            [Required(ErrorMessage = "birthday_date_required")]
             [DataType(DataType.Date)]
             public DateTime BirthdayDate { get; set; }
 
             // Gender
-            [Required]
+            [Required(ErrorMessage = "gender_required")]
             public string Gender { get; set; }
         }
         

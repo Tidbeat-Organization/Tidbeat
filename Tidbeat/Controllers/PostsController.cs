@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.DotNet.MSIdentity.Shared;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
 using Newtonsoft.Json.Linq;
 using Tidbeat.Data;
 using Tidbeat.Models;
@@ -20,13 +21,15 @@ namespace Tidbeat.Controllers
         private readonly IServiceProvider _serviceProvider;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ISpotifyService _spotifyService;
+        private readonly IStringLocalizer<PostsController> _localizer;
 
-        public PostsController(ApplicationDbContext context, IServiceProvider serviceProvider, ISpotifyService spotifyService)
+        public PostsController(ApplicationDbContext context, IServiceProvider serviceProvider, ISpotifyService spotifyService, IStringLocalizer<PostsController> localizer)
         {
             _context = context;
             _serviceProvider = serviceProvider;
             _userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
             _spotifyService = spotifyService;
+            _localizer = localizer;
         }
 
         // GET: Posts
@@ -161,7 +164,7 @@ namespace Tidbeat.Controllers
                     }
                     postToSubmit.CreationDate = DateTime.Now;
                     var result = await _context.Posts.AddAsync(postToSubmit);
-                    TempData["Sucess"] = "O seu post foi criado com sucesso.";
+                    TempData["Sucess"] = _localizer["your_post_was_sucessfully_created"].Value;
                     await _context.SaveChangesAsync();
                     var value = _context.Posts.OrderBy(e => e.PostId).LastAsync().Result;
                     if (value != null) {
@@ -229,16 +232,16 @@ namespace Tidbeat.Controllers
                         ogPost.EditDate = DateTime.Now;
                         ogPost.IsEdited = true;
                         _context.Update(ogPost);
-                        TempData["Sucess"] = "O seu post foi atualizado com sucesso.";
+                        TempData["Sucess"] = _localizer["your_post_was_sucessfully_updated"].Value;
                         await _context.SaveChangesAsync();
                     }
                     else {
-                        TempData["Insucess"] = "Não têm permissões para modificar o post";
+                        TempData["Insucess"] = _localizer["no_permission_for_modification"].Value;
                     }
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    TempData["Insucess"] = "Ocorreu um erro";
+                    TempData["Insucess"] = _localizer["an_error_occurred"].Value;
                     if (!PostExists(id))
                     {
                         return NotFound();
@@ -298,7 +301,7 @@ namespace Tidbeat.Controllers
                 _context.Posts.Remove(post);
                 await _context.SaveChangesAsync();
 
-                TempData["Message"] = "O seu post foi apagado com sucesso.";
+                TempData["Message"] = _localizer["post_deleted_sucessfully"].Value;
             }
             else
             {
