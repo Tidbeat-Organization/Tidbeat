@@ -114,11 +114,17 @@
                         </div>
                         <div class="d-flex flex-row ms-lg-auto align-items-center">
                             <partial name="_LoginPartial" />
-                            <form asp-controller="Language" asp-action="SetLanguage" method="post" class="d-flex align-self-center ms-auto">
-                                <select id="changeLanguage" class="border-0 bg-white pointer-active" name="language" onchange="this.form.submit()">
-                                    <option value="en-US" class="fs-3">🇺🇸</option>
-                                    <option value="pt-PT" class="fs-3">🇵🇹</option>
-                                </select>
+                            <form asp-controller="Language" asp-action="SetLanguage" method="post" id="languageForm" class="d-flex align-self-center ms-auto">
+                                <div class="dropdown">
+                                    <div class="btn border-end-0 dropdown-toggle d-flex align-items-center" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <img id="changeLanguageImage" src="~/images/pt.svg" />
+                                    </div>
+                                    <ul class="dropdown-menu" style="min-width: 55px">
+                                        <li><a class="dropdown-item pe-0 ps-1 d-flex" href="#" id="language-pt-button"><img src="~/images/pt.svg" width="20px" class="me-1" />PT</a></li>
+                                        <li><a class="dropdown-item pe-0 ps-1 d-flex" href="#" id="language-us-button"><img src="~/images/us.svg" width="20px" class="me-1" />US</a></li>
+                                    </ul>
+                                    <input id="languageCodeInput" name="language" hidden />
+                                </div>
                             </form>
                         </div>
                     </div>
@@ -288,8 +294,30 @@
         </div>
     </div>
     <script>
-        const changeLanguage = document.getElementById('changeLanguage');
-        changeLanguage.value = "@CultureInfo.CurrentCulture.Name";
+        const changeLanguageImage = document.getElementById('changeLanguageImage');
+
+        let currentLanguage = "@CultureInfo.CurrentCulture.Name";
+        if (currentLanguage === "pt-PT") {
+            changeLanguageImage.src = "/images/pt.svg";
+        } else if (currentLanguage === "en-US") {
+            changeLanguageImage.src = "/images/us.svg";
+        }
+
+        function findAndSubmitForm(language) {
+            let languageCodeInput = document.getElementById('languageCodeInput');
+            languageCodeInput.value = language;
+
+            let languageForm = document.getElementById('languageForm');
+            languageForm.submit();
+        }
+
+        document.getElementById('language-pt-button').onclick = function () {
+            findAndSubmitForm("pt-PT");
+        }
+
+        document.getElementById('language-us-button').onclick = function () {
+            findAndSubmitForm("en-US");
+        }
     </script>
     <script>
         // Used to toggle the password visibility in different screens
