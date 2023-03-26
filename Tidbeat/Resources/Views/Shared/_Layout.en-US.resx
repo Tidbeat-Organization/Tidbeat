@@ -120,6 +120,9 @@
   <data name="bands" xml:space="preserve">
     <value>Bands</value>
   </data>
+  <data name="filter" xml:space="preserve">
+    <value>Filter</value>
+  </data>
   <data name="other_contents" xml:space="preserve">
     <value>Other Contents</value>
   </data>

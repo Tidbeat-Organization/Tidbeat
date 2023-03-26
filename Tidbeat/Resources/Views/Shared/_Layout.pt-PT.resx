@@ -120,17 +120,14 @@
   <data name="bands" xml:space="preserve">
     <value>Bandas</value>
   </data>
-  <data name="login" xml:space="preserve">
-    <value>Login</value>
+  <data name="filter" xml:space="preserve">
+    <value>Filtro</value>
   </data>
   <data name="other_contents" xml:space="preserve">
     <value>Outros Conteúdos</value>
   </data>
   <data name="recommended_posts" xml:space="preserve">
     <value>Posts Recomendados</value>
-  </data>
-  <data name="register" xml:space="preserve">
-    <value>Registo</value>
   </data>
   <data name="search" xml:space="preserve">
     <value>Procurar</value>
