@@ -70,28 +70,27 @@
                 Menu
                 <i class="bi-list"></i>
             </button>
-            <div class="collapse show navbar-collapse d-lg-block " id="navbarResponsive">
+            <div class="collapse show navbar-collapse d-lg-block pb-2 pb-lg-0" id="navbarResponsive">
                 <div class="d-flex flex-column flex-lg-row w-100 align-items-center">
-                    <div class="d-flex flex-row w-100 justify-content-center justify-content-lg-start">
-                        <ul class="navbar-nav me-2 my-0">
-                            <li class="nav-item me-1 rounded text-center bg-white">
-                                <a class="nav-link text-black text-nowrap" href="@Url.Action("Index", "Posts")">@Localizer["recommended_posts"]</a>
-                            </li>
-                        </ul>
-                        <div class="dropdown me-3" style="background-color: white; color: black;">
-                            <button class="btn dropdown-toggle py-2 border-0" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="background-color: white; color: black;">
-                                @Localizer["other_contents"]
-                            </button>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#">@Localizer["users"]</a></li>
-                                <li><a class="dropdown-item" href="/Songs">@Localizer["songs"]</a></li>
-                                <li><a class="dropdown-item" href="/Bands">@Localizer["bands"]</a></li>
+                    <div class="d-flex flex-row w-100 justify-content-between justify-content-sm-center justify-content-lg-start">
+                        <div class="d-flex flex-column flex-sm-row">
+                            <ul class="navbar-nav me-2 my-0">
+                                <li class="nav-item me-1 rounded text-center bg-white">
+                                    <a class="nav-link text-black text-nowrap" href="@Url.Action("Index", "Posts")">@Localizer["recommended_posts"]</a>
+                                </li>
                             </ul>
+                            <div class="dropdown me-3" style="background-color: white; color: black;">
+                                <button class="btn dropdown-toggle py-2 border-0" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="background-color: white; color: black;">
+                                    @Localizer["other_contents"]
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="#">@Localizer["users"]</a></li>
+                                    <li><a class="dropdown-item" href="/Songs">@Localizer["songs"]</a></li>
+                                    <li><a class="dropdown-item" href="/Bands">@Localizer["bands"]</a></li>
+                                </ul>
+                            </div>
                         </div>
                         <div class="d-flex flex-row d-none d-xl-block">
-                            
-                           
-                            
                             <!-- Search bar with dropdown menu -->
                             <div class="input-group d-lg-flex flex-row flex-nowrap">
                                 <div class="dropdown">
@@ -113,7 +112,7 @@
                                 </button>
                             </div>
                         </div>
-                        <div class="d-flex flex-row ms-lg-auto">
+                        <div class="d-flex flex-row ms-lg-auto align-items-center">
                             <partial name="_LoginPartial" />
                             <form asp-controller="Language" asp-action="SetLanguage" method="post" class="d-flex align-self-center ms-auto">
                                 <select id="changeLanguage" class="border-0 bg-white pointer-active" name="language" onchange="this.form.submit()">
@@ -130,7 +129,7 @@
                         </div>
                         -->
                         <!-- Search bar with dropdown menu -->
-                        <div class="input-group d-lg-flex flex-row flex-nowrap">
+                        <div class="input-group d-none d-sm-flex flex-row flex-nowrap">
                             <div class="dropdown">
                                 <div class="btn border-light-grey border-end-0 dropdown-toggle d-flex align-items-center" data-bs-toggle="dropdown" aria-expanded="false">
                                     <span id="searchTypeText" class="me-1">@Localizer["filter"]:</span>
@@ -312,7 +311,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.js"></script>
     <!-- Core theme JS-->
-    <script src="js/scripts.js"></script>
+    <!--<script src="js/scripts.js"></script>-->
     <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
     <!-- * *                               SB Forms JS                               * *-->
     <!-- * * Activate your form at https://startbootstrap.com/solution/contact-forms * *-->
