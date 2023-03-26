@@ -42,7 +42,7 @@
                 <span asp-validation-for="Input.NewEmail" class="text-danger">@ViewData.ModelState?["NewEmail"]?.Errors?.FirstOrDefault()?.ErrorMessage.ToString()</span>
             </div>
             @if (currentUser.PasswordHash == null) {
-                <div class="mt-3">
+                <div class="mt-3 me-4 me-md-0">
                     <label asp-for="Input.NewPassword" class="form-label text-primary mb-0 ">@Localizer["new_alt"] Password</label>
                     <div class="d-flex">
                         <input type="password" asp-for="Input.NewPassword" class="form-control" autocomplete="new-password" aria-required="true" id="new-password-input" />
@@ -52,7 +52,7 @@
                     </div>
                     <span asp-validation-for="Input.NewPassword" class="text-danger">@ViewData.ModelState?["NewPassword"]?.Errors?.FirstOrDefault()?.ErrorMessage.ToString()</span>
                 </div>
-                <div class="mt-3">
+                <div class="mt-3 me-4 me-md-0">
                     <label asp-for="Input.ConfirmNewPassword" class="form-label text-primary mb-0">@Localizer["confirm"] Password</label>
                     <div class="d-flex">
                         <input type="password" asp-for="Input.ConfirmNewPassword" class="form-control" autocomplete="new-password" aria-required="true" id="confirm-new-password-input" />
