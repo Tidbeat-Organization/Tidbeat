@@ -116,10 +116,10 @@
                             <partial name="_LoginPartial" />
                             <form asp-controller="Language" asp-action="SetLanguage" method="post" id="languageForm" class="d-flex align-self-center ms-auto">
                                 <div class="dropdown">
-                                    <div class="btn border-end-0 dropdown-toggle d-flex align-items-center" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <div class="btn border-end-0 dropdown-toggle d-flex align-items-center p-1 me-3" data-bs-toggle="dropdown" aria-expanded="false">
                                         <img id="changeLanguageImage" src="~/images/pt.svg" />
                                     </div>
-                                    <ul class="dropdown-menu" style="min-width: 55px">
+                                    <ul class="dropdown-menu me-2" style="min-width: 50px">
                                         <li><a class="dropdown-item pe-0 ps-1 d-flex" href="#" id="language-pt-button"><img src="~/images/pt.svg" width="20px" class="me-1" />PT</a></li>
                                         <li><a class="dropdown-item pe-0 ps-1 d-flex" href="#" id="language-us-button"><img src="~/images/us.svg" width="20px" class="me-1" />US</a></li>
                                     </ul>
@@ -294,9 +294,24 @@
         </div>
     </div>
     <script>
-        const changeLanguageImage = document.getElementById('changeLanguageImage');
+        function getCookie(name) {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.startsWith(name + '=')) {
+                    return cookie.substring(name.length + 1);
+                }
+            }
+            return null;
+        }
 
-        let currentLanguage = "@CultureInfo.CurrentCulture.Name";
+        const cultureCookie = getCookie('.AspNetCore.Culture');
+        var currentLanguage = null;
+        if (cultureCookie) {
+            currentLanguage = decodeURIComponent(cultureCookie).split('|')[0].split('=')[1];
+        }
+
+        const changeLanguageImage = document.getElementById('changeLanguageImage');
         if (currentLanguage === "pt-PT") {
             changeLanguageImage.src = "/images/pt.svg";
         } else if (currentLanguage === "en-US") {
