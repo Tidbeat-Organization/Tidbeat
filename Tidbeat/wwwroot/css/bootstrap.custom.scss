@@ -128,6 +128,23 @@ nav-link {
     text-decoration: underline;
 }
 
+.text-primary-hover {
+    color: $primary;
+    text-decoration: none;
+}
+.text-primary-hover:hover {
+    color: $primary;
+    text-decoration: underline;
+}
+
+.post-label-right-aligned {
+    color: $dark;
+    font-weight: $font-weight-semibold;
+    text-align: right !important;
+    font-size: 11pt;
+    width: 64pt;
+}
+
 .vh-100-minus-navbar {
     height: calc(100vh - $navbar-height);
 }

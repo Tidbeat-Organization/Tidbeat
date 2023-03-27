@@ -31,32 +31,26 @@
     }
     <div class="col-6 border-end vh-100-minus-navbar pe-0">
         <div class="d-flex justify-content-between">
-            <div>
-                <div class="d-flex ms-2">
-                    <div class="text-start text fs-6 border-end pe-2">@fromUpper: <a class="text-decoration-none" asp-Controller="Profiles" asp-Action="Details" asp-route-id="@Model.User.Id">@Model.User.FullName</a></div>
-                    <div class="text-start text fs-6 ms-2">@Localizer["created_in"]: @Model.CreationDate.Date.ToShortDateString()</div>
+            <div class=" w-100">
+                <div class="d-flex flex-column ms-2 align-items-start mt-3">
+                    <div class="d-flex flex-row">
+                        <div class="post-label-right-aligned fs-6">@fromUpper: </div>
+                        <div><a class="fw-light text-decoration-none ms-2" asp-Controller="Profiles" asp-Action="Details" asp-route-id="@Model.User.Id">@Model.User.FullName</a></div>
+                    </div>
+                    <div class="d-flex flex-row">
+                        <div class="post-label-right-aligned fs-6">
+                        @Localizer["created_in"]:
+                    </div>
+                    <span class="text-dark fw-light ms-2">@Model.CreationDate.Date.ToShortDateString()</span>
+                    
+                    </div>
+                    
                     @if (Model.IsEdited) {
                         <span class="fs-6 ">&nbsp;(@Localizer["edited_in"] - @Model.EditDate.Date.ToShortDateString())</span>
                     }
                 </div>
-                @if (Model.Song != null) {
-                    <div class="d-flex flex-row ms-2 fs-6">
-                        <div class="text-primary">@Localizer["song"]:&nbsp;</div>
-                        <a class="text-black-hover" asp-controller="Songs" asp-action="Details" asp-route-id="@Model.Song.SongId">@Model.Song.Name</a>
-                        <div class="text-primary">&nbsp;@(from)&nbsp;</div>
-                        <a class="text-black-hover" asp-controller="Bands" asp-action="Details" asp-route-id="@Model.Band.BandId">@Model.Band.Name </a>
-                        <!--<div class="text-primary">&nbsp;&nbsp;&nbsp;&nbsp;Link:&nbsp;</div>
-                        <a href="https://open.spotify.com/track/@Model.Song.SongId" target="_blank">Spotify - @Model.Song.Name by @Model.Band.Name</a>-->
-                    </div>
-                }
-                else if (Model.Band != null) {
-                    <div class="d-flex flex-row ms-2 fs-6">
-                        <div class="text-primary">@Localizer["band"]:</div>
-                        <a class="text-black-hover" asp-controller="Bands" asp-action="Details" asp-route-id="@Model.Band.BandId">@Model.Band.Name </a>
-                        <div class="text-primary">&nbsp;&nbsp;&nbsp;&nbsp;Link:&nbsp;</div>
-                        <a href="https://open.spotify.com/artist/@Model.Band.BandId" target="_blank">Spotify - @Model.Band.Name</a>
-                    </div>
-                }
+
+                
             </div>
             @if (Model.User.Id == ViewBag.currentUser?.Id)
             {
@@ -66,6 +60,38 @@
             </div>
             }
         </div>
+        <hr/>
+        @if (Model.Song != null) {
+                    
+            <div class="d-flex flex-row ms-2 fs-6">
+
+                <div class="post-label-right-aligned">@Localizer["song"]:&nbsp;</div>
+                <div><a class="text-primary-hover ms-2" asp-controller="Songs" asp-action="Details" asp-route-id="@Model.Song.SongId">@Model.Song.Name</a></div>
+                                <!--<div class="text-primary">&nbsp;&nbsp;&nbsp;&nbsp;Link:&nbsp;</div>
+                <a href="https://open.spotify.com/track/@Model.Song.SongId" target="_blank">Spotify - @Model.Song.Name by @Model.Band.Name</a>-->
+            </div>
+            <div class="d-flex flex-row ms-2 fs-6">
+                <div class="post-label-right-aligned">&nbsp;@(from)&nbsp;</div>
+                <div> <a class="text-primary-hover ms-2" asp-controller="Bands" asp-action="Details" asp-route-id="@Model.Band.BandId">@Model.Band.Name </a></div>
+
+            </div>
+        }
+        else if (Model.Band != null) {
+            <div class="d-flex flex-column ms-2 fs-6">
+                <div class="d-flex flex-row w-100">
+                    <div class="post-label-right-aligned">@Localizer["band"]:</div>
+                    <a class="text-primary-hover ms-2" asp-controller="Bands" asp-action="Details" asp-route-id="@Model.Band.BandId">@Model.Band.Name </a>
+                </div>
+                <div class="d-flex flex-row w-100">
+                    <div class="post-label-right-aligned">Link:</div>
+                    <a class="text-primary-hover ms-2" href="https://open.spotify.com/artist/@Model.Band.BandId" target="_blank">Spotify - @Model.Band.Name</a>
+                </div>
+            </div>
+        }
+        @if (Model.Song != null || Model.Band != null) {
+            <hr style="height: 0.85pt !important" />
+        }
+        
         <div class="d-flex">
             @if (Model.Song != null && ViewBag.urlSong != null) {
                 <div>
@@ -83,6 +109,7 @@
                 <div id="post-content" class="text-start pb-4">@Html.Raw(Model.Content)</div>
             </div>
         </div>
+        <hr style="height: 1pt !important"/>
         <div class="d-flex">@Html.Partial("_RatingPartial", Tuple.Create(Model.PostId, RatingType.Post))</div>
     </div>
     
