@@ -70,8 +70,8 @@ namespace TidbeatTests2._0.Services
             //config["SpotifyAPI:ClientId"] = "b7e13ced889d41389c8f93767c3803d3";
             //config["SpotifyAPI:ClientSecret"] = "d82a544b10394f07b3ce80c10729f0a4";
             var apiSpotify = new SpotifyService(config);
-            var albums = await apiSpotify.GetAmountBandAlbumAsync("0hmhv5CTaXOilOf0hGeIvN");
-            Assert.True(albums == 16);
+            var albums = await apiSpotify.GetAmountBandAlbumAsync("0u18Cq5stIQLUoIaULzDmA");
+            Assert.True(albums == 2);
         }
 
         [Fact]
