@@ -11,7 +11,7 @@
 
 <div class="container d-flex justify-content-center" style="margin-top: 35px;">
     <div class="col-md-6 col-lg-4" style="margin-right: 250px;">
-        <form asp-action="Edit">
+        <form asp-action="Edit" id="edit-post-form">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
            @* <!-- Song -->
             <div class="form-group row">
@@ -44,9 +44,9 @@
             <!-- Title -->
             <div class="form-group row" style="margin-top: 20px;">
                 <label asp-for="Title" class="col-sm-2 col-form-label" style="color: #6610F2; font-weight: bold;">@Localizer["title"]:</label>
-                <div class="col-sm-10">
-                    <input asp-for="Title" class="form-control" placeholder="@Localizer["type_title"]..." style="border: 1.5px solid #6610F2; border-radius: 15px; width:625px;" value="@Model.Title" />
-                    <span asp-validation-for="Title" class="text-danger"></span>
+                <div class="col-sm-10 d-flex flex-column">
+                    <input asp-for="Title" class="form-control" id="edit-post-title" placeholder="@Localizer["type_title"]..." style="border: 1.5px solid #6610F2; border-radius: 15px; width:625px;" value="@Model.Title" />
+                    <span asp-validation-for="Title" id="title-validation-span" class="text-danger text-start"></span>
                 </div>
             </div>
 
@@ -60,7 +60,7 @@
             <!-- Form submit -->
             <div class="align-buttons" style="margin-left: 280px;">
                 <div class="form-group update-button" style="margin-top: 25px;">
-                    <input type="submit" value="@Localizer["update"]" class="btn btn-primary" />
+                    <button type="button" id="submit-button-edit-post" class="btn btn-primary ">@Localizer["update"]</button>
                 </div>
                 <div class="row" style="margin-top: 20px;">
                     <div class="col">
@@ -71,9 +71,40 @@
         </form>
     </div>
 </div>
+<script>
+    function validateTitle() {
+        var title = document.getElementById("edit-post-title").value;
+        if (title.length === 0 || !title.trim()) {
+            var warningMsg = "@Localizer["type_title"]";
+            document.getElementById("title-validation-span").textContent = warningMsg;
+            return false;
+        }
+        return true;
+    }
 
+    function validateDescription() {
+        var descriptionContent = tinymce.get('postedit').getContent();
+        if (descriptionContent.length === 0 || !descriptionContent.trim()) {
+            var warningMsg = "@Localizer["type_content"]";
+            tinymce.get('postedit').notificationManager.open({
+                text: warningMsg,
+                type: 'warning',
+            });
+            return false;
+        }
+        return true;
+    }
+
+    var submitButtonCreatePost = document.getElementById("submit-button-edit-post");
+    submitButtonCreatePost.onclick = function () {
+        if (validateTitle() && validateDescription()) {
+            document.getElementById("edit-post-form").submit();
+        }
+    };
+</script>
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
+        
     }
     }

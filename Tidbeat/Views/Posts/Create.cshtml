@@ -366,32 +366,32 @@
        function validateTitle() {
         var title = document.getElementById("create-post-title").value;
         if (title.length === 0 || !title.trim()) {
-            var warningMsg = 'Please enter a title.';
+            var warningMsg = "@Localizer["type_title"]";
             document.getElementById("title-validation-span").textContent = warningMsg;
             return false;
         }
         return true;
        }
 
-    function validateDescription() {
-        var descriptionContent = tinymce.get('postcreate').getContent();
-        if (descriptionContent.length === 0 || !descriptionContent.trim()) {
-            var warningMsg = 'Please enter a description.';
-            tinymce.get('postcreate').notificationManager.open({
-                text: warningMsg,
-                type: 'warning',
-            });
-            return false;
+        function validateDescription() {
+            var descriptionContent = tinymce.get('postcreate').getContent();
+            if (descriptionContent.length === 0 || !descriptionContent.trim()) {
+                var warningMsg = "@Localizer["type_content"]";
+                tinymce.get('postcreate').notificationManager.open({
+                    text: warningMsg,
+                    type: 'warning',
+                });
+                return false;
+            }
+            return true;
         }
-        return true;
-    }
 
-    var submitButtonCreatePost = document.getElementById("submit-button-create-post");
-    submitButtonCreatePost.onclick = function () {
-        if (validateTitle() && validateDescription()) {
-            document.getElementById("create-post-form").submit();
-        }
-    };
+        var submitButtonCreatePost = document.getElementById("submit-button-create-post");
+        submitButtonCreatePost.onclick = function () {
+            if (validateTitle() && validateDescription()) {
+                document.getElementById("create-post-form").submit();
+            }
+        };
 
 </script>
 
