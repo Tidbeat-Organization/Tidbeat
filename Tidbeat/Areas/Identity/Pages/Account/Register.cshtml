@@ -25,7 +25,7 @@
 </style>
 <div class="text-center d-flex flex-column temporary-margin">
     <div class="display-4 text-primary">@Localizer["register_in_tidbeat"]</div>
-    <form class="mt-3 mx-auto w-25" id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+    <form class="mt-3 mx-auto " id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="text-danger" id="Danger">
             @if (ModelState.ContainsKey("Danger"))
@@ -42,12 +42,12 @@
         <div asp-validation-for="Input.Email" class="text-danger" id="emailDanger">  @if (ModelState.ContainsKey("EmailRed")) { @ViewData.ModelState["EmailRed"].Errors.FirstOrDefault().ErrorMessage.ToString(); }</div>
 
         <label asp-for="Input.Password" class="first-phase form-label text-primary mt-3 mb-0">@Localizer["password"]</label>
-        <div class="d-flex">
+        <div class="d-flex me-4 me-sm-0">
             <input asp-for="Input.Password" class="form-control first-phase mt-0" autocomplete="new-password" aria-required="true" id="registerPasswordField" value=@if (TempData.ContainsKey("Password"))
                 {
                 @TempData["Password"];
                 } />
-            <div class="position-relative">
+            <div class="position-relative first-phase">
                 <div id="password-eye" class="bi bi-eye fs-4 text-primary pointer-active ms-1 position-absolute" onclick="toggleRegisterPasswordVisibility()"></div>
             </div>
         </div>
@@ -55,12 +55,12 @@
             
             
         <label asp-for="Input.ConfirmPassword" class="first-phase form-label text-primary mt-3 mb-0">@Localizer["confirm_password"]</label>
-        <div class="d-flex">
+        <div class="d-flex me-4 me-sm-0">
             <input asp-for="Input.ConfirmPassword" class="form-control first-phase mt-0" autocomplete="new-password" aria-required="true" id="registerConfirmPasswordField" value=@if (TempData.ContainsKey("ConfirmPassword"))
                    {
                    @TempData["ConfirmPassword"];
                    } />
-            <div class="position-relative">
+            <div class="position-relative first-phase">
                 <div id="confirm-password-eye" class="bi bi-eye fs-4 text-primary pointer-active ms-1 position-absolute" onclick="toggleConfirmPasswordVisibility()"></div>
             </div>
         </div>
@@ -89,11 +89,11 @@
                 ;
             }</div>
 
-        <div class="d-flex flex-row justify-content-evenly mt-5 w-auto">
-            <a id="reg-phase-return-btn" class="second-phase btn btn-primary mr-5">@Localizer["back"]</a>
-            <a class="btn btn-primary ml-5" asp-page="./Login">@Localizer["go_to_login"]</a>
-            <button id="reg-phase-btn" class="first-phase btn btn-primary mr-5">@Localizer["continue_register"]</button>
-            <a id="registerSubmit" class="second-phase btn btn-primary mr-5" onclick="RegisterFunction()">@Localizer["register"]</a>
+        <div class="d-flex flex-row justify-content-sm-evenly justify-content-center flex-wrap mt-5 w-auto">
+            <a id="reg-phase-return-btn" class="second-phase btn btn-primary me-2 mb-1">@Localizer["back"]</a>
+            <a class="btn btn-primary ml-5 text-nowrap me-2 mb-1" asp-page="./Login">@Localizer["go_to_login"]</a>
+            <button id="reg-phase-btn" class="first-phase btn btn-primary mr-5 text-nowrap mb-1">@Localizer["continue_register"]</button>
+            <a id="registerSubmit" class="second-phase btn btn-primary mr-5 text-nowrap mb-1" onclick="RegisterFunction()">@Localizer["register"]</a>
             <a id="registerFinalSubmit" type="submit" class="hidden" onclick=""></a>
         </div>
         
