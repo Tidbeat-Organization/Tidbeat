@@ -204,7 +204,10 @@ namespace Tidbeat.Controllers
                 }
             }
 
-            return RedirectToAction("Create");
+            ViewBag.songs = _spotifyService.GetMultipleSongsAsync("a").Result.Tracks.Items;
+            ViewBag.bands = _spotifyService.GetMultipleBandsAsync("a").Result.Artists.Items;
+
+            return View(post);
         }
 
         // GET: Posts/Edit/5

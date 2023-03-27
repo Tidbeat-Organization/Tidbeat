@@ -10,6 +10,7 @@ $theme-colors: (
 $primary: #6610F2;
 $light-grey: #e3e3e3;
 $color-text: white;
+$red-danger: #DC3545;
 
 $font-sizes : (
     6: 14px,
@@ -148,7 +149,7 @@ nav-link {
 }
 
 .tox-notification--warning {
-    background-color: $primary !important;
+    background-color: $red-danger !important;
 }
 
 .tox-notification__body > p {

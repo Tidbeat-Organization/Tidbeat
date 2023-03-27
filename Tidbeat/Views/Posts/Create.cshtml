@@ -18,7 +18,7 @@
                 <!option value="incomplete" @(ViewBag.chooseBand != null ? "selected" : "")>@Localizer["band"]</!option>
                         </select>
         </div>
-        <form asp-action="Create">
+        <form asp-action="Create" id="create-post-form">
             <div asp-validation-summary="ModelOnly" class="text-danger">
                 @if (TempData.ContainsKey("error"))
                 {
@@ -108,9 +108,9 @@
             <!-- Title -->
             <div class="form-group row" style="margin-top: 20px;">
                 <label asp-for="Title" class="col-sm-2 col-form-label" style="color: #6610F2; font-weight: bold;">@Localizer["title"]:</label>
-                <div class="col-sm-10">
-                    <input asp-for="Title" class="form-control" placeholder="@Localizer["type_title"]..." style="border: 1.5px solid #6610F2; border-radius: 15px; width:625px;" />
-                    <span asp-validation-for="Title" class="text-danger"></span>
+                <div class="col-sm-10 d-flex flex-column">
+                    <input asp-for="Title" id="create-post-title" class="form-control" placeholder="@Localizer["type_title"]..." style="border: 1.5px solid #6610F2; border-radius: 15px; width:625px;" />
+                    <span asp-validation-for="Title" class="text-danger text-start" id="title-validation-span"></span>
                 </div>
             </div>
 
@@ -124,12 +124,8 @@
             <!-- Form submit -->
             <div class="align-buttons" style="margin-left: 280px;">
                 <div class="form-group create-button" style="margin-top: 25px;">
-                    <input type="submit" value="@Localizer["create"]" class="btn btn-primary" />
-                </div>
-                <div class="row" style="margin-top: 20px;">
-                    <div class="col">
-                        <a asp-action="Index">@Localizer["cancel"]</a>
-                    </div>
+                    <button type="button" id="submit-button-create-post" class="btn btn-primary ">@Localizer["create"]</button>
+                    <a asp-action="Index" class="ms-2">@Localizer["cancel"]</a>
                 </div>
             </div>  
         </form>
@@ -366,6 +362,37 @@
             document.getElementById("answerInputSong").value = "";
             document.getElementById('SongIdInput').value = "";
        }
+
+       function validateTitle() {
+        var title = document.getElementById("create-post-title").value;
+        if (title.length === 0 || !title.trim()) {
+            var warningMsg = 'Please enter a title.';
+            document.getElementById("title-validation-span").textContent = warningMsg;
+            return false;
+        }
+        return true;
+       }
+
+    function validateDescription() {
+        var descriptionContent = tinymce.get('postcreate').getContent();
+        if (descriptionContent.length === 0 || !descriptionContent.trim()) {
+            var warningMsg = 'Please enter a description.';
+            tinymce.get('postcreate').notificationManager.open({
+                text: warningMsg,
+                type: 'warning',
+            });
+            return false;
+        }
+        return true;
+    }
+
+    var submitButtonCreatePost = document.getElementById("submit-button-create-post");
+    submitButtonCreatePost.onclick = function () {
+        if (validateTitle() && validateDescription()) {
+            document.getElementById("create-post-form").submit();
+        }
+    };
+
 </script>
 
 <style>
