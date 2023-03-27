@@ -4,21 +4,22 @@
 @inject IViewLocalizer Localizer;
 @{
     ViewData["Title"] = "Home Page";
+    var isUserLogged = User.Identity.IsAuthenticated;
 }
 
-<div class="">
-    <div>
+<div class="mb-2">
+    <div class="container-fluid">
         <!-- Top image with texts -->
-        <div class="row">
-            <div class="col-12 position-relative">
+        <div class="row mt-5">
+            <div class="col-12 position-relative px-0">
                 <img src="https://i.ibb.co/30r2VC4/288-2884863-black-acoustic-guitar-id-guitar-black-and-white.jpg" alt="Tidbeat Logo" class="img-fluid w-100 shadow-lg" style="filter: brightness(50%) drop-shadow(0 0 10px rgba(0, 0, 0, 0.8));">
-                <div class="position-absolute text-center" style="top: 50%; transform: translateY(-50%);">
-                    <div class="d-flex justify-content-center">
-                        <div class="mx-1 text-left" style="margin-right: 400px;">
-                            <span class="text-white" style="font-size: 32px; font-weight: 600;">@Localizer["welcome_banner"]<br> @Localizer["welcome_banner1"]</span>
+                <div class="position-absolute text-center w-100" style="top: 50%; transform: translateY(-50%);">
+                    <div class="d-flex justify-content-between">
+                        <div class="mx-1 text-left">
+                            <span class="text-white" style="font-size: 2.5vw; font-weight: 600;">@Localizer["welcome_banner"]<br> @Localizer["welcome_banner1"]</span>
                         </div>
-                        <div class="mx-7 text-right" style="margin-left: 400px;">
-                            <span class="text-white font-weight-bold" style="font-size: 24px;">@Localizer["register_now_banner"]</span>
+                        <div class="text-right pointer-active me-4" onclick="@(isUserLogged ? "" : "window.location.href='/Identity/Account/Register';")">
+                            <span class="text-white font-weight-bold text-black-hover me-2" style="font-size: 2.5vw;">@Localizer["register_now_banner"]</span>
                         </div>
                     </div>
                 </div>
@@ -38,7 +39,7 @@
         <div class="row justify-content-center">
             <div class="col-md-2 pt-5">
                 <div class="card">
-                    <div class="card-body" style="border: 1.5px solid black;">
+                    <div class="card-body hover-background-grey pointer-active" style="border: 1.5px solid black;" onclick="window.location.href='/Songs';" ;>
                         <h4 class="card-title" style="color: black; font-weight: bold;">1</h4>
                         <p class="card-text" style="color: #6610F2; font-weight: bold;">@(Localizer["acess_to_thousands"])</p>
                     </div>
@@ -46,7 +47,7 @@
             </div>
             <div class="col-md-2 pt-5">
                 <div class="card">
-                    <div class="card-body" style="border: 1.5px solid black;">
+                    <div class="card-body hover-background-grey pointer-active" style="border: 1.5px solid black;" onclick="window.location.href='/Posts';">
                         <h4 class="card-title" style="color: black; font-weight: bold;">2</h4>
                         <p class="card-text" style="color: #6610F2; font-weight: bold;">@Localizer["exchange_ideas"]</p>
                     </div>
@@ -54,7 +55,7 @@
             </div>
             <div class="col-md-2 pt-5">
                 <div class="card">
-                    <div class="card-body" style="border: 1.5px solid black;">
+                    <div class="card-body hover-background-grey pointer-active" style="border: 1.5px solid black;" onclick="window.location.href='/Posts';" ;>
                         <h4 class="card-title" style="color: black; font-weight: bold;">3</h4>
                         <p class="card-text" style="color: #6610F2; font-weight: bold;">@Localizer["community_with_thousands"]</p>
                     </div>

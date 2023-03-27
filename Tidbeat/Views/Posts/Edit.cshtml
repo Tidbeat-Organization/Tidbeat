@@ -10,8 +10,8 @@
 <hr />
 
 <div class="container d-flex justify-content-center" style="margin-top: 35px;">
-    <div class="col-md-6 col-lg-4" style="margin-right: 250px;">
-        <form asp-action="Edit">
+    <div class="d-flex flex-column align-items-center" style="">
+        <form asp-action="Edit" id="edit-post-form" class="">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
            @* <!-- Song -->
             <div class="form-group row">
@@ -43,37 +43,69 @@
 
             <!-- Title -->
             <div class="form-group row" style="margin-top: 20px;">
-                <label asp-for="Title" class="col-sm-2 col-form-label" style="color: #6610F2; font-weight: bold;">@Localizer["title"]:</label>
-                <div class="col-sm-10">
-                    <input asp-for="Title" class="form-control" placeholder="@Localizer["type_title"]..." style="border: 1.5px solid #6610F2; border-radius: 15px; width:625px;" value="@Model.Title" />
-                    <span asp-validation-for="Title" class="text-danger"></span>
+                <label asp-for="Title" class=" col-form-label" style="color: #6610F2; font-weight: bold;">@Localizer["title"]:</label>
+                <div class=" d-flex flex-column">
+                    <input asp-for="Title" class="form-control" id="edit-post-title" placeholder="@Localizer["type_title"]..." style="border: 1.5px solid #6610F2; border-radius: 15px; " value="@Model.Title" />
+                    <span asp-validation-for="Title" id="title-validation-span" class="text-danger text-start"></span>
                 </div>
             </div>
 
             <!-- Content -->
-            <div class="form-group" style="margin-top: 10px; display: flex; flex-direction: column;">
+            <div class="form-group d-flex flex-column align-items-center" style="margin-top: 10px; display: flex; flex-direction: column;">
                 <!-- <label asp-for="Content" class="control-label" style="color: #6610F2;"></label> -->
-                <textarea asp-for="Content" id="postedit" class="form-control" style="height: 200px; border: 1.5px solid #6610F2; border-radius: 15px; width: 700px;" placeholder="@Localizer["type_content"]..." value="@Model.Content"></textarea>
+                <textarea asp-for="Content" id="postedit" class="form-control" style="height: 200px; border: 1.5px solid #6610F2; border-radius: 15px;" placeholder="@Localizer["type_content"]..." value="@Model.Content"></textarea>
                 <span asp-validation-for="Content" class="text-danger"></span>
             </div>
 
             <!-- Form submit -->
-            <div class="align-buttons" style="margin-left: 280px;">
-                <div class="form-group update-button" style="margin-top: 25px;">
-                    <input type="submit" value="@Localizer["update"]" class="btn btn-primary" />
-                </div>
-                <div class="row" style="margin-top: 20px;">
-                    <div class="col">
-                        <a asp-action="Index">@Localizer["cancel"]</a>
-                    </div>
+            <div class="align-buttons">
+                <div class="form-group update-button d-flex justify-content-center align-items-center" style="margin-top: 25px;">
+                    <button type="button" id="submit-button-edit-post" class="btn btn-primary me-3">@Localizer["update"]</button>
+                    <a asp-action="Details" asp-route-id="@Model.PostId">@Localizer["cancel"]</a>
                 </div>
             </div>
         </form>
     </div>
 </div>
+<script>
+    function validateTitle() {
+        var title = document.getElementById("edit-post-title").value;
+        if (title.length === 0 || !title.trim()) {
+            var warningMsg = "@Localizer["type_title"]";
+            document.getElementById("title-validation-span").textContent = warningMsg;
+            return false;
+        }
+        return true;
+    }
 
+    function validateDescription() {
+        var descriptionContent = tinymce.get('postedit').getContent();
+        if (descriptionContent.length === 0 || !descriptionContent.trim()) {
+            var warningMsg = "@Localizer["type_content"]";
+            tinymce.get('postedit').notificationManager.open({
+                text: warningMsg,
+                type: 'warning',
+            });
+            return false;
+        }
+        return true;
+    }
+
+    var submitButtonCreatePost = document.getElementById("submit-button-edit-post");
+    submitButtonCreatePost.onclick = function () {
+        if (validateTitle() && validateDescription()) {
+            document.getElementById("edit-post-form").submit();
+        }
+    };
+
+    //Adds a class to the auto-generated rich-text since I can't add it in the html.
+    window.onload = function () {
+        document.getElementsByClassName('tox-tinymce')[0].classList.add('tox-tinymce-w-md-700');
+    }
+</script>
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
+        
     }
     }

@@ -117,40 +117,16 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="are_you_sure_delete_comment" xml:space="preserve">
-    <value>Tem a certeza que deseja apagar o comentário?</value>
+  <data name="birthday_date_required" xml:space="preserve">
+    <value>É necessário preencher o campo da data de aniversário.</value>
   </data>
-  <data name="band" xml:space="preserve">
-    <value>Banda</value>
+  <data name="gender_required" xml:space="preserve">
+    <value>É necessário preencher o campo do género.</value>
   </data>
-  <data name="cancel" xml:space="preserve">
-    <value>Cancelar</value>
+  <data name="name_required" xml:space="preserve">
+    <value>É necessário preencher o campo do nome.</value>
   </data>
-  <data name="comments" xml:space="preserve">
-    <value>Comentários</value>
-  </data>
-  <data name="created_in" xml:space="preserve">
-    <value>Criado em</value>
-  </data>
-  <data name="delete" xml:space="preserve">
-    <value>Apagar</value>
-  </data>
-  <data name="delete_comment" xml:space="preserve">
-    <value>Apagar Comentário</value>
-  </data>
-  <data name="edited_in" xml:space="preserve">
-    <value>Editado em</value>
-  </data>
-  <data name="from" xml:space="preserve">
-    <value>de</value>
-  </data>
-  <data name="no_comments" xml:space="preserve">
-    <value>Não há comentários... Seja o primeiro a comentar!</value>
-  </data>
-  <data name="song" xml:space="preserve">
-    <value>Música</value>
-  </data>
-  <data name="submit" xml:space="preserve">
-    <value>Submeter</value>
+  <data name="name_too_long" xml:space="preserve">
+    <value>O nome é demasiado longo.</value>
   </data>
 </root>

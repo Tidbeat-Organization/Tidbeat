@@ -70,77 +70,90 @@
                 Menu
                 <i class="bi-list"></i>
             </button>
-            <div class="collapse navbar-collapse" id="navbarResponsive">
-                <ul class="navbar-nav me-2 my-3 my-lg-0">
-                    <li class="nav-item me-1 rounded text-center bg-white">
-                        <a class="nav-link text-black" href="@Url.Action("Index", "Posts")">@Localizer["recommended_posts"]</a>
-                    </li>
-                </ul>
-                <div class="dropdown me-3" style="background-color: white; color: black;">
-                    <button class="btn dropdown-toggle py-2 border-0" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="background-color: white; color: black;">
-                        @Localizer["other_contents"]
-                    </button>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">@Localizer["users"]</a></li>
-                        <li><a class="dropdown-item" href="/Songs">@Localizer["songs"]</a></li>
-                        <li><a class="dropdown-item" href="/Bands">@Localizer["bands"]</a></li>
-                    </ul>
-                </div>
-                <div class="d-flex flex-row">
-                    <!--
-                    <div class="btn btn-primary">
-                        <img src="~/images/FilterIcon.png" height="26" width="31" />
-                    </div>
-                    -->
-                    <!-- Search bar with dropdown menu -->
-                    <div class="input-group d-flex flex-row flex-nowrap">
-                        <div class="dropdown">
-                            <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="margin-top: 1.5px;">
-                                <span id="searchTypeText">@Localizer["songs"]</span>
-                            </button>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#" id="search-songs">@Localizer["songs"]</a></li>
-                                <li><a class="dropdown-item" href="#" id="search-bands">@Localizer["bands"]</a></li>
+            <div class="collapse navbar-collapse d-lg-block pb-2 pb-lg-0" id="navbarResponsive">
+                <div class="d-flex flex-column flex-lg-row w-100 align-items-center">
+                    <div class="d-flex flex-row w-100 justify-content-between justify-content-sm-center justify-content-lg-start">
+                        <div class="d-flex flex-column flex-sm-row">
+                            <ul class="navbar-nav me-2 my-0">
+                                <li class="nav-item me-1 rounded text-center bg-white">
+                                    <a class="nav-link text-black text-nowrap" href="@Url.Action("Index", "Posts")">@Localizer["recommended_posts"]</a>
+                                </li>
                             </ul>
+                            <div class="dropdown me-3" style="background-color: white; color: black;">
+                                <button class="btn dropdown-toggle py-2 border-0" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="background-color: white; color: black;">
+                                    @Localizer["other_contents"]
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="#">@Localizer["users"]</a></li>
+                                    <li><a class="dropdown-item" href="/Songs">@Localizer["songs"]</a></li>
+                                    <li><a class="dropdown-item" href="/Bands">@Localizer["bands"]</a></li>
+                                </ul>
+                            </div>
                         </div>
-                        <div class="form-outline">
-                            <input type="search" id="searchInput" class="form-control" placeholder="@Localizer["search"]" />
+                        <div class="d-flex flex-row d-none d-xl-block">
+                            <!-- Search bar with dropdown menu -->
+                            <div class="input-group d-lg-flex flex-row flex-nowrap">
+                                <div class="dropdown">
+                                    
+                                    <div class="btn border-light-grey border-end-0 dropdown-toggle d-flex align-items-center" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <span id="searchTypeText" class="me-1">@Localizer["filter"]:</span>
+                                        <div id="" class="change-filter-icon bi bi-music-note"></div>
+                                    </div>
+                                    <ul class="dropdown-menu" style="min-width: 60px">
+                                        <li><a class="dropdown-item d-flex" href="#" id="search-songs"><div class="bi bi-music-note me-1"></div><div>@Localizer["songs"]</div></a></li>
+                                        <li><a class="dropdown-item d-flex" href="#" id="search-bands"><div class="bi bi-person-fill me-1"></div><div>@Localizer["bands"]</div></a></li>
+                                    </ul>
+                                </div>
+                                <div class="form-outline">
+                                    <input type="search" id="searchInput" class="form-control" placeholder="@Localizer["search"]" />
+                                </div>
+                                <button type="button" id="searchButton" class="btn btn-primary">
+                                    <img class="no-padding" src="~/images/SearchIcon.png" height="26" width="30" />
+                                </button>
+                            </div>
                         </div>
-                        <button type="button" id="searchButton" class="btn btn-primary">
-                            <img class="no-padding" src="~/images/SearchIcon.png" height="26" width="30" />
-                        </button>
+                        <div class="d-flex flex-row ms-lg-auto align-items-center">
+                            <partial name="_LoginPartial" />
+                            <form asp-controller="Language" asp-action="SetLanguage" method="post" id="languageForm" class="d-flex align-self-center ms-auto">
+                                <div class="dropdown">
+                                    <div class="btn border-end-0 dropdown-toggle d-flex align-items-center p-1 me-3" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <img id="changeLanguageImage" src="~/images/pt.svg" />
+                                    </div>
+                                    <ul class="dropdown-menu me-2" style="min-width: 50px">
+                                        <li><a class="dropdown-item pe-0 ps-1 d-flex" href="#" id="language-pt-button"><img src="~/images/pt.svg" width="20px" class="me-1" />PT</a></li>
+                                        <li><a class="dropdown-item pe-0 ps-1 d-flex" href="#" id="language-us-button"><img src="~/images/us.svg" width="20px" class="me-1" />US</a></li>
+                                    </ul>
+                                    <input id="languageCodeInput" name="language" hidden />
+                                </div>
+                            </form>
+                        </div>
                     </div>
-                </div>
-                <div class="ms-auto d-flex flex-row">
-                    <!-- <button class="btn btn-primary rounded-pill px-3 mb-2 mb-lg-0 me-1" data-bs-toggle="modal" data-bs-target="#feedbackModal">
-                        <span class="d-flex align-items-center">
-                            <i class="bi-chat-text-fill me-2"></i>
-                        </span>
-                    </button> -->
-                    <!-- <button class="btn btn-primary rounded-pill px-3 mb-2 mb-lg-0" data-bs-toggle="modal" data-bs-target="#feedbackModal">
-                        <span class="d-flex align-items-center">
-                            Profile
-                        </span>
-                    </button>-->
-                    <!--
-                    <ul class="navbar-nav me-2 my-3 my-lg-0">
-                        <li class="nav-item me-1 rounded text-center bg-white">
-                            <a class="nav-link text-black" asp-controller="Home" asp-action="Index">Login</a>
-                        </li>
-                    </ul>
-                    <ul class="navbar-nav me-2 my-3 my-lg-0">
-                    <li class="nav-item me-1 rounded text-center bg-white">
-                        <a class="nav-link text-black" href="#features">Registo</a>
-                    </li>
-                    </ul>
-                    -->
-                    <partial name="_LoginPartial" />
-                    <form asp-controller="Language" asp-action="SetLanguage" method="post" class="d-flex align-self-center">
-                        <select id="changeLanguage" class="border-0 bg-white pointer-active" name="language" onchange="this.form.submit()">
-                            <option value="en-US" class="fs-3">🇺🇸</option>
-                            <option value="pt-PT" class="fs-3">🇵🇹</option>
-                        </select>
-                    </form>
+                    <div class="d-flex flex-row d-block d-lg-none">
+                        <!--
+                        <div class="btn btn-primary">
+                            <img src="~/images/FilterIcon.png" height="26" width="31" />
+                        </div>
+                        -->
+                        <!-- Search bar with dropdown menu -->
+                        <div class="input-group d-none d-sm-flex flex-row flex-nowrap">
+                            <div class="dropdown">
+                                <div class="btn border-light-grey border-end-0 dropdown-toggle d-flex align-items-center" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <span id="searchTypeText" class="me-1">@Localizer["filter"]:</span>
+                                    <div id="" class="change-filter-icon bi bi-music-note"></div>
+                                </div>
+                                <ul class="dropdown-menu" style="min-width: 60px">
+                                    <li><a class="dropdown-item d-flex" href="#" id="search-songs2"><div class="bi bi-music-note me-1"></div><div>@Localizer["songs"]</div></a></li>
+                                    <li><a class="dropdown-item d-flex" href="#" id="search-bands2"><div class="bi bi-person-fill me-1"></div><div>@Localizer["bands"]</div></a></li>
+                                </ul>
+                            </div>
+                            <div class="form-outline">
+                                <input type="search" id="searchInput" class="form-control" placeholder="@Localizer["search"]" />
+                            </div>
+                            <button type="button" id="searchButton" class="btn btn-primary">
+                                <img class="no-padding" src="~/images/SearchIcon.png" height="26" width="30" />
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -281,36 +294,67 @@
         </div>
     </div>
     <script>
-        window.onload = (event) => {
-            function getCookie(name) {
-                const cookies = document.cookie.split(';');
-                for (let i = 0; i < cookies.length; i++) {
-                    const cookie = cookies[i].trim();
-                    if (cookie.startsWith(name + '=')) {
-                        return cookie.substring(name.length + 1);
-                    }
+        function getCookie(name) {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.startsWith(name + '=')) {
+                    return cookie.substring(name.length + 1);
                 }
-                return null;
             }
+            return null;
+        }
 
-            const cultureCookie = getCookie('.AspNetCore.Culture');
-            var cultureValue = null;
-            if (cultureCookie) {
-                cultureValue = decodeURIComponent(cultureCookie).split('|')[0].split('=')[1];
-                console.log(cultureValue);
+        const cultureCookie = getCookie('.AspNetCore.Culture');
+        var currentLanguage = null;
+        if (cultureCookie) {
+            currentLanguage = decodeURIComponent(cultureCookie).split('|')[0].split('=')[1];
+        }
+
+        const changeLanguageImage = document.getElementById('changeLanguageImage');
+        if (currentLanguage === "pt-PT") {
+            changeLanguageImage.src = "/images/pt.svg";
+        } else if (currentLanguage === "en-US") {
+            changeLanguageImage.src = "/images/us.svg";
+        }
+
+        function findAndSubmitForm(language) {
+            let languageCodeInput = document.getElementById('languageCodeInput');
+            languageCodeInput.value = language;
+
+            let languageForm = document.getElementById('languageForm');
+            languageForm.submit();
+        }
+
+        document.getElementById('language-pt-button').onclick = function () {
+            findAndSubmitForm("pt-PT");
+        }
+
+        document.getElementById('language-us-button').onclick = function () {
+            findAndSubmitForm("en-US");
+        }
+    </script>
+    <script>
+        // Used to toggle the password visibility in different screens
+        function togglePasswordVisibility(inputName, eyeName) {
+            var x = document.getElementById(inputName);
+            var passwordEye = document.getElementById(eyeName);
+            if (x.type === "password") {
+                x.type = "text";
+                passwordEye.classList.remove("bi-eye");
+                passwordEye.classList.add("bi-eye-slash");
+            } else {
+                passwordEye.classList.remove("bi-eye-slash");
+                passwordEye.classList.add("bi-eye");
+                x.type = "password";
             }
-
-            const changeLanguage = document.getElementById('changeLanguage');
-            changeLanguage.value = cultureValue;
-            const currentLanguage = cultureValue;
-            console.log("Current Language!!! : " + cultureValue + "#################")
         }
     </script>
     <!-- Bootstrap core JS-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.js"></script>
     <!-- Core theme JS-->
-    <script src="js/scripts.js"></script>
+    <!--<script src="js/scripts.js"></script>-->
     <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
     <!-- * *                               SB Forms JS                               * *-->
     <!-- * * Activate your form at https://startbootstrap.com/solution/contact-forms * *-->
@@ -327,17 +371,35 @@
         var searchType = 'songs'; // Default to searching for songs
         var searchTypeText = document.getElementById('searchTypeText'); // Get the search type text element
 
-        document.getElementById('search-songs').addEventListener('click', function (e) {
+        function changeSong(e) {
             e.preventDefault(); // Prevent the default behavior of the anchor element
+            var changeFilterIcons = document.getElementsByClassName('change-filter-icon');
+            var changeFilterIcon1 = changeFilterIcons[0];
+            var changeFilterIcon2 = changeFilterIcons[1];
+            changeFilterIcon1.classList.remove('bi-person-fill');
+            changeFilterIcon1.classList.add('bi-music-note');
+            changeFilterIcon2.classList.remove('bi-person-fill');
+            changeFilterIcon2.classList.add('bi-music-note');
             searchType = 'songs';
-            searchTypeText.textContent = 'Músicas'; // Update the search type text
-        });
+        }
 
-        document.getElementById('search-bands').addEventListener('click', function (e) {
+        function changeBand(e) {
             e.preventDefault(); // Prevent the default behavior of the anchor element
+            var changeFilterIcons = document.getElementsByClassName('change-filter-icon');
+            var changeFilterIcon1 = changeFilterIcons[0];
+            var changeFilterIcon2 = changeFilterIcons[1];
+            changeFilterIcon1.classList.remove('bi-music-note');
+            changeFilterIcon1.classList.add('bi-person-fill');
+            changeFilterIcon2.classList.remove('bi-music-note');
+            changeFilterIcon2.classList.add('bi-person-fill');
             searchType = 'bands';
-            searchTypeText.textContent = 'Bandas e Artistas'; // Update the search type text
-        });
+        }
+
+        document.getElementById('search-songs').addEventListener('click', changeSong);
+        document.getElementById('search-songs2').addEventListener('click', changeSong);
+
+        document.getElementById('search-bands').addEventListener('click', changeBand);
+        document.getElementById('search-bands2').addEventListener('click', changeBand);
 
         searchButton.addEventListener('click', function () {
             var searchQuery = searchInput.value.trim();

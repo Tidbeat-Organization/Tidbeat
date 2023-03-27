@@ -117,40 +117,25 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="are_you_sure_delete_comment" xml:space="preserve">
-    <value>Tem a certeza que deseja apagar o comentário?</value>
+  <data name="an_error_occurred" xml:space="preserve">
+    <value>Ocorreu um erro.</value>
   </data>
-  <data name="band" xml:space="preserve">
-    <value>Banda</value>
+  <data name="error_content" xml:space="preserve">
+    <value>O post encontra-se vazio.</value>
   </data>
-  <data name="cancel" xml:space="preserve">
-    <value>Cancelar</value>
+  <data name="error_title" xml:space="preserve">
+    <value>O Titulo encontra-se vazio.</value>
   </data>
-  <data name="comments" xml:space="preserve">
-    <value>Comentários</value>
+  <data name="no_permission_for_modification" xml:space="preserve">
+    <value>Não tem permissões para modificar o post.</value>
   </data>
-  <data name="created_in" xml:space="preserve">
-    <value>Criado em</value>
+  <data name="post_deleted_sucessfully" xml:space="preserve">
+    <value>O seu post foi apagado com sucesso.</value>
   </data>
-  <data name="delete" xml:space="preserve">
-    <value>Apagar</value>
+  <data name="your_post_was_sucessfully_created" xml:space="preserve">
+    <value>O seu post foi criado com sucesso.</value>
   </data>
-  <data name="delete_comment" xml:space="preserve">
-    <value>Apagar Comentário</value>
-  </data>
-  <data name="edited_in" xml:space="preserve">
-    <value>Editado em</value>
-  </data>
-  <data name="from" xml:space="preserve">
-    <value>de</value>
-  </data>
-  <data name="no_comments" xml:space="preserve">
-    <value>Não há comentários... Seja o primeiro a comentar!</value>
-  </data>
-  <data name="song" xml:space="preserve">
-    <value>Música</value>
-  </data>
-  <data name="submit" xml:space="preserve">
-    <value>Submeter</value>
+  <data name="your_post_was_sucessfully_updated" xml:space="preserve">
+    <value>O seu post foi atualizado com sucesso.</value>
   </data>
 </root>

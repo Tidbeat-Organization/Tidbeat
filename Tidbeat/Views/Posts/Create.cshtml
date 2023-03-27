@@ -9,8 +9,8 @@
 <hr />
 
 <div class="container d-flex justify-content-center" style="margin-top: 35px;">
-    <div class="col-md-6 col-lg-4" style="margin-right: 250px;">
-        <div class="input-group d-flex flex-row d-inline-flex mb-3" style="background-color: white; color: black;">
+    <div class="d-flex flex-column align-items-center">
+        <div class="input-group d-flex flex-row justify-content-center justify-content-md-start mb-3" style="background-color: white; color: black;">
             <div class="align-self-start d-flex flex-row" style="color: #6610F2; font-weight: bold;">@Localizer["extra_options"]</div>
                     <select class="form-control w-100 border-primary rounded" id="formOptional" name="formOpp">
                 <!option selected value="none">@Localizer["none"]</!option>
@@ -18,13 +18,18 @@
                 <!option value="incomplete" @(ViewBag.chooseBand != null ? "selected" : "")>@Localizer["band"]</!option>
                         </select>
         </div>
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <form asp-action="Create" id="create-post-form">
+            <div asp-validation-summary="ModelOnly" class="text-danger">
+                @if (TempData.ContainsKey("error"))
+                {
+                    @TempData["error"]}
+            </div>
+
             <!-- Song -->
             <div class="form-group row" id="CheckerFormMusic">
-                <label asp-for="Song" class="col-sm-2 col-form-label" style="color: #6610F2; font-weight: bold;">@Localizer["song"]:</label>
-                <div class="col-sm-10" id="formfromsong">
-                    <input autocomplete="off" role="combobox" list="" value="@((ViewBag?.chooseSong?.Name ?? ""))" name="SongId1" id="SongIdInput" oninput='onInputSong()' class="form-control" placeholder="@Localizer["pick_song"]..." style="border: 1.5px solid #6610F2; border-radius: 15px; width:625px;" @(ViewBag.chooseSong != null ? "value=" + @ViewBag.chooseSong.Name : "")
+                <label asp-for="Song" class=" col-form-label text-md-start" style="color: #6610F2; font-weight: bold;">@Localizer["song"]:</label>
+                <div class="" id="formfromsong">
+                    <input autocomplete="off" role="combobox" list="" value="@((ViewBag?.chooseSong?.Name ?? ""))" name="SongId1" id="SongIdInput" oninput='onInputSong()' class="form-control" placeholder="@Localizer["pick_song"]..." style="border: 1.5px solid #6610F2; border-radius: 15px;" @(ViewBag.chooseSong != null ? "value=" + @ViewBag.chooseSong.Name : "")
                     @(ViewBag.chooseBand != null ? "disabled" : "") />
                     <datalist id="SongOptions" role="listbox">
                         @if (ViewBag.songs != null)
@@ -56,9 +61,9 @@
 
             <!-- Band -->
              <div class="form-group row" style="margin-top: 15px;" id="CheckerFormBand">
-                <label asp-for="Band" class="col-sm-2 col-form-label" style="color: #6610F2; font-weight: bold;">@Localizer["band"]:</label>
-                <div class="col-sm-10" id="formfromband">
-                    <input autocomplete="off" role="combobox" list="" value="@((ViewBag?.chooseBand?.Name ?? ViewBag?.chooseSong?.Artists[0]?.Name ?? ""))" name="BandId1" id="Bandsinput" oninput='onInputBand()' class="form-control" placeholder="@Localizer["pick_band"]..." style="border: 1.5px solid #6610F2; border-radius: 15px; width:625px;"
+                <label asp-for="Band" class="col-form-label text-md-start" style="color: #6610F2; font-weight: bold;">@Localizer["band"]:</label>
+                <div class="" id="formfromband">
+                    <input autocomplete="off" role="combobox" list="" value="@((ViewBag?.chooseBand?.Name ?? ViewBag?.chooseSong?.Artists[0]?.Name ?? ""))" name="BandId1" id="Bandsinput" oninput='onInputBand()' class="form-control" placeholder="@Localizer["pick_band"]..." style="border: 1.5px solid #6610F2; border-radius: 15px;"
                     @(ViewBag.chooseSong != null ? "disabled" : "") />
                     <!--@*      @if (ViewBag.chooseSong != null || ViewBag.chooseBand != null)
                            {
@@ -77,8 +82,8 @@
 
             <!-- Spotify Link -->
             <div class="form-group row w-100" style="margin-top: 15px;" id="CheckFormLink">
-                <label class="col-sm-2 col-form-label w-100 text-start">
-                    <span style="color: #6610F2; font-weight: bold;">Link:&nbsp;</span><a id="SongLink" href="@{
+                <label class="col-form-label w-100 text-start">
+                    <span style="color: #6610F2; font-weight: bold;">Link:&nbsp;</span><a id="SongLink" target="_blank" href="@{
                             if (ViewBag.chooseSong != null) {
                                 string url = $"https://open.spotify.com/track/{ViewBag.chooseSong.Id}";
                                                                         @url
@@ -102,29 +107,25 @@
 
             <!-- Title -->
             <div class="form-group row" style="margin-top: 20px;">
-                <label asp-for="Title" class="col-sm-2 col-form-label" style="color: #6610F2; font-weight: bold;">@Localizer["title"]:</label>
-                <div class="col-sm-10">
-                    <input asp-for="Title" class="form-control" placeholder="@Localizer["type_title"]..." style="border: 1.5px solid #6610F2; border-radius: 15px; width:625px;" />
-                    <span asp-validation-for="Title" class="text-danger"></span>
+                <label asp-for="Title" class="col-form-label text-md-start" style="color: #6610F2; font-weight: bold;">@Localizer["title"]:</label>
+                <div class="d-flex flex-column">
+                    <input asp-for="Title" id="create-post-title" class="form-control" placeholder="@Localizer["type_title"]..." style="border: 1.5px solid #6610F2; border-radius: 15px;" />
+                    <span asp-validation-for="Title" class="text-danger text-start" id="title-validation-span"></span>
                 </div>
             </div>
 
             <!-- Content -->
             <div class="form-group" style="margin-top: 10px; display: flex; flex-direction: column;">
                 <!-- <label asp-for="Content" class="control-label" style="color: #6610F2;"></label> -->
-                <textarea asp-for="Content" id="postcreate" class="form-control" style="height: 200px; border: 1.5px solid #6610F2; border-radius: 15px; width: 700px;" placeholder="@Localizer["type_content"]..."></textarea>
+                <textarea asp-for="Content" id="postcreate" class="form-control" style="height: 200px; border: 1.5px solid #6610F2; border-radius: 15px;" placeholder="@Localizer["type_content"]..."></textarea>
                 <span asp-validation-for="Content" class="text-danger"></span>
             </div>
 
             <!-- Form submit -->
-            <div class="align-buttons" style="margin-left: 280px;">
+            <div class="align-buttons">
                 <div class="form-group create-button" style="margin-top: 25px;">
-                    <input type="submit" value="@Localizer["create"]" class="btn btn-primary" />
-                </div>
-                <div class="row" style="margin-top: 20px;">
-                    <div class="col">
-                        <a asp-action="Index">@Localizer["cancel"]</a>
-                    </div>
+                    <button type="button" id="submit-button-create-post" class="btn btn-primary ">@Localizer["create"]</button>
+                    <a asp-action="Index" class="ms-2">@Localizer["cancel"]</a>
                 </div>
             </div>  
         </form>
@@ -361,6 +362,42 @@
             document.getElementById("answerInputSong").value = "";
             document.getElementById('SongIdInput').value = "";
        }
+
+       function validateTitle() {
+        var title = document.getElementById("create-post-title").value;
+        if (title.length === 0 || !title.trim()) {
+            var warningMsg = "@Localizer["type_title"]";
+            document.getElementById("title-validation-span").textContent = warningMsg;
+            return false;
+        }
+        return true;
+       }
+
+        function validateDescription() {
+            var descriptionContent = tinymce.get('postcreate').getContent();
+            if (descriptionContent.length === 0 || !descriptionContent.trim()) {
+                var warningMsg = "@Localizer["type_content"]";
+                tinymce.get('postcreate').notificationManager.open({
+                    text: warningMsg,
+                    type: 'warning',
+                });
+                return false;
+            }
+            return true;
+        }
+
+        var submitButtonCreatePost = document.getElementById("submit-button-create-post");
+        submitButtonCreatePost.onclick = function () {
+            if (validateTitle() && validateDescription()) {
+                document.getElementById("create-post-form").submit();
+            }
+        };
+
+        //Adds a class to the auto-generated rich-text since I can't add it in the html.
+        window.onload = function() {
+            document.getElementsByClassName('tox-tinymce')[0].classList.add('tox-tinymce-w-md-700');
+        }
+        
 </script>
 
 <style>

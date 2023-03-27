@@ -22,17 +22,18 @@
                 
                 <!-- <label asp-for="Input.Email" class="form-label mt-1 mb-0"></label> -->
                 <input hidden asp-for="Input.Email" class="form-control mt-1"/>
-                
                 <span asp-validation-for="Input.Email" class="text-danger mt-1"></span>
             
                 <label asp-for="Input.FullName" class="form-label mt-1 mb-0">@Localizer["full_name"]</label>
                 <input asp-for="Input.FullName" class="form-control mt-1" />
+                <span asp-validation-for="Input.FullName" class="text-danger mt-1"></span>
                 
                 <label asp-for="Input.BirthdayDate" class="form-label mt-1 mb-0">@Localizer["birthday_date"]</label>
                 <input asp-for="Input.BirthdayDate" type="date" class="form-control mt-1" aria-required="true" id="birthField" value=@if (TempData.ContainsKey("Date"))
                        { 
                     @TempData["Date"];
                 }/>
+                <span asp-validation-for="Input.BirthdayDate" class="text-danger mt-1"></span>
                 
                 <label asp-for="Input.Gender" class="form-label mt-1 mb-0">@Localizer["gender"]</label>
                 <select asp-for="Input.Gender" class="form-control mt-1">
@@ -40,6 +41,7 @@
 					<option value="female">@Localizer["female"]</option>
                     <option value="non_binary">@Localizer["non_binary"]</option>
                 </select>
+                <span asp-validation-for="Input.Gender" class="text-danger mt-1"></span>
                 
             <!-- </div> -->
             <button type="submit" class="w-100 btn btn-lg mt-3 btn-primary">@Localizer["register"]</button>

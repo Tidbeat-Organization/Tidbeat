@@ -50,7 +50,7 @@
                 <span asp-validation-for="Input.Country" class="text-danger"></span>
             </div>
             <div class="mt-3 align-rigth">
-                <textarea asp-for="Input.AboutMe" id="postcreate" class="form-control" style="height: 200px; border: 1.5px solid #6610F2; border-radius: 15px; width: 700px;" placeholder="@Localizer["about_me"]..."></textarea>
+                <textarea asp-for="Input.AboutMe" id="postcreate" class="form-control rich-text-index-profile" style="height: 200px; border: 1.5px solid #6610F2; border-radius: 15px;" placeholder="@Localizer["about_me"]..."></textarea>
                 <span asp-validation-for="Input.AboutMe" class="text-danger"></span>                
             </div>
             <button id="update-profile-button" type="submit" class="w-100 mt-3 btn btn-lg btn-primary">@Localizer["save"]</button>

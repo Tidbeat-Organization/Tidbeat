@@ -18,6 +18,9 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Tidbeat.Models;
+using Microsoft.Extensions.FileSystemGlobbing.Internal;
+using System.Text.RegularExpressions;
+using Microsoft.Extensions.Localization;
 
 namespace Tidbeat.Areas.Identity.Pages.Account
 {
@@ -30,13 +33,15 @@ namespace Tidbeat.Areas.Identity.Pages.Account
         private readonly IUserEmailStore<ApplicationUser> _emailStore;
         private readonly IEmailSender _emailSender;
         private readonly ILogger<ExternalLoginModel> _logger;
+        private readonly IStringLocalizer<ExternalLoginModel> _localizer;
 
         public ExternalLoginModel(
             SignInManager<ApplicationUser> signInManager,
             UserManager<ApplicationUser> userManager,
             IUserStore<ApplicationUser> userStore,
             ILogger<ExternalLoginModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            IStringLocalizer<ExternalLoginModel> localizer)
         {
             _signInManager = signInManager;
             _userManager = userManager;
@@ -44,6 +49,7 @@ namespace Tidbeat.Areas.Identity.Pages.Account
             _emailStore = GetEmailStore();
             _logger = logger;
             _emailSender = emailSender;
+            _localizer = localizer;
         }
 
         /// <summary>
@@ -87,16 +93,17 @@ namespace Tidbeat.Areas.Identity.Pages.Account
             public string Email { get; set; }
 
             // Full Name
-            [Required]
+            [MaxLength(30, ErrorMessage = "name_too_long")]
+            [Required(ErrorMessage = "name_required")]
             public string FullName { get; set; }
 
             // Birthday Date
-            [Required]
+            [Required(ErrorMessage = "birthday_date_required")]
             [DataType(DataType.Date)]
             public DateTime BirthdayDate { get; set; }
 
             // Gender
-            [Required]
+            [Required(ErrorMessage = "gender_required")]
             public string Gender { get; set; }
         }
         
@@ -165,48 +172,88 @@ namespace Tidbeat.Areas.Identity.Pages.Account
 
             if (ModelState.IsValid)
             {
-                var user = CreateUser();
-
-                await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
-                await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
-                user.FullName = Input.FullName;
-                user.BirthdayDate = Input.BirthdayDate;
-                user.Gender = Input.Gender;
-                user.EmailConfirmed = true;
-
-                var result = await _userManager.CreateAsync(user);
-                if (result.Succeeded)
+                if (String.IsNullOrEmpty(Input.FullName))
                 {
-                    result = await _userManager.AddLoginAsync(user, info);
+                    ModelState.AddModelError(string.Empty, _localizer["invalid_name"]);
+                }
+                else
+                if (Input.Gender != "male" && Input.Gender != "female" && Input.Gender != "non_binary")
+                {
+                    ModelState.AddModelError(string.Empty, _localizer["invalid_gender"]);
+                }
+                else
+                if (DateTime.Compare(Input.BirthdayDate.AddYears(13), DateTime.Now) > 0)
+                {
+                    ModelState.AddModelError(string.Empty, _localizer["invalid_birthday_date"]);
+                }
+                else
+                {
+                    var user = CreateUser();
+
+                    await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
+                    await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
+                    user.FullName = Input.FullName;
+                    user.BirthdayDate = Input.BirthdayDate;
+                    user.Gender = Input.Gender;
+                    user.EmailConfirmed = true;
+
+                    var result = await _userManager.CreateAsync(user);
                     if (result.Succeeded)
                     {
-                        _logger.LogInformation("User created an account using {Name} provider.", info.LoginProvider);
-                        /*
-                        var userId = await _userManager.GetUserIdAsync(user);
-                        var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                        code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-                        var callbackUrl = Url.Page(
-                            "/Account/ConfirmEmail",
-                            pageHandler: null,
-                            values: new { area = "Identity", userId = userId, code = code },
-                            protocol: Request.Scheme);
-                        
-                        await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                            $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
-                        
-                        // If account confirmation is required, we need to show the link if we don't have a real email sender
-                        if (_userManager.Options.SignIn.RequireConfirmedAccount)
+                        result = await _userManager.AddLoginAsync(user, info);
+                        if (result.Succeeded)
                         {
-                            return RedirectToPage("./RegisterConfirmation", new { Email = Input.Email });
+                            _logger.LogInformation("User created an account using {Name} provider.", info.LoginProvider);
+                            /*
+                            var userId = await _userManager.GetUserIdAsync(user);
+                            var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                            code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+                            var callbackUrl = Url.Page(
+                                "/Account/ConfirmEmail",
+                                pageHandler: null,
+                                values: new { area = "Identity", userId = userId, code = code },
+                                protocol: Request.Scheme);
+
+                            await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
+                                $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+
+                            // If account confirmation is required, we need to show the link if we don't have a real email sender
+                            if (_userManager.Options.SignIn.RequireConfirmedAccount)
+                            {
+                                return RedirectToPage("./RegisterConfirmation", new { Email = Input.Email });
+                            }
+                            */
+                            await _signInManager.SignInAsync(user, isPersistent: false, info.LoginProvider);
+                            return LocalRedirect(returnUrl);
                         }
-                        */
-                        await _signInManager.SignInAsync(user, isPersistent: false, info.LoginProvider);
-                        return LocalRedirect(returnUrl);
                     }
-                }
-                foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError(string.Empty, error.Description);
+                    foreach (var error in result.Errors)
+                    {
+                        if (error.Code == "DuplicateUserName")
+                        {
+                            ModelState.AddModelError(string.Empty, _localizer["email_already_exists"]);
+                        }
+                        else
+                        if (error.Code == "DefaultError")
+                        {
+                            ModelState.AddModelError(string.Empty, _localizer["default_error"]);
+                        }
+                        else
+                        if (error.Code == "ConcurrencyFailure")
+                        {
+                            ModelState.AddModelError(string.Empty, _localizer["concurrency_failure"]);
+                        }
+                        else
+                        if (error.Code == "InvalidEmail")
+                        {
+                            ModelState.AddModelError(string.Empty, _localizer["invalid_email"]);
+                        }
+                        else
+                        {
+                            Console.WriteLine(error.Code);
+                            ModelState.AddModelError(string.Empty, error.Description);
+                        }
+                    }
                 }
             }
 

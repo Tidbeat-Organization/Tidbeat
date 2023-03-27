@@ -123,4 +123,7 @@
   <data name="please_check_email" xml:space="preserve">
     <value>Por favor, verifique o seu mail para confirmar a conta.</value>
   </data>
+  <data name="register_confirmation" xml:space="preserve">
+    <value>Confirmação de Registo</value>
+  </data>
 </root>
