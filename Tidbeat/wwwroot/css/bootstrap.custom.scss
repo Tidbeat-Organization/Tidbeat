@@ -140,6 +140,26 @@ nav-link {
 .tox-tinymce {
     border: 1px solid $primary !important;
 }
+
+@include media-breakpoint-up(md) {
+    .tox-tinymce {
+        width: 700px !important;
+    }
+}
+
+@media screen and (max-width: 370px) {
+    .tox-tinymce {
+        width: 300px;
+    }
+}
+
+/*
+@include media-breakpoint-up(sm) {
+    .tox-tinymce {
+        width: 500px;
+    }
+}
+    */
 .tox-mbtn__select-label, .tox-tbtn__select-label, .tox-collection__item-label {
     color: $primary !important;
 }
