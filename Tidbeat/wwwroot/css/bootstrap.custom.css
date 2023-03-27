@@ -10588,6 +10588,53 @@ textarea.form-control-lg {
   width: 64pt;
 }
 
+.border-md-end {
+  border-right: 0;
+}
+
+@media screen and (min-width: 768px) {
+  .border-md-end {
+    border-right: 1pt solid #e3e3e3;
+  }
+}
+.border-lg-end {
+  border-right: 0;
+}
+
+@media screen and (min-width: 992px) {
+  .border-lg-end {
+    border-right: 1pt solid #e3e3e3;
+  }
+}
+.post-btn-center-lg {
+  --post-btn-w: 98%;
+  --post-btn-h: 40pt;
+  width: var(--post-btn-w);
+  max-width: var(--post-btn-w);
+  min-width: var(--post-btn-w);
+  height: var(--post-btn-h);
+  max-height: var(--post-btn-h);
+  min-height: var(--post-btn-h);
+  line-height: calc(var(--post-btn-h) * 0.7);
+  right: 0pt !important;
+  left: 1% !important;
+}
+
+@media screen and (min-width: 992px) {
+  .post-btn-center-lg {
+    --post-btn-w: 78pt;
+    --post-btn-h: 24pt;
+    width: var(--post-btn-w);
+    max-width: var(--post-btn-w);
+    min-width: var(--post-btn-w);
+    height: var(--post-btn-h);
+    max-height: var(--post-btn-h);
+    min-height: var(--post-btn-h);
+    line-height: calc(var(--post-btn-h) * 0.55);
+    right: 0% !important;
+    left: 89% !important;
+  }
+}
 .vh-100-minus-navbar {
   height: calc(100vh - 72px);
 }
