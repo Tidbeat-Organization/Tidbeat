@@ -18,6 +18,7 @@
                 ;
             }
         </div>
+
         <div class="mb-3">
             <label asp-for="Input.Email" class="form-label text-primary">@Localizer["email"]</label>
             <input asp-for="Input.Email" type="email" class="form-control" id="InputEmail1" aria-describedby="emailHelp" value=@if (TempData.ContainsKey("Email"))
