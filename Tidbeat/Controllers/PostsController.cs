@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using Ganss.Xss;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -68,6 +69,10 @@ namespace Tidbeat.Controllers
             if (!User.Identity.IsAuthenticated) {
                 return Redirect("/Identity/Account/Login");
             }
+            if (TempData["errorCheck"] != null)
+            {
+                ViewBag.error = TempData["errorCheck"];
+            }
             ViewBag.chooseBand = null;
             ViewBag.chooseSong = null;
             if (!string.IsNullOrEmpty(IdBand)) 
@@ -97,9 +102,11 @@ namespace Tidbeat.Controllers
                 if (string.IsNullOrEmpty(sanitizedContent))
                 {
                     ModelState.AddModelError(string.Empty, _localizer["error_content"]);
+                    TempData["errorCheck"] = _localizer["error_content"];
                 } else if (string.IsNullOrEmpty(post.Title)) 
                 {
                     ModelState.AddModelError(string.Empty, _localizer["error_title"]);
+                    TempData["errorCheck"] = _localizer["error_title"];
                 }
                 else
                 {
@@ -188,7 +195,7 @@ namespace Tidbeat.Controllers
                         return RedirectToAction(nameof(Index));
                     }
                 }
-                return View(post);
+                return RedirectToAction("Create");
             }
             // If model state is not valid, display error messages.
             Console.WriteLine("User: " + await _userManager.GetUserAsync(User));
@@ -199,7 +206,7 @@ namespace Tidbeat.Controllers
                     string errorMessage = error.ErrorMessage;
                     ModelState.AddModelError(string.Empty, errorMessage);
                     Console.WriteLine(errorMessage);
-                    TempData["error"] = errorMessage;
+                    TempData["errorCheck"] = errorMessage;
                 }
             }
 

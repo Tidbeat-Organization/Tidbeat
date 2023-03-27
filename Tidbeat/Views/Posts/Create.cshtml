@@ -20,9 +20,10 @@
         </div>
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger">
-                @if (TempData.ContainsKey("error"))
+                @if (ViewBag.error != null)
                 {
-                    @TempData["error"]}
+                    @ViewBag.error
+                }
             </div>
 
             <!-- Song -->
