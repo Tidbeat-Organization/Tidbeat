@@ -10584,7 +10584,7 @@ textarea.form-control-lg {
 }
 
 @media (min-width: 768px) {
-  .tox-tinymce {
+  .tox-tinymce-w-md-700 {
     width: 700px !important;
   }
 }

@@ -97,6 +97,11 @@
             document.getElementById("edit-post-form").submit();
         }
     };
+
+    //Adds a class to the auto-generated rich-text since I can't add it in the html.
+    window.onload = function () {
+        document.getElementsByClassName('tox-tinymce')[0].classList.add('tox-tinymce-w-md-700');
+    }
 </script>
 @section Scripts {
     @{
