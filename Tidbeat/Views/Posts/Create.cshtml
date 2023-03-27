@@ -19,16 +19,7 @@
                         </select>
         </div>
         <form asp-action="Create">
-<<<<<<< HEAD
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-=======
-            <div asp-validation-summary="ModelOnly" class="text-danger">
-                @if (TempData.ContainsKey("error"))
-                {
-                    @TempData["error"]}
-            </div>
-
->>>>>>> parent of aa8b0d9 (try)
             <!-- Song -->
             <div class="form-group row" id="CheckerFormMusic">
                 <label asp-for="Song" class="col-sm-2 col-form-label" style="color: #6610F2; font-weight: bold;">@Localizer["song"]:</label>

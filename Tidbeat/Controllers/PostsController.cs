@@ -2,10 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-<<<<<<< HEAD
-=======
-using Ganss.Xss;
->>>>>>> parent of aa8b0d9 (try)
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -100,7 +96,6 @@ namespace Tidbeat.Controllers
                 var user = await _userManager.GetUserAsync(User);
                 if (User?.Identity.IsAuthenticated == true)
                 {
-<<<<<<< HEAD
                     post.User = user;
                     var band = new Band();
                     if (!string.IsNullOrEmpty(Request.Form["BandId"])) {
@@ -120,18 +115,6 @@ namespace Tidbeat.Controllers
                     }
                     var song = new Song();
                     if (!string.IsNullOrEmpty(Request.Form["SongId"]))
-=======
-                    ModelState.AddModelError(string.Empty, _localizer["error_content"]);
-                } else if (string.IsNullOrEmpty(post.Title)) 
-                {
-                    ModelState.AddModelError(string.Empty, _localizer["error_title"]);
-                }
-                else
-                {
-                    Console.WriteLine(post.ToString());
-                    var user = await _userManager.GetUserAsync(User);
-                    if (User?.Identity.IsAuthenticated == true)
->>>>>>> parent of aa8b0d9 (try)
                     {
                         song = await _context.Songs.Include(s => s.Band).FirstOrDefaultAsync(s => s.SongId.Equals(Request.Form["SongId"]));
                         if (song == null)
@@ -190,10 +173,6 @@ namespace Tidbeat.Controllers
                     }
                     return RedirectToAction(nameof(Index));
                 }
-<<<<<<< HEAD
-=======
-                return View(post);
->>>>>>> parent of aa8b0d9 (try)
             }
             // If model state is not valid, display error messages.
             Console.WriteLine("User: " + await _userManager.GetUserAsync(User));
@@ -203,10 +182,6 @@ namespace Tidbeat.Controllers
                 {
                     string errorMessage = error.ErrorMessage;
                     Console.WriteLine(errorMessage);
-<<<<<<< HEAD
-=======
-                    TempData["error"] = errorMessage;
->>>>>>> parent of aa8b0d9 (try)
                 }
             }
 
