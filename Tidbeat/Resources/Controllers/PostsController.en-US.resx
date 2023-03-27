@@ -120,12 +120,6 @@
   <data name="an_error_occurred" xml:space="preserve">
     <value>An error occurred.</value>
   </data>
-  <data name="error_content" xml:space="preserve">
-    <value>The content is empty.</value>
-  </data>
-  <data name="error_title" xml:space="preserve">
-    <value>The title is empty.</value>
-  </data>
   <data name="no_permission_for_modification" xml:space="preserve">
     <value>You don't have permission to modify the post.</value>
   </data>

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Ganss.Xss;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -93,103 +92,87 @@ namespace Tidbeat.Controllers
         {
             if (ModelState.IsValid)
             {
-                var sanitizer = new HtmlSanitizer();
-                var sanitizedContent = sanitizer.Sanitize(post.Content);
-                if (string.IsNullOrEmpty(sanitizedContent))
+                Console.WriteLine(post.ToString());
+                var user = await _userManager.GetUserAsync(User);
+                if (User?.Identity.IsAuthenticated == true)
                 {
-                    ModelState.AddModelError(string.Empty, _localizer["error_content"]);
-                } else if (string.IsNullOrEmpty(post.Title)) 
-                {
-                    ModelState.AddModelError(string.Empty, _localizer["error_title"]);
-                }
-                else
-                {
-                    Console.WriteLine(post.ToString());
-                    var user = await _userManager.GetUserAsync(User);
-                    if (User?.Identity.IsAuthenticated == true)
+                    post.User = user;
+                    var band = new Band();
+                    if (!string.IsNullOrEmpty(Request.Form["BandId"])) {
+                        band = await _context.Bands.FindAsync(Request.Form["BandId"]);
+                        if (band == null)
+                        {
+                            Band newBand = new Band();
+                            var SpotifyBand = await _spotifyService.GetBandAsync(Request.Form["BandId"]);
+                            newBand.BandId = Request.Form["BandId"];
+                            newBand.Name = SpotifyBand.Name;
+                            newBand.Image = SpotifyBand.Images[0].Url;
+                            band = newBand;
+                            post.Band = band;
+                            _context.Bands.Add(band);
+                            await _context.SaveChangesAsync();
+                        } 
+                    }
+                    var song = new Song();
+                    if (!string.IsNullOrEmpty(Request.Form["SongId"]))
                     {
-                        post.User = user;
-                        var band = new Band();
-                        if (!string.IsNullOrEmpty(Request.Form["BandId"]))
+                        song = await _context.Songs.Include(s => s.Band).FirstOrDefaultAsync(s => s.SongId.Equals(Request.Form["SongId"]));
+                        if (song == null)
                         {
-                            band = await _context.Bands.FindAsync(Request.Form["BandId"]);
-                            if (band == null)
+                            Song newSong = new Song();
+                            var SpotifySong = await _spotifyService.GetSongAsync(Request.Form["SongId"]);
+                            var SongBand = await _spotifyService.GetBandAsync(SpotifySong.Artists[0].Id);
+                            var checkBand = _context.Bands.Find(SongBand.Id);
+                            if (checkBand == null)
                             {
-                                Band newBand = new Band();
-                                var SpotifyBand = await _spotifyService.GetBandAsync(Request.Form["BandId"]);
-                                newBand.BandId = Request.Form["BandId"];
-                                newBand.Name = SpotifyBand.Name;
-                                newBand.Image = SpotifyBand.Images[0].Url;
-                                band = newBand;
-                                post.Band = band;
-                                _context.Bands.Add(band);
-                                await _context.SaveChangesAsync();
-                            }
-                        }
-                        var song = new Song();
-                        if (!string.IsNullOrEmpty(Request.Form["SongId"]))
-                        {
-                            song = await _context.Songs.Include(s => s.Band).FirstOrDefaultAsync(s => s.SongId.Equals(Request.Form["SongId"]));
-                            if (song == null)
-                            {
-                                Song newSong = new Song();
-                                var SpotifySong = await _spotifyService.GetSongAsync(Request.Form["SongId"]);
-                                var SongBand = await _spotifyService.GetBandAsync(SpotifySong.Artists[0].Id);
-                                var checkBand = _context.Bands.Find(SongBand.Id);
-                                if (checkBand == null)
-                                {
-                                    newSong.Band = new Band() { Name = SpotifySong.Artists[0].Name, BandId = SpotifySong.Artists[0].Id, Image = SongBand.Images[0].Url };
-                                    band = newSong.Band;
-                                    _context.Bands.Add(newSong.Band);
-                                    await _context.SaveChangesAsync();
-                                }
-                                else
-                                {
-                                    newSong.Band = checkBand;
-                                    band = newSong.Band;
-                                }
-                                newSong.SongId = Request.Form["SongId"];
-                                newSong.Name = SpotifySong.Name;
-                                song = newSong;
-                                post.Song = song;
-                                post.Band = song.Band;
-                                song = new Song() { Name = newSong.Name, Band = newSong.Band, SongId = newSong.SongId };
-                                Console.WriteLine("EndSong-" + band.BandId);
-                                _context.Songs.Add(song);
+                                newSong.Band = new Band() { Name = SpotifySong.Artists[0].Name, BandId = SpotifySong.Artists[0].Id, Image = SongBand.Images[0].Url };
+                                band = newSong.Band;
+                                _context.Bands.Add(newSong.Band);
                                 await _context.SaveChangesAsync();
                             }
                             else
                             {
-                                band = await _context.Bands.FindAsync(song.Band.BandId);
+                                newSong.Band = checkBand;
+                                band = newSong.Band;
                             }
+                            newSong.SongId = Request.Form["SongId"];
+                            newSong.Name = SpotifySong.Name;
+                            song = newSong;
+                            post.Song = song;
+                            post.Band = song.Band;
+                            song = new Song() { Name = newSong.Name, Band = newSong.Band , SongId= newSong.SongId };
+                            Console.WriteLine("EndSong-" + band.BandId);
+                            _context.Songs.Add(song);
+                            await _context.SaveChangesAsync();
                         }
-                        Console.WriteLine("Last-" + band.BandId);
-                        var postToSubmit = new Post();
-                        if (!string.IsNullOrEmpty(song.SongId))
+                        else 
                         {
-                            postToSubmit = new Post() { User = user, Title = post.Title, Content = post.Content, Band = band, Song = song };
+                            band = await _context.Bands.FindAsync(song.Band.BandId);
                         }
-                        else if (!string.IsNullOrEmpty(band.BandId))
-                        {
-                            postToSubmit = new Post() { User = user, Title = post.Title, Content = post.Content, Band = band };
-                        }
-                        else
-                        {
-                            postToSubmit = new Post() { User = user, Title = post.Title, Content = post.Content };
-                        }
-                        postToSubmit.CreationDate = DateTime.Now;
-                        var result = await _context.Posts.AddAsync(postToSubmit);
-                        TempData["Sucess"] = _localizer["your_post_was_sucessfully_created"].Value;
-                        await _context.SaveChangesAsync();
-                        var value = _context.Posts.OrderBy(e => e.PostId).LastAsync().Result;
-                        if (value != null)
-                        {
-                            return Redirect("Details/" + value.PostId);
-                        }
-                        return RedirectToAction(nameof(Index));
                     }
+                    Console.WriteLine("Last-" + band.BandId);
+                    var postToSubmit =new Post();
+                    if (!string.IsNullOrEmpty(song.SongId))
+                    {
+                        postToSubmit = new Post() { User = user, Title = post.Title, Content = post.Content, Band = band, Song = song};
+                    }
+                    else if (!string.IsNullOrEmpty(band.BandId))
+                    {
+                        postToSubmit = new Post() { User = user, Title = post.Title, Content = post.Content, Band = band};
+                    }
+                    else {
+                        postToSubmit = new Post() { User = user, Title = post.Title, Content = post.Content};
+                    }
+                    postToSubmit.CreationDate = DateTime.Now;
+                    var result = await _context.Posts.AddAsync(postToSubmit);
+                    TempData["Sucess"] = _localizer["your_post_was_sucessfully_created"].Value;
+                    await _context.SaveChangesAsync();
+                    var value = _context.Posts.OrderBy(e => e.PostId).LastAsync().Result;
+                    if (value != null) {
+                        return Redirect("Details/"+value.PostId);
+                    }
+                    return RedirectToAction(nameof(Index));
                 }
-                return View(post);
             }
             // If model state is not valid, display error messages.
             Console.WriteLine("User: " + await _userManager.GetUserAsync(User));
@@ -198,9 +181,7 @@ namespace Tidbeat.Controllers
                 foreach (ModelError error in modelState.Errors)
                 {
                     string errorMessage = error.ErrorMessage;
-                    ModelState.AddModelError(string.Empty, errorMessage);
                     Console.WriteLine(errorMessage);
-                    TempData["error"] = errorMessage;
                 }
             }
 
