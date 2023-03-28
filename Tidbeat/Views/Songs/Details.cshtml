@@ -96,7 +96,7 @@
         <div class="d-flex justify-content-center mb-2">
             <div class="fs-3 me-4">@Localizer["posts"]</div>
             @if (User.Identity.IsAuthenticated) {
-                <a class="position-absolute bottom-0 end-0 post-btn-center-lg me-4 mb-4 btn btn-primary" asp-controller="Posts" asp-action="Create" asp-route-Idsong="@Model.Id">
+                <a class="position-absolute bottom-0 end-0 me-4 mb-4 btn btn-primary" asp-controller="Posts" asp-action="Create" asp-route-Idsong="@Model.Id">
                     @Localizer["create_post"]
                 </a>
             }

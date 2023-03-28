@@ -201,11 +201,13 @@ nav-link {
 }
 
 .vh-100-minus-navbar {
-    height: calc(100vh - $navbar-height);
+    height: auto;
 }
 
-#post-content > * {
-    overflow-wrap: break-word !important;
+@include media-breakpoint-up(md) {
+    .vh-100-minus-navbar {
+        height: calc(100vh - $navbar-height) !important;
+    }
 }
 
 .tox-tinymce {

@@ -10639,13 +10639,14 @@ textarea.form-control-lg {
   }
 }
 .vh-100-minus-navbar {
-  height: calc(100vh - 72px);
+  height: auto;
 }
 
-#post-content > * {
-  overflow-wrap: break-word !important;
+@media (min-width: 768px) {
+  .vh-100-minus-navbar {
+    height: calc(100vh - 72px) !important;
+  }
 }
-
 .tox-tinymce {
   border: 1px solid #6610F2 !important;
 }

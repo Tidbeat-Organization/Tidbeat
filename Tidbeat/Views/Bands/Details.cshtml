@@ -56,7 +56,7 @@
             <div class="fs-3 me-4">@Localizer["posts"]</div>
             @if (User.Identity.IsAuthenticated)
             {
-                <a class="position-absolute bottom-0 end-0 post-btn-center-lg me-4 mb-4 btn btn-primary" asp-controller="Posts" asp-action="Create" asp-route-Idband="@Model.Id">
+                <a class="position-absolute bottom-0 end-0 me-4 mb-4 btn btn-primary" asp-controller="Posts" asp-action="Create" asp-route-Idband="@Model.Id">
                     @Localizer["create_post"]
             </a>
             }
