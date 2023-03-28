@@ -165,7 +165,8 @@ nav-link {
 }
 
 .post-btn-center-lg {
-    --post-btn-w: 98%;
+    position: relative;
+    --post-btn-w: 96%;
     --post-btn-h: 40pt;
     width: var(--post-btn-w);
     max-width: var(--post-btn-w);
@@ -175,22 +176,27 @@ nav-link {
     max-height: var(--post-btn-h);
     min-height: var(--post-btn-h);
     line-height: calc(var(--post-btn-h) * 0.7);
-    right: 0pt !important;
-    left: 1% !important;
+
+    margin-top: 2pt !important;
+    left: 2%;
+    
 }
 @media screen and (min-width: 992px) {
     .post-btn-center-lg {
-        --post-btn-w: 78pt;
+        position: absolute;
+        --post-btn-w: 82pt;
+        --post-btn-w-max: 152pt;
         --post-btn-h: 24pt;
-        width: var(--post-btn-w);
-        max-width: var(--post-btn-w);
+        width: calc(calc(var(--post-btn-w) + var(--post-btn-w-max)) / 2);
+        max-width: var(--post-btn-w-max);
         min-width: var(--post-btn-w);
         height: var(--post-btn-h);
         max-height: var(--post-btn-h);
         min-height: var(--post-btn-h);
         line-height: calc(var(--post-btn-h) * 0.55);
         right: 0% !important;
-        left: 89% !important;
+        left: 83.8% !important;
+
     }
 }
 
