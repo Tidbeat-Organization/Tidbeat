@@ -52,11 +52,11 @@
 
     <!--All posts goes here-->
     <div class="col-lg-6 col-md-12 mt-5 pt-5 scrollable-posts">
-        <div class="d-flex justify-content-center mb-2">
+        <div class="d-flex justify-content-center mb-2 flex-column">
             <div class="fs-3 me-4">@Localizer["posts"]</div>
             @if (User.Identity.IsAuthenticated)
             {
-                <a class="position-absolute bottom-0 end-0 me-4 mb-4 btn btn-primary" asp-controller="Posts" asp-action="Create" asp-route-Idband="@Model.Id">
+                <a class="bottom-0 end-0 post-btn-center-lg me-4 mb-4 btn btn-primary" asp-controller="Posts" asp-action="Create" asp-route-Idband="@Model.Id">
                     @Localizer["create_post"]
             </a>
             }
