@@ -15,7 +15,7 @@
 
 <!--All music info goes here-->
 <div class="container-fluid row w-100 d-flex flex-column flex-lg-row mx-0">
-    <div class="d-flex flex-column col-lg-6 col-8 vh-100-minus-navbar border border-start-0 border-top-0 border-bottom-0 pe-1 mt-4 pt-5">
+    <div class="d-flex flex-column col-lg-6 col-md-12 vh-100-minus-navbar border-lg-end pe-1 mt-4 pt-5">
         <div class="d-flex flex-column flex-xl-row justify-content-lg-start align-items-center">
             @if (!string.IsNullOrEmpty(user.ImagePath)) {
                 <img src="@user.ImagePath" height="200" class="border border-dark rounded" />
@@ -87,7 +87,7 @@
         </div>
     </div>
     <!--All posts goes here-->
-    <div class="col-lg-6 col-8 mt-5 pt-5 scrollable-posts">
+    <div class="col-lg-6 col-md-12 mt-5 pt-5 scrollable-posts">
         <div class="d-flex justify-content-center mb-2">
             <div class="fs-3 me-4">@Localizer["my_posts"]</div>
         </div>
@@ -96,11 +96,9 @@
             <div>@Localizer["first_post"]</div>
             <img src="~/images/NoPostsImage.png" height="120" class="mt-5" />
         }
-        <div class="position-absolute bottom-0 end-0 me-4 mb-4">
-            <a class="btn btn-primary" asp-controller="Posts" asp-action="Create">
+            <a class="bottom-0 end-0 mt-3 me-4 mb-4 btn btn-primary post-btn-center-lg" asp-controller="Posts" asp-action="Create">
                 @Localizer["create_post"]
             </a>
-        </div>
         @foreach (Post post in allPosts)
         {
             <a class="text-decoration-none text-black" href="@Url.Action("Details", "Posts", new { id = post.PostId })">
