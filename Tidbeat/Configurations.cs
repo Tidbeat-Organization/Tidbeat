@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.DependencyInjection;
 using Tidbeat.Data;
 using Tidbeat.Models;
 
@@ -16,6 +17,19 @@ namespace Tidbeat {
             };
 
             //var createUser = await userManager.CreateAsync(normalUser, "Password_123");
+        }
+
+        public static async Task CreateStartingRoles(IServiceProvider serviceProvider) {
+            var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+            string[] rolesNames = { "Admin", "Moderator", "NormalUser" };
+            IdentityResult result;
+            foreach (var namesRole in rolesNames) {
+                var roleExist = await roleManager.RoleExistsAsync(namesRole);
+                if (!roleExist) {
+                    result = await roleManager.CreateAsync(new IdentityRole(namesRole));
+                }
+            }
         }
 
         public static async Task CreateStartingPosts(IServiceProvider serviceProvider) {
