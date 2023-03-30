@@ -26,9 +26,9 @@
             <div class="ms-2 text-start w-100">
                 <div>
                     <img src="~/images/StarImage.png" class="ml-auto" height="20" />
-                @if (tempval != null)
+                    @if (tempval != null)
                     {
-                            <a formmethod="get" asp-area="Identity" asp-page="/Account/Manage/Index" class=" mr-auto text-primary hover-background-grey rounded text-decoration-none px-2 pt-1 pb-1 bi bi-pencil-fill"></a>
+                        <a formmethod="get" asp-area="Identity" asp-page="/Account/Manage/Index" class=" mr-auto text-primary hover-background-grey rounded text-decoration-none px-2 pt-1 pb-1 bi bi-pencil-fill"></a>
                     }
                 </div>
                 <h1 class="text-primary">@user.FullName</h1>

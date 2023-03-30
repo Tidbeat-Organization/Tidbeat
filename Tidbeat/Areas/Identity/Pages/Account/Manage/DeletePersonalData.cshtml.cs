@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
+using Tidbeat.Data;
 using Tidbeat.Models;
 
 namespace Tidbeat.Areas.Identity.Pages.Account.Manage
@@ -20,17 +21,20 @@ namespace Tidbeat.Areas.Identity.Pages.Account.Manage
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ILogger<DeletePersonalDataModel> _logger;
         private readonly IStringLocalizer<DeletePersonalDataModel> _localizer;
+        private readonly ApplicationDbContext _context;
 
         public DeletePersonalDataModel(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             ILogger<DeletePersonalDataModel> logger,
-            IStringLocalizer<DeletePersonalDataModel> localizer)
+            IStringLocalizer<DeletePersonalDataModel> localizer,
+            ApplicationDbContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _localizer = localizer;
+            _context = context;
         }
 
         /// <summary>
@@ -90,6 +94,30 @@ namespace Tidbeat.Areas.Identity.Pages.Account.Manage
                     return Page();
                 }
             }
+
+            var invalidUser = await _userManager.FindByEmailAsync(Configurations.InvalidUser.Email);
+
+            var postsFromUser = _context.Posts.Where(post => post.User.Email == user.Email);
+            foreach (var post in postsFromUser) {
+                post.User = invalidUser;
+            }
+
+            var commentsFromUser = _context.Comment.Where(comment => comment.User.Email == user.Email);
+            foreach (var comment in commentsFromUser) {
+                comment.User = invalidUser;
+            }
+
+            var postRatings = _context.PostRatings.Where(postRating => postRating.User.Email == user.Email);
+            foreach (var postRating in postRatings) {
+                postRating.User = invalidUser;
+            }
+
+            var commentRatings = _context.CommentRatings.Where(commentRating => commentRating.User.Email == user.Email);
+            foreach (var commentRating in commentRatings) {
+                commentRating.User = invalidUser;
+            }
+
+            _context.SaveChanges();
 
             var result = await _userManager.DeleteAsync(user);
             var userId = await _userManager.GetUserIdAsync(user);

@@ -153,4 +153,7 @@
   <data name="submit" xml:space="preserve">
     <value>Submeter</value>
   </data>
+  <data name="[deleted]" xml:space="preserve">
+    <value>[apagado]</value>
+  </data>
 </root>

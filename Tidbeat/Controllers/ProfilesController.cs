@@ -96,7 +96,7 @@ namespace Tidbeat.Controllers
             var currentuser = await _userManager.GetUserAsync(User);
             var profile = await _context.Users
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (profile == null)
+            if (profile == null || profile.Email == Configurations.InvalidUser.Email)
             {
                 return NotFound();
             }
