@@ -46,6 +46,7 @@ builder.Services.Configure<AuthMessageSenderOptions>(builder.Configuration);
 builder.Services.AddScoped<IMusicService, MusicService>();
 builder.Services.AddScoped<ISpotifyService, SpotifyService>();
 builder.Services.AddScoped<IRatingService, RatingService>();
+builder.Services.AddScoped<IChatBeatService, ChatBeatService>();
 
 builder.Services.Configure<IdentityOptions>(opts => {
     opts.Lockout.AllowedForNewUsers = true;

@@ -61,3 +61,11 @@
     border-left: 10px solid #b2e281;
     margin: 15px 0;
 }
+
+.pull-left {
+    float: left;
+}
+
+.pull-right {
+    float: right;
+}

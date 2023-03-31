@@ -8,7 +8,26 @@
 
 <h2 class="text-center" style="margin-top: 0; padding-top: 30px; padding-bottom: 30px;">@ViewBag.CurrentUser.FullName > @ViewBag.OtherUser.FullName</h2>
 <div class="container" style="height: calc(100% - 110px);">
-    <div id="messages" style="background-color: whitesmoke; "></div>
+    <div id="messages" style="background-color: whitesmoke; ">
+        <button type="button" id="getRecentMessagesButton">More messages...</button>
+        @foreach (var message in ViewBag.Messages)
+        {
+            @if (message.User.Id == ViewBag.CurrentUser.Id)
+            {
+                <div class="message-entry">
+                    <div class="message-avatar pull-right">@message.User.FullName</div>
+                    <div class="message-content pull-right">@message.Text</div>
+                </div>
+            }
+            else
+            {
+                <div class="message-entry">
+                    <div class="message-avatar pull-left">@message.User.FullName</div>
+                    <div class="message-content pull-left">@message.Text</div>
+                </div>
+            }
+        }
+    </div>
     <div style="width: 100%; border-left-style: ridge; border-right-style: ridge;">
         <textarea id="message"
                   style="width: 100%; padding: 5px 10px; border-style: hidden;"
@@ -84,7 +103,33 @@
             connection.on('echo', messageCallback);
             connection.onclose(onConnectionError);
         }
-
+        
+        function saveMessageInDb(message) {
+            fetch('/Conversations/SaveMessage', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    text: message,
+                    userId: '@ViewBag.CurrentUser.Id',
+                    conversationId: '@Model.Id'
+                })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log(data); // success response from server
+            })
+            .catch(error => {
+                console.error('There was a problem with the fetch operation:', error);
+            });
+        }
+        
         function onConnected(connection) {
             console.log('connection started');
             connection.send('joinChat', '@Model.Id');
@@ -92,6 +137,7 @@
             document.getElementById('sendmessage').addEventListener('click', function (event) {
                 if (messageInput.value) {
                     connection.send('broadcastMessage', '@Model.Id', username, messageInput.value);
+                    saveMessageInDb(messageInput.value);
                 }
 
                 messageInput.value = '';
@@ -118,7 +164,7 @@
             if (error && error.message) {
                 console.error(error.message);
             }
-            connection.send('leaveChat', '@Model.Id');
+            //connection.send('leaveChat', '@Model.Id');
             var modal = document.getElementById('myModal');
             modal.classList.add('in');
             modal.style = 'display: block;';
@@ -132,4 +178,59 @@
             .then(() => onConnected(connection))
             .catch(error => console.error(error.message));
     });
+
+    
+    const getRecentMessagesButton = document.getElementById('getRecentMessagesButton');
+    const messagesContainer = document.getElementById('messages');
+    var skipAmount = @ViewBag.Messages.Count;
+
+    getRecentMessagesButton.addEventListener('click', async () => {
+        try {
+            const conversationId = "@Model.Id";
+            const messageAmount = @ViewBag.MessageAmountPerCall;
+
+            const response = await fetch('/Conversations/GetRecentMessages', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    conversationId: conversationId,
+                    messageAmount: messageAmount,
+                    skipAmount: skipAmount
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error('Error getting recent messages.');
+            }
+
+            const messages = await response.json();
+            console.log(messages);
+            skipAmount += messages.length;
+            updateMessagesContainer(messages);
+        } catch (error) {
+            console.error(error);
+        }
+    });
+
+    function updateMessagesContainer(messages) {
+        messages.forEach((message) => {
+            const messageElement = document.createElement('div');
+            messageElement.classList.add("message-entry");
+            if (message.user.id === "@ViewBag.CurrentUser.Id") {
+                messageElement.innerHTML = `<div class="message-avatar pull-right">${message.user.fullName}</div>` +
+                    `<div class="message-content pull-right">${message.text}<div>`;
+            } else {
+                messageElement.innerHTML = `<div class="message-avatar pull-left">${message.user.fullName}</div>` +
+                    `<div class="message-content pull-left">${message.text}<div>`;
+            }
+            messagesContainer.insertBefore(messageElement, messagesContainer.children[1]);
+            if (messages.length < @ViewBag.MessageAmountPerCall) {
+                getRecentMessagesButton.style.display = 'none';
+            }
+        });
+    }
+    
+
 </script>

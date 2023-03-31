@@ -8,9 +8,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Tidbeat.Data;
+using Tidbeat.DTOs.ChatBeat;
 using Tidbeat.Enums;
 using Tidbeat.Hub;
 using Tidbeat.Models;
+using Tidbeat.Services;
 
 namespace Tidbeat.Controllers
 {
@@ -18,13 +20,13 @@ namespace Tidbeat.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly IHubContext<ChatHub> _hubContext;
+        private readonly IChatBeatService _chatBeatService;
 
-        public ConversationsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, IHubContext<ChatHub> hubContext)
+        public ConversationsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, IChatBeatService chatBeatService)
         {
             _context = context;
             _userManager = userManager;
-            _hubContext = hubContext;
+            _chatBeatService = chatBeatService;
         }
 
         // GET: Conversations
@@ -38,6 +40,7 @@ namespace Tidbeat.Controllers
         // GET: Conversations/Details/5
         public async Task<IActionResult> Details(string? id)
         {
+            const int messageAmountPerCall = 20;
             if (id == null || _context.Conversations == null)
             {
                 return NotFound();
@@ -52,64 +55,29 @@ namespace Tidbeat.Controllers
             var currentUser = await _userManager.GetUserAsync(User);
             ViewBag.CurrentUser = currentUser;
             ViewBag.OtherUser = _context.Participants.Where(p => p.Conversation.Id == id && p.User.Id != currentUser.Id).Select(p => p.User).FirstOrDefault();
+
+            ViewBag.MessageAmountPerCall = messageAmountPerCall;
+
+            var topMessages = await _chatBeatService.GetRecentMessages(id, messageAmountPerCall, 0);
+            topMessages.Reverse();
+            ViewBag.Messages = topMessages;
+
             return View(conversation);
         }
 
+        public async Task<IActionResult> GetRecentMessages([FromBody] GetRecentMessageDto getRecentMessageDto) {
+            var messages = await _chatBeatService.GetRecentMessages(getRecentMessageDto.ConversationId, getRecentMessageDto.MessageAmount, getRecentMessageDto.SkipAmount);
+            return Json(messages);
+        }
+
         [HttpPost]
-        public async Task<IActionResult> SaveMessage(string text, string userId, string conversationId) {
-            var message = new Message {
-                Text = text,
-                Status = (int) MessageStatus.Sent,
-                Created = DateTime.Now,
-                User = await _userManager.FindByIdAsync(userId),
-                Conversation = await _context.Conversations.FirstOrDefaultAsync(c => c.Id == conversationId)
-            };
-            _context.Messages.Add(message);
-            await _context.SaveChangesAsync();
-            //await _hubContext.Clients.Group(conversationId).SendAsync("broadcastMessage", message.User.UserName, message.Text);
-            return Ok();
+        public async Task SaveMessage([FromBody] MessageDto messageDto) {
+            await _chatBeatService.AddMessageToDatabase(messageDto.ConversationId, messageDto.UserId, messageDto.Text);
         }
 
         public async Task<IActionResult> StartTwoPersonConversation(string currentUserId, string otherUserId) {
-            var allCurrentUserConversations = _context.Participants.Where(p => p.User.Id == currentUserId).Select(p => p.Conversation).ToList();
-            var allOtherUserConversations = _context.Participants.Where(p => p.User.Id == otherUserId).Select(p => p.Conversation).ToList();
-            var commonConversations = allCurrentUserConversations.Intersect(allOtherUserConversations).ToList();
-
-            var foundConversation = await _context.Participants
-                .Where(p => commonConversations.Contains(p.Conversation) && !p.Conversation.IsGroupConversation && (p.User.Id == currentUserId || p.User.Id == otherUserId))
-                .Select(p => p.Conversation)
-                .Distinct()
-                .ToListAsync();
-
-            if (foundConversation.Count > 1) {
-                throw new Exception("There shouldn't be more than one exclusive conversation with one user.");
-            } else if (foundConversation.Count == 1) {
-                return RedirectToAction("Details", new { id = foundConversation[0].Id });
-            } else {
-                var conversation = new Conversation {
-                    Id = Guid.NewGuid().ToString(),
-                    StartDate = DateTime.Now,
-                    IsGroupConversation = false
-                };
-                _context.Conversations.Add(conversation);
-
-                var currentParticipant = new Participant {
-                    Conversation = conversation,
-                    User = await _userManager.FindByIdAsync(currentUserId)
-                };
-                _context.Participants.Add(currentParticipant);
-
-                var otherParticipant = new Participant {
-                    Conversation = conversation,
-                    User = await _userManager.FindByIdAsync(otherUserId)
-                };
-                _context.Participants.Add(otherParticipant);
-
-                await _context.SaveChangesAsync();
-                return RedirectToAction("Details", new { id = conversation.Id });
-            }
-
-
+            var conversation = await _chatBeatService.GetTwoPersonConversation(currentUserId, otherUserId);
+            return RedirectToAction("Details", new { id = conversation.Id });
         }
 
         // GET: Conversations/Create
