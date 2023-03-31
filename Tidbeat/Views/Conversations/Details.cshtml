@@ -87,11 +87,11 @@
 
         function onConnected(connection) {
             console.log('connection started');
-            connection.send('joinChat', @Model.Id);
-            connection.send('broadcastMessage', @Model.Id, '_SYSTEM_', username + ' JOINED');
+            connection.send('joinChat', '@Model.Id');
+            connection.send('broadcastMessage', '@Model.Id', '_SYSTEM_', username + ' JOINED');
             document.getElementById('sendmessage').addEventListener('click', function (event) {
                 if (messageInput.value) {
-                    connection.send('broadcastMessage', @Model.Id, username, messageInput.value);
+                    connection.send('broadcastMessage', '@Model.Id', username, messageInput.value);
                 }
 
                 messageInput.value = '';
@@ -118,7 +118,7 @@
             if (error && error.message) {
                 console.error(error.message);
             }
-            connection.send('leaveChat', @Model.Id);
+            connection.send('leaveChat', '@Model.Id');
             var modal = document.getElementById('myModal');
             modal.classList.add('in');
             modal.style = 'display: block;';

@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Tidbeat.Data;
+using Tidbeat.Enums;
 using Tidbeat.Hub;
 using Tidbeat.Models;
 
@@ -35,7 +36,7 @@ namespace Tidbeat.Controllers
         }
 
         // GET: Conversations/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(string? id)
         {
             if (id == null || _context.Conversations == null)
             {
@@ -54,6 +55,21 @@ namespace Tidbeat.Controllers
             return View(conversation);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> SaveMessage(string text, string userId, string conversationId) {
+            var message = new Message {
+                Text = text,
+                Status = (int) MessageStatus.Sent,
+                Created = DateTime.Now,
+                User = await _userManager.FindByIdAsync(userId),
+                Conversation = await _context.Conversations.FirstOrDefaultAsync(c => c.Id == conversationId)
+            };
+            _context.Messages.Add(message);
+            await _context.SaveChangesAsync();
+            //await _hubContext.Clients.Group(conversationId).SendAsync("broadcastMessage", message.User.UserName, message.Text);
+            return Ok();
+        }
+
         public async Task<IActionResult> StartTwoPersonConversation(string currentUserId, string otherUserId) {
             var allCurrentUserConversations = _context.Participants.Where(p => p.User.Id == currentUserId).Select(p => p.Conversation).ToList();
             var allOtherUserConversations = _context.Participants.Where(p => p.User.Id == otherUserId).Select(p => p.Conversation).ToList();
@@ -68,10 +84,10 @@ namespace Tidbeat.Controllers
             if (foundConversation.Count > 1) {
                 throw new Exception("There shouldn't be more than one exclusive conversation with one user.");
             } else if (foundConversation.Count == 1) {
-                //await _hubContext.Groups.AddToGroupAsync(HttpContext.Connection.Id, foundConversation[0].Id.ToString());
                 return RedirectToAction("Details", new { id = foundConversation[0].Id });
             } else {
                 var conversation = new Conversation {
+                    Id = Guid.NewGuid().ToString(),
                     StartDate = DateTime.Now,
                     IsGroupConversation = false
                 };
@@ -139,7 +155,7 @@ namespace Tidbeat.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,StartDate")] Conversation conversation)
+        public async Task<IActionResult> Edit(string id, [Bind("Id,Title,StartDate")] Conversation conversation)
         {
             if (id != conversation.Id)
             {
@@ -170,7 +186,7 @@ namespace Tidbeat.Controllers
         }
 
         // GET: Conversations/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(string? id)
         {
             if (id == null || _context.Conversations == null)
             {
@@ -206,7 +222,7 @@ namespace Tidbeat.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ConversationExists(int id)
+        private bool ConversationExists(string id)
         {
           return (_context.Conversations?.Any(e => e.Id == id)).GetValueOrDefault();
         }

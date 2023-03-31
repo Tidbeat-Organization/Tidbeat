@@ -12,8 +12,8 @@ using Tidbeat.Data;
 namespace Tidbeat.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230330141908_InitChatting")]
-    partial class InitChatting
+    [Migration("20230331124700_Initi")]
+    partial class Initi
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -334,11 +334,11 @@ namespace Tidbeat.Migrations
 
             modelBuilder.Entity("Tidbeat.Models.Conversation", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    b.Property<bool>("IsGroupConversation")
+                        .HasColumnType("bit");
 
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
@@ -359,8 +359,9 @@ namespace Tidbeat.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("ConversationId")
-                        .HasColumnType("int");
+                    b.Property<string>("ConversationId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
@@ -392,8 +393,9 @@ namespace Tidbeat.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("ConversationId")
-                        .HasColumnType("int");
+                    b.Property<string>("ConversationId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");

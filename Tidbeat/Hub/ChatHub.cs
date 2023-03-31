@@ -13,20 +13,20 @@ namespace Tidbeat.Hub {
             _userManager = userManager;
         }
 
-        public Task BroadcastMessage(int conversationId, string name, string message) {
-            return Clients.Group(conversationId.ToString()).SendAsync("broadcastMessage", name, message);
+        public Task BroadcastMessage(string conversationId, string name, string message) {
+            return Clients.Group(conversationId).SendAsync("broadcastMessage", name, message);
         }
 
         public Task Echo(string name, string message) =>
             Clients.Client(Context.ConnectionId)
                    .SendAsync("echo", name, $"{message} (echo from server)");
 
-        public Task JoinChat(int conversationId) {
-            return Groups.AddToGroupAsync(Context.ConnectionId, conversationId.ToString());
+        public Task JoinChat(string conversationId) {
+            return Groups.AddToGroupAsync(Context.ConnectionId, conversationId);
         }
 
-        public Task LeaveChat(int conversationId) {
-            return Groups.RemoveFromGroupAsync(Context.ConnectionId, conversationId.ToString());
+        public Task LeaveChat(string conversationId) {
+            return Groups.RemoveFromGroupAsync(Context.ConnectionId, conversationId);
         }
     }
 }
