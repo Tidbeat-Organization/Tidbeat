@@ -153,4 +153,7 @@
   <data name="submit" xml:space="preserve">
     <value>Submit</value>
   </data>
+  <data name="[deleted]" xml:space="preserve">
+    <value>[deleted]</value>
+  </data>
 </root>

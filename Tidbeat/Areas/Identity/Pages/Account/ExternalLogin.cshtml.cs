@@ -200,6 +200,7 @@ namespace Tidbeat.Areas.Identity.Pages.Account
                     var result = await _userManager.CreateAsync(user);
                     if (result.Succeeded)
                     {
+                        await _userManager.AddToRoleAsync(user, "NormalUser");
                         result = await _userManager.AddLoginAsync(user, info);
                         if (result.Succeeded)
                         {

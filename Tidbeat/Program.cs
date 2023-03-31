@@ -36,7 +36,7 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 // N�o necessita de conta confirmada: ALTERAR DEPOIS PARA true
 builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<ApplicationDbContext>();
+    .AddRoles<IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews().AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix);
 
 builder.Services.AddTransient<IEmailSender, EmailSender>();
@@ -108,5 +108,6 @@ app.MapRazorPages();
 using var scope = app.Services.CreateScope();
 await Configurations.CreateStartingUsers(scope.ServiceProvider);
 //await Configurations.CreateStartingPosts(scope.ServiceProvider);
+await Configurations.CreateStartingRoles(scope.ServiceProvider);
 
 app.Run();

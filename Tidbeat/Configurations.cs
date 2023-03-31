@@ -1,21 +1,40 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.DependencyInjection;
 using Tidbeat.Data;
 using Tidbeat.Models;
 
 namespace Tidbeat {
     public static class Configurations {
+        public static ApplicationUser InvalidUser = new ApplicationUser {
+            Id = new Guid("00000000-0000-0000-0000-000000000000").ToString(),
+            FullName = "[deleted]",
+            UserName = "invalid@email.com",
+            Email = "invalid@email.com",
+            BirthdayDate = DateTime.Now,
+            Gender = "male"
+        };
+
         public static async Task CreateStartingUsers(IServiceProvider serviceProvider) {
             var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
-            var normalUser = new ApplicationUser {
-                FullName = "Utilizador Normal",
-                UserName = "afonsosemeano@gmail.com",
-                Email = "afonsosemeano@gmail.com",
-                BirthdayDate = DateTime.Now,
-                Gender = "Masculino",
-                FavoriteSongIds = ""
-            };
 
+            var deletedUserExists = await userManager.FindByEmailAsync(InvalidUser.Email);
+            if (deletedUserExists == null) {
+                await userManager.CreateAsync(InvalidUser);
+            }
             //var createUser = await userManager.CreateAsync(normalUser, "Password_123");
+        }
+
+        public static async Task CreateStartingRoles(IServiceProvider serviceProvider) {
+            var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+            string[] rolesNames = { "Admin", "Moderator", "NormalUser" };
+            IdentityResult result;
+            foreach (var namesRole in rolesNames) {
+                var roleExist = await roleManager.RoleExistsAsync(namesRole);
+                if (!roleExist) {
+                    result = await roleManager.CreateAsync(new IdentityRole(namesRole));
+                }
+            }
         }
 
         public static async Task CreateStartingPosts(IServiceProvider serviceProvider) {
