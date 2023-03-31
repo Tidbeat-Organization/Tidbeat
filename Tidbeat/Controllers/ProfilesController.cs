@@ -108,6 +108,7 @@ namespace Tidbeat.Controllers
                 }
             }
             
+            ViewBag.CurrentUser = currentuser;
             ViewBag.Posts = await _context.Posts.Include(p => p.User).Where(p => p.User.Id == profile.Id).ToListAsync();
             ViewBag.FavoriteSongs = await GetFavoriteSongsAsync(profile);
             ViewBag.BandsOfSongs = await GetBandsOfSongs(ViewBag.FavoriteSongs);

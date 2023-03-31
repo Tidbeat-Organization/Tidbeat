@@ -15,6 +15,9 @@ namespace Tidbeat.Data {
         public DbSet<PostRating> PostRatings { get; set; }
         public DbSet<CommentRating> CommentRatings { get; set; }
         public DbSet<Comment> Comment { get; set; }
+        public DbSet<Message> Messages { get; set; }
+        public DbSet<Conversation> Conversations { get; set; }
+        public DbSet<Participant> Participants { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder) {
             base.OnModelCreating(builder);

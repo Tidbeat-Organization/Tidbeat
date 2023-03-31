@@ -9,6 +9,7 @@ using Microsoft.Extensions.Localization;
 using System.Globalization;
 using Tidbeat;
 using Tidbeat.Data;
+using Tidbeat.Hub;
 using Tidbeat.Middlewares;
 using Tidbeat.Models;
 using Tidbeat.Services;
@@ -63,6 +64,8 @@ builder.Services.Configure<RequestLocalizationOptions>(options => {
     options.SupportedUICultures = supportedCultures;
 });
 
+services.AddSignalR().AddAzureSignalR();
+
 var app = builder.Build();
 app.UseRequestLocalization();
 app.UseMiddleware<CultureMiddleware>();
@@ -99,6 +102,10 @@ app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseEndpoints(endpoints => {
+    endpoints.MapHub<ChatHub>("/chat");
+});
 
 app.MapControllerRoute(
     name: "default",
