@@ -9,7 +9,7 @@
 <h2 class="text-center" style="margin-top: 0; padding-top: 30px; padding-bottom: 30px;">@ViewBag.CurrentUser.FullName > @ViewBag.OtherUser.FullName</h2>
 <div class="container" style="height: calc(100% - 110px);">
     <div id="messages" style="background-color: whitesmoke; ">
-        <button type="button" id="getRecentMessagesButton">More messages...</button>
+        <button type="button" id="getRecentMessagesButton" class="@(ViewBag.Messages.Count >= 20 ? "" : "d-none")">More messages...</button>
         @foreach (var message in ViewBag.Messages)
         {
             @if (message.User.Id == ViewBag.CurrentUser.Id)

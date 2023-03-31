@@ -32,6 +32,17 @@ namespace Tidbeat.Controllers
         // GET: Conversations
         public async Task<IActionResult> Index()
         {
+            var currentUser = await _userManager.GetUserAsync(User);
+            var allCurrentUserConversations = await _context.Participants.Where(p => p.User.Id == currentUser.Id).Select(p => p.Conversation).ToListAsync();
+            var allParticipantsInConversations = await _context.Participants.Include(p => p.User).Where(p => allCurrentUserConversations.Contains(p.Conversation) && p.User != currentUser).ToListAsync();
+
+            var conversationsParticipantsPairs = new List<Tuple<Conversation, List<string>>>();
+            foreach (var conversation in allCurrentUserConversations) {
+                var participants = allParticipantsInConversations.Where(p => p.Conversation == conversation).Select(p => p.User.FullName).ToList();
+                conversationsParticipantsPairs.Add(new Tuple<Conversation, List<string>>(conversation, participants));
+            }
+            ViewBag.ConversationsParticipantsPairs = conversationsParticipantsPairs;
+
               return _context.Conversations != null ? 
                           View(await _context.Conversations.ToListAsync()) :
                           Problem("Entity set 'ApplicationDbContext.Conversations'  is null.");
