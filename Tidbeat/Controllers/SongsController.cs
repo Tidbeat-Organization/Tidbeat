@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -56,7 +57,9 @@ namespace Tidbeat.Controllers
             _context.SaveChanges();
 
             return true;
-        } 
+        }
+
+        [Authorize]
         public async Task AddAsFavoriteAsync(ApplicationUser user, string songId)
         {
             var songIds = user.DeserializeFavoriteSongIds();
@@ -72,6 +75,7 @@ namespace Tidbeat.Controllers
             
         }
 
+        [Authorize]
         public async Task<bool> RemoveAsFavoriteAsync(ApplicationUser user, string songId)
         {
             var songIds = user.DeserializeFavoriteSongIds();
@@ -134,7 +138,7 @@ namespace Tidbeat.Controllers
 
             return View(song);
         }
-
+        [Authorize]
         public async Task SetFavorite([FromQuery] string? songId)
         {
             Console.WriteLine($"\nId: {songId}");

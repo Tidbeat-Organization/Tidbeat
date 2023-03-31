@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -46,7 +47,7 @@ namespace Tidbeat.Controllers
             var bands = await _context.Songs.Select(s => s.Band).ToListAsync();
             return bands;
         }
-
+        [Authorize]
         public async Task<bool> RemoveSingleSongAsync(ApplicationUser user, string songId)
         {
             var songIds = user.DeserializeFavoriteSongIds();
@@ -56,7 +57,7 @@ namespace Tidbeat.Controllers
 
             return success;
         }
-
+        [Authorize]
         public async Task<IActionResult> RemoveFavorite(string? id)
         {
             if (id == null)
@@ -136,6 +137,7 @@ namespace Tidbeat.Controllers
 
         // PUT to /Profiles/RemoveFavoriteSong
         [HttpPut]
+        [Authorize]
         public async Task<IActionResult> RemoveFavoriteSong([FromQuery] string songId)
         {
             var user = await _userManager.GetUserAsync(User);

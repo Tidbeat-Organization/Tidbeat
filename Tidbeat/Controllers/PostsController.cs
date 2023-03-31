@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Ganss.Xss;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -63,6 +64,7 @@ namespace Tidbeat.Controllers
         }
 
         // GET: Posts/Create
+        [Authorize]
         public async Task<IActionResult> CreateAsync([FromQuery] string IdBand, [FromQuery] string IdSong)
         {
             if (!User.Identity.IsAuthenticated) {
@@ -88,6 +90,7 @@ namespace Tidbeat.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [Authorize]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind(include: "Title,Content")] Post post)
         {
@@ -211,6 +214,7 @@ namespace Tidbeat.Controllers
         }
 
         // GET: Posts/Edit/5
+        [Authorize]
         public async Task<IActionResult> Edit(int? id)
         {
             if (!User.Identity.IsAuthenticated) {
@@ -237,6 +241,7 @@ namespace Tidbeat.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> Edit(int id, [Bind("PostId,Title,Content")] Post post)
         {
             if (ModelState.IsValid)
@@ -280,6 +285,7 @@ namespace Tidbeat.Controllers
         }
 
         // GET: Posts/Delete/5
+        [Authorize]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Posts == null)
@@ -298,7 +304,9 @@ namespace Tidbeat.Controllers
         }
 
         // POST: Posts/Delete/5
+        //Missed check for user
         [HttpPost, ActionName("Delete")]
+        [Authorize]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {

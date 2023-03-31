@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization.Formatters;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -32,6 +33,7 @@ namespace Tidbeat.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [Authorize]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("CommentId,Content")] Comment comment)
         {
@@ -59,6 +61,7 @@ namespace Tidbeat.Controllers
         }
 
         // GET: Posts/Edit/5
+        [Authorize]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Comment == null)
@@ -79,6 +82,7 @@ namespace Tidbeat.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> Edit(int id, [Bind("CommentId,Content")] Comment comment)
         {
             if (id != comment.CommentId)
@@ -95,7 +99,7 @@ namespace Tidbeat.Controllers
                         var user = await _userManager.GetUserAsync(User);
                         var commentStored = await _context.Comment.Include(c => c.post).FirstOrDefaultAsync(c => c.CommentId == comment.CommentId);
                         if (commentStored != null) {
-                            if (user.Id == commentStored.User.Id) //Add for Roles
+                            if (user.Id == commentStored.User.Id || _userManager.IsInRoleAsync(user, "Administrator").Result) //Add for Roles
                             {
                                 commentStored.Content = comment.Content;
                                 commentStored.IsEdited = true;
@@ -125,7 +129,9 @@ namespace Tidbeat.Controllers
 
 
         // POST: Comments/Delete/5
+        // Check user
         [HttpPost, ActionName("Delete")]
+        [Authorize]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
