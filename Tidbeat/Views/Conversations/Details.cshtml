@@ -114,9 +114,6 @@
                         <div class="pull-right" id="status-message">Enviado</div>
                     </div>`;
             } else {
-                if (statusMessage) {
-                    statusMessage.remove();
-                }
                 entry.innerHTML = `<div class="message-avatar pull-left">${encodedName}</div>` +
                     `<div class="message-content pull-left">${encodedMsg}<div>`;
             }
@@ -135,16 +132,35 @@
                 var messageBox = document.getElementById('messages');
                 messageBox.appendChild(messageEntry);
                 messageBox.scrollTop = messageBox.scrollHeight;
+                connection.send('setSeenMessages', '@Model.Id', '@ViewBag.OtherUser.Id');
             };
-            var seenCallback = function () {
-                
+            var seenCallback = function (userId) {
+                if (userId === '@ViewBag.CurrentUser.Id') {
+                    let statusMessage = document.getElementById('status-message');
+                    if (statusMessage) {
+                        statusMessage.innerHTML = "Lido";
+                    }
+                }
             };
             connection.on('broadcastMessage', messageCallback);
-            connection.on('seenMessages',)
+            connection.on('setSeenMessages', seenCallback);
             connection.on('echo', messageCallback);
             connection.onclose(onConnectionError);
         }
         
+        function setOtherUsersMessageToSeenInDatabase() {
+            fetch('/Conversations/SetUsersMessagesToSeen', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    userId: '@ViewBag.OtherUser.Id',
+                    conversationId: '@Model.Id'
+                })
+            })
+        }
+
         function saveMessageInDb(message) {
             fetch('/Conversations/SaveMessage', {
                 method: 'POST',
@@ -175,6 +191,8 @@
             console.log('connection started');
             connection.send('joinChat', '@Model.Id');
             connection.send('broadcastMessage', '@Model.Id', '_SYSTEM_', username + ' JOINED');
+            connection.send('setSeenMessages', '@Model.Id', '@ViewBag.OtherUser.Id');
+            setOtherUsersMessageToSeenInDatabase();
             document.getElementById('sendmessage').addEventListener('click', function (event) {
                 if (messageInput.value) {
                     connection.send('broadcastMessage', '@Model.Id', username, messageInput.value);

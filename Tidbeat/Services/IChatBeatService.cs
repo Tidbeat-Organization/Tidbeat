@@ -10,5 +10,6 @@ namespace Tidbeat.Services {
         Task EditMessageInDatabase(string conversationId, string userId, string message);
         Task RemoveMessageFromDatabase(string conversationId, string userId);
         Task<List<Message>> GetRecentMessages(string conversationId, int messageAmount, int skipAmount);
+        Task SetUsersMessagesToSeen(string conversationId, string userId);
     }
 }

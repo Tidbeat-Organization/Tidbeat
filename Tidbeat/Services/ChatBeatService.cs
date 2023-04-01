@@ -99,5 +99,13 @@ namespace Tidbeat.Services {
         public Task RemovePersonFromConversation(string conversationId, string userId) {
             throw new NotImplementedException();
         }
+
+        public async Task SetUsersMessagesToSeen(string conversationId, string userId) {
+            (await _context.Messages
+                .Where(m => m.Conversation.Id == conversationId && m.User.Id == userId && m.Status == (int)MessageStatus.Sent)
+                .ToListAsync())
+                .ForEach(m => m.Status = (int)MessageStatus.Seen);
+            await _context.SaveChangesAsync();
+        }
     }
 }

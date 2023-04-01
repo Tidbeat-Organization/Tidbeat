@@ -76,6 +76,12 @@ namespace Tidbeat.Controllers
             return View(conversation);
         }
 
+        [HttpPut]
+        public async Task<IActionResult> SetUsersMessagesToSeen([FromBody] SetMessageToSeenDto setMessageToSeenDto) {
+            await _chatBeatService.SetUsersMessagesToSeen(setMessageToSeenDto.ConversationId, setMessageToSeenDto.UserId);
+            return Ok();
+        }
+
         public async Task<IActionResult> GetRecentMessages([FromBody] GetRecentMessageDto getRecentMessageDto) {
             var messages = await _chatBeatService.GetRecentMessages(getRecentMessageDto.ConversationId, getRecentMessageDto.MessageAmount, getRecentMessageDto.SkipAmount);
             return Json(messages);

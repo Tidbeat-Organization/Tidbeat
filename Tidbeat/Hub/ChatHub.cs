@@ -28,5 +28,9 @@ namespace Tidbeat.Hub {
         public Task LeaveChat(string conversationId) {
             return Groups.RemoveFromGroupAsync(Context.ConnectionId, conversationId);
         }
+
+        public Task SetSeenMessages(string conversationId, string userId) {
+            return Clients.Group(conversationId).SendAsync("setSeenMessages", userId);
+        }
     }
 }
