@@ -133,6 +133,7 @@
                 messageBox.appendChild(messageEntry);
                 messageBox.scrollTop = messageBox.scrollHeight;
                 connection.send('setSeenMessages', '@Model.Id', '@ViewBag.OtherUser.Id');
+                setOtherUsersMessageToSeenInDatabase();
             };
             var seenCallback = function (userId) {
                 if (userId === '@ViewBag.CurrentUser.Id') {
