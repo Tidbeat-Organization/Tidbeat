@@ -29,6 +29,8 @@
                 @if (messageIndex == mostRecentCurrentUserMessageIndex) {
                     <div class="message-entry">
                         <div class="message-avatar pull-right">@message.User.FullName</div>
+                        <div class="bi bi-trash-fill text-danger pull-right btn hover-background-grey p-0 px-1"></div>
+                        <div class="bi bi-pencil-fill text-primary pull-right btn hover-background-grey p-0 px-1"></div>
                         <div class="d-flex flex-column pull-right">
                             <div class="message-content pull-right" style="max-width: 400px;">@message.Text</div>
                             <div id="status-message" class="pull-right">@((message.Status == (int)MessageStatus.Sent) ? "Enviado" : "Lido" )</div>
@@ -39,6 +41,8 @@
                 {
                     <div class="message-entry">
                         <div class="message-avatar pull-right">@message.User.FullName</div>
+                        <div class="bi bi-trash-fill text-danger pull-right btn hover-background-grey p-0 px-1"></div>
+                        <div class="bi bi-pencil-fill text-primary pull-right btn hover-background-grey p-0 px-1"></div>
                         <div class="message-content pull-right">@message.Text</div>
                     </div>
                 }
@@ -108,11 +112,7 @@
                 if (statusMessage) {
                     statusMessage.remove();
                 }
-                entry.innerHTML = `<div class="message-avatar pull-right">${encodedName}</div>` +
-                    `<div class="d-flex flex-column pull-right">
-                        <div class="message-content" style="max-width: 400px;">${encodedMsg}</div>
-                        <div class="pull-right" id="status-message">Enviado</div>
-                    </div>`;
+                entry.innerHTML = rightMessage(encodedMsg, encodedName, @((int)MessageStatus.Sent))
             } else {
                 entry.innerHTML = `<div class="message-avatar pull-left">${encodedName}</div>` +
                     `<div class="message-content pull-left">${encodedMsg}<div>`;
@@ -291,16 +291,9 @@
             messageElement.classList.add("message-entry");
             if (message.user.id === "@(ViewBag.CurrentUser.Id)") {
                 if (messageIndex == mostRecentMessageIndex && !statusMessageAlreadyExists) {
-                    messageElement.innerHTML =
-                        `<div class="message-avatar pull-right">${message.user.fullName}</div>` +
-                        `<div class="d-flex flex-column pull-right">
-                            <div class="message-content" style="max-width: 400px;">${message.text}</div>
-                            <div class="pull-right"  id="status-message">${message.status === @((int)MessageStatus.Sent) ? "Enviado" : "Lido"}</div>
-                        </div>`;
+                    messageElement.innerHTML = rightMessage(message.text, message.user.fullName, message.status);
                 } else {
-                    messageElement.innerHTML = 
-                    `<div class="message-avatar pull-right">${message.user.fullName}</div>` +
-                    `<div class="message-content pull-right" style="max-width: 400px;">${message.text}</div>`
+                    messageElement.innerHTML = rightMessage(message.text, message.user.fullName, undefined);
                 }
             } else {
                 messageElement.innerHTML = `<div class="message-avatar pull-left">${message.user.fullName}</div>` +
@@ -312,6 +305,22 @@
                 getRecentMessagesButton.style.display = 'none';
             }
         });
+    }
+
+    function rightMessage(message, name, status) {
+        if (status === undefined) {
+            return `<div class="message-avatar pull-right">${name}</div>` +
+                `<div class="bi bi-trash-fill text-danger pull-right btn hover-background-grey p-0 px-1"></div>
+                 <div class="bi bi-pencil-fill text-primary pull-right btn hover-background-grey p-0 px-1"></div>` +
+                `<div class="message-content pull-right" style="max-width: 400px;">${message}</div>`;
+        }
+        return `<div class="message-avatar pull-right">${name}</div>` +
+        `<div class="bi bi-trash-fill text-danger pull-right btn hover-background-grey p-0 px-1"></div>
+         <div class="bi bi-pencil-fill text-primary pull-right btn hover-background-grey p-0 px-1"></div>` +
+        `<div class="d-flex flex-column pull-right">
+            <div class="message-content" style="max-width: 400px;">${message}</div>
+            <div class="pull-right"  id="status-message">${status === @((int)MessageStatus.Sent) ? "Enviado" : "Lido"}</div>
+        </div>`;
     }
     
 
