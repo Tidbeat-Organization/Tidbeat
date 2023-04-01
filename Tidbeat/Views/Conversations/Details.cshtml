@@ -1,7 +1,19 @@
 ﻿@model Tidbeat.Models.Conversation
+@using Tidbeat.Enums
 
 @{
     ViewData["Title"] = "Details";
+    var messageIndex = 0;
+    var mostRecentCurrentUserMessageIndex = 0;
+    foreach(var message in ViewBag.Messages)
+    {
+        if (message.User.Id == ViewBag.CurrentUser.Id)
+        {
+            mostRecentCurrentUserMessageIndex = messageIndex;
+        }
+        messageIndex++;
+    }
+    messageIndex = 0;
 }
 
 <h1>Details</h1>
@@ -14,10 +26,22 @@
         {
             @if (message.User.Id == ViewBag.CurrentUser.Id)
             {
-                <div class="message-entry">
-                    <div class="message-avatar pull-right">@message.User.FullName</div>
-                    <div class="message-content pull-right">@message.Text</div>
-                </div>
+                @if (messageIndex == mostRecentCurrentUserMessageIndex) {
+                    <div class="message-entry">
+                        <div class="message-avatar pull-right">@message.User.FullName</div>
+                        <div class="d-flex flex-column pull-right">
+                            <div class="message-content pull-right" style="max-width: 400px;">@message.Text</div>
+                            <div id="status-message" class="pull-right">@((message.Status == (int)MessageStatus.Sent) ? "Enviado" : "Lido" )</div>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="message-entry">
+                        <div class="message-avatar pull-right">@message.User.FullName</div>
+                        <div class="message-content pull-right">@message.Text</div>
+                    </div>
+                }
             }
             else
             {
@@ -26,6 +50,7 @@
                     <div class="message-content pull-left">@message.Text</div>
                 </div>
             }
+            messageIndex++;
         }
     </div>
     <div style="width: 100%; border-left-style: ridge; border-right-style: ridge;">
@@ -70,6 +95,7 @@
 
         function createMessageEntry(encodedName, encodedMsg) {
             var entry = document.createElement('div');
+            let statusMessage = document.getElementById('status-message');
             entry.classList.add("message-entry");
             if (encodedName === "_SYSTEM_") {
                 entry.innerHTML = encodedMsg;
@@ -79,9 +105,18 @@
                 entry.classList.add("text-center");
                 entry.innerHTML = `<div class="text-center broadcast-message">${encodedMsg}</div>`;
             } else if (encodedName === username) {
+                if (statusMessage) {
+                    statusMessage.remove();
+                }
                 entry.innerHTML = `<div class="message-avatar pull-right">${encodedName}</div>` +
-                    `<div class="message-content pull-right">${encodedMsg}<div>`;
+                    `<div class="d-flex flex-column pull-right">
+                        <div class="message-content" style="max-width: 400px;">${encodedMsg.text}</div>
+                        <div class="pull-right" id="status-message">Enviado</div>
+                    </div>`;
             } else {
+                if (statusMessage) {
+                    statusMessage.remove();
+                }
                 entry.innerHTML = `<div class="message-avatar pull-left">${encodedName}</div>` +
                     `<div class="message-content pull-left">${encodedMsg}<div>`;
             }
@@ -95,11 +130,17 @@
                 var encodedMsg = message.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
                 var messageEntry = createMessageEntry(encodedName, encodedMsg);
 
+                let statusMessage = document.getElementById('status-message');
+
                 var messageBox = document.getElementById('messages');
                 messageBox.appendChild(messageEntry);
                 messageBox.scrollTop = messageBox.scrollHeight;
             };
+            var seenCallback = function () {
+                
+            };
             connection.on('broadcastMessage', messageCallback);
+            connection.on('seenMessages',)
             connection.on('echo', messageCallback);
             connection.onclose(onConnectionError);
         }
@@ -215,16 +256,38 @@
     });
 
     function updateMessagesContainer(messages) {
+        let messageIndex = 0;
+        let statusMessage = document.getElementById('status-message');
+        let statusMessageAlreadyExists = statusMessage !== null;
+
+        let mostRecentMessageIndex = -1;
+        for (let i = 0; i < messages.length; i++) {
+            if (messages[i].user.id === "@ViewBag.CurrentUser.Id" && mostRecentMessageIndex == -1) {
+                mostRecentMessageIndex = i;
+            }
+        }
+
         messages.forEach((message) => {
             const messageElement = document.createElement('div');
             messageElement.classList.add("message-entry");
-            if (message.user.id === "@ViewBag.CurrentUser.Id") {
-                messageElement.innerHTML = `<div class="message-avatar pull-right">${message.user.fullName}</div>` +
-                    `<div class="message-content pull-right">${message.text}<div>`;
+            if (message.user.id === "@(ViewBag.CurrentUser.Id)") {
+                if (messageIndex == mostRecentMessageIndex && !statusMessageAlreadyExists) {
+                    messageElement.innerHTML =
+                        `<div class="message-avatar pull-right">${message.user.fullName}</div>` +
+                        `<div class="d-flex flex-column pull-right">
+                            <div class="message-content" style="max-width: 400px;">${message.text}</div>
+                            <div class="pull-right"  id="status-message">${message.status === @((int)MessageStatus.Sent) ? "Enviado" : "Lido"}</div>
+                        </div>`;
+                } else {
+                    messageElement.innerHTML = 
+                    `<div class="message-avatar pull-right">${message.user.fullName}</div>` +
+                    `<div class="message-content pull-right" style="max-width: 400px;">${message.text}</div>`
+                }
             } else {
                 messageElement.innerHTML = `<div class="message-avatar pull-left">${message.user.fullName}</div>` +
                     `<div class="message-content pull-left">${message.text}<div>`;
             }
+            messageIndex++;
             messagesContainer.insertBefore(messageElement, messagesContainer.children[1]);
             if (messages.length < @ViewBag.MessageAmountPerCall) {
                 getRecentMessagesButton.style.display = 'none';
