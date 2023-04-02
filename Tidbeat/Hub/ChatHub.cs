@@ -33,6 +33,10 @@ namespace Tidbeat.Hub {
             return Clients.Group(conversationId).SendAsync("setSeenMessages", userId);
         }
 
+        public Task EditMessage(string conversationId, int messageId, string newText) {
+            return Clients.Group(conversationId).SendAsync("editMessage", messageId, newText);
+        }
+
         public Task DeleteMessage(string conversationId, int messageId) {
             return Clients.Group(conversationId).SendAsync("deleteMessage", messageId);
         }

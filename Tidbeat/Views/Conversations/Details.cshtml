@@ -151,6 +151,15 @@
                     }
                 }
             };
+            var editMessageCallback = function (messageId, newText) {
+                let message = document.querySelector(`[data-message-id="${messageId}"]`);
+                if (message) {
+                    let messageContent = message.querySelector('.message-content');
+                    if (messageContent) {
+                        messageContent.textContent = newText;
+                    }
+                }
+            }
             var deleteMessageCallback = function (messageId) {
                 let message = document.querySelector(`[data-message-id="${messageId}"]`);
                 if (message) {
@@ -159,6 +168,7 @@
             };
             connection.on('broadcastMessage', messageCallback);
             connection.on('setSeenMessages', seenCallback);
+            connection.on('editMessage', editMessageCallback);
             connection.on('deleteMessage', deleteMessageCallback);
             connection.on('echo', messageCallback);
             connection.onclose(onConnectionError);
@@ -197,6 +207,31 @@
             })
             .then(data => {
                 console.log(data); // success response from server
+            })
+            .catch(error => {
+                console.error('There was a problem with the fetch operation:', error);
+            });
+        }
+
+        function editMessageInDb(messageId, text) {
+             fetch('/Conversations/EditMessage', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    messageId: messageId,
+                    text: text,
+                    userId: '@ViewBag.CurrentUser.Id'
+                })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+            })
+            .then(data => {
+                //console.log(data); // success response from server
             })
             .catch(error => {
                 console.error('There was a problem with the fetch operation:', error);
@@ -261,6 +296,9 @@
                     var message = document.querySelector(`[data-message-id="${messageId}"]`);
                     var savedContentTemp = message.querySelector(`.saved-content-temp`);
                     savedContentTemp.textContent = "";
+                    var messageInput = message.querySelector(`.message-content-input`);
+                    connection.send("editMessage", '@Model.Id', messageId, messageInput.value);
+                    editMessageInDb(messageId, messageInput.value);
                     toggleEditMode(messageId);
                     event.preventDefault();
                 });

@@ -88,8 +88,12 @@ namespace Tidbeat.Services {
             }
         }
 
-        public Task EditMessageInDatabase(string conversationId, string userId, int messageId, string text) {
-            throw new NotImplementedException();
+        public async Task EditMessageInDatabase(string userId, int messageId, string text) {
+            var message = await _context.Messages.Include(m => m.User).FirstOrDefaultAsync(m => m.Id == messageId);
+            if (message.User.Id != userId)
+                throw new Exception("You can't edit a message that isn't yours.");
+            message.Text = text;
+            await _context.SaveChangesAsync();
         }
 
         public async Task RemoveMessageFromDatabase(int messageId, string userId) {
