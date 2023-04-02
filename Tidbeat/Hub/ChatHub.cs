@@ -13,8 +13,8 @@ namespace Tidbeat.Hub {
             _userManager = userManager;
         }
 
-        public Task BroadcastMessage(string conversationId, string name, string message) {
-            return Clients.Group(conversationId).SendAsync("broadcastMessage", name, message);
+        public Task BroadcastMessage(string conversationId, string userId, string message) {
+            return Clients.Group(conversationId).SendAsync("broadcastMessage", userId, message);
         }
 
         public Task Echo(string name, string message) =>

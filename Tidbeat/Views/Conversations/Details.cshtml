@@ -105,35 +105,35 @@
         const messageInput = document.getElementById('message');
         messageInput.focus();
 
-        function createMessageEntry(encodedName, encodedMsg) {
+        function createMessageEntry(encodedUserId, encodedMsg) {
             var entry = document.createElement('div');
             let statusMessage = document.getElementById('status-message');
             entry.classList.add("message-entry");
-            if (encodedName === "_SYSTEM_") {
+            if (encodedUserId === "_SYSTEM_") {
                 entry.innerHTML = encodedMsg;
                 entry.classList.add("text-center");
                 entry.classList.add("system-message");
-            } else if (encodedName === "_BROADCAST_") {
+            } else if (encodedUserId === "_BROADCAST_") {
                 entry.classList.add("text-center");
                 entry.innerHTML = `<div class="text-center broadcast-message">${encodedMsg}</div>`;
-            } else if (encodedName === username) {
+            } else if (encodedUserId === '@ViewBag.CurrentUser.Id') {
                 if (statusMessage) {
                     statusMessage.remove();
                 }
-                entry.innerHTML = rightMessage(encodedMsg, encodedName, @((int)MessageStatus.Sent))
+                entry.innerHTML = rightMessage(encodedMsg, '@ViewBag.CurrentUser.FullName', @((int)MessageStatus.Sent))
             } else {
-                entry.innerHTML = `<div class="message-avatar pull-left">${encodedName}</div>` +
+                entry.innerHTML = `<div class="message-avatar pull-left">@(ViewBag.OtherUser.FullName)</div>` +
                     `<div class="message-content pull-left">${encodedMsg}<div>`;
             }
             return entry;
         }
 
         function bindConnectionMessage(connection) {
-            var messageCallback = function (name, message) {
+            var messageCallback = function (userId, message) {
                 if (!message) return;
-                var encodedName = name;
+                //var encodedName = name;
                 var encodedMsg = message.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-                var messageEntry = createMessageEntry(encodedName, encodedMsg);
+                var messageEntry = createMessageEntry(userId, encodedMsg);
 
                 let statusMessage = document.getElementById('status-message');
 
@@ -356,7 +356,7 @@
             setOtherUsersMessageToSeenInDatabase();
             document.getElementById('sendmessage').addEventListener('click', function (event) {
                 if (messageInput.value) {
-                    connection.send('broadcastMessage', '@Model.Id', username, messageInput.value);
+                    connection.send('broadcastMessage', '@Model.Id', '@ViewBag.CurrentUser.Id', messageInput.value);
                     saveMessageInDb(messageInput.value);
                 }
 
