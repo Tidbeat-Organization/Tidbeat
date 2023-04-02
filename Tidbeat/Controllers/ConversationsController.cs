@@ -92,6 +92,12 @@ namespace Tidbeat.Controllers
             await _chatBeatService.AddMessageToDatabase(messageDto.ConversationId, messageDto.UserId, messageDto.Text);
         }
 
+        [HttpDelete]
+        public async Task<IActionResult> DeleteMessage([FromBody] DeleteMessageDto deleteMessageDto) {
+            await _chatBeatService.RemoveMessageFromDatabase(deleteMessageDto.MessageId, deleteMessageDto.UserId);
+            return Ok();
+        }
+
         public async Task<IActionResult> StartTwoPersonConversation(string currentUserId, string otherUserId) {
             var conversation = await _chatBeatService.GetTwoPersonConversation(currentUserId, otherUserId);
             return RedirectToAction("Details", new { id = conversation.Id });

@@ -31,10 +31,6 @@ namespace Tidbeat.Services {
             throw new NotImplementedException();
         }
 
-        public Task EditMessageInDatabase(string conversationId, string userId, string message) {
-            throw new NotImplementedException();
-        }
-
         public Task<Conversation> GetConversation(string conversationId) {
             throw new NotImplementedException();
         }
@@ -92,8 +88,16 @@ namespace Tidbeat.Services {
             }
         }
 
-        public Task RemoveMessageFromDatabase(string conversationId, string userId) {
+        public Task EditMessageInDatabase(string conversationId, string userId, int messageId, string text) {
             throw new NotImplementedException();
+        }
+
+        public async Task RemoveMessageFromDatabase(int messageId, string userId) {
+            var message = await _context.Messages.Include(m => m.User).FirstOrDefaultAsync(m => m.Id == messageId);
+            if (message.User.Id != userId)
+                throw new Exception("You can't remove a message that isn't yours.");
+            _context.Messages.Remove(message);
+            await _context.SaveChangesAsync();
         }
 
         public Task RemovePersonFromConversation(string conversationId, string userId) {

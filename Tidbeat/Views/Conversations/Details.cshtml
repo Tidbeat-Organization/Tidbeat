@@ -27,9 +27,9 @@
             @if (message.User.Id == ViewBag.CurrentUser.Id)
             {
                 @if (messageIndex == mostRecentCurrentUserMessageIndex) {
-                    <div class="message-entry">
+                    <div data-message-id="@message.Id" class="message-entry">
                         <div class="message-avatar pull-right">@message.User.FullName</div>
-                        <div class="bi bi-trash-fill text-danger pull-right btn hover-background-grey p-0 px-1"></div>
+                        <div class="delete-message-button bi bi-trash-fill text-danger pull-right btn hover-background-grey p-0 px-1"></div>
                         <div class="bi bi-pencil-fill text-primary pull-right btn hover-background-grey p-0 px-1"></div>
                         <div class="d-flex flex-column pull-right">
                             <div class="message-content pull-right" style="max-width: 400px;">@message.Text</div>
@@ -39,9 +39,9 @@
                 }
                 else
                 {
-                    <div class="message-entry">
+                    <div data-message-id="@message.Id" class="message-entry">
                         <div class="message-avatar pull-right">@message.User.FullName</div>
-                        <div class="bi bi-trash-fill text-danger pull-right btn hover-background-grey p-0 px-1"></div>
+                        <div class="delete-message-button bi bi-trash-fill text-danger pull-right btn hover-background-grey p-0 px-1"></div>
                         <div class="bi bi-pencil-fill text-primary pull-right btn hover-background-grey p-0 px-1"></div>
                         <div class="message-content pull-right">@message.Text</div>
                     </div>
@@ -49,7 +49,7 @@
             }
             else
             {
-                <div class="message-entry">
+                <div data-message-id="@message.Id" class="message-entry">
                     <div class="message-avatar pull-left">@message.User.FullName</div>
                     <div class="message-content pull-left">@message.Text</div>
                 </div>
@@ -143,8 +143,15 @@
                     }
                 }
             };
+            var deleteMessageCallback = function (messageId) {
+                let message = document.querySelector(`[data-message-id="${messageId}"]`);
+                if (message) {
+                    message.remove();
+                }
+            };
             connection.on('broadcastMessage', messageCallback);
             connection.on('setSeenMessages', seenCallback);
+            connection.on('deleteMessage', deleteMessageCallback);
             connection.on('echo', messageCallback);
             connection.onclose(onConnectionError);
         }
@@ -187,6 +194,42 @@
                 console.error('There was a problem with the fetch operation:', error);
             });
         }
+
+        function deleteMessageFromDb(messageId) {
+             fetch('/Conversations/DeleteMessage', {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    messageId: messageId,
+                    userId: '@ViewBag.CurrentUser.Id'
+                })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+            })
+            .then(data => {
+                //console.log(data); // success response from server
+            })
+            .catch(error => {
+                console.error('There was a problem with the fetch operation:', error);
+            });
+        }
+
+        function addOnClickToDeleteButtons() {
+            var allDeleteButtons = document.getElementsByClassName('delete-message-button');
+            for (var i = 0; i < allDeleteButtons.length; i++) {
+                allDeleteButtons[i].addEventListener('click', function (event) {
+                    var messageId = parseInt(event.target.parentElement.getAttribute('data-message-id'), 10);
+                    connection.send('deleteMessage', '@Model.Id', messageId);
+                    deleteMessageFromDb(messageId);
+                    event.preventDefault();
+                });
+            }
+        }
         
         function onConnected(connection) {
             console.log('connection started');
@@ -211,6 +254,9 @@
                     return false;
                 }
             });
+            
+            addOnClickToDeleteButtons();
+            
             document.getElementById('echo').addEventListener('click', function (event) {
                 connection.send('echo', username, messageInput.value);
 
@@ -237,91 +283,95 @@
         connection.start()
             .then(() => onConnected(connection))
             .catch(error => console.error(error.message));
+
+        const getRecentMessagesButton = document.getElementById('getRecentMessagesButton');
+        const messagesContainer = document.getElementById('messages');
+        var skipAmount = @ViewBag.Messages.Count;
+
+        getRecentMessagesButton.addEventListener('click', async () => {
+            try {
+                const conversationId = "@Model.Id";
+                const messageAmount = @ViewBag.MessageAmountPerCall;
+
+                const response = await fetch('/Conversations/GetRecentMessages', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        conversationId: conversationId,
+                        messageAmount: messageAmount,
+                        skipAmount: skipAmount
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error('Error getting recent messages.');
+                }
+
+                const messages = await response.json();
+                console.log(messages);
+                skipAmount += messages.length;
+                updateMessagesContainer(messages);
+            } catch (error) {
+                console.error(error);
+            }
+        });
+
+        function updateMessagesContainer(messages) {
+            let messageIndex = 0;
+            let statusMessage = document.getElementById('status-message');
+            let statusMessageAlreadyExists = statusMessage !== null;
+
+            let mostRecentMessageIndex = -1;
+            for (let i = 0; i < messages.length; i++) {
+                if (messages[i].user.id === "@ViewBag.CurrentUser.Id" && mostRecentMessageIndex == -1) {
+                    mostRecentMessageIndex = i;
+                }
+            }
+
+            messages.forEach((message) => {
+                const messageElement = document.createElement('div');
+                messageElement.classList.add("message-entry");
+                messageElement.setAttribute('data-message-id', message.id);
+                if (message.user.id === "@(ViewBag.CurrentUser.Id)") {
+                    if (messageIndex == mostRecentMessageIndex && !statusMessageAlreadyExists) {
+                        messageElement.innerHTML = rightMessage(message.text, message.user.fullName, message.status);
+                    } else {
+                        messageElement.innerHTML = rightMessage(message.text, message.user.fullName, undefined);
+                    }
+                } else {
+                    messageElement.innerHTML = `<div class="message-avatar pull-left">${message.user.fullName}</div>` +
+                        `<div class="message-content pull-left">${message.text}<div>`;
+                }
+                messageIndex++;
+                messagesContainer.insertBefore(messageElement, messagesContainer.children[1]);
+                if (messages.length < @ViewBag.MessageAmountPerCall) {
+                    getRecentMessagesButton.style.display = 'none';
+                }
+            });
+            addOnClickToDeleteButtons();
+        }
+
+        function rightMessage(message, name, status) {
+            if (status === undefined) {
+                return `<div class="message-avatar pull-right">${name}</div>` +
+                    `<div class="delete-message-button bi bi-trash-fill text-danger pull-right btn hover-background-grey p-0 px-1"></div>
+                     <div class="bi bi-pencil-fill text-primary pull-right btn hover-background-grey p-0 px-1"></div>` +
+                    `<div class="message-content pull-right" style="max-width: 400px;">${message}</div>`;
+            }
+            return `<div class="message-avatar pull-right">${name}</div>` +
+                `<div class="delete-message-button bi bi-trash-fill text-danger pull-right btn hover-background-grey p-0 px-1"></div>
+             <div class="bi bi-pencil-fill text-primary pull-right btn hover-background-grey p-0 px-1"></div>` +
+                `<div class="d-flex flex-column pull-right">
+                <div class="message-content" style="max-width: 400px;">${message}</div>
+                <div class="pull-right"  id="status-message">${status === @((int)MessageStatus.Sent) ? "Enviado" : "Lido"}</div>
+            </div>`;
+        }
     });
 
     
-    const getRecentMessagesButton = document.getElementById('getRecentMessagesButton');
-    const messagesContainer = document.getElementById('messages');
-    var skipAmount = @ViewBag.Messages.Count;
-
-    getRecentMessagesButton.addEventListener('click', async () => {
-        try {
-            const conversationId = "@Model.Id";
-            const messageAmount = @ViewBag.MessageAmountPerCall;
-
-            const response = await fetch('/Conversations/GetRecentMessages', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    conversationId: conversationId,
-                    messageAmount: messageAmount,
-                    skipAmount: skipAmount
-                })
-            });
-
-            if (!response.ok) {
-                throw new Error('Error getting recent messages.');
-            }
-
-            const messages = await response.json();
-            console.log(messages);
-            skipAmount += messages.length;
-            updateMessagesContainer(messages);
-        } catch (error) {
-            console.error(error);
-        }
-    });
-
-    function updateMessagesContainer(messages) {
-        let messageIndex = 0;
-        let statusMessage = document.getElementById('status-message');
-        let statusMessageAlreadyExists = statusMessage !== null;
-
-        let mostRecentMessageIndex = -1;
-        for (let i = 0; i < messages.length; i++) {
-            if (messages[i].user.id === "@ViewBag.CurrentUser.Id" && mostRecentMessageIndex == -1) {
-                mostRecentMessageIndex = i;
-            }
-        }
-
-        messages.forEach((message) => {
-            const messageElement = document.createElement('div');
-            messageElement.classList.add("message-entry");
-            if (message.user.id === "@(ViewBag.CurrentUser.Id)") {
-                if (messageIndex == mostRecentMessageIndex && !statusMessageAlreadyExists) {
-                    messageElement.innerHTML = rightMessage(message.text, message.user.fullName, message.status);
-                } else {
-                    messageElement.innerHTML = rightMessage(message.text, message.user.fullName, undefined);
-                }
-            } else {
-                messageElement.innerHTML = `<div class="message-avatar pull-left">${message.user.fullName}</div>` +
-                    `<div class="message-content pull-left">${message.text}<div>`;
-            }
-            messageIndex++;
-            messagesContainer.insertBefore(messageElement, messagesContainer.children[1]);
-            if (messages.length < @ViewBag.MessageAmountPerCall) {
-                getRecentMessagesButton.style.display = 'none';
-            }
-        });
-    }
-
-    function rightMessage(message, name, status) {
-        if (status === undefined) {
-            return `<div class="message-avatar pull-right">${name}</div>` +
-                `<div class="bi bi-trash-fill text-danger pull-right btn hover-background-grey p-0 px-1"></div>
-                 <div class="bi bi-pencil-fill text-primary pull-right btn hover-background-grey p-0 px-1"></div>` +
-                `<div class="message-content pull-right" style="max-width: 400px;">${message}</div>`;
-        }
-        return `<div class="message-avatar pull-right">${name}</div>` +
-        `<div class="bi bi-trash-fill text-danger pull-right btn hover-background-grey p-0 px-1"></div>
-         <div class="bi bi-pencil-fill text-primary pull-right btn hover-background-grey p-0 px-1"></div>` +
-        `<div class="d-flex flex-column pull-right">
-            <div class="message-content" style="max-width: 400px;">${message}</div>
-            <div class="pull-right"  id="status-message">${status === @((int)MessageStatus.Sent) ? "Enviado" : "Lido"}</div>
-        </div>`;
-    }
+    
     
 
 </script>
