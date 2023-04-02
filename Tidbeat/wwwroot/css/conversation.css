@@ -1,12 +1,36 @@
 ﻿#messages {
-    width: 100%;
-    border: 1px solid #ccc;
-    height: calc(100% - 120px);
-    float: none;
-    margin: 0px auto;
-    padding-left: 0px;
-    overflow-y: auto;
+  /* default styles */
+  width: 100%;
+  border: 1px solid #ccc;
+  height: calc(100% - 120px);
+  max-height: 650px;
+  float: none;
+  margin: 0px auto;
+  padding-left: 0px;
+  overflow-y: scroll;
 }
+
+/* adjust max-height for screens less than 768px wide */
+@media (max-width: 767px) {
+  #messages {
+    max-height: 400px;
+  }
+}
+
+/* adjust max-height for screens between 768px and 991px wide */
+@media (min-width: 768px) and (max-width: 991px) {
+  #messages {
+    max-height: 500px;
+  }
+}
+
+/* adjust max-height for screens greater than or equal to 992px wide */
+@media (min-width: 992px) {
+  #messages {
+    max-height: 650px;
+  }
+}
+
 
 .system-message {
     background: #fff;
