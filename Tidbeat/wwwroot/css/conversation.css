@@ -9,7 +9,8 @@
 }
 
 .system-message {
-    background: #87CEFA;
+    background: #fff;
+    color: #6610F2;
 }
 
 .broadcast-message {
@@ -33,7 +34,8 @@
 
 .message-content {
     display: inline-block;
-    background-color: #b2e281;
+    background-color: #6610F2;
+    color: #fff;
     padding: 10px;
     margin: 0 0.5em;
     max-width: calc(60%);
@@ -47,7 +49,7 @@
     float: left;
     border-top: 10px solid transparent;
     border-bottom: 10px solid transparent;
-    border-right: 10px solid #b2e281;
+    border-right: 10px solid #6610F2;
     margin: 15px 0;
 }
 
