@@ -182,6 +182,21 @@ namespace Tidbeat.Controllers
             return View(conversation);
         }
 
+        public async Task<IActionResult> ExitConversation(string conversationId) {
+            var currentUser = await _userManager.GetUserAsync(User);
+            var conversation = await _context.Conversations.FindAsync(conversationId);
+            var participants = await _context.Participants.Where(p => p.Conversation == conversation).ToListAsync();
+            if (participants.Count == 2) {
+                _context.Conversations.Remove(conversation);
+            }
+            else {
+                var participant = await _context.Participants.Where(p => p.Conversation == conversation && p.User == currentUser).FirstOrDefaultAsync();
+                _context.Participants.Remove(participant);
+            }
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index", "Conversations");
+        }
+
         // GET: Conversations/Delete/5
         public async Task<IActionResult> Delete(string? id)
         {

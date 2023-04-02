@@ -8,12 +8,19 @@
 
 <div class="d-flex flex-column align-items-center">
     @foreach (Tuple<Conversation, List<string>> item in ViewBag.ConversationsParticipantsPairs) {
-    <a class="btn btn-outline-primary mb-2" asp-action="Details" asp-route-id="@item.Item1.Id">
-        @foreach(string participant in item.Item2) {
-            <div class="ms-2">
-                @participant;
-            </div>
-        }
-    </a>
+    <div class="d-flex flex-row">
+        <a class="btn btn-outline-primary mb-2" asp-action="Details" asp-route-id="@item.Item1.Id">
+            @foreach(string participant in item.Item2) {
+                <div class="d-flex flex-row justify-content-center">
+                    <div class="ms-2">
+                        @participant;
+                    </div>
+                </div>
+            }
+        </a>
+        <form method="post" asp-action="ExitConversation" asp-route-conversationId="@item.Item1.Id">
+            <button type="submit" class="bi bi-trash-fill text-danger fs-3 btn hover-background-grey p-0 px-1"></button>
+        </form>
+    </div>
 }
 </div>
