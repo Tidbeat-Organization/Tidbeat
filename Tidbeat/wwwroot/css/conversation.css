@@ -2,7 +2,7 @@
   /* default styles */
   width: 100%;
   border: 1px solid #ccc;
-  height: calc(100% - 120px);
+  height: calc(100vh - 275px);
   max-height: 650px;
   float: none;
   margin: 0px auto;
