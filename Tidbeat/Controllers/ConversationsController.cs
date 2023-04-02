@@ -32,6 +32,9 @@ namespace Tidbeat.Controllers
         // GET: Conversations
         public async Task<IActionResult> Index()
         {
+            if (!User.Identity.IsAuthenticated) {
+                return Redirect("/Identity/Account/Login");
+            }
             var currentUser = await _userManager.GetUserAsync(User);
             var allCurrentUserConversations = await _context.Participants.Where(p => p.User.Id == currentUser.Id).Select(p => p.Conversation).ToListAsync();
             var allParticipantsInConversations = await _context.Participants.Include(p => p.User).Where(p => allCurrentUserConversations.Contains(p.Conversation) && p.User != currentUser).ToListAsync();

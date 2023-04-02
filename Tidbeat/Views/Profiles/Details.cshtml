@@ -33,7 +33,9 @@
                 </div>
                 <div class="d-flex">
                     <h1 class="text-primary">@user.FullName</h1>
-                    <a class="btn bi bi-chat-right-text fs-4 py-0" href="@Url.Action("StartTwoPersonConversation", "Conversations", new { currentUserId = ViewBag.CurrentUser.Id, otherUserId = Model.Id })"></a>
+                    @if (!ViewBag.IsCurrentUser) {
+                        <a class="btn bi bi-chat-right-text fs-4 py-0" href="@Url.Action("StartTwoPersonConversation", "Conversations", new { currentUserId = ViewBag.CurrentUser.Id, otherUserId = Model.Id })"></a>
+                    }
                 </div>
                 <div> <span class="text-primary">@Localizer["gender"]:</span> @Localizer[user.Gender]</div>
                 <div> <span class="text-primary">@Localizer["birth_date"]:</span> @user.BirthdayDate.Date.ToShortDateString()</div>

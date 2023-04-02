@@ -114,7 +114,9 @@
                             </div>
                         </div>
                         <div class="d-flex flex-row ms-lg-auto align-items-center">
-                            <a class="btn bi bi-chat-right-text fs-4 py-0" asp-controller="Conversations" asp-action="Index"></a>
+                            @if(User.Identity.IsAuthenticated) {
+                                <a class="btn bi bi-chat-right-text fs-4 py-0" asp-controller="Conversations" asp-action="Index"></a>
+                            }
                             <partial name="_LoginPartial" />
                             <form asp-controller="Language" asp-action="SetLanguage" method="post" id="languageForm" class="d-flex align-self-center ms-auto">
                                 <div class="dropdown">
