@@ -30,10 +30,13 @@
                     <div data-message-id="@message.Id" class="message-entry">
                         <div class="message-avatar pull-right">@message.User.FullName</div>
                         <div class="delete-message-button bi bi-trash-fill text-danger pull-right btn hover-background-grey p-0 px-1"></div>
-                        <div class="bi bi-pencil-fill text-primary pull-right btn hover-background-grey p-0 px-1"></div>
+                        <div class="edit-message-button bi bi-pencil-fill text-primary pull-right btn hover-background-grey p-0 px-1"></div>
+                        <div class="cancel-message-button bi bi-x text-danger btn hover-background-grey pull-right p-0 px-1 d-none"></div>
+                        <div class="save-message-button bi bi-check text-success btn hover-background-grey pull-right p-0 px-1 d-none"></div>
                         <div class="d-flex flex-column pull-right">
-                            <div class="message-content pull-right" style="max-width: 400px;">@message.Text</div>
-                            <div id="status-message" class="pull-right">@((message.Status == (int)MessageStatus.Sent) ? "Enviado" : "Lido" )</div>
+                            <input type="text" class="message-content-input message-content pull-right border-0 " style="max-width: 400px;" value="@message.Text" readonly />
+                            <div class="saved-content-temp d-none"></div>
+                            <div id="status-message" class="pull-right text-end">@((message.Status == (int)MessageStatus.Sent) ? "Enviado" : "Lido" )</div>
                         </div>
                     </div>
                 }
@@ -42,8 +45,13 @@
                     <div data-message-id="@message.Id" class="message-entry">
                         <div class="message-avatar pull-right">@message.User.FullName</div>
                         <div class="delete-message-button bi bi-trash-fill text-danger pull-right btn hover-background-grey p-0 px-1"></div>
-                        <div class="bi bi-pencil-fill text-primary pull-right btn hover-background-grey p-0 px-1"></div>
-                        <div class="message-content pull-right">@message.Text</div>
+                        <div class="edit-message-button bi-pencil-fill text-primary pull-right btn hover-background-grey p-0 px-1"></div>
+                        <div class="cancel-message-button bi bi-x text-danger btn hover-background-grey pull-right p-0 px-1 d-none"></div>
+                        <div class="save-message-button bi bi-check text-success btn hover-background-grey pull-right p-0 px-1 d-none"></div>
+                        <div class="pull-right">
+                            <input type="text" class="message-content-input message-content pull-right border-0 " style="max-width: 400px;" value="@message.Text" readonly />
+                            <div class="saved-content-temp d-none"></div>
+                        </div>
                     </div>
                 }
             }
@@ -230,6 +238,77 @@
                 });
             }
         }
+
+        function addOnClickToEditButtons() {
+            var allEditButtons = document.getElementsByClassName('edit-message-button');
+            for (var i = 0; i < allEditButtons.length; i++) {
+                allEditButtons[i].addEventListener('click', function (event) {
+                    var messageId = parseInt(event.target.parentElement.getAttribute('data-message-id'), 10);
+                    var message = document.querySelector(`[data-message-id="${messageId}"]`);
+                    var savedContentTemp = message.querySelector(`.saved-content-temp`);
+                    savedContentTemp.textContent = message.querySelector(`.message-content-input`).value;
+                    toggleEditMode(messageId);
+                    event.preventDefault();
+                });
+            }
+        }
+
+        function addOnClickToSaveButtons() {
+             var allSaveButtons = document.getElementsByClassName('save-message-button');
+            for (var i = 0; i < allSaveButtons.length; i++) {
+                allSaveButtons[i].addEventListener('click', function (event) {
+                    var messageId = parseInt(event.target.parentElement.getAttribute('data-message-id'), 10);
+                    var message = document.querySelector(`[data-message-id="${messageId}"]`);
+                    var savedContentTemp = message.querySelector(`.saved-content-temp`);
+                    savedContentTemp.textContent = "";
+                    toggleEditMode(messageId);
+                    event.preventDefault();
+                });
+            }
+        }
+
+        function addOnClickToCancelButtons() {
+            var allCancelButtons = document.getElementsByClassName('cancel-message-button');
+            for (var i = 0; i < allCancelButtons.length; i++) {
+                allCancelButtons[i].addEventListener('click', function (event) {
+                    var messageId = parseInt(event.target.parentElement.getAttribute('data-message-id'), 10);
+                    var message = document.querySelector(`[data-message-id="${messageId}"]`);
+                    var messageInput = message.querySelector(`.message-content-input`);
+                    var savedContentTemp = message.querySelector(`.saved-content-temp`);
+                    messageInput.value = savedContentTemp.textContent;
+
+                    savedContentTemp.textContent = "";
+                    toggleEditMode(messageId);
+                    event.preventDefault();
+                });
+            }
+        }
+
+        function toggleEditMode(messageId) {
+            var message = document.querySelector(`[data-message-id="${messageId}"]`);
+            var messageContent = message.querySelector('.message-content');
+            var messageContentInput = message.querySelector('.message-content-input');
+            var editButton = message.querySelector('.edit-message-button');
+            var deleteButton = message.querySelector('.delete-message-button');
+            var saveButton = message.querySelector('.save-message-button');
+            var cancelButton = message.querySelector('.cancel-message-button');
+            if (messageContentInput.readOnly) {
+                messageContentInput.readOnly = false;
+                messageContentInput.focus();
+                messageContentInput.selectionStart = messageContentInput.value.length;
+                messageContentInput.selectionEnd = messageContentInput.value.length;
+                editButton.style.display = 'none';
+                deleteButton.style.display = 'none';
+                saveButton.classList.remove('d-none');
+                cancelButton.classList.remove('d-none');
+            } else {
+                messageContentInput.readOnly = true;
+                editButton.style.display = 'inline-block';
+                saveButton.classList.add('d-none');
+                cancelButton.classList.add('d-none');
+                deleteButton.style.display = 'inline-block';
+            }
+        }
         
         function onConnected(connection) {
             console.log('connection started');
@@ -256,6 +335,9 @@
             });
             
             addOnClickToDeleteButtons();
+            addOnClickToEditButtons();
+            addOnClickToSaveButtons();
+            addOnClickToCancelButtons();
             
             document.getElementById('echo').addEventListener('click', function (event) {
                 connection.send('echo', username, messageInput.value);
@@ -351,22 +433,31 @@
                 }
             });
             addOnClickToDeleteButtons();
+            addOnClickToEditButtons();
+            addOnClickToSaveButtons();
+            addOnClickToCancelButtons();
         }
 
         function rightMessage(message, name, status) {
             if (status === undefined) {
                 return `<div class="message-avatar pull-right">${name}</div>` +
                     `<div class="delete-message-button bi bi-trash-fill text-danger pull-right btn hover-background-grey p-0 px-1"></div>
-                     <div class="bi bi-pencil-fill text-primary pull-right btn hover-background-grey p-0 px-1"></div>` +
-                    `<div class="message-content pull-right" style="max-width: 400px;">${message}</div>`;
+                     <div class="edit-message-button bi bi-pencil-fill text-primary pull-right btn hover-background-grey p-0 px-1"></div>
+                     <div class="cancel-message-button bi bi-x text-danger btn hover-background-grey pull-right p-0 px-1 d-none"></div>
+                     <div class="save-message-button bi bi-check text-success btn hover-background-grey pull-right p-0 px-1 d-none"></div>` +
+                    `<div class="pull-right">
+                        <input type="text" class="message-content-input message-content pull-right border-0 " style="max-width: 400px;" value="${message}" readonly />
+                        <div class="saved-content-temp d-none"></div>
+                    </div>`;
             }
             return `<div class="message-avatar pull-right">${name}</div>` +
-                `<div class="delete-message-button bi bi-trash-fill text-danger pull-right btn hover-background-grey p-0 px-1"></div>
-             <div class="bi bi-pencil-fill text-primary pull-right btn hover-background-grey p-0 px-1"></div>` +
-                `<div class="d-flex flex-column pull-right">
-                <div class="message-content" style="max-width: 400px;">${message}</div>
-                <div class="pull-right"  id="status-message">${status === @((int)MessageStatus.Sent) ? "Enviado" : "Lido"}</div>
-            </div>`;
+                   `<div class="delete-message-button bi bi-trash-fill text-danger pull-right btn hover-background-grey p-0 px-1"></div>
+                    <div class="edit-message-button bi bi-pencil-fill text-primary pull-right btn hover-background-grey p-0 px-1"></div>` +
+                   `<div class="d-flex flex-column pull-right">
+                       <input type="text" class="message-content-input message-content pull-right border-0 " style="max-width: 400px;" value="${message}" readonly />
+                       <div class="saved-content-temp d-none"></div>
+                       <div id="status-message" class="pull-right text-end">${status === @((int)MessageStatus.Sent) ? "Enviado" : "Lido"}</div>
+                   </div>`;
         }
     });
 
