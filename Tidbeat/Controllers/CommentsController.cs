@@ -99,7 +99,7 @@ namespace Tidbeat.Controllers
                         var user = await _userManager.GetUserAsync(User);
                         var commentStored = await _context.Comment.Include(c => c.post).FirstOrDefaultAsync(c => c.CommentId == comment.CommentId);
                         if (commentStored != null) {
-                            if (user.Id == commentStored.User.Id || _userManager.IsInRoleAsync(user, "Administrator").Result) //Add for Roles
+                            if (user.Id == commentStored.User.Id || _userManager.IsInRoleAsync(user, "Administrator").Result || _userManager.IsInRoleAsync(user, "Moderator").Result) //Add for Roles
                             {
                                 commentStored.Content = comment.Content;
                                 commentStored.IsEdited = true;
@@ -139,19 +139,26 @@ namespace Tidbeat.Controllers
             {
                 return Problem("Entity set 'ApplicationDbContext.Comment'  is null.");
             }
-            var ratings = await _context.CommentRatings.Where(cr => cr.Comment.CommentId == id).ToListAsync();
 
-            foreach(var rating in ratings) {
-                _context.CommentRatings.Remove(rating);
-            }
-            var comment = await _context.Comment.Include(c => c.post).FirstOrDefaultAsync(c => c.CommentId == id);
-            if (comment != null)
+            var comment = await _context.Comment.Include(c => c.post).Include(v => v.User).FirstOrDefaultAsync(c => c.CommentId == id);
+            var user = await _userManager.GetUserAsync(User);
+            if (user.Id == comment.User.Id || _userManager.IsInRoleAsync(user, "Moderator").Result || _userManager.IsInRoleAsync(user, "Administrator").Result) //Add for Roles
             {
-                _context.Comment.Remove(comment);
+                var ratings = await _context.CommentRatings.Where(cr => cr.Comment.CommentId == id).ToListAsync();
+
+                foreach (var rating in ratings)
+                {
+                    _context.CommentRatings.Remove(rating);
+                }
+                if (comment != null)
+                {
+                    _context.Comment.Remove(comment);
+                }
+
+                await _context.SaveChangesAsync();
+                return Redirect("/Posts/Details/" + comment.post.PostId.ToString());
             }
-            
-            await _context.SaveChangesAsync();
-            return Redirect("/Posts/Details/" + comment.post.PostId.ToString());
+            return NotFound();
         }
 
         private bool CommentExists(int id)

@@ -253,7 +253,7 @@ namespace Tidbeat.Controllers
                     if (ogPost == null) {
                         return NotFound();
                     }
-                    if (user.Id == ogPost.User.Id) //Add for Roles
+                    if (user.Id == ogPost.User.Id || _userManager.IsInRoleAsync(user, "Moderator").Result || _userManager.IsInRoleAsync(user, "Administrator").Result) //Add for Roles
                     {
                         ogPost.Content = post.Content;
                         ogPost.Title = post.Title;
@@ -315,24 +315,34 @@ namespace Tidbeat.Controllers
                 return Problem("Entity set 'ApplicationDbContext.Posts'  is null.");
             }
 
-            var post = await _context.Posts.FindAsync(id);
+            var post = await _context.Posts.Include(v => v.User).FirstOrDefaultAsync(c => c.PostId == id);
             if (post != null)
             {
-                var commentRatings = await _context.CommentRatings.Where(cr => cr.Comment.post.PostId == post.PostId).ToListAsync();
-                foreach (var rating in commentRatings) {
-                    _context.CommentRatings.Remove(rating);
+                var user = await _userManager.GetUserAsync(User);
+                if (user.Id == post.User.Id || _userManager.IsInRoleAsync(user, "Moderator").Result || _userManager.IsInRoleAsync(user, "Administrator").Result) //Add for Roles
+                {
+                    var commentRatings = await _context.CommentRatings.Where(cr => cr.Comment.post.PostId == post.PostId).ToListAsync();
+                    foreach (var rating in commentRatings)
+                    {
+                        _context.CommentRatings.Remove(rating);
+                    }
+                    _context.Comment.RemoveRange(_context.Comment.Where(x => x.post.PostId == post.PostId).ToList());
+
+                    var postRatings = await _context.PostRatings.Where(pr => pr.Post.PostId == post.PostId).ToListAsync();
+                    foreach (var rating in postRatings)
+                    {
+                        _context.PostRatings.Remove(rating);
+                    }
+
+                    _context.Posts.Remove(post);
+                    await _context.SaveChangesAsync();
+
+                    TempData["Message"] = _localizer["post_deleted_sucessfully"].Value;
                 }
-                _context.Comment.RemoveRange(_context.Comment.Where(x => x.post.PostId == post.PostId).ToList());
-
-                var postRatings = await _context.PostRatings.Where(pr => pr.Post.PostId == post.PostId).ToListAsync();
-                foreach (var rating in postRatings) {
-                    _context.PostRatings.Remove(rating);
+                else 
+                {
+                    return NotFound();
                 }
-
-                _context.Posts.Remove(post);
-                await _context.SaveChangesAsync();
-
-                TempData["Message"] = _localizer["post_deleted_sucessfully"].Value;
             }
             else
             {
