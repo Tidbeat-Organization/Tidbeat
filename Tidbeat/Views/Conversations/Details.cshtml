@@ -71,7 +71,6 @@
                   placeholder="Type message and press Enter to send..."></textarea>
     </div>
     <div style="overflow: auto; border-style: ridge; border-top-style: hidden;">
-        <button class="btn-warning pull-right" id="echo">Echo</button>
         <button class="btn-success pull-right" id="sendmessage">Send</button>
     </div>
 </div>
@@ -170,7 +169,6 @@
             connection.on('setSeenMessages', seenCallback);
             connection.on('editMessage', editMessageCallback);
             connection.on('deleteMessage', deleteMessageCallback);
-            connection.on('echo', messageCallback);
             connection.onclose(onConnectionError);
         }
         
@@ -376,14 +374,6 @@
             addOnClickToEditButtons();
             addOnClickToSaveButtons();
             addOnClickToCancelButtons();
-            
-            document.getElementById('echo').addEventListener('click', function (event) {
-                connection.send('echo', username, messageInput.value);
-
-                messageInput.value = '';
-                messageInput.focus();
-                event.preventDefault();
-            });
         }
 
         function onConnectionError(error) {

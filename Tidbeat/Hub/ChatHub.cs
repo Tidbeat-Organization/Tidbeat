@@ -17,10 +17,6 @@ namespace Tidbeat.Hub {
             return Clients.Group(conversationId).SendAsync("broadcastMessage", userId, message);
         }
 
-        public Task Echo(string name, string message) =>
-            Clients.Client(Context.ConnectionId)
-                   .SendAsync("echo", name, $"{message} (echo from server)");
-
         public Task JoinChat(string conversationId) {
             return Groups.AddToGroupAsync(Context.ConnectionId, conversationId);
         }
