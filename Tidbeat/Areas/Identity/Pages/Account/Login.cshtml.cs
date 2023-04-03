@@ -140,9 +140,9 @@ namespace Tidbeat.Areas.Identity.Pages.Account
                     ModelState.AddModelError("PasswordRed", _localizer["invalid_password"]);
                 }
                 else {
-                    var user = await _context.Users.FindAsync(Input.Email);
-                    List<BanUser> sortedList = user.Bans.OrderBy(u => u.EndsAt).ToList();
-                    if (user.IsBanned != true) {
+                    var userCheck = await _context.Users.FindAsync(Input.Email);
+                    List<BanUser> sortedList = userCheck.Bans.OrderBy(u => u.EndsAt).ToList();
+                    if (userCheck.IsBanned != true) {
                         var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: true);
                         if (result.Succeeded)
                         {
@@ -184,11 +184,12 @@ namespace Tidbeat.Areas.Identity.Pages.Account
                         }
                     }
                     else if (sortedList.Count > 1 && sortedList[0].EndsAt.CompareTo(DateTime.Now) > 0){
-                            //Page for tempBan
-                    
+                        //Page for tempBan
+                        return NotFound();
                     }else
-                    { 
+                    {
                         //Add the page the user is banned 100%
+                        return NotFound();
                     }
                 }
             }
