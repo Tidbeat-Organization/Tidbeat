@@ -104,16 +104,16 @@ namespace Tidbeat.Controllers
             switch (date) 
             {
                 case "month":
-                    BanDateEnd.AddMonths(time);
+                    BanDateEnd = BanDateEnd.AddMonths(time);
                     break;
                 case "year":
-                    BanDateEnd.AddYears(time);
+                    BanDateEnd = BanDateEnd.AddYears(time);
                     break;
                 case "day":
-                    BanDateEnd.AddDays(time);
+                    BanDateEnd = BanDateEnd.AddDays(time);
                     break;
                 case "weeks":
-                    BanDateEnd.AddDays(time * 7);
+                    BanDateEnd = BanDateEnd.AddDays(time * 7);
                     break;
             }
             var BanUser = new BanUser() { EndsAt = BanDateEnd,User = dbUser};
