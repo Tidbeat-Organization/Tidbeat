@@ -204,6 +204,9 @@ namespace Tidbeat.Migrations
                     b.Property<string>("ImagePath")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool?>("IsBanned")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
 
@@ -237,6 +240,9 @@ namespace Tidbeat.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
+                    b.Property<string>("reason")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedEmail")
@@ -265,6 +271,31 @@ namespace Tidbeat.Migrations
                     b.HasKey("BandId");
 
                     b.ToTable("Band", (string)null);
+                });
+
+            modelBuilder.Entity("Tidbeat.Models.BanUser", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("EndsAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Reason")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("BanUser");
                 });
 
             modelBuilder.Entity("Tidbeat.Models.Comment", b =>
@@ -491,6 +522,17 @@ namespace Tidbeat.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Tidbeat.Models.BanUser", b =>
+                {
+                    b.HasOne("Tidbeat.Models.ApplicationUser", "User")
+                        .WithMany("Bans")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Tidbeat.Models.Comment", b =>
                 {
                     b.HasOne("Tidbeat.Models.Post", "post")
@@ -579,6 +621,11 @@ namespace Tidbeat.Migrations
                         .IsRequired();
 
                     b.Navigation("Band");
+                });
+
+            modelBuilder.Entity("Tidbeat.Models.ApplicationUser", b =>
+                {
+                    b.Navigation("Bans");
                 });
 #pragma warning restore 612, 618
         }

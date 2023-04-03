@@ -24,6 +24,8 @@ using System.Text;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Tidbeat.Data;
 using SpotifyAPI.Web;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.Collections;
 
 namespace Tidbeat.Areas.Identity.Pages.Account
 {
@@ -140,14 +142,31 @@ namespace Tidbeat.Areas.Identity.Pages.Account
                     ModelState.AddModelError("PasswordRed", _localizer["invalid_password"]);
                 }
                 else {
-                    var userCheck = await _context.Users.FindAsync(Input.Email);
-                    List<BanUser> sortedList = userCheck.Bans.OrderBy(u => u.EndsAt).ToList();
-                    if (userCheck.IsBanned != true) {
+
                         var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: true);
                         if (result.Succeeded)
                         {
-                            _logger.LogInformation("User logged in.");
-                            return LocalRedirect(returnUrl);
+                            var userResult = await _userManager.FindByEmailAsync(Input.Email);
+                            var userCheck = await _context.Users.FindAsync(userResult.Id);
+                            if (userCheck.IsBanned == true)
+                            {
+                                //Add the page the user is banned 100%
+                                Console.WriteLine("Here");
+                                await _signInManager.SignOutAsync();
+                                return NotFound();
+                            }
+                            else if (userCheck.Bans != null)
+                            {
+                                List<BanUser> sortedList = userCheck.Bans.OrderBy(u => u.EndsAt).ToList();
+                                if (sortedList.Count > 1 && sortedList[0].EndsAt.CompareTo(DateTime.Now) > 0)
+                                    {
+                                    //Page for tempBan
+                                    await _signInManager.SignOutAsync(); 
+                                    return NotFound();
+                            }
+                            }
+                                _logger.LogInformation("User logged in.");
+                                return LocalRedirect(returnUrl);
                         }
                         if (result.RequiresTwoFactor)
                         {
@@ -182,16 +201,8 @@ namespace Tidbeat.Areas.Identity.Pages.Account
                         {
                             ModelState.AddModelError("Danger", _localizer["failed_login"]);
                         }
-                    }
-                    else if (sortedList.Count > 1 && sortedList[0].EndsAt.CompareTo(DateTime.Now) > 0){
-                        //Page for tempBan
-                        return NotFound();
-                    }else
-                    {
-                        //Add the page the user is banned 100%
-                        return NotFound();
-                    }
                 }
+
             }
 
             // If we got this far, something failed, redisplay form
@@ -199,12 +210,13 @@ namespace Tidbeat.Areas.Identity.Pages.Account
             TempData["Password"] = Input.Password;
             return Page();
         }
+
         /*
-        [HttpGet]
-        public IActionResult Login(string returnUrl = "/")
-        {
-            return Challenge(new AuthenticationProperties { RedirectUri = returnUrl }, "Google");
-        }
-        */
+[HttpGet]
+public IActionResult Login(string returnUrl = "/")
+{
+   return Challenge(new AuthenticationProperties { RedirectUri = returnUrl }, "Google");
+}
+*/
     }
 }

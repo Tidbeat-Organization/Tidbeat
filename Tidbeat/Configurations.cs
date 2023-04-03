@@ -11,7 +11,9 @@ namespace Tidbeat {
             UserName = "invalid@email.com",
             Email = "invalid@email.com",
             BirthdayDate = DateTime.Now,
-            Gender = "male"
+            Gender = "male",
+            IsBanned = false,
+            Bans = new List<BanUser>()
         };
 
         public static async Task CreateStartingUsers(IServiceProvider serviceProvider) {
