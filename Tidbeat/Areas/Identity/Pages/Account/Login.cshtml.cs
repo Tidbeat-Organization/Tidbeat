@@ -22,6 +22,10 @@ using Microsoft.AspNetCore.WebUtilities;
 using System.Text.Encodings.Web;
 using System.Text;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Tidbeat.Data;
+using SpotifyAPI.Web;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.Collections;
 
 namespace Tidbeat.Areas.Identity.Pages.Account
 {
@@ -33,9 +37,11 @@ namespace Tidbeat.Areas.Identity.Pages.Account
         private readonly IEmailSender _emailSender;
         private static string Pattern = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&_-])[A-Za-z\\d@$!%*?&_-]{6,}$";
         private readonly IStringLocalizer<LoginModel> _localizer;
+        private readonly ApplicationDbContext _context;
 
-        public LoginModel(SignInManager<ApplicationUser> signInManager, ILogger<LoginModel> logger, UserManager<ApplicationUser> userManager, IEmailSender emailSender, IStringLocalizer<LoginModel> localizer)
+        public LoginModel(ApplicationDbContext context, SignInManager<ApplicationUser> signInManager, ILogger<LoginModel> logger, UserManager<ApplicationUser> userManager, IEmailSender emailSender, IStringLocalizer<LoginModel> localizer)
         {
+            _context = context;
             _signInManager = signInManager;
             _logger = logger;
             _userManager = userManager;
@@ -136,46 +142,67 @@ namespace Tidbeat.Areas.Identity.Pages.Account
                     ModelState.AddModelError("PasswordRed", _localizer["invalid_password"]);
                 }
                 else {
-                    var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: true);
-                    if (result.Succeeded)
-                    {
-                        _logger.LogInformation("User logged in.");
-                        return LocalRedirect(returnUrl);
-                    }
-                    if (result.RequiresTwoFactor)
-                    {
-                        return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, RememberMe = Input.RememberMe });
-                    }
-                    if (result.IsLockedOut)
-                    {
-                        _logger.LogWarning("User account locked out.");
-                        //return RedirectToPage("./Lockout");
-                        ModelState.AddModelError("Danger", _localizer["blocked_account"] + " 10 " + _localizer["minutes"]);
-                    } 
-                    if (result.IsNotAllowed) 
-                    {
-                        var user = await _userManager.FindByEmailAsync(Input.Email);
-                        if (user != null && !await _userManager.CheckPasswordAsync(user, Input.Password)) {
-                            ModelState.AddModelError("Danger", _localizer["failed_login"]);
-                        } else {
-                            ModelState.AddModelError("Danger", _localizer["account_not_activated"]);
-                            var userId = await _userManager.GetUserIdAsync(user);
-                            var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                            code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-                            var callbackUrl = Url.Page(
-                                "/Account/ConfirmEmail",
-                                pageHandler: null,
-                                values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
-                                protocol: Request.Scheme);
-                            await _emailSender.SendEmailAsync(Input.Email, "TIDBEAT - " + _localizer["confirm_mail"],
-                                $"{_localizer["please_confirm_link"]}, <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>{_localizer["clicking_here"]}</a>.");
+
+                        var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: true);
+                        if (result.Succeeded)
+                        {
+                            var userResult = await _userManager.FindByEmailAsync(Input.Email);
+                            var userCheck = await _context.Users.FindAsync(userResult.Id);
+                            if (userCheck.IsBanned == true)
+                            {
+                                //Add the page the user is banned 100%
+                                Console.WriteLine("Here");
+                                await _signInManager.SignOutAsync();
+                                return LocalRedirect(returnUrl); //Change for the view, when it's done
+                            }
+                            else if (userCheck.Bans != null)
+                            {
+                                List<BanUser> sortedList = userCheck.Bans.OrderBy(u => u.EndsAt).ToList();
+                                if (sortedList.Count > 1 && sortedList[0].EndsAt.CompareTo(DateTime.Now) > 0)
+                                    {
+                                    //Page for tempBan
+                                    await _signInManager.SignOutAsync(); 
+                                    return LocalRedirect(returnUrl); //Change the view when its done
+                                }
+                            }
+                                _logger.LogInformation("User logged in.");
+                                return LocalRedirect(returnUrl);
                         }
-                    } 
-                    else
-                    {
-                        ModelState.AddModelError("Danger", _localizer["failed_login"]);
-                    } 
+                        if (result.RequiresTwoFactor)
+                        {
+                            return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, RememberMe = Input.RememberMe });
+                        }
+                        if (result.IsLockedOut)
+                        {
+                            _logger.LogWarning("User account locked out.");
+                            //return RedirectToPage("./Lockout");
+                            ModelState.AddModelError("Danger", _localizer["blocked_account"] + " 10 " + _localizer["minutes"]);
+                        }
+                        if (result.IsNotAllowed)
+                        {
+                            var user = await _userManager.FindByEmailAsync(Input.Email);
+                            if (user != null && !await _userManager.CheckPasswordAsync(user, Input.Password)) {
+                                ModelState.AddModelError("Danger", _localizer["failed_login"]);
+                            } else {
+                                ModelState.AddModelError("Danger", _localizer["account_not_activated"]);
+                                var userId = await _userManager.GetUserIdAsync(user);
+                                var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                                code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+                                var callbackUrl = Url.Page(
+                                    "/Account/ConfirmEmail",
+                                    pageHandler: null,
+                                    values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
+                                    protocol: Request.Scheme);
+                                await _emailSender.SendEmailAsync(Input.Email, "TIDBEAT - " + _localizer["confirm_mail"],
+                                    $"{_localizer["please_confirm_link"]}, <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>{_localizer["clicking_here"]}</a>.");
+                            }
+                        }
+                        else
+                        {
+                            ModelState.AddModelError("Danger", _localizer["failed_login"]);
+                        }
                 }
+
             }
 
             // If we got this far, something failed, redisplay form
@@ -183,12 +210,13 @@ namespace Tidbeat.Areas.Identity.Pages.Account
             TempData["Password"] = Input.Password;
             return Page();
         }
+
         /*
-        [HttpGet]
-        public IActionResult Login(string returnUrl = "/")
-        {
-            return Challenge(new AuthenticationProperties { RedirectUri = returnUrl }, "Google");
-        }
-        */
+[HttpGet]
+public IActionResult Login(string returnUrl = "/")
+{
+   return Challenge(new AuthenticationProperties { RedirectUri = returnUrl }, "Google");
+}
+*/
     }
 }

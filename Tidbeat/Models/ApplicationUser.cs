@@ -26,6 +26,13 @@ namespace Tidbeat.Models {
 
         [PersonalData]
         public string? Country { get; set; }
+
+        public bool? IsBanned { get; set; }
+
+        public string? reason { get; set; }
+
+        public List<BanUser>? Bans { get; set; }
+
         public List<string> DeserializeFavoriteSongIds()
         {
             if (string.IsNullOrEmpty(FavoriteSongIds))
