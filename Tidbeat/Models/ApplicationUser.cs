@@ -31,6 +31,7 @@ namespace Tidbeat.Models {
 
         public string? reason { get; set; }
 
+
         public List<BanUser>? Bans { get; set; }
 
         public List<string> DeserializeFavoriteSongIds()
