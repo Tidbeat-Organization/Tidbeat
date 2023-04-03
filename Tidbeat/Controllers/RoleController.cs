@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using System.Drawing;
 using System.Text.Encodings.Web;
 using Tidbeat.Data;
@@ -15,13 +16,15 @@ namespace Tidbeat.Controllers
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IEmailSender _emailSender;
+        private readonly IStringLocalizer<PostsController> _localizer;
 
-        public RoleController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, IEmailSender emailSender)
+        public RoleController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, IEmailSender emailSender, IStringLocalizer<PostsController> localizer)
         {
             _context = context;
             //_serviceProvider = serviceProvider;
             _userManager = userManager;
             _emailSender = emailSender;
+            _localizer = localizer;
         }
 
         [Authorize(Roles = "Moderator,Administrator")]
@@ -50,11 +53,11 @@ namespace Tidbeat.Controllers
             var result = await _userManager.UpdateAsync(dbUser);
             if (result.Succeeded)
             {
-                await _emailSender.SendEmailAsync(dbUser.Email, "TIDBEAT - Account Updated",
-                    "Viemos informar que a sua conta foi modificada, por não cumprir as diretivas");
-                return Json("UserUpdated");
+                await _emailSender.SendEmailAsync(dbUser.Email, "TIDBEAT - " + _localizer["account_updated"],
+                     _localizer["email_body_edit"]); 
+                return Json(_localizer["user_update"]);
             }
-            return Json("Operation Failed");
+            return Json(_localizer["operation_fail"]);
         }
 
         [Authorize(Roles = "Moderator,Administrator")]
@@ -76,13 +79,40 @@ namespace Tidbeat.Controllers
             dbUser.reason = reason;
             var result = await _userManager.UpdateAsync(dbUser);
             //Falta adicionar o [Deleted] aos posts e comments
+            var invalidUser = await _userManager.FindByEmailAsync(Configurations.InvalidUser.Email);
+
+            var postsFromUser = _context.Posts.Where(post => post.User.Email == dbUser.Email);
+            foreach (var post in postsFromUser)
+            {
+                post.User = invalidUser;
+            }
+
+            var commentsFromUser = _context.Comment.Where(comment => comment.User.Email == dbUser.Email);
+            foreach (var comment in commentsFromUser)
+            {
+                comment.User = invalidUser;
+            }
+
+            var postRatings = _context.PostRatings.Where(postRating => postRating.User.Email == dbUser.Email);
+            foreach (var postRating in postRatings)
+            {
+                postRating.User = invalidUser;
+            }
+
+            var commentRatings = _context.CommentRatings.Where(commentRating => commentRating.User.Email == dbUser.Email);
+            foreach (var commentRating in commentRatings)
+            {
+                commentRating.User = invalidUser;
+            }
+
+            _context.SaveChanges();
             if (result.Succeeded)
             {
-                await _emailSender.SendEmailAsync(dbUser.Email, "TIDBEAT - Account Deleted",
-                    "Viemos informar que a sua conta encontra-se banida, pelo seguinte motivo " + reason + "\nPara resgatar a sua conta contactar: ");
-                return Json("UserDeleted");
+                await _emailSender.SendEmailAsync(dbUser.Email, "TIDBEAT - " + _localizer["account_deleted"],
+                    _localizer["email_body_delete"] + reason);
+                return Json(_localizer["user_delete"]);
             }
-                return Json("Operation Failed");
+            return Json(_localizer["operation_fail"]);
         }
 
         [Authorize(Roles = "Moderator,Administrator")]
@@ -125,11 +155,11 @@ namespace Tidbeat.Controllers
             var result = await _userManager.UpdateAsync(dbUser);
             if (result.Succeeded)
             {
-                await _emailSender.SendEmailAsync(dbUser.Email, "TIDBEAT - Account Temporary Banned",
-                    "Viemos informar que a sua conta foi temporiariamente banida, por não cumprir as diretivas até:" + BanDateEnd);
-                return Json("UserUpdatedTempBan");
+                await _emailSender.SendEmailAsync(dbUser.Email, "TIDBEAT - " + _localizer["account_ban"],
+                    _localizer["email_body_ban"] + BanDateEnd);
+                return Json(_localizer["user_ban"]);
             }
-            return Json("Operation Failed");
+            return Json(_localizer["operation_fail"]);
         }
     }
 }
