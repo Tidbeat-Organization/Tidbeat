@@ -140,7 +140,7 @@ namespace Tidbeat.Areas.Identity.Pages.Account
             var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false, bypassTwoFactor: true);
             if (result.Succeeded)
             {
-                var userResult = await _userManager.FindByLoginAsync(info.LoginProvider, info.ProviderKey);
+                var userResult = await _userManager.FindByEmailAsync("");
                 var userCheck = await _context.Users.FindAsync(userResult.Id);
                 if (userCheck.IsBanned == true)
                 {
