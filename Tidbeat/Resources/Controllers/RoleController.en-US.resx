@@ -135,6 +135,9 @@
   <data name="email_body_edit" xml:space="preserve">
     <value>We informed you, that we have made changes to your account, due to not following the guidelines.</value>
   </data>
+  <data name="fix" xml:space="preserve">
+    <value>fix</value>
+  </data>
   <data name="operation_fail" xml:space="preserve">
     <value>Operation Failed</value>
   </data>

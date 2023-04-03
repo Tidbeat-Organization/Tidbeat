@@ -135,6 +135,9 @@
   <data name="email_body_edit" xml:space="preserve">
     <value>Informamos que foi necessário proceder a alterações na sua conta, por não cumprir as regras.</value>
   </data>
+  <data name="fix" xml:space="preserve">
+    <value>fix</value>
+  </data>
   <data name="operation_fail" xml:space="preserve">
     <value>Operação Falhou</value>
   </data>
