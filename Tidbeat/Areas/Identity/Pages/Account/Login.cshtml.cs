@@ -29,6 +29,7 @@ using System.Collections;
 
 namespace Tidbeat.Areas.Identity.Pages.Account
 {
+
     public class LoginModel : PageModel
     {
         private readonly SignInManager<ApplicationUser> _signInManager;

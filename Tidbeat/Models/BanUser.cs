@@ -2,6 +2,7 @@
 
 namespace Tidbeat.Models
 {
+
     public class BanUser
     {
         [Key]
