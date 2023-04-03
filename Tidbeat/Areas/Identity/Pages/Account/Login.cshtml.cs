@@ -153,7 +153,7 @@ namespace Tidbeat.Areas.Identity.Pages.Account
                                 //Add the page the user is banned 100%
                                 Console.WriteLine("Here");
                                 await _signInManager.SignOutAsync();
-                                return NotFound();
+                                return LocalRedirect(returnUrl); //Change for the view, when it's done
                             }
                             else if (userCheck.Bans != null)
                             {
@@ -162,8 +162,8 @@ namespace Tidbeat.Areas.Identity.Pages.Account
                                     {
                                     //Page for tempBan
                                     await _signInManager.SignOutAsync(); 
-                                    return NotFound();
-                            }
+                                    return LocalRedirect(returnUrl); //Change the view when its done
+                                }
                             }
                                 _logger.LogInformation("User logged in.");
                                 return LocalRedirect(returnUrl);

@@ -21,6 +21,7 @@ using Tidbeat.Models;
 using Microsoft.Extensions.FileSystemGlobbing.Internal;
 using System.Text.RegularExpressions;
 using Microsoft.Extensions.Localization;
+using Tidbeat.Data;
 
 namespace Tidbeat.Areas.Identity.Pages.Account
 {
@@ -34,8 +35,10 @@ namespace Tidbeat.Areas.Identity.Pages.Account
         private readonly IEmailSender _emailSender;
         private readonly ILogger<ExternalLoginModel> _logger;
         private readonly IStringLocalizer<ExternalLoginModel> _localizer;
+        private readonly ApplicationDbContext _context;
 
         public ExternalLoginModel(
+            ApplicationDbContext context,
             SignInManager<ApplicationUser> signInManager,
             UserManager<ApplicationUser> userManager,
             IUserStore<ApplicationUser> userStore,
@@ -43,6 +46,7 @@ namespace Tidbeat.Areas.Identity.Pages.Account
             IEmailSender emailSender,
             IStringLocalizer<ExternalLoginModel> localizer)
         {
+            _context = context;
             _signInManager = signInManager;
             _userManager = userManager;
             _userStore = userStore;
@@ -136,6 +140,24 @@ namespace Tidbeat.Areas.Identity.Pages.Account
             var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false, bypassTwoFactor: true);
             if (result.Succeeded)
             {
+                var userResult = await _userManager.FindByEmailAsync("");
+                var userCheck = await _context.Users.FindAsync(userResult.Id);
+                if (userCheck.IsBanned == true)
+                {
+                    //Add the page the user is banned 100%
+                    await _signInManager.SignOutAsync();
+                    return LocalRedirect(returnUrl); //Change for the view, when it's done
+                }
+                else if (userCheck.Bans != null)
+                {
+                    List<BanUser> sortedList = userCheck.Bans.OrderBy(u => u.EndsAt).ToList();
+                    if (sortedList.Count > 1 && sortedList[0].EndsAt.CompareTo(DateTime.Now) > 0)
+                    {
+                        //Page for tempBan
+                        await _signInManager.SignOutAsync();
+                        return LocalRedirect(returnUrl); //Change the view when its done
+                    }
+                }
                 _logger.LogInformation("{Name} logged in with {LoginProvider} provider.", info.Principal.Identity.Name, info.LoginProvider);
                 return LocalRedirect(returnUrl);
             }
