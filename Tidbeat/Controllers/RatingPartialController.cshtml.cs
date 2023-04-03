@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -40,7 +41,7 @@ namespace Tidbeat.Controllers
             }
             return await _ratingService.GetUserRate(type, id, user.Id);
         }
-
+        [Authorize]
         public async Task SetUserRate([FromQuery] RatingType type, [FromQuery] int id, [FromQuery] int value) {
             var user = await _userManager.GetUserAsync(User);
             if (user == null) {

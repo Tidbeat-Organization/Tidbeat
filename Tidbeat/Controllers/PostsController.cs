@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Ganss.Xss;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -63,6 +64,7 @@ namespace Tidbeat.Controllers
         }
 
         // GET: Posts/Create
+        [Authorize]
         public async Task<IActionResult> CreateAsync([FromQuery] string IdBand, [FromQuery] string IdSong)
         {
             if (!User.Identity.IsAuthenticated) {
@@ -88,6 +90,7 @@ namespace Tidbeat.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [Authorize]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind(include: "Title,Content")] Post post)
         {
@@ -211,6 +214,7 @@ namespace Tidbeat.Controllers
         }
 
         // GET: Posts/Edit/5
+        [Authorize]
         public async Task<IActionResult> Edit(int? id)
         {
             if (!User.Identity.IsAuthenticated) {
@@ -237,6 +241,7 @@ namespace Tidbeat.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> Edit(int id, [Bind("PostId,Title,Content")] Post post)
         {
             if (ModelState.IsValid)
@@ -248,7 +253,7 @@ namespace Tidbeat.Controllers
                     if (ogPost == null) {
                         return NotFound();
                     }
-                    if (user.Id == ogPost.User.Id) //Add for Roles
+                    if (user.Id == ogPost.User.Id || _userManager.IsInRoleAsync(user, "Moderator").Result || _userManager.IsInRoleAsync(user, "Administrator").Result) //Add for Roles
                     {
                         ogPost.Content = post.Content;
                         ogPost.Title = post.Title;
@@ -280,6 +285,7 @@ namespace Tidbeat.Controllers
         }
 
         // GET: Posts/Delete/5
+        [Authorize]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Posts == null)
@@ -298,7 +304,9 @@ namespace Tidbeat.Controllers
         }
 
         // POST: Posts/Delete/5
+        //Missed check for user
         [HttpPost, ActionName("Delete")]
+        [Authorize]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
@@ -307,24 +315,34 @@ namespace Tidbeat.Controllers
                 return Problem("Entity set 'ApplicationDbContext.Posts'  is null.");
             }
 
-            var post = await _context.Posts.FindAsync(id);
+            var post = await _context.Posts.Include(v => v.User).FirstOrDefaultAsync(c => c.PostId == id);
             if (post != null)
             {
-                var commentRatings = await _context.CommentRatings.Where(cr => cr.Comment.post.PostId == post.PostId).ToListAsync();
-                foreach (var rating in commentRatings) {
-                    _context.CommentRatings.Remove(rating);
+                var user = await _userManager.GetUserAsync(User);
+                if (user.Id == post.User.Id || _userManager.IsInRoleAsync(user, "Moderator").Result || _userManager.IsInRoleAsync(user, "Administrator").Result) //Add for Roles
+                {
+                    var commentRatings = await _context.CommentRatings.Where(cr => cr.Comment.post.PostId == post.PostId).ToListAsync();
+                    foreach (var rating in commentRatings)
+                    {
+                        _context.CommentRatings.Remove(rating);
+                    }
+                    _context.Comment.RemoveRange(_context.Comment.Where(x => x.post.PostId == post.PostId).ToList());
+
+                    var postRatings = await _context.PostRatings.Where(pr => pr.Post.PostId == post.PostId).ToListAsync();
+                    foreach (var rating in postRatings)
+                    {
+                        _context.PostRatings.Remove(rating);
+                    }
+
+                    _context.Posts.Remove(post);
+                    await _context.SaveChangesAsync();
+
+                    TempData["Message"] = _localizer["post_deleted_sucessfully"].Value;
                 }
-                _context.Comment.RemoveRange(_context.Comment.Where(x => x.post.PostId == post.PostId).ToList());
-
-                var postRatings = await _context.PostRatings.Where(pr => pr.Post.PostId == post.PostId).ToListAsync();
-                foreach (var rating in postRatings) {
-                    _context.PostRatings.Remove(rating);
+                else 
+                {
+                    return NotFound();
                 }
-
-                _context.Posts.Remove(post);
-                await _context.SaveChangesAsync();
-
-                TempData["Message"] = _localizer["post_deleted_sucessfully"].Value;
             }
             else
             {
