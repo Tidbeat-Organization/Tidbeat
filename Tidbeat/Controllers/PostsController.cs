@@ -17,28 +17,46 @@ using Tidbeat.Services;
 
 namespace Tidbeat.Controllers
 {
+    /// <summary>
+    /// Controls the behaviour of the posts of the application.
+    /// </summary>
     public class PostsController : Controller {
         private readonly ApplicationDbContext _context;
-        private readonly IServiceProvider _serviceProvider;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ISpotifyService _spotifyService;
         private readonly IStringLocalizer<PostsController> _localizer;
 
-        public PostsController(ApplicationDbContext context, IServiceProvider serviceProvider, ISpotifyService spotifyService, IStringLocalizer<PostsController> localizer)
+        /// <summary>
+        /// Initializes needed services like the ApplicationDbContext, the UserManager, the SpotifyService and the StringLocalizer.
+        /// </summary>
+        /// <param name="context">Context of the website</param>
+        /// <param name="userManager">The user manager</param>
+        /// <param name="spotifyService">The access to the spotify API</param>
+        /// <param name="localizer">The language localizer</param>
+        public PostsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, ISpotifyService spotifyService, IStringLocalizer<PostsController> localizer)
         {
             _context = context;
-            _serviceProvider = serviceProvider;
-            _userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+            _userManager = userManager;
             _spotifyService = spotifyService;
             _localizer = localizer;
         }
 
+        /// <summary>
+        /// Gets all the posts of the application.
+        /// </summary>
+        /// <returns>All posts of the application.</returns>
         // GET: Posts
         public async Task<IActionResult> Index()
         {
               return View(await _context.Posts.ToListAsync());
         }
 
+        /// <summary>
+        /// Gets the details of a post. If the post is not found, it returns a 404 error.
+        /// </summary>
+        /// <remarks>GET: Posts/Details/{id}</remarks>
+        /// <param name="id">The id of the post.</param>
+        /// <returns>The details page of a single post.</returns>
         // GET: Posts/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -62,6 +80,14 @@ namespace Tidbeat.Controllers
             return View(post);
         }
 
+        
+        /// <summary>
+        /// Finds the create view. If the user is not logged in, it redirects to the login page.
+        /// </summary>
+        /// <remarks>GET: Posts/Create</remarks>
+        /// <param name="IdBand">The id of the band.</param>
+        /// <param name="IdSong">The id of the song.</param>
+        /// <returns>The create view.</returns>
         // GET: Posts/Create
         public async Task<IActionResult> CreateAsync([FromQuery] string IdBand, [FromQuery] string IdSong)
         {
@@ -83,10 +109,13 @@ namespace Tidbeat.Controllers
             return View();
         }
 
-
+        /// <summary>
+        /// The create post action. If the post is valid, it saves it in the database.
+        /// </summary>
+        /// <param name="post">The Post object which will be validated.</param>
+        /// <remarks>POST: Posts/Create</remarks>
+        /// <returns>If the post is valid, returns the details of the newly created post. If its invalid, shows the error to the user in the create page.</returns>
         // POST: Posts/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind(include: "Title,Content")] Post post)
@@ -210,6 +239,12 @@ namespace Tidbeat.Controllers
             return View(post);
         }
 
+        /// <summary>
+        ///  Edit a post.
+        /// </summary>
+        /// <param name="id">The id of the post about to be edited.</param>
+        /// <remarks>GET: Posts/Edit/{id}</remarks>
+        /// <returns>The edit view.</returns>
         // GET: Posts/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -232,9 +267,14 @@ namespace Tidbeat.Controllers
             return View(post);
         }
 
+        /// <summary>
+        /// Submits the edited post and stores in the database.
+        /// </summary>
+        /// <param name="id">The id of the post being edited.</param>
+        /// <param name="post">The post object changed.</param>
+        /// <remarks>POST: Posts/Edit/5</remarks>
+        /// <returns>If the edit is correct, returns the details of the page. If not, shows the error to the user.</returns>
         // POST: Posts/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("PostId,Title,Content")] Post post)
@@ -279,6 +319,12 @@ namespace Tidbeat.Controllers
             return Redirect("../Details/" + id); 
         }
 
+        /// <summary>
+        /// Deletes a post.
+        /// </summary>
+        /// <param name="id">The id of the post about to be deleted.</param>
+        /// <remarks>GET: Posts/Delete/5</remarks>
+        /// <returns>Returns the delete view.</returns>
         // GET: Posts/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
@@ -297,6 +343,12 @@ namespace Tidbeat.Controllers
             return View(post);
         }
 
+        /// <summary>
+        /// The action for deleting the post.
+        /// </summary>
+        /// <param name="id">The id of the post about to be deleted.</param>
+        /// <remarks>POST: Posts/Delete/5</remarks>
+        /// <returns>If the post exists, returns the index view of this controller. If not, returns a 404 error.</returns>
         // POST: Posts/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
@@ -339,6 +391,12 @@ namespace Tidbeat.Controllers
           return _context.Posts.Any(e => e.PostId == id);
         }
 
+        /// <summary>
+        /// Used for fetching the songs for the Song dropdown list in the Create view.
+        /// </summary>
+        /// <remarks>GET: Posts/SongInfo?searchKey={key}</remarks>
+        /// <param name="searchKey">The search key used to search for the song by its name.</param>
+        /// <returns>A JSON with all found songs.</returns>
         public ActionResult SongInfo([FromQuery] string searchKey)
         {
             var songs = new List<SpotifyAPI.Web.FullTrack>();
@@ -353,6 +411,12 @@ namespace Tidbeat.Controllers
             return Json(songs);
         }
 
+        /// <summary>
+        /// Used for fetching the bands for the Band dropdown list in the Create view.
+        /// </summary>
+        /// <remarks>GET: Posts/BandInfo?searchKey={key}</remarks>
+        /// <param name="searchKey">The search key used to search for the band by its name.</param>
+        /// <returns>A JSON with all found bands.</returns>
         public ActionResult BandsInfo([FromQuery] string searchKey)
         {
             var bands = new List<SpotifyAPI.Web.FullArtist>();

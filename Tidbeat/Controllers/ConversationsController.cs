@@ -16,12 +16,21 @@ using Tidbeat.Services;
 
 namespace Tidbeat.Controllers
 {
+    /// <summary>
+    /// Controls everything related to the chat system.
+    /// </summary>
     public class ConversationsController : Controller
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IChatBeatService _chatBeatService;
 
+        /// <summary>
+        /// Initializes needed services for the controller.
+        /// </summary>
+        /// <param name="context">Context of the website.</param>
+        /// <param name="userManager">The user manager.</param>
+        /// <param name="chatBeatService">The chatting service.</param>
         public ConversationsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, IChatBeatService chatBeatService)
         {
             _context = context;
@@ -29,6 +38,11 @@ namespace Tidbeat.Controllers
             _chatBeatService = chatBeatService;
         }
 
+        /// <summary>
+        /// The index view with all conversations a user has.
+        /// </summary>
+        /// <remarks>GET: Conversations/</remarks>
+        /// <returns>The index view with all conversations a user has. If the user is not logged in, the user is redirected to the login page.</returns>
         // GET: Conversations
         public async Task<IActionResult> Index()
         {
@@ -51,6 +65,13 @@ namespace Tidbeat.Controllers
                           Problem("Entity set 'ApplicationDbContext.Conversations'  is null.");
         }
 
+        /// <summary>
+        /// The details view of a conversation. Shows all messages in the conversation.
+        /// </summary>
+        /// <param name="id">The id of the conversation.</param>
+        /// <remarks>GET: Conversations/Details/{id}  
+        /// In this view, its being used SignalR for establishing the connection between all other users.</remarks>
+        /// <returns>The Details view of the conversation. If the conversation doesn't exist, returns a 404 page.</returns>
         // GET: Conversations/Details/5
         public async Task<IActionResult> Details(string? id)
         {
