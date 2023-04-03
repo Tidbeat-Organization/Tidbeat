@@ -13,21 +13,21 @@
 /* adjust max-height for screens less than 768px wide */
 @media (max-width: 767px) {
   #messages {
-    max-height: 400px;
+    max-height: 600px;
   }
 }
 
 /* adjust max-height for screens between 768px and 991px wide */
 @media (min-width: 768px) and (max-width: 991px) {
   #messages {
-    max-height: 500px;
+    max-height: 700px;
   }
 }
 
 /* adjust max-height for screens greater than or equal to 992px wide */
 @media (min-width: 992px) {
   #messages {
-    max-height: 650px;
+    max-height: 850px;
   }
 }
 
