@@ -159,7 +159,7 @@ document.write(getCssCustomProperty('--headerTopCustomLineHtml'));
 	  </td>
 	  <td>
 
-
+The user model.
 
 		</td>
 	</tr>
@@ -178,7 +178,7 @@ document.write(getCssCustomProperty('--headerTopCustomLineHtml'));
 	  </td>
 	  <td>
 
-
+The band model.
 
 		</td>
 	</tr>
@@ -197,7 +197,7 @@ document.write(getCssCustomProperty('--headerTopCustomLineHtml'));
 	  </td>
 	  <td>
 
-
+The comment model.
 
 		</td>
 	</tr>
@@ -216,7 +216,7 @@ document.write(getCssCustomProperty('--headerTopCustomLineHtml'));
 	  </td>
 	  <td>
 
-
+The comment rating model.
 
 		</td>
 	</tr>
@@ -235,7 +235,7 @@ document.write(getCssCustomProperty('--headerTopCustomLineHtml'));
 	  </td>
 	  <td>
 
-
+The conversation model.
 
 		</td>
 	</tr>
@@ -422,7 +422,9 @@ document.write(getCssCustomProperty('--headerTopCustomLineHtml'));
 	  </td>
 	  <td>
 
-
+An interface in case you need to add a rating system to any kind of entity. If you need to do that, just create a new model and implement this interface.
+Then, make sure to turn that model into a DbSet in the ApplicationDbContext class, add a new entry in the RatingType enum then add a new condition to all switches in the RatingService class.
+That way, you can get the rating of any entity.
 
 		</td>
 	</tr>

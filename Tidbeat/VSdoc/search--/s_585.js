@@ -1,1 +1,1 @@
-search_result['585']=["topic_0000000000000144.html","ApplicationUser.FullName Property",""];
+search_result['585']=["topic_0000000000000144.html","ApplicationUser.FullName Property","The user\u0027s full name."];

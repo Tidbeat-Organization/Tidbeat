@@ -1,1 +1,1 @@
-search_result['652']=["topic_0000000000000169.html","IRating.Value Property",""];
+search_result['652']=["topic_0000000000000169.html","IRating.Value Property","The rating\u0027s value."];

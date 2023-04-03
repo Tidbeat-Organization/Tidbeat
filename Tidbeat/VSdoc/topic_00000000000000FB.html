@@ -89,6 +89,7 @@ document.write(getCssCustomProperty('--headerTopCustomLineHtml'));
 
        
        
+        <summary-info>Sets the current user's rating of a post or comment.</summary-info>
 
 
 
@@ -279,7 +280,7 @@ document.write(getCssCustomProperty('--headerTopCustomLineHtml'));
 	</dd>
 </dl>
 <p>
-	 
+	The type of the object to set the rating to. 
 </p>
 <dl paramName="id" class="parameterList">
 	<dt>
@@ -292,7 +293,7 @@ document.write(getCssCustomProperty('--headerTopCustomLineHtml'));
 	</dd>
 </dl>
 <p>
-	 
+	The id of the object to set the rating to. 
 </p>
 <dl paramName="value" class="parameterList">
 	<dt>
@@ -305,7 +306,7 @@ document.write(getCssCustomProperty('--headerTopCustomLineHtml'));
 	</dd>
 </dl>
 <p>
-	 
+	The value of the rating. 
 </p>
 
 <p />
@@ -335,6 +336,16 @@ document.write(getCssCustomProperty('--headerTopCustomLineHtml'));
 
 
 
+<div class="section_container">
+	<div class="section_heading">
+		<span><a href="javascript:void(0)" title="Collapse" onclick="toggleSection(this);">Remarks</a></span>
+		<div>&nbsp;</div>
+	</div>
+
+	<div id="remarksSection" class="section">	
+			GET: RatingPartial/SetUserRate?type={value},int={value},int={value}
+	</div>					
+</div>
 
 
 

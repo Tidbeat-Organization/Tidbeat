@@ -1,1 +1,1 @@
-search_result['375']=["topic_00000000000000C4.html","ConversationsController.Details Method",""];
+search_result['375']=["topic_00000000000000C4.html","ConversationsController.Details Method","The details view of a conversation. Shows all messages in the conversation."];

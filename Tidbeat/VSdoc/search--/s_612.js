@@ -1,1 +1,1 @@
-search_result['612']=["topic_0000000000000155.html","Comment.Content Property",""];
+search_result['612']=["topic_0000000000000155.html","Comment.Content Property","The comment\u0027s content."];

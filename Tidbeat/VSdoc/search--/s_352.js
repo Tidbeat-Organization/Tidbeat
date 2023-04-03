@@ -1,1 +1,1 @@
-search_result['352']=["topic_00000000000000B9.html","BandsController.Index Method",""];
+search_result['352']=["topic_00000000000000B9.html","BandsController.Index Method","Gets all bands from the database."];

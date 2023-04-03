@@ -1,1 +1,1 @@
-search_result['626']=["topic_000000000000015E.html","CommentRating.Comment Property",""];
+search_result['626']=["topic_000000000000015E.html","CommentRating.Comment Property","The comment which the rating belongs to."];

@@ -1,1 +1,1 @@
-search_result['627']=["topic_000000000000015F.html","Conversation Class",""];
+search_result['627']=["topic_000000000000015F.html","Conversation Class","The conversation model."];

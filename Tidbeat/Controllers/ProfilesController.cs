@@ -11,12 +11,20 @@ using Tidbeat.Models;
 
 namespace Tidbeat.Controllers
 {
+    /// <summary>
+    /// Controls all profiles.
+    /// </summary>
     public class ProfilesController : Controller
     {
         private readonly ApplicationDbContext _context;
         //private readonly IServiceProvider _serviceProvider;
         private readonly UserManager<ApplicationUser> _userManager;
 
+        /// <summary>
+        /// Initializes needed services for the controller.
+        /// </summary>
+        /// <param name="context">The context of the application.</param>
+        /// <param name="userManager">The language localizer.</param>
         public ProfilesController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
@@ -24,6 +32,11 @@ namespace Tidbeat.Controllers
             _userManager = userManager;
         }
 
+        /// <summary>
+        /// Returns user's favorite songs.
+        /// </summary>
+        /// <param name="user">The user object.</param>
+        /// <returns>A list of favorite songs.</returns>
         public async Task<List<Song>> GetFavoriteSongsAsync(ApplicationUser user)
         {
             var songIds = user.DeserializeFavoriteSongIds();
@@ -41,12 +54,23 @@ namespace Tidbeat.Controllers
             return favoriteSongs;
         }
 
+        /// <summary>
+        /// Returns a band for each song passed.
+        /// </summary>
+        /// <param name="songs">A list of songs.</param>
+        /// <returns>A list of bands.</returns>
         public async Task<List<Band>> GetBandsOfSongs(List<Song> songs)
         {
             var bands = await _context.Songs.Select(s => s.Band).ToListAsync();
             return bands;
         }
 
+        /// <summary>
+        /// Removes a single song from the favorites.
+        /// </summary>
+        /// <param name="user">The user to remove the song from.</param>
+        /// <param name="songId">The id of the song about to be removed.</param>
+        /// <returns>The Profile view of the user.</returns>
         public async Task<bool> RemoveSingleSongAsync(ApplicationUser user, string songId)
         {
             var songIds = user.DeserializeFavoriteSongIds();
@@ -57,6 +81,11 @@ namespace Tidbeat.Controllers
             return success;
         }
 
+        /// <summary>
+        /// Removes a single song from the favorites.
+        /// </summary>
+        /// <param name="id">The song id about to be removed.</param>
+        /// <returns>The Profile view of the user.</returns>
         public async Task<IActionResult> RemoveFavorite(string? id)
         {
             if (id == null)
@@ -87,6 +116,11 @@ namespace Tidbeat.Controllers
             return View(profile);
         }
 
+        /// <summary>
+        /// Returns the details of a profile.
+        /// </summary>
+        /// <param name="id">The id of the profile.</param>
+        /// <returns>The details view of the profile.</returns>
         public async Task<IActionResult> Details(string? id)
         {
             if (id == null)
@@ -135,6 +169,12 @@ namespace Tidbeat.Controllers
             return View(profile);
         }
 
+        /// <summary>
+        /// Returns the edit view of a profile.
+        /// </summary>
+        /// <param name="id">The id of the profile.</param>
+        /// <remarks>PUT: Profiles/RemoveFavoriteSong</remarks>
+        /// <returns>The edit view of the profile.</returns>
         // PUT to /Profiles/RemoveFavoriteSong
         [HttpPut]
         public async Task<IActionResult> RemoveFavoriteSong([FromQuery] string songId)

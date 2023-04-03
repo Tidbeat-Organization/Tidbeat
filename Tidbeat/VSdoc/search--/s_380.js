@@ -1,1 +1,1 @@
-search_result['380']=["topic_00000000000000C9.html","ConversationsController.DeleteMessage Method",""];
+search_result['380']=["topic_00000000000000C9.html","ConversationsController.DeleteMessage Method","Deletes a message from the database."];

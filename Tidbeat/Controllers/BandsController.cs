@@ -11,16 +11,32 @@ using Tidbeat.Services;
 
 namespace Tidbeat.Controllers
 {
+    /// <summary>
+    /// Controls all bands.
+    /// </summary>
     public class BandsController : Controller {
         private readonly ApplicationDbContext _context;
         private readonly ISpotifyService _spotifyService;
 
+        /// <summary>
+        /// Initializes needed services for the controller.
+        /// </summary>
+        /// <param name="context">The context of the application.</param>
+        /// <param name="spotifyService">The access to the spotify API.</param>
         public BandsController(ApplicationDbContext context, ISpotifyService spotifyService)
         {
             _context = context;
             _spotifyService = spotifyService;
         }
 
+        /// <summary>
+        /// Gets all bands from the database.
+        /// </summary>
+        /// <param name="searchKey">The text to search with.</param>
+        /// <param name="gener">The gender of the song.</param>
+        /// <param name="order">The order which the info is shown.</param>
+        /// <remarks>GET: Bands/</remarks>
+        /// <returns>The view with the bands.</returns>
         // GET: Bands
         public async Task<IActionResult> Index([FromQuery] string searchKey, [FromQuery] string gener, [FromQuery] string order)
         {
@@ -51,6 +67,12 @@ namespace Tidbeat.Controllers
 
         }
 
+        /// <summary>
+        /// Gets the details of a band.
+        /// </summary>
+        /// <param name="id">The id of the band.</param>
+        /// <remarks>GET: Bands/Details/5</remarks>
+        /// <returns>The view with the details of the band.</returns>
         // GET: Bands/Details/5
         public async Task<IActionResult> Details(string id)
         {

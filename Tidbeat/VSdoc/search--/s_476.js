@@ -1,1 +1,1 @@
-search_result['476']=["topic_0000000000000102.html","SongsController.SetFavorite Method",""];
+search_result['476']=["topic_0000000000000102.html","SongsController.SetFavorite Method","The action used to set the favorite song of the user."];

@@ -1,1 +1,1 @@
-search_result['361']=["topic_00000000000000BD.html","CommentsController.Create Method",""];
+search_result['361']=["topic_00000000000000BD.html","CommentsController.Create Method","Creates a comment."];

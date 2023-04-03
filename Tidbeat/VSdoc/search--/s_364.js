@@ -1,1 +1,1 @@
-search_result['364']=["topic_00000000000000BF.html","CommentsController.Edit (Int32, Comment) Method",""];
+search_result['364']=["topic_00000000000000BF.html","CommentsController.Edit (Int32, Comment) Method","Edits a comment."];

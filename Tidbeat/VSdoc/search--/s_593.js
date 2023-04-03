@@ -1,1 +1,1 @@
-search_result['593']=["topic_000000000000014C.html","ApplicationUser.DeserializeFavoriteSongIds Method",""];
+search_result['593']=["topic_000000000000014C.html","ApplicationUser.DeserializeFavoriteSongIds Method","Function which deserializes the FavoriteSongIds string into a list of strings."];

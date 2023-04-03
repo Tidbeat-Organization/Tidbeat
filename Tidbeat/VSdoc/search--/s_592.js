@@ -1,1 +1,1 @@
-search_result['592']=["topic_000000000000014B.html","ApplicationUser.Country Property",""];
+search_result['592']=["topic_000000000000014B.html","ApplicationUser.Country Property","The user\u0027s country."];

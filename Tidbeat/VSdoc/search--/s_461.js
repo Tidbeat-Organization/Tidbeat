@@ -1,1 +1,1 @@
-search_result['461']=["topic_00000000000000F8.html","RatingPartialController.GetAverageRatings Method",""];
+search_result['461']=["topic_00000000000000F8.html","RatingPartialController.GetAverageRatings Method","Gets the average rating of a post or comment."];

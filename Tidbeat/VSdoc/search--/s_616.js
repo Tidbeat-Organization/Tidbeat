@@ -1,1 +1,1 @@
-search_result['616']=["topic_0000000000000159.html","Comment.IsEdited Property",""];
+search_result['616']=["topic_0000000000000159.html","Comment.IsEdited Property","Checks if the comments was edited."];

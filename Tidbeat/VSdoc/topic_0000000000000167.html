@@ -89,6 +89,9 @@ document.write(getCssCustomProperty('--headerTopCustomLineHtml'));
 
        
        
+        <summary-info>An interface in case you need to add a rating system to any kind of entity. If you need to do that, just create a new model and implement this interface.
+Then, make sure to turn that model into a DbSet in the ApplicationDbContext class, add a new entry in the RatingType enum then add a new condition to all switches in the RatingService class.
+That way, you can get the rating of any entity.</summary-info>
 
 
 
@@ -323,7 +326,7 @@ document.write(getCssCustomProperty('--headerTopCustomLineHtml'));
 	</td>
 	<td>
 
-
+The rating id.
 
 	</td>
 </tr>
@@ -347,7 +350,7 @@ document.write(getCssCustomProperty('--headerTopCustomLineHtml'));
 	</td>
 	<td>
 
-
+The rating's owner.
 
 	</td>
 </tr>
@@ -371,7 +374,7 @@ document.write(getCssCustomProperty('--headerTopCustomLineHtml'));
 	</td>
 	<td>
 
-
+The rating's value.
 
 	</td>
 </tr>

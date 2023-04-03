@@ -1,1 +1,1 @@
-search_result['614']=["topic_0000000000000157.html","Comment.CreationDate Property",""];
+search_result['614']=["topic_0000000000000157.html","Comment.CreationDate Property","The comment\u0027s creation date."];

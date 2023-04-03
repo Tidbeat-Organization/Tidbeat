@@ -89,6 +89,7 @@ document.write(getCssCustomProperty('--headerTopCustomLineHtml'));
 
        
        
+        <summary-info>The action for getting all the songs based on filters in the spotify API.</summary-info>
 
 
 
@@ -279,7 +280,7 @@ document.write(getCssCustomProperty('--headerTopCustomLineHtml'));
 	</dd>
 </dl>
 <p>
-	 
+	The text to search with. 
 </p>
 <dl paramName="gener" class="parameterList">
 	<dt>
@@ -292,7 +293,7 @@ document.write(getCssCustomProperty('--headerTopCustomLineHtml'));
 	</dd>
 </dl>
 <p>
-	 
+	The gender of the song. 
 </p>
 <dl paramName="band" class="parameterList">
 	<dt>
@@ -305,7 +306,7 @@ document.write(getCssCustomProperty('--headerTopCustomLineHtml'));
 	</dd>
 </dl>
 <p>
-	 
+	The band responsible for the song. 
 </p>
 <dl paramName="album" class="parameterList">
 	<dt>
@@ -318,7 +319,7 @@ document.write(getCssCustomProperty('--headerTopCustomLineHtml'));
 	</dd>
 </dl>
 <p>
-	 
+	The album which the song belongs to. 
 </p>
 <dl paramName="yearStart" class="parameterList">
 	<dt>
@@ -331,7 +332,7 @@ document.write(getCssCustomProperty('--headerTopCustomLineHtml'));
 	</dd>
 </dl>
 <p>
-	 
+	The start year of the interval from which the song was released. 
 </p>
 <dl paramName="yearEnd" class="parameterList">
 	<dt>
@@ -344,7 +345,7 @@ document.write(getCssCustomProperty('--headerTopCustomLineHtml'));
 	</dd>
 </dl>
 <p>
-	 
+	The last year of the interval from which the song was released. 
 </p>
 
 <p />
@@ -352,6 +353,9 @@ document.write(getCssCustomProperty('--headerTopCustomLineHtml'));
 	<h4 class="subHeading">
 		Return Value</h4>
 	<a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.mvc.iactionresult">IActionResult</a>&gt; 
+		<p>
+		The Index view with the found songs according to its filters included. 
+	</p>
 	
 
 
@@ -374,6 +378,16 @@ document.write(getCssCustomProperty('--headerTopCustomLineHtml'));
 
 
 
+<div class="section_container">
+	<div class="section_heading">
+		<span><a href="javascript:void(0)" title="Collapse" onclick="toggleSection(this);">Remarks</a></span>
+		<div>&nbsp;</div>
+	</div>
+
+	<div id="remarksSection" class="section">	
+			GET: Songs/
+	</div>					
+</div>
 
 
 

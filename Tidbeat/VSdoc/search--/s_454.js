@@ -1,1 +1,1 @@
-search_result['454']=["topic_00000000000000F6.html","RatingPartialController Class",""];
+search_result['454']=["topic_00000000000000F6.html","RatingPartialController Class","Controls all the rating partials present in posts and comments."];
