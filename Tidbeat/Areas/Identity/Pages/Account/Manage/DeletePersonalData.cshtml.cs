@@ -15,6 +15,9 @@ using Tidbeat.Models;
 
 namespace Tidbeat.Areas.Identity.Pages.Account.Manage
 {
+    /// <summary>
+    ///    The model class for the delete personal data page.
+    /// </summary>
     public class DeletePersonalDataModel : PageModel
     {
         private readonly UserManager<ApplicationUser> _userManager;
@@ -23,6 +26,14 @@ namespace Tidbeat.Areas.Identity.Pages.Account.Manage
         private readonly IStringLocalizer<DeletePersonalDataModel> _localizer;
         private readonly ApplicationDbContext _context;
 
+        /// <summary>
+        /// The constructor for the delete personal data model.
+        /// </summary>
+        /// <param name="userManager">The user manager.</param>
+        /// <param name="signInManager">The sign in manager.</param>
+        /// <param name="logger">The logger.</param>
+        /// <param name="localizer">The localizer.</param>
+        /// <param name="context">The context.</param>
         public DeletePersonalDataModel(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
@@ -38,21 +49,18 @@ namespace Tidbeat.Areas.Identity.Pages.Account.Manage
         }
 
         /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
+        /// The input model.
         /// </summary>
         [BindProperty]
         public InputModel Input { get; set; }
 
         /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
+        /// The input model.
         /// </summary>
         public class InputModel
         {
             /// <summary>
-            ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-            ///     directly from your code. This API may change or be removed in future releases.
+            /// The password.
             /// </summary>
             [Required]
             [DataType(DataType.Password)]
@@ -60,11 +68,14 @@ namespace Tidbeat.Areas.Identity.Pages.Account.Manage
         }
 
         /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
+        /// The require password.
         /// </summary>
         public bool RequirePassword { get; set; }
 
+        /// <summary>
+        /// The on get method.
+        /// </summary>
+        /// <returns></returns>
         public async Task<IActionResult> OnGet()
         {
             var user = await _userManager.GetUserAsync(User);
@@ -77,6 +88,12 @@ namespace Tidbeat.Areas.Identity.Pages.Account.Manage
             return Page();
         }
 
+        /// <summary>
+        /// The on post method. Checks if the password is correct and deletes the user.
+        /// </summary>
+        /// <remarks>When the user is deleted, his posts, comments and ratings are all replaced by a "deleted" user, so that data doesn't get lost.</remarks>
+        /// <returns>If its invalid, returns the page itself with errors. If its valid, redirects to the main page.</returns>
+        /// <exception cref="InvalidOperationException"></exception>
         public async Task<IActionResult> OnPostAsync()
         {
             var user = await _userManager.GetUserAsync(User);

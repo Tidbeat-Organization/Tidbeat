@@ -3,13 +3,19 @@ using System.Diagnostics;
 using Tidbeat.Models;
 
 namespace Tidbeat.Controllers {
+    /// <summary>
+    /// Controls the Index (Main Page) and the Error404 page.
+    /// </summary>
     public class HomeController : Controller {
         private readonly ILogger<HomeController> _logger;
 
         public HomeController(ILogger<HomeController> logger) {
             _logger = logger;
         }
-
+        /// <summary>
+        /// Finds the Index view.
+        /// </summary>
+        /// <returns>Index view.</returns>
         public IActionResult Index() {
             return View();
         }
@@ -33,7 +39,10 @@ namespace Tidbeat.Controllers {
         public IActionResult Error() {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
-
+        /// <summary>
+        /// Finds the 404 error page.
+        /// </summary>
+        /// <returns>404 error page.</returns>
         public IActionResult Error404()
         {
             return View();

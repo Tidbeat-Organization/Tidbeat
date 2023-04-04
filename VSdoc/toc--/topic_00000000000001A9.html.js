@@ -1,0 +1,1 @@
+var breadcrumbs=[['-1',"",""],['2',"SOLUTION-WIDE PROPERTIES Reference","topic_000000000000023A.html"],['487',"Tidbeat.Services Namespace","topic_000000000000018C.html"],['542',"IChatBeatService Interface","topic_00000000000001A1.html"],['543',"Methods","topic_00000000000001A1_methods--.html"],['548',"GetRecentMessages Method","topic_00000000000001A9.html"]];

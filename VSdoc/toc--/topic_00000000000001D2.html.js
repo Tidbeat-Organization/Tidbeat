@@ -1,0 +1,1 @@
+var breadcrumbs=[['-1',"",""],['2',"SOLUTION-WIDE PROPERTIES Reference","topic_000000000000023A.html"],['487',"Tidbeat.Services Namespace","topic_000000000000018C.html"],['528',"SpotifyService Class","topic_00000000000001CB.html"],['530',"Methods","topic_00000000000001CB_methods--.html"],['538',"GetTop3SongsAsync Method","topic_00000000000001D2.html"]];

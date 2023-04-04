@@ -1,0 +1,1 @@
+search_result['732']=["topic_0000000000000193.html","ChatBeatService.GetConversation Method","Adds a new participant to a conversation.\r\nUNIMPLEMENTED: PREPARED FOR GROUP CONVERSATIONS"];

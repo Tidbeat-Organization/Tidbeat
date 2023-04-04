@@ -12,11 +12,19 @@ using Tidbeat.Models;
 
 namespace Tidbeat.Areas.Identity.Pages.Account.Manage
 {
+    /// <summary>
+    /// The model class for the set password page.
+    /// </summary>
     public class SetPasswordModel : PageModel
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
 
+        /// <summary>
+        /// The constructor for the set password model.
+        /// </summary>
+        /// <param name="userManager">The user manager.</param>
+        /// <param name="signInManager">The sign in manager.</param>
         public SetPasswordModel(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager)
@@ -26,28 +34,24 @@ namespace Tidbeat.Areas.Identity.Pages.Account.Manage
         }
 
         /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
+        /// The input model for the set password page.
         /// </summary>
         [BindProperty]
         public InputModel Input { get; set; }
 
         /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
+        /// The status message.
         /// </summary>
         [TempData]
         public string StatusMessage { get; set; }
 
         /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
+        /// The input model for the set password page.
         /// </summary>
         public class InputModel
         {
             /// <summary>
-            ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-            ///     directly from your code. This API may change or be removed in future releases.
+            /// The new password.
             /// </summary>
             [Required]
             [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
@@ -56,8 +60,7 @@ namespace Tidbeat.Areas.Identity.Pages.Account.Manage
             public string NewPassword { get; set; }
 
             /// <summary>
-            ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-            ///     directly from your code. This API may change or be removed in future releases.
+            /// The confirm password.
             /// </summary>
             [DataType(DataType.Password)]
             [Display(Name = "Confirm new password")]
@@ -65,6 +68,10 @@ namespace Tidbeat.Areas.Identity.Pages.Account.Manage
             public string ConfirmPassword { get; set; }
         }
 
+        /// <summary>
+        /// The get method.
+        /// </summary>
+        /// <returns></returns>
         public async Task<IActionResult> OnGetAsync()
         {
             var user = await _userManager.GetUserAsync(User);
@@ -83,6 +90,10 @@ namespace Tidbeat.Areas.Identity.Pages.Account.Manage
             return Page();
         }
 
+        /// <summary>
+        /// The method thats called when the set password is submitted.
+        /// </summary>
+        /// <returns>If the state is invalid, it returns the page itself with errors. If its valid, redirects to the page itself with a new message.</returns>
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)

@@ -1,0 +1,1 @@
+var breadcrumbs=[['-1',"",""],['2',"SOLUTION-WIDE PROPERTIES Reference","topic_000000000000023A.html"],['625',"TidbeatTests2._0.Services Namespace","topic_00000000000001DD.html"],['683',"SpotifyServiceTestPartII Class","topic_000000000000020D.html"],['684',"SpotifyServiceTestPartII Constructor","topic_000000000000020E.html"]];

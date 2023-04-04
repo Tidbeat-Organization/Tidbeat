@@ -1,0 +1,1 @@
+var breadcrumbs=[['-1',"",""],['2',"SOLUTION-WIDE PROPERTIES Reference","topic_000000000000023A.html"],['358',"Tidbeat.Data Namespace","topic_0000000000000104.html"],['359',"ApplicationDbContext Class","topic_0000000000000105.html"],['372',"Methods","topic_0000000000000105_methods--.html"],['373',"OnModelCreating Method","topic_0000000000000110.html"]];

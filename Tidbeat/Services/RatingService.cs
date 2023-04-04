@@ -4,13 +4,27 @@ using Tidbeat.Enums;
 using Tidbeat.Models;
 
 namespace Tidbeat.Services {
+    /// <summary>
+    /// It takes care of all operations related to ratings.
+    /// </summary>
     public class RatingService : IRatingService {
         private readonly ApplicationDbContext _context;
 
+        /// <summary>
+        /// Creates a new instance of the RatingService.
+        /// </summary>
+        /// <param name="context">The context of the application.</param>
         public RatingService(ApplicationDbContext context) {
             _context = context;
         }
 
+        /// <summary>
+        /// Gets the average rating of a post or comment.
+        /// </summary>
+        /// <param name="type">The type of the object to get the rating from.</param>
+        /// <param name="id">The id of the object to get the rating from.</param>
+        /// <returns>The average rating of the object.</returns>
+        /// <exception cref="ArgumentException"></exception>
         public async Task<double> GetAverageRating(RatingType type, int id) {
             double average = 0;
             switch (type) {
@@ -31,6 +45,14 @@ namespace Tidbeat.Services {
             }
         }
 
+        /// <summary>
+        /// Gets whether the user has rated or not.
+        /// </summary>
+        /// <param name="type">The type of the object to get the rating from.</param>
+        /// <param name="id">The id of the object to get the rating from.</param>
+        /// <param name="userId">The id of the user to check if he rated or not.</param>
+        /// <returns>True if the user has rated, false otherwise.</returns>
+        /// <exception cref="ArgumentException"></exception>
         public async Task<bool> HasUserRated(RatingType type, int id, string userId) {
             switch (type) {
                 case RatingType.Post:
@@ -42,6 +64,14 @@ namespace Tidbeat.Services {
             }
         }
 
+        /// <summary>
+        /// Gets the user's rating. If the user hasn't rated, it returns 0.
+        /// </summary>
+        /// <param name="type">The type of the object to get the rating from.</param>
+        /// <param name="id">The id of the object to get the rating from.</param>
+        /// <param name="userId">The id of the user to get the rating from.</param>
+        /// <returns>The user's rating.</returns>
+        /// <exception cref="ArgumentException"></exception>
         public async Task<int> GetUserRate(RatingType type, int id, string userId) {
             switch (type) {
                 case RatingType.Post:
@@ -57,6 +87,15 @@ namespace Tidbeat.Services {
             }
         }
 
+        /// <summary>
+        /// Sets the user's rating.
+        /// </summary>
+        /// <param name="type">The type of the object to get the rating from.</param>
+        /// <param name="id">The id of the object to get the rating from.</param>
+        /// <param name="userId">The id of the user to set the rating from.</param>
+        /// <param name="value">The value of the rating.</param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentException"></exception>
         public async Task SetUserRate(RatingType type, int id, string userId, int value) {
             switch (type) {
                 case RatingType.Post:

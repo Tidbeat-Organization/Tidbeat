@@ -1,0 +1,1 @@
+search_result['592']=["topic_000000000000014D.html","ApplicationUser.SerializeFavoriteSongIds Method","Function which serializes a list of strings into a string."];

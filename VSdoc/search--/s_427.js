@@ -1,0 +1,1 @@
+search_result['427']=["topic_00000000000000E4.html","PostsController.Index Method","Gets all the posts of the application."];

@@ -15,12 +15,20 @@ using Tidbeat.Models;
 
 namespace Tidbeat.Controllers
 {
+    /// <summary>
+    /// Controls all comments in posts.
+    /// </summary>
     public class CommentsController : Controller
     {
         private readonly ApplicationDbContext _context;
         private readonly IServiceProvider _serviceProvider;
         private readonly UserManager<ApplicationUser> _userManager;
 
+        /// <summary>
+        /// Initializes needed services for the controller.
+        /// </summary>
+        /// <param name="context">The context of the application.</param>
+        /// <param name="serviceProvider">The service provider.</param>
         public CommentsController(ApplicationDbContext context, IServiceProvider serviceProvider)
         {
             _context = context;
@@ -28,10 +36,13 @@ namespace Tidbeat.Controllers
             _userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
         }
 
-
+        /// <summary>
+        /// Creates a comment.
+        /// </summary>
+        /// <param name="comment">The comment to create.</param>
+        /// <remarks>POST: Comments/Create</remarks>
+        /// <returns>Redirect to the view of the post.</returns>
         // POST: Comments/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
@@ -60,6 +71,12 @@ namespace Tidbeat.Controllers
             return Redirect("/Posts/Details/" + Request.Form["PostId"]);
         }
 
+        /// <summary>
+        /// Deletes a comment.
+        /// </summary>
+        /// <param name="id">The id of the comment to delete.</param>
+        /// <remarks>POST: Comments/Delete/{id}</remarks>
+        /// <returns>The Edit view of the post.</returns>
         // GET: Posts/Edit/5
         [Authorize]
         public async Task<IActionResult> Edit(int? id)
@@ -77,9 +94,14 @@ namespace Tidbeat.Controllers
             return View(comment);
         }
 
+        /// <summary>
+        /// Edits a comment.
+        /// </summary>
+        /// <param name="id">The id of the comment to edit.</param>
+        /// <param name="comment">The comment to edit.</param>
+        /// <remarks>POST: Comments/Edit/{id}</remarks>
+        /// <returns>A redirect to the Details view of the post.</returns>
         // POST: Comments/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
@@ -127,7 +149,12 @@ namespace Tidbeat.Controllers
             return RedirectToAction("Index", "Posts");
         }
 
-
+        /// <summary>
+        /// Deletes a comment.
+        /// </summary>
+        /// <param name="id">The id of the comment to delete.</param>
+        /// <remarks>POST: Comments/Delete/{id}</remarks>
+        /// <returns>The view of the post.</returns>
         // POST: Comments/Delete/5
         // Check user
         [HttpPost, ActionName("Delete")]
