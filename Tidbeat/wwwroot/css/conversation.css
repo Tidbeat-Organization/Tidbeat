@@ -1,13 +1,13 @@
 ﻿#messages {
-  /* default styles */
-  width: 100%;
-  border: 1px solid #ccc;
-  height: calc(100vh - 275px);
-  max-height: 650px;
-  float: none;
-  margin: 0px auto;
-  padding-left: 0px;
-  overflow-y: scroll;
+    /* default styles */
+    width: 100%;
+    border: 1px solid #ccc;
+    height: calc(100vh - 275px);
+    max-height: 650px;
+    float: none;
+    margin: 0px auto;
+    padding-left: 0px;
+    overflow-y: scroll;
 }
 
 /* adjust max-height for screens less than 768px wide */
@@ -112,5 +112,5 @@
 #getRecentMessagesButton {
     background-color: #fff;
     color: #6610F2;
-    border-radius: 10px;
+    border-radius: 3px;
 }
