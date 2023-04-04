@@ -1,0 +1,1 @@
+search_result['981']=["topic_0000000000000219.html","MockServiceProvider.GetService Method","Gets the service object of the specified type."];

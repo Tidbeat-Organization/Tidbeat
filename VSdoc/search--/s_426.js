@@ -1,0 +1,1 @@
+search_result['426']=["topic_00000000000000E3.html","PostsController Constructor","Initializes needed services like the ApplicationDbContext, the UserManager, the SpotifyService and the StringLocalizer."];

@@ -1,0 +1,1 @@
+c['683']=[['684',"SpotifyServiceTestPartII Constructor","topic_000000000000020E.html",0],['685',"Methods","topic_000000000000020D_methods--.html",1]];

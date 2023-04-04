@@ -1,1 +1,1 @@
-search_result['758']=["topic_00000000000001A1.html","IChatBeatService Interface",""];
+search_result['758']=["topic_00000000000001A1.html","IChatBeatService Interface","The chat beat service. This service is used to handle all the chat related logic."];

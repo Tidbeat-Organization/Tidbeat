@@ -4,7 +4,14 @@ using Tidbeat.Data;
 using Tidbeat.Models;
 
 namespace Tidbeat {
+    /// <summary>
+    /// This is a class that contains all the starting configurations for the application.
+    /// </summary>
     public static class Configurations {
+        /// <summary>
+        /// This is the starting user that will be created when the application starts. It is used for deleted users. 
+        /// You should only use it for fetching the user in the database.
+        /// </summary>
         public static ApplicationUser InvalidUser = new ApplicationUser {
             Id = new Guid("00000000-0000-0000-0000-000000000000").ToString(),
             FullName = "[deleted]",
@@ -14,6 +21,11 @@ namespace Tidbeat {
             Gender = "male"
         };
 
+        /// <summary>
+        /// This will add an "invalid" user to the database. This user is used for deleted users.
+        /// </summary>
+        /// <param name="serviceProvider">The service provider used for getting a user manager.</param>
+        /// <returns></returns>
         public static async Task CreateStartingUsers(IServiceProvider serviceProvider) {
             var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
 
@@ -24,6 +36,11 @@ namespace Tidbeat {
             //var createUser = await userManager.CreateAsync(normalUser, "Password_123");
         }
 
+        /// <summary>
+        /// This will create the starting roles for the application. The roles are: Admin, Moderator, NormalUser.
+        /// </summary>
+        /// <param name="serviceProvider">The service provider used for getting a role manager.</param>
+        /// <returns></returns>
         public static async Task CreateStartingRoles(IServiceProvider serviceProvider) {
             var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
             var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
@@ -37,6 +54,11 @@ namespace Tidbeat {
             }
         }
 
+        /// <summary>
+        /// This will create the starting posts for the application. Only use this method for testing purposes.
+        /// </summary>
+        /// <param name="serviceProvider">The service provider used for getting a user manager and a database context.</param>
+        /// <returns></returns>
         public static async Task CreateStartingPosts(IServiceProvider serviceProvider) {
             var context = serviceProvider.GetRequiredService<ApplicationDbContext>();
             var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();

@@ -1,1 +1,1 @@
-search_result['828']=["topic_00000000000001C9.html","RatingService.GetUserRate Method",""];
+search_result['828']=["topic_00000000000001C9.html","RatingService.GetUserRate Method","Gets the user\u0027s rating. If the user hasn\u0027t rated, it returns 0."];

@@ -3,6 +3,13 @@
     /// The type of the object to get the rating from.
     /// </summary>
     public enum RatingType {
-        Post, Comment
+        /// <summary>
+        /// The rating is for a post.
+        /// </summary>
+        Post, 
+        /// <summary>
+        /// The rating is for a comment.
+        /// </summary>
+        Comment
     }
 }

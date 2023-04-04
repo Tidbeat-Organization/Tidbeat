@@ -1,0 +1,1 @@
+search_result['541']=["topic_0000000000000129.html","RatingType Enumeration","The type of the object to get the rating from."];

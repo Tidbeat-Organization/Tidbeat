@@ -58,14 +58,24 @@
   <string>externalFilesFolder</string>
   <string>templateLocale</string>
   <string>fileNamingConvention</string>
-  <string>generateVbSyntax</string>
-  <string>generateCsharpSyntax</string>
-  <string>generateCppSyntax</string>
-  <string>generateJscriptSyntax</string>
   <string>helpTitle</string>
   <string>customTopics</string>
   <string>ListNamespacesWithShortNames</string>
   <string>emptyOutputFolder</string>
+  <string>comConstant</string>
+  <string>comEvent</string>
+  <string>comMethod</string>
+  <string>comStdModule</string>
+  <string>comObject</string>
+  <string>comForm</string>
+  <string>comProperty</string>
+  <string>comVariable</string>
+  <string>comEnumeration</string>
+  <string>comStructure</string>
+  <string>comDelegate</string>
+  <string>comInterface</string>
+  <string>comEventDecl</string>
+  <string>comDeclare</string>
 </ArrayOfString>]]></add>
       <add key="VBdocman_pageFooterText"><![CDATA[Generated with <see href="http://www.helixoft.com/vsdocman/overview.html">VSdocman</see>]]></add>
       <add key="VBdocman_comConstant"><![CDATA[-1]]></add>

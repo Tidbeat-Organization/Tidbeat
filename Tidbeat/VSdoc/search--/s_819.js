@@ -1,1 +1,1 @@
-search_result['819']=["topic_00000000000001C5.html","RatingService Class",""];
+search_result['819']=["topic_00000000000001C5.html","RatingService Class","It takes care of all operations related to ratings."];

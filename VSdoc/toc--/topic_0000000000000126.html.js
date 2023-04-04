@@ -1,0 +1,1 @@
+var breadcrumbs=[['-1',"",""],['2',"SOLUTION-WIDE PROPERTIES Reference","topic_000000000000023A.html"],['374',"Tidbeat.Enums Namespace","topic_0000000000000125.html"],['375',"MessageStatus Enumeration","topic_0000000000000126.html"]];

@@ -15,12 +15,20 @@ using Tidbeat.Models;
 
 namespace Tidbeat.Areas.Identity.Pages.Account
 {
+    /// <summary>
+    /// The model class for the register confirmation page.
+    /// </summary>
     [AllowAnonymous]
     public class RegisterConfirmationModel : PageModel
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IEmailSender _sender;
 
+        /// <summary>
+        /// The constructor for the register confirmation model.
+        /// </summary>
+        /// <param name="userManager">The user manager.</param>
+        /// <param name="sender">The email sender.</param>
         public RegisterConfirmationModel(UserManager<ApplicationUser> userManager, IEmailSender sender)
         {
             _userManager = userManager;
@@ -28,23 +36,26 @@ namespace Tidbeat.Areas.Identity.Pages.Account
         }
 
         /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
+        /// The email address.
         /// </summary>
         public string Email { get; set; }
 
         /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
+        /// The confirmation link.
         /// </summary>
         public bool DisplayConfirmAccountLink { get; set; }
 
         /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
+        /// The email confirmation URL.
         /// </summary>
         public string EmailConfirmationUrl { get; set; }
 
+        /// <summary>
+        /// The get method for the register confirmation page.
+        /// </summary>
+        /// <param name="email">The email.</param>
+        /// <param name="returnUrl">The return URL.</param>
+        /// <returns></returns>
         public async Task<IActionResult> OnGetAsync(string email, string returnUrl = null)
         {
             if (email == null)

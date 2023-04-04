@@ -24,6 +24,9 @@ using Microsoft.Extensions.Localization;
 
 namespace Tidbeat.Areas.Identity.Pages.Account
 {
+    /// <summary>
+    ///    The model class for the external login page. This page shows up when the user finishes the external login in the provider.
+    /// </summary>
     [AllowAnonymous]
     public class ExternalLoginModel : PageModel
     {
@@ -35,6 +38,15 @@ namespace Tidbeat.Areas.Identity.Pages.Account
         private readonly ILogger<ExternalLoginModel> _logger;
         private readonly IStringLocalizer<ExternalLoginModel> _localizer;
 
+        /// <summary>
+        /// The constructor for the external login model.
+        /// </summary>
+        /// <param name="signInManager">The sign in manager.</param>
+        /// <param name="userManager">The user manager.</param>
+        /// <param name="userStore">The user store.</param>
+        /// <param name="logger">The logger.</param>
+        /// <param name="emailSender">The email sender.</param>
+        /// <param name="localizer">The localizer.</param>
         public ExternalLoginModel(
             SignInManager<ApplicationUser> signInManager,
             UserManager<ApplicationUser> userManager,
@@ -53,62 +65,72 @@ namespace Tidbeat.Areas.Identity.Pages.Account
         }
 
         /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
+        /// The input model for the external login page.
         /// </summary>
         [BindProperty]
         public InputModel Input { get; set; }
 
         /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
+        /// The name of the external login provider: in our case, its Google.
         /// </summary>
         public string ProviderDisplayName { get; set; }
 
         /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
+        /// The return URL.
         /// </summary>
         public string ReturnUrl { get; set; }
 
         /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
+        /// The error message.
         /// </summary>
         [TempData]
         public string ErrorMessage { get; set; }
 
         /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
+        /// The input model for the external login page.
         /// </summary>
         public class InputModel
         {
             /// <summary>
-            ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-            ///     directly from your code. This API may change or be removed in future releases.
+            /// The email address.
             /// </summary>
             [Required]
             [EmailAddress]
             public string Email { get; set; }
 
-            // Full Name
+            /// <summary>
+            /// The full name.
+            /// </summary>
             [MaxLength(30, ErrorMessage = "name_too_long")]
             [Required(ErrorMessage = "name_required")]
             public string FullName { get; set; }
 
-            // Birthday Date
+            /// <summary>
+            /// The birthday date.
+            /// </summary>
             [Required(ErrorMessage = "birthday_date_required")]
             [DataType(DataType.Date)]
             public DateTime BirthdayDate { get; set; }
 
-            // Gender
+            /// <summary>
+            /// The user's gender.
+            /// </summary>
             [Required(ErrorMessage = "gender_required")]
             public string Gender { get; set; }
         }
         
+        /// <summary>
+        /// The method that is called when the page is loaded.
+        /// </summary>
+        /// <param name="returnUrl">The return URL.</param>
         public IActionResult OnGet() => RedirectToPage("./Login");
 
+        /// <summary>
+        /// The method that is called when the user clicks on the external login button.
+        /// </summary>
+        /// <param name="provider">The name of the external login provider.</param>
+        /// <param name="returnUrl">The return URL.</param>
+        /// <returns></returns>
         public IActionResult OnPost(string provider, string returnUrl = null)
         {
             // Request a redirect to the external login provider.
@@ -117,6 +139,12 @@ namespace Tidbeat.Areas.Identity.Pages.Account
             return new ChallengeResult(provider, properties);
         }
 
+        /// <summary>
+        /// The method that is called when the user finishes the external login in the provider.
+        /// </summary>
+        /// <param name="returnUrl">The return URL.</param>
+        /// <param name="remoteError">The error message.</param>
+        /// <returns>If there are issues, it returns to the Login page. If not, it continues to the ExternalLogin page.</returns>
         public async Task<IActionResult> OnGetCallbackAsync(string returnUrl = null, string remoteError = null)
         {
             returnUrl = returnUrl ?? Url.Content("~/");
@@ -159,6 +187,11 @@ namespace Tidbeat.Areas.Identity.Pages.Account
             }
         }
 
+        /// <summary>
+        /// The method that is called when the user clicks on the "Confirm" button.
+        /// </summary>
+        /// <param name="returnUrl">The return URL.</param>
+        /// <returns>If there are issues, it returns to the ExternalLogin page. If not, it finishes the login process.</returns>
         public async Task<IActionResult> OnPostConfirmationAsync(string returnUrl = null)
         {
             returnUrl = returnUrl ?? Url.Content("~/");

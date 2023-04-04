@@ -1,1 +1,1 @@
-search_result['690']=["topic_0000000000000180.html","PostRating Class",""];
+search_result['690']=["topic_0000000000000180.html","PostRating Class","The post rating model."];

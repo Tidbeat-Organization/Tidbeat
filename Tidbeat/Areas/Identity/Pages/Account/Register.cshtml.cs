@@ -28,7 +28,9 @@ using Tidbeat.Models;
 using System.Text.RegularExpressions;
 namespace Tidbeat.Areas.Identity.Pages.Account
 {
-    
+    /// <summary>
+    /// The model class for the register page.
+    /// </summary>
     public class RegisterModel : PageModel
     {
         public static string Pattern = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&_-])[A-Za-z\\d@$!%*?&_-]{6,}$";
@@ -40,6 +42,15 @@ namespace Tidbeat.Areas.Identity.Pages.Account
         private readonly IEmailSender _emailSender;
         private readonly IStringLocalizer<RegisterModel> _localizer;
 
+        /// <summary>
+        /// The constructor for the register model.
+        /// </summary>
+        /// <param name="userManager">The user manager.</param>
+        /// <param name="userStore">The user store.</param>
+        /// <param name="signInManager">The sign in manager.</param>
+        /// <param name="logger">The logger.</param>
+        /// <param name="emailSender">The email sender.</param>
+        /// <param name="localizer">The localizer.</param>
         public RegisterModel(
             UserManager<ApplicationUser> userManager,
             IUserStore<ApplicationUser> userStore,
@@ -58,55 +69,58 @@ namespace Tidbeat.Areas.Identity.Pages.Account
         }
 
         /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
+        /// The input model for the register page.
         /// </summary>
         [BindProperty]
         public InputModel Input { get; set; }
 
         /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
+        /// The return url for the register page.
         /// </summary>
         public string ReturnUrl { get; set; }
 
         /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
+        /// The list of external logins for the register page.
         /// </summary>
         public IList<AuthenticationScheme> ExternalLogins { get; set; }
 
         /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
+        /// The method that is called when the page is loaded.
         /// </summary>
         public class InputModel
         {
+            /// <summary>
+            /// The full name for the register page.
+            /// </summary>
             [Required]
             [DataType(DataType.Text)]
             [Display(Name = "Nome apresentado")]
             public string FullName { get; set; }
             /// <summary>
-            ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-            ///     directly from your code. This API may change or be removed in future releases.
+            /// The email for the register page.
             /// </summary>
             [Required]
             [EmailAddress]
             [Display(Name = "Email")]
             public string Email { get; set; }
 
+            /// <summary>
+            /// The birthday date for the register page.
+            /// </summary>
             [Required]
             [DataType(DataType.Date)]
             [Display(Name = "Data de Nascimento")]
             public DateTime BirthdayDate { get; set; }
 
+            /// <summary>
+            /// The user's gender for the register page.
+            /// </summary>
             [DataType(DataType.Text)]
             [Display(Name = "Género")]
             public string Gender { get; set; }
 
             /// <summary>
-            ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-            ///     directly from your code. This API may change or be removed in future releases.
+            /// The password for the register page.
             /// </summary>
             [Required]
             [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
@@ -115,8 +129,7 @@ namespace Tidbeat.Areas.Identity.Pages.Account
             public string Password { get; set; }
 
             /// <summary>
-            ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-            ///     directly from your code. This API may change or be removed in future releases.
+            /// The confirmation password for the register page.
             /// </summary>
             [DataType(DataType.Password)]
             [Display(Name = "Confirmar palavra-passe")]
@@ -124,13 +137,22 @@ namespace Tidbeat.Areas.Identity.Pages.Account
             public string ConfirmPassword { get; set; }
         }
 
-
+        /// <summary>
+        /// The method that is called when the page is loaded.
+        /// </summary>
+        /// <param name="returnUrl">The return url.</param>
+        /// <returns></returns>
         public async Task OnGetAsync(string returnUrl = null)
         {
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
 
+        /// <summary>
+        /// The method that is called when the register is submitted.
+        /// </summary>
+        /// <param name="returnUrl">The return url.</param>
+        /// <returns>Returns the page itself with errors if the model isn't valid. If its valid, sends an email and redirects to the register confirmation.</returns>
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             returnUrl ??= Url.Content("~/");

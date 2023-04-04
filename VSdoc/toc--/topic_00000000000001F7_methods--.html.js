@@ -1,0 +1,1 @@
+var breadcrumbs=[['-1',"",""],['2',"SOLUTION-WIDE PROPERTIES Reference","topic_000000000000023A.html"],['625',"TidbeatTests2._0.Services Namespace","topic_00000000000001DD.html"],['657',"ProfileTest Class","topic_00000000000001F7.html"],['659',"Methods","topic_00000000000001F7_methods--.html"]];

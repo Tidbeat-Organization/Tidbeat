@@ -1,1 +1,1 @@
-search_result['687']=["topic_000000000000017D.html","Post.CreationDate Property",""];
+search_result['687']=["topic_000000000000017D.html","Post.CreationDate Property","The post\u0027s creation date."];

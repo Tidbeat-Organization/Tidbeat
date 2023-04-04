@@ -1,1 +1,1 @@
-search_result['736']=["topic_0000000000000195.html","ChatBeatService.GetTwoPersonConversation Method",""];
+search_result['736']=["topic_0000000000000195.html","ChatBeatService.GetTwoPersonConversation Method","Gets a two person conversation. If it doesn\u0027t exist, it creates it."];

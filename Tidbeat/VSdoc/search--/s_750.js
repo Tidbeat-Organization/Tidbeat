@@ -1,1 +1,1 @@
-search_result['750']=["topic_000000000000019E.html","EmailSender.Execute Method",""];
+search_result['750']=["topic_000000000000019E.html","EmailSender.Execute Method","Sends an email to the given email address."];
