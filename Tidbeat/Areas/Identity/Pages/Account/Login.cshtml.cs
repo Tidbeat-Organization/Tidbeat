@@ -25,6 +25,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace Tidbeat.Areas.Identity.Pages.Account
 {
+
     public class LoginModel : PageModel
     {
         private readonly SignInManager<ApplicationUser> _signInManager;

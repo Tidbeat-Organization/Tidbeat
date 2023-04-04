@@ -2,6 +2,7 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 #nullable disable
 
+
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
@@ -140,7 +141,7 @@ namespace Tidbeat.Areas.Identity.Pages.Account
             var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false, bypassTwoFactor: true);
             if (result.Succeeded)
             {
-                var userResult = await _userManager.FindByEmailAsync("");
+                var userResult = await _userManager.FindByLoginAsync(info.LoginProvider, info.ProviderKey);
                 var userCheck = await _context.Users.FindAsync(userResult.Id);
                 if (userCheck.IsBanned == true)
                 {
