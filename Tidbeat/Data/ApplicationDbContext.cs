@@ -1,12 +1,14 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System.Reflection.Emit;
 using Tidbeat.Models;
 
-namespace Tidbeat.Data {
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser> {
+namespace Tidbeat.Data
+{
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
+    {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-            : base(options) {
+            : base(options)
+        {
         }
 
         public DbSet<Song> Songs { get; set; }
@@ -19,7 +21,8 @@ namespace Tidbeat.Data {
         public DbSet<Conversation> Conversations { get; set; }
         public DbSet<Participant> Participants { get; set; }
 
-        protected override void OnModelCreating(ModelBuilder builder) {
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
             base.OnModelCreating(builder);
             builder.Entity<Song>().ToTable(nameof(Song));
             builder.Entity<Band>().ToTable(nameof(Band));
@@ -29,5 +32,7 @@ namespace Tidbeat.Data {
         }
 
         public DbSet<Tidbeat.Models.Profile>? Profile { get; set; }
+
+        public DbSet<Tidbeat.Models.Follow>? Follow { get; set; }
     }
 }
