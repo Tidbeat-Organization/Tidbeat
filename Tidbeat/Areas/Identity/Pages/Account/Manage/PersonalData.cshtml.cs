@@ -10,11 +10,19 @@ using Tidbeat.Models;
 
 namespace Tidbeat.Areas.Identity.Pages.Account.Manage
 {
+    /// <summary>
+    /// The model class for the personal data page.
+    /// </summary>
     public class PersonalDataModel : PageModel
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ILogger<PersonalDataModel> _logger;
 
+        /// <summary>
+        /// The constructor for the personal data model.
+        /// </summary>
+        /// <param name="userManager">The user manager.</param>
+        /// <param name="logger">The logger.</param>
         public PersonalDataModel(
             UserManager<ApplicationUser> userManager,
             ILogger<PersonalDataModel> logger)
@@ -23,6 +31,10 @@ namespace Tidbeat.Areas.Identity.Pages.Account.Manage
             _logger = logger;
         }
 
+        /// <summary>
+        /// The get method for the personal data page.
+        /// </summary>
+        /// <returns></returns>
         public async Task<IActionResult> OnGet()
         {
             var user = await _userManager.GetUserAsync(User);

@@ -19,6 +19,9 @@ using Tidbeat.Models;
 
 namespace Tidbeat.Areas.Identity.Pages.Account.Manage
 {
+    /// <summary>
+    ///    The model class for the email page.
+    /// </summary>
     public class EmailModel : PageModel
     {
         private readonly UserManager<ApplicationUser> _userManager;
@@ -26,6 +29,13 @@ namespace Tidbeat.Areas.Identity.Pages.Account.Manage
         private readonly IEmailSender _emailSender;
         private readonly IStringLocalizer<EmailModel> _localizer;
 
+        /// <summary>
+        /// The constructor for the email model.
+        /// </summary>
+        /// <param name="userManager">The user manager.</param>
+        /// <param name="signInManager">The sign in manager.</param>
+        /// <param name="emailSender">The email sender.</param>
+        /// <param name="localizer">The localizer.</param>
         public EmailModel(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
@@ -39,53 +49,58 @@ namespace Tidbeat.Areas.Identity.Pages.Account.Manage
         }
 
         /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
+        /// The email address.
         /// </summary>
         public string Email { get; set; }
 
         /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
+        /// The confirmation status.
         /// </summary>
         public bool IsEmailConfirmed { get; set; }
 
         /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
+        /// The status message.
         /// </summary>
         [TempData]
         public string StatusMessage { get; set; }
 
         /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
+        /// The input model for the email page.
         /// </summary>
         [BindProperty]
         public InputModel Input { get; set; }
 
         /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
+        /// The input model for the email page.
         /// </summary>
         public class InputModel
         {
             /// <summary>
-            ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-            ///     directly from your code. This API may change or be removed in future releases.
+            /// The new email address.
             /// </summary>
             [Required(ErrorMessage = "please_enter_a_valid_email_address")]
             [EmailAddress(ErrorMessage = "invalid_email_address_format")]
             [Display(Name = "New email")]
             public string NewEmail { get; set; }
 
+            /// <summary>
+            /// The new password.
+            /// </summary>
             [AllowNull]
             public string NewPassword { get; set; }
 
+            /// <summary>
+            /// The confirmation of the new password.
+            /// </summary>
             [AllowNull]
             public string ConfirmNewPassword { get; set; }
         }
 
+        /// <summary>
+        /// The load method. Loads the user.
+        /// </summary>
+        /// <param name="user">The user.</param>
+        /// <returns></returns>
         private async Task LoadAsync(ApplicationUser user)
         {
             var email = await _userManager.GetEmailAsync(user);
@@ -99,6 +114,10 @@ namespace Tidbeat.Areas.Identity.Pages.Account.Manage
             IsEmailConfirmed = await _userManager.IsEmailConfirmedAsync(user);
         }
 
+        /// <summary>
+        /// The get method. Loads the user and returns the page.
+        /// </summary>
+        /// <returns>The page.</returns>
         public async Task<IActionResult> OnGetAsync()
         {
             var user = await _userManager.GetUserAsync(User);
@@ -111,6 +130,10 @@ namespace Tidbeat.Areas.Identity.Pages.Account.Manage
             return Page();
         }
 
+        /// <summary>
+        /// The post method. Changes the email address.
+        /// </summary>
+        /// <returns>If something is invalid, returns the page with errors. If its ok, redirects to the same page with the operation done.</returns>
         public async Task<IActionResult> OnPostChangeEmailAsync()
         {
             var user = await _userManager.GetUserAsync(User);
@@ -172,6 +195,10 @@ namespace Tidbeat.Areas.Identity.Pages.Account.Manage
             return RedirectToPage();
         }
 
+        /// <summary>
+        /// The post method. Sends the verification email.
+        /// </summary>
+        /// <returns></returns>
         public async Task<IActionResult> OnPostSendVerificationEmailAsync()
         {
             var user = await _userManager.GetUserAsync(User);
