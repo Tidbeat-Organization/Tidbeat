@@ -5,6 +5,13 @@
 }
 
 <style>
+      .bordered-div {
+        border: 1.75px solid black;
+        border-radius: 5px;
+        background-color: #fafafa;
+    }
+
+
     .btn-danger {
         background-color: #e62517;
         color: white;
@@ -56,6 +63,28 @@
 
 <h1 class="mt-5 pt-5">As Minhas Conversas</h1>
 
+<div class="d-flex flex-column align-items-center pt-3 w-75 mx-auto bordered-div">
+    @foreach (Tuple<Conversation, List<string>> item in ViewBag.ConversationsParticipantsPairs)
+    {
+        <div class="d-flex flex-row">
+            <a class="btn btn-outline-primary mb-3 " asp-action="Details" asp-route-id="@item.Item1.Id">
+                <div class="d-flex flex-row justify-content-center">
+                    <i class="bi bi-chat"></i>
+                    @foreach (string participant in item.Item2)
+                    {
+                        <div class="ms-3">
+                            @participant
+                        </div>
+                    }
+                </div>
+            </a>
+            <form method="post" asp-action="ExitConversation" asp-route-conversationId="@item.Item1.Id" data-conversation-id="@item.Item1.Id">
+                <button type="button" class="bi bi-trash-fill text-danger fs-3 btn hover-background-grey p-0 px-1 delete-btn" data-bs-toggle="modal" data-bs-target="#deleteConversationModal"></button>
+            </form>
+        </div>
+    }
+</div>
+
 <!-- Modal -->
 <div class="modal fade" id="deleteConversationModal" tabindex="-1" aria-labelledby="deleteConversationModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -76,29 +105,6 @@
         </div>
     </div>
 </div>
-
-
-<div class="d-flex flex-column align-items-center pt-3">
-    @foreach (Tuple<Conversation, List<string>> item in ViewBag.ConversationsParticipantsPairs)
-    {
-        <div class="d-flex flex-row">
-            <a class="btn btn-outline-primary mb-3" asp-action="Details" asp-route-id="@item.Item1.Id">
-                @foreach (string participant in item.Item2)
-                {
-                    <div class="d-flex flex-row justify-content-center">
-                        <div class="ms-2">
-                            @participant;
-                        </div>
-                    </div>
-                }
-            </a>
-            <form method="post" asp-action="ExitConversation" asp-route-conversationId="@item.Item1.Id" data-conversation-id="@item.Item1.Id">
-                <button type="button" class="bi bi-trash-fill text-danger fs-3 btn hover-background-grey p-0 px-1 delete-btn" data-bs-toggle="modal" data-bs-target="#deleteConversationModal"></button>
-            </form>
-        </div>
-    }
-</div>
-
 
 @section scripts {
     <script>
