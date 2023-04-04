@@ -21,23 +21,27 @@ namespace Tidbeat.Controllers
 
         // GET: Follows
         //Miss Getting the current user
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Followers(string userId)
         {
-            if (User.Identity.IsAuthenticated)
-            {
-                var user = await _userManager.GetUserAsync(User);
+
+                var user = _context.Users.FindAsync(userId).Result;
                 var result = _context.Follow.Include(u => u.UserFollowed).Include(f => f.UserAsker).Where(f => f.UserAsker == user).Select(us => us.UserFollowed);
                 //var result = from follows in _context.Follow where follows.UserAsker == user select follows.UserFollowed;
                 return Json(result.ToListAsync().Result);
-            }
+        }
 
-            return Json(null);
+        public async Task<IActionResult> Followies(string userId)
+        {
+            var user = _context.Users.FindAsync(userId).Result;
+            var result = _context.Follow.Include(u => u.UserFollowed).Include(f => f.UserAsker).Where(f => f.UserFollowed == user).Select(us => us.UserFollowed);
+            //var result = from follows in _context.Follow where follows.UserAsker == user select follows.UserFollowed;
+            return Json(result.ToListAsync().Result);
         }
 
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Follow(int userId)
+        public async Task<IActionResult> Follow(string userId)
         {
             if (ModelState.IsValid)
             {
@@ -66,7 +70,7 @@ namespace Tidbeat.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> UnFollow(int userId)
+        public async Task<IActionResult> UnFollow(string userId)
         {
             if (ModelState.IsValid)
             {

@@ -44,50 +44,70 @@
             </div>
         </div>
         <hr style="height: 1px" />
-        <div class="text-primary">@Localizer["favorite_songs"]</div>
-        <div class="scrollable-posts h-25">
-            @if (ViewBag.FavoriteSongs.Count != 0) {
-                @foreach (Song song in ViewBag.FavoriteSongs)
-                {
-                        
-					songDivId = "song-div--" + song.SongId;
-					removeFavoriteSpanId = "remove-favorite-span--" + song.SongId;
-                    
-                    <div
-                        id=@songDivId
-                        class="border-0 border-2 border-start border-dark mb-2 d-flex flex-row">
-                        @if (ViewBag.IsCurrentUser) {
-                            <span id=@removeFavoriteSpanId
-                      class="bi bi-x-lg text-primary ms-1 border profile-remove-song pointer-active"></span>
-                        }
-                        
-                        <span class="w-auto ms-1 fs-6">
-                            @{
-                                if (song.Name.Length < songNameLimit)
-                                {
-                                    songNameString = "" + song.Name;
-                                }
-                                else
-                                {
-                                    songNameString = song.Name.Substring(0, songNameLimit) + " (...)";
-                                }
-                            }
-                            <span class="text-primary fw-semibold">@songNameString</span>
-                            , @Localizer["from"]
-                            <span class="text-primary fw-semibold">@song.Band.Name</span>
-                        </span>
-                    </div>
-                }
-            } else {
-                <div class="border border-top-0 border-bottom-0 border-end-0">@Localizer["no_favorited_song_yet"]</div>
-            }
-            
+        <div class="d-flex w-100 justify-content-around">
+            <a class="text-decoration-none text-dark border-right-1" id="optionAboutMe">Sobre Mim</a>
+            <a class="text-decoration-none text-dark border-right-1" id="optionMusicsFav">Músicas Favoritas</a>
+            <a class="text-decoration-none text-dark border-right-1" id="optionFollowers">Seguidores</a>
+            <a class="text-decoration-none text-dark" id="optionFollowersReverse">Seguidos</a>
         </div>
         <hr style="height: 1px" />
-        <div>
-            <h1 class="text-left text-primary">@Localizer["about_me"]:</h1>
+        <div id="favouriteSongsContent">
+            <div class="text-primary">@Localizer["favorite_songs"]</div>
+            <div class="scrollable-posts h-75">
+                @if (ViewBag.FavoriteSongs.Count != 0) {
+                    @foreach (Song song in ViewBag.FavoriteSongs)
+                    {
+                        
+					    songDivId = "song-div--" + song.SongId;
+					    removeFavoriteSpanId = "remove-favorite-span--" + song.SongId;
+                    
+                        <div
+                            id=@songDivId
+                            class="border-0 border-2 border-start border-dark mb-2 d-flex flex-row">
+                            @if (ViewBag.IsCurrentUser) {
+                                <span id=@removeFavoriteSpanId
+                          class="bi bi-x-lg text-primary ms-1 border profile-remove-song pointer-active"></span>
+                            }
+                        
+                            <span class="w-auto ms-1 fs-6">
+                                @{
+                                    if (song.Name.Length < songNameLimit)
+                                    {
+                                        songNameString = "" + song.Name;
+                                    }
+                                    else
+                                    {
+                                        songNameString = song.Name.Substring(0, songNameLimit) + " (...)";
+                                    }
+                                }
+                                <span class="text-primary fw-semibold">@songNameString</span>
+                                , @Localizer["from"]
+                                <span class="text-primary fw-semibold">@song.Band.Name</span>
+                            </span>
+                        </div>
+                    }
+                } else {
+                    <div class="border border-top-0 border-bottom-0 border-end-0">@Localizer["no_favorited_song_yet"]</div>
+                }
+            
+            </div>
+        </div>
+        <div id="AboutMeContent">
+            <div class="text-primary">@Localizer["about_me"]</div>
             <div>
                 @Html.Raw(user.AboutMe)
+            </div>
+        </div>
+        <div id="FollowersContent">
+            <div class="text-primary">@Localizer["about_me"]</div>
+            <div>
+               This a Test For Follow Users
+            </div>
+        </div>
+        <div id="FollowersReverseContent">
+            <div class="text-primary">@Localizer["about_me"]</div>
+            <div>
+                This a Test For Follow Users
             </div>
         </div>
     </div>
@@ -140,7 +160,55 @@
 		});
 	});
     */
-   
+    document.getElementById("optionAboutMe").style.backgroundColor = "purple";
+    document.getElementById("optionMusicsFav").style.backgroundColor = "white";
+    document.getElementById("optionFollowers").style.backgroundColor = "white";
+    document.getElementById("optionFollowersReverse").style.backgroundColor = "white";
+    document.getElementById("favouriteSongsContent").style.display = "none"
+    document.getElementById("AboutMeContent").style.display = "inline"
+    document.getElementById("FollowersContent").style.display = "none"
+    document.getElementById("FollowersReverseContent").style.display = "none"
+    document.getElementById("optionAboutMe").onclick = function () 
+    {
+        document.getElementById("optionAboutMe").style.backgroundColor = "purple";
+        document.getElementById("optionMusicsFav").style.backgroundColor = "white";
+        document.getElementById("optionFollowers").style.backgroundColor = "white";
+        document.getElementById("optionFollowersReverse").style.backgroundColor = "white";
+        document.getElementById("favouriteSongsContent").style.display = "none"
+        document.getElementById("AboutMeContent").style.display = "inline"
+        document.getElementById("FollowersContent").style.display = "none"
+        document.getElementById("FollowersReverseContent").style.display = "none"
+    };
+    document.getElementById("optionMusicsFav").onclick = function () {
+        document.getElementById("optionAboutMe").style.backgroundColor = "white";
+        document.getElementById("optionMusicsFav").style.backgroundColor = "purple";
+        document.getElementById("optionFollowers").style.backgroundColor = "white";
+        document.getElementById("optionFollowersReverse").style.backgroundColor = "white";
+        document.getElementById("favouriteSongsContent").style.display = "inline"
+        document.getElementById("AboutMeContent").style.display = "none"
+        document.getElementById("FollowersContent").style.display = "none"
+        document.getElementById("FollowersReverseContent").style.display = "none"
+    };
+    document.getElementById("optionFollowers").onclick = function () {
+        document.getElementById("optionAboutMe").style.backgroundColor = "white";
+        document.getElementById("optionMusicsFav").style.backgroundColor = "white";
+        document.getElementById("optionFollowers").style.backgroundColor = "purple";
+        document.getElementById("optionFollowersReverse").style.backgroundColor = "white";
+        document.getElementById("favouriteSongsContent").style.display = "none"
+        document.getElementById("AboutMeContent").style.display = "none"
+        document.getElementById("FollowersContent").style.display = "inline"
+        document.getElementById("FollowersReverseContent").style.display = "none"
+    };
+    document.getElementById("optionFollowersReverse").onclick = function () {
+        document.getElementById("optionAboutMe").style.backgroundColor = "white";
+        document.getElementById("optionMusicsFav").style.backgroundColor = "white";
+        document.getElementById("optionFollowers").style.backgroundColor = "white";
+        document.getElementById("optionFollowersReverse").style.backgroundColor = "purple";
+        document.getElementById("favouriteSongsContent").style.display = "none"
+        document.getElementById("AboutMeContent").style.display = "none"
+        document.getElementById("FollowersContent").style.display = "none"
+        document.getElementById("FollowersReverseContent").style.display = "inline"
+    };
     // Do this without JQuery
     let removeFavoriteSpans = document.getElementsByClassName("profile-remove-song");
 	for (let i = 0; i < removeFavoriteSpans.length; i++) {

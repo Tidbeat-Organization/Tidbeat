@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using Tidbeat.Data;
 using Tidbeat.Models;
 
@@ -150,6 +152,24 @@ namespace Tidbeat.Controllers
             ViewBag.FavoriteSongs = await GetFavoriteSongsAsync(profile);
             ViewBag.BandsOfSongs = await GetBandsOfSongs(ViewBag.FavoriteSongs);
             ViewBag.IsCurrentUser = profile.Id == currentuser?.Id;
+            using (var httpClient = new HttpClient())
+            {
+                string currentUrl = Request.Host.Value.ToString();
+                var responseFollowers = httpClient.GetAsync(Request.Scheme.ToString() + "://"+currentuser+"/Follows/Followers/" + id).Result;
+                if (responseFollowers.IsSuccessStatusCode)
+                {
+                    var jsonString = responseFollowers.Content.ReadAsStringAsync().Result;
+                    var jsonObject = JsonConvert.DeserializeObject<List<ApplicationUser>>(jsonString);
+                    TempData["Followers"] = jsonObject;
+                }
+                var responseFollowies = httpClient.GetAsync(Request.Scheme.ToString() + "://" + currentuser +"/Follows/Followies/" + id).Result;
+                if (responseFollowies.IsSuccessStatusCode)
+                {
+                    var jsonString2 = responseFollowies.Content.ReadAsStringAsync().Result;
+                    var jsonObject2 = JsonConvert.DeserializeObject<List<ApplicationUser>>(jsonString2);
+                    TempData["Followies"] = jsonObject2;
+                }
+            }
             // Print bands of songs.
             /*
             Console.WriteLine("Bands of songs:");
