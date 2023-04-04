@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System.Reflection.Emit;
 using Tidbeat.Models;
 
 namespace Tidbeat.Data {
@@ -13,7 +12,8 @@ namespace Tidbeat.Data {
         /// </summary>
         /// <param name="options">The options for the database context.</param>
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-            : base(options) {
+            : base(options)
+        {
         }
 
         /// <summary>
@@ -75,5 +75,7 @@ namespace Tidbeat.Data {
         }
 
         public DbSet<Tidbeat.Models.Profile>? Profile { get; set; }
+
+        public DbSet<Tidbeat.Models.Follow>? Follow { get; set; }
     }
 }
