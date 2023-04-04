@@ -1,1 +1,1 @@
-search_result['207']=["topic_0000000000000073.html","InputModel Class","This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used\r\n    directly from your code. This API may change or be removed in future releases."];
+search_result['207']=["topic_0000000000000073.html","InputModel Class","The input model for the external login page."];

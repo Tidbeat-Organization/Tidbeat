@@ -1,1 +1,1 @@
-search_result['130']=["topic_0000000000000044.html","ManageNavPages.EditPhoto Property",""];
+search_result['130']=["topic_0000000000000044.html","ManageNavPages.EditPhoto Property","Defines the Edit Photo page."];

@@ -1,1 +1,1 @@
-search_result['336']=["topic_00000000000000B3.html","ResetPasswordModel.OnPostAsync Method",""];
+search_result['336']=["topic_00000000000000B3.html","ResetPasswordModel.OnPostAsync Method","The post method for the reset password page."];

@@ -1,1 +1,1 @@
-search_result['324']=["topic_00000000000000AC.html","ResetPasswordModel.Input Property","This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used\r\n    directly from your code. This API may change or be removed in future releases."];
+search_result['324']=["topic_00000000000000AC.html","ResetPasswordModel.Input Property","The input model for the reset password page."];

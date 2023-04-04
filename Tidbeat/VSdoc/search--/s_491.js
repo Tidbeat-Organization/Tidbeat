@@ -1,1 +1,1 @@
-search_result['491']=["topic_000000000000010C.html","ApplicationDbContext.Comment Property",""];
+search_result['491']=["topic_000000000000010C.html","ApplicationDbContext.Comment Property","The comments in the database."];

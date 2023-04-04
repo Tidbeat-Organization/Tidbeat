@@ -1,1 +1,1 @@
-search_result['257']=["topic_0000000000000087.html","LoginModel Constructor",""];
+search_result['257']=["topic_0000000000000087.html","LoginModel Constructor","The constructor for the login model."];

@@ -1,1 +1,1 @@
-search_result['236']=["topic_0000000000000081.html","ForgotPasswordModel.OnPostAsync Method",""];
+search_result['236']=["topic_0000000000000081.html","ForgotPasswordModel.OnPostAsync Method","The method that\u0027s called when the forgot password is submitted."];

@@ -1,1 +1,1 @@
-search_result['539']=["topic_0000000000000123.html","SetMessageToSeenDto.UserId Property",""];
+search_result['539']=["topic_0000000000000123.html","SetMessageToSeenDto.UserId Property","The id of the message."];

@@ -1,1 +1,1 @@
-search_result['498']=["topic_0000000000000113.html","DeleteMessageDto Class",""];
+search_result['498']=["topic_0000000000000113.html","DeleteMessageDto Class","The DTO for deleting a message."];

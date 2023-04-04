@@ -1,1 +1,1 @@
-search_result['220']=["topic_000000000000007B.html","ExternalLoginModel.OnPostConfirmationAsync Method",""];
+search_result['220']=["topic_000000000000007B.html","ExternalLoginModel.OnPostConfirmationAsync Method","The method that is called when the user clicks on the \"Confirm\" button."];

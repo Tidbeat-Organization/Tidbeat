@@ -1,1 +1,1 @@
-search_result['100']=["topic_0000000000000035.html","IndexModel Class",""];
+search_result['100']=["topic_0000000000000035.html","IndexModel Class","The model class for the index page."];

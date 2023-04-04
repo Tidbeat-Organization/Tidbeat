@@ -89,6 +89,7 @@ document.write(getCssCustomProperty('--headerTopCustomLineHtml'));
 
        
        
+        <summary-info>The SignalR hub for the ChatBeat functionality. This class is only for sending messages to a connection.</summary-info>
 
 
 
@@ -381,7 +382,7 @@ document.write(getCssCustomProperty('--headerTopCustomLineHtml'));
 	</td>
 	<td>
 
-
+Broadcasts a message to all users in a conversation.
 
 	</td>
 </tr>
@@ -409,7 +410,7 @@ document.write(getCssCustomProperty('--headerTopCustomLineHtml'));
 	</td>
 	<td>
 
-
+Sends to all users in a group a delete message request.
 
 	</td>
 </tr>
@@ -437,7 +438,7 @@ document.write(getCssCustomProperty('--headerTopCustomLineHtml'));
 	</td>
 	<td>
 
-
+Sends to all users in a group a edit message request.
 
 	</td>
 </tr>
@@ -465,7 +466,7 @@ document.write(getCssCustomProperty('--headerTopCustomLineHtml'));
 	</td>
 	<td>
 
-
+When a user joins a conversation, adds them to the group.
 
 	</td>
 </tr>
@@ -493,7 +494,7 @@ document.write(getCssCustomProperty('--headerTopCustomLineHtml'));
 	</td>
 	<td>
 
-
+When a user leaves a conversation, removes them from the group.
 
 	</td>
 </tr>
@@ -521,7 +522,7 @@ document.write(getCssCustomProperty('--headerTopCustomLineHtml'));
 	</td>
 	<td>
 
-
+Sets all messages of a user in a conversation to seen.
 
 	</td>
 </tr>
@@ -576,6 +577,18 @@ document.write(getCssCustomProperty('--headerTopCustomLineHtml'));
 
 
 
+<div class="section_container">
+	<div class="section_heading">
+		<span><a href="javascript:void(0)" title="Collapse" onclick="toggleSection(this);">Remarks</a></span>
+		<div>&nbsp;</div>
+	</div>
+
+	<div id="remarksSection" class="section">	
+			This class does NOT make changes to the database. It only sends information to connections. Meaning, if one user edits a message, that change will
+be dynamically rendered in all other users that are connected to the group. However, that edit action will not be added to the database. That action
+is a different method in a different class, so it must be called separately.
+	</div>					
+</div>
 
 
 

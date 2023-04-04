@@ -1,1 +1,1 @@
-search_result['506']=["topic_0000000000000116.html","EditMessageDto Class",""];
+search_result['506']=["topic_0000000000000116.html","EditMessageDto Class","The DTO for editing a message."];

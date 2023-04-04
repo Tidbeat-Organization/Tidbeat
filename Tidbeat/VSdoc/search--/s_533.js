@@ -1,1 +1,1 @@
-search_result['533']=["topic_0000000000000122.html","SetMessageToSeenDto Class",""];
+search_result['533']=["topic_0000000000000122.html","SetMessageToSeenDto Class","The DTO for setting all messages of a user in a conversation to seen."];

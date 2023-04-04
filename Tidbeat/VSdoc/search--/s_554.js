@@ -1,1 +1,1 @@
-search_result['554']=["topic_0000000000000134.html","ChatHub.JoinChat Method",""];
+search_result['554']=["topic_0000000000000134.html","ChatHub.JoinChat Method","When a user joins a conversation, adds them to the group."];

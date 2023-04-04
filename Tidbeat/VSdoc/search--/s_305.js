@@ -1,1 +1,1 @@
-search_result['305']=["topic_00000000000000A3.html","RegisterModel.OnPostAsync Method",""];
+search_result['305']=["topic_00000000000000A3.html","RegisterModel.OnPostAsync Method","The method that is called when the register is submitted."];

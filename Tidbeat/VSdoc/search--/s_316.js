@@ -1,1 +1,1 @@
-search_result['316']=["topic_00000000000000A9.html","RegisterConfirmationModel.OnGetAsync Method",""];
+search_result['316']=["topic_00000000000000A9.html","RegisterConfirmationModel.OnGetAsync Method","The get method for the register confirmation page."];
