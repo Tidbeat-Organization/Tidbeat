@@ -56,10 +56,10 @@
         </div>
         <hr style="height: 1px" />
         <div class="d-flex w-100 justify-content-around">
-            <a class="text-decoration-none text-dark border-right-1 p-1" id="optionAboutMe">Sobre Mim</a>
-            <a class="text-decoration-none text-dark border-right-1 p-1" id="optionMusicsFav">Músicas Favoritas</a>
-            <a class="text-decoration-none text-dark border-right-1 p-1" id="optionFollowers">Seguidores</a>
-            <a class="text-decoration-none text-dark p-1" id="optionFollowersReverse">Seguidos</a>
+            <a class="text-decoration-none text-dark border-right-1 p-1" id="optionAboutMe">@Localizer["about_me"]</a>
+            <a class="text-decoration-none text-dark border-right-1 p-1" id="optionMusicsFav">@Localizer["favorite_songs"]</a>
+            <a class="text-decoration-none text-dark border-right-1 p-1" id="optionFollowers">@Localizer["followers"]</a>
+            <a class="text-decoration-none text-dark p-1" id="optionFollowersReverse">@Localizer["followies"]</a>
         </div>
         <hr style="height: 1px" />
         <div id="favouriteSongsContent">
@@ -109,71 +109,67 @@
                 @Html.Raw(user.AboutMe)
             </div>
         </div>
-        <div id="FollowersContent">
-            <div class="text-primary">Seguidores</div>
-            <div class="scrollable-posts h-75">
+        <div id="FollowersContent" class="h-100">
+            <div class="text-primary">@Localizer["followers"]</div>
+            <div class="scrollable-posts h-100">
                 @if (TempData.ContainsKey("Followers"))
                 {
                     if (Followers?.Count > 0)
                     {
                         foreach (var item in Followers)
                         {
-                            <div class="border border-primary rounded">
+                            <div class="border border-primary rounded d-flex w-100" asp-Controller="Profiles" asp-Action="Details" asp-route-id="@item.Id">
                                 @if (!string.IsNullOrEmpty(item.ImagePath))
                                 {
-                                    <img src="@item.ImagePath" height="100" class="border border-dark rounded" />
+                                    <img src="@item.ImagePath" height="75" class="border border-dark rounded" />
                                 }else
                                 {
-                                    <img src="~/images/UnknownUser.jpg" height="100" class="border border-dark rounded" />
+                                    <img src="~/images/UnknownUser.jpg" height="75" class="border border-dark rounded" />
                                 }
-                                <div>@item.FullName</div>
+                                <div class="align-self-center">@item.FullName</div>
                             </div>
                         }
                     }
                     else
-                    {
-                        var text = "You don't have followers";
-                        @text
+                    { 
+                        @Localizer["no_followers"];
                     }
                 }else
                 {
-                    var text = "You don't have followers";
-                    @text
+                    @Localizer["no_followers"];
                 }
             </div>
         </div>
-        <div id="FollowersReverseContent">
-            <div class="text-primary">Seguidos</div>
-            <div class="scrollable-posts h-75">
+        <div id="FollowersReverseContent" class="h-100">
+            <div class="text-primary">@Localizer["followies"]</div>
+            <div class="scrollable-posts h-100">
                 @if (TempData.ContainsKey("Followies"))
                 {
                     if (Followies?.Count > 0)
                     {
                         foreach (var item in Followies)
                         {
-                            <div class="border border-primary rounded">
+                            <div class="border border-primary rounded d-flex w-100" asp-Controller="Profiles" asp-Action="Details" asp-route-id="@item.Id">
                                 @if (!string.IsNullOrEmpty(item.ImagePath))
                                 {
-                                    <img src="@item.ImagePath" height="100" class="border border-dark rounded" />
+                                    <img src="@item.ImagePath" height="75" class="border border-dark rounded" />
                                 }
                                 else
                                 {
-                                    <img src="~/images/UnknownUser.jpg" height="100" class="border border-dark rounded" />
+                                    <img src="~/images/UnknownUser.jpg" height="75" class="border border-dark rounded" />
                                 }
-                                    <div>@item.FullName</div>
+                                <div class="align-self-center">@item.FullName</div>
                             </div>
                         }
 
                     } else 
                     {
-                        var text = "No one follows you";
-                        @text
+                        @Localizer["no_followies"];
                     }
 
                 }else
                 {
-                    var text = "No one follows you";
-                    @text
+                    @Localizer["no_followies"];
                 }
             </div>
         </div>

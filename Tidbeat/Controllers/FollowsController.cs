@@ -20,10 +20,10 @@ namespace Tidbeat.Controllers
         }
 
         // GET: Follows
-        public async Task<IActionResult> Followers(string userId)
+        public async Task<IActionResult> Followers(Guid userId)
         {
             var user = await _context.Users
-                .FirstOrDefaultAsync(m => m.Id == userId);
+                .FirstOrDefaultAsync(m => m.Id == userId.ToString());
             //var user = await _context.Users.FindAsync(userId);
             if (user != null)
             {
@@ -33,14 +33,13 @@ namespace Tidbeat.Controllers
                 List<ApplicationUser> applicationUsers = result.ToList();
                 return Json(applicationUsers);
             }
-            Console.WriteLine("Is null");
             return Json(null);
         }
 
-        public async Task<IActionResult> Followies(string userId)
+        public async Task<IActionResult> Followies(Guid userId)
         {
             var user = await _context.Users
-                .FirstOrDefaultAsync(m => m.Id == userId);
+                .FirstOrDefaultAsync(m => m.Id == userId.ToString());
             //var user = await _context.Users.FindAsync(userId);
             if (user != null)
             {
@@ -55,7 +54,7 @@ namespace Tidbeat.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Follow(string userId)
+        public async Task<IActionResult> Follow(Guid userId)
         {
             if (ModelState.IsValid)
             {
@@ -63,7 +62,7 @@ namespace Tidbeat.Controllers
                 {
                     var user = await _userManager.GetUserAsync(User);
                     var possibleFollower = await _context.Users
-                            .FirstOrDefaultAsync(m => m.Id == userId);
+                            .FirstOrDefaultAsync(m => m.Id == userId.ToString());
                     //var result = from follows in _context.Follow where follows.UserAsker == user && follows.UserFollowed == possibleFollower select follows.UserFollowed;
                     var result = _context.Follow.Include(u => u.UserFollowed).Include(f => f.UserAsker).Where(f => f.UserAsker.Id == user.Id).Where(u => u.UserFollowed.Id == possibleFollower.Id).Select(us => us.UserFollowed);
                     if (result.Count() > 0 || possibleFollower == null)
@@ -86,7 +85,7 @@ namespace Tidbeat.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> UnFollow(string userId)
+        public async Task<IActionResult> UnFollow(Guid userId)
         {
             if (ModelState.IsValid)
             {
@@ -94,7 +93,7 @@ namespace Tidbeat.Controllers
                 {
                     var user = await _userManager.GetUserAsync(User);
                     var possibleFollower = await _context.Users
-                            .FirstOrDefaultAsync(m => m.Id == userId);
+                            .FirstOrDefaultAsync(m => m.Id == userId.ToString());
                     //var result = from follows in _context.Follow where follows.UserAsker == user && follows.UserFollowed == _context.Users.FindAsync(userId).Result select follows;
                     var result = _context.Follow.Include(u => u.UserFollowed).Include(f => f.UserAsker).Where(f => f.UserAsker.Id == user.Id).Where(u => u.UserFollowed.Id == possibleFollower.Id);
                     if (result.Count() > 0)

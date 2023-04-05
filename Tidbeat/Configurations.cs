@@ -35,11 +35,6 @@ namespace Tidbeat {
                 await userManager.CreateAsync(InvalidUser);
             }
             //var createUser = await userManager.CreateAsync(normalUser, "Password_123");
-
-            var context = serviceProvider.GetRequiredService<ApplicationDbContext>();
-            var follow = new Follow() { UserAsker = await userManager.FindByEmailAsync(InvalidUser.Email), UserFollowed = await userManager.FindByEmailAsync(InvalidUser.Email) };
-            context.Follow.Add(follow);
-            context.SaveChanges();
         }
 
         /// <summary>

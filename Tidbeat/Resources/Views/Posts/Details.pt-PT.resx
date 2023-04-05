@@ -141,11 +141,23 @@
   <data name="edited_in" xml:space="preserve">
     <value>Editado em</value>
   </data>
+  <data name="followers" xml:space="preserve">
+    <value>Seguidores</value>
+  </data>
+  <data name="followies" xml:space="preserve">
+    <value>Seguidos</value>
+  </data>
   <data name="from" xml:space="preserve">
     <value>de</value>
   </data>
   <data name="no_comments" xml:space="preserve">
     <value>Não há comentários... Seja o primeiro a comentar!</value>
+  </data>
+  <data name="no_followers" xml:space="preserve">
+    <value>Segues Ninguém</value>
+  </data>
+  <data name="no_followies" xml:space="preserve">
+    <value>Ninguém Segue-te</value>
   </data>
   <data name="song" xml:space="preserve">
     <value>Música</value>
