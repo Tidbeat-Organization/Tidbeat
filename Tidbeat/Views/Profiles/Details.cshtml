@@ -11,6 +11,17 @@
 
     string songDivId = "";
     string removeFavoriteSpanId = "";
+    List<ApplicationUser>? Followies = new List<ApplicationUser>();
+
+    List<ApplicationUser>? Followers = new List<ApplicationUser>();
+    @if (TempData.ContainsKey("Followies"))
+    {
+            Followies = (List<ApplicationUser>?)TempData["Followies"];
+    }
+    @if (TempData.ContainsKey("Followers"))
+    {
+            Followers = (List<ApplicationUser>?)TempData["Followers"];
+    }
 }
 
 <!--All music info goes here-->
@@ -101,13 +112,53 @@
         <div id="FollowersContent">
             <div class="text-primary">@Localizer["about_me"]</div>
             <div>
-               This a Test For Follow Users
+                @if (TempData.ContainsKey("Followers"))
+                {
+                    if (Followers?.Count > 0)
+                    {
+                        foreach (var item in Followers)
+                        {
+                            <div class="border border-primary rounded">
+                                <img src="@item.ImagePath">
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        var text = "You don't have followers";
+                        @text
+                    }
+                }else
+                {
+                    var text = "You don't have followers";
+                    @text
+                }
             </div>
         </div>
         <div id="FollowersReverseContent">
             <div class="text-primary">@Localizer["about_me"]</div>
             <div>
-                This a Test For Follow Users
+                @if (TempData.ContainsKey("Followies"))
+                {
+                    if (Followies?.Count > 0)
+                    {
+                        foreach (var item in Followies)
+                        {
+                            <div class="border border-primary rounded">
+                            </div>
+                        }
+
+                    } else 
+                    {
+                        var text = "No one follows you";
+                        @text
+                    }
+
+                }else
+                {
+                    var text = "No one follows you";
+                    @text
+                }
             </div>
         </div>
     </div>

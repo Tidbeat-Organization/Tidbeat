@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System.Diagnostics.CodeAnalysis;
+using Tidbeat.Enums;
 
 namespace Tidbeat.Models {
     /// <summary>
@@ -59,6 +60,7 @@ namespace Tidbeat.Models {
         public string? reason { get; set; }
 
         public List<BanUser>? Bans { get; set; }
+        public RoleType Role { get; set; }
 
         /// <summary>
         /// Function which deserializes the FavoriteSongIds string into a list of strings.

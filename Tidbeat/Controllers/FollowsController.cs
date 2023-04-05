@@ -33,7 +33,7 @@ namespace Tidbeat.Controllers
         public async Task<IActionResult> Followies(string userId)
         {
             var user = _context.Users.FindAsync(userId).Result;
-            var result = _context.Follow.Include(u => u.UserFollowed).Include(f => f.UserAsker).Where(f => f.UserFollowed == user).Select(us => us.UserFollowed);
+            var result = _context.Follow.Include(u => u.UserFollowed).Include(f => f.UserAsker).Where(f => f.UserFollowed == user).Select(us => us.UserAsker);
             //var result = from follows in _context.Follow where follows.UserAsker == user select follows.UserFollowed;
             return Json(result.ToListAsync().Result);
         }

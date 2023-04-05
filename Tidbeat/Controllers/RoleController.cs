@@ -6,6 +6,7 @@ using Microsoft.Extensions.Localization;
 using System.Drawing;
 using System.Text.Encodings.Web;
 using Tidbeat.Data;
+using Tidbeat.Enums;
 using Tidbeat.Models;
 
 
@@ -161,6 +162,42 @@ namespace Tidbeat.Controllers
                 return Json(_localizer["user_ban"]);
             }
             return Json(_localizer["operation_fail"]);
+        }
+
+        [Authorize(Roles = "Administrator")]
+        [HttpPost]
+        public async Task<ActionResult> RevokePermisson(string userId)
+        {
+            var dbUser = await _context.Users.FindAsync(userId);
+            var result = _userManager.RemoveFromRoleAsync(dbUser,dbUser.Role.ToString());
+            if (result.IsCompletedSuccessfully)
+            {
+                var newPermission = _userManager.AddToRoleAsync(dbUser, Enums.RoleType.NormalUser.ToString());
+                if (newPermission.IsCompletedSuccessfully) 
+                {
+                    dbUser.Role = Enums.RoleType.NormalUser; 
+                }
+            }
+
+            return Json("Error");
+        }
+
+        [Authorize(Roles = "Administrator")]
+        [HttpPost]
+        public async Task<ActionResult> GivePermisson(string userId, RoleType newRole)
+        {
+            var dbUser = await _context.Users.FindAsync(userId);
+            var result = _userManager.RemoveFromRoleAsync(dbUser, dbUser.Role.ToString());
+            if (result.IsCompletedSuccessfully)
+            {
+                var newPermission = _userManager.AddToRoleAsync(dbUser, newRole.ToString());
+                if (newPermission.IsCompletedSuccessfully)
+                {
+                    dbUser.Role = newRole;
+                }
+            }
+
+            return Json("Error");
         }
     }
 }
