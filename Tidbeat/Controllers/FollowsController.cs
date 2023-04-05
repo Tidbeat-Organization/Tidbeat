@@ -27,7 +27,7 @@ namespace Tidbeat.Controllers
             //var user = await _context.Users.FindAsync(userId);
             if (user != null)
             {
-                var result = _context.Follow.Include(u => u.UserFollowed).Include(f => f.UserAsker).Where(f => f.UserAsker.Id == user.Id).Select(us => us.UserFollowed);
+                var result = _context.Follow.Include(f => f.UserFollowed).Include(f => f.UserAsker).Where(f => f.UserAsker.Id == user.Id).Select(f => f.UserFollowed);
 
                 //var result = from follows in _context.Follow where follows.UserAsker == user select follows.UserFollowed;
                 List<ApplicationUser> applicationUsers = result.ToList();
@@ -43,7 +43,7 @@ namespace Tidbeat.Controllers
             //var user = await _context.Users.FindAsync(userId);
             if (user != null)
             {
-                var result = _context.Follow.Include(u => u.UserFollowed).Include(f => f.UserAsker).Where(f => f.UserFollowed.Id == user.Id).Select(us => us.UserAsker);
+                var result = _context.Follow.Include(f => f.UserFollowed).Include(f => f.UserAsker).Where(f => f.UserFollowed.Id == user.Id).Select(f => f.UserAsker);
                 //var result = from follows in _context.Follow where follows.UserAsker == user select follows.UserFollowed;
                 return Json(result.ToListAsync().Result);
             }

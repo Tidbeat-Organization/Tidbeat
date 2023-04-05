@@ -159,6 +159,12 @@
   <data name="folk" xml:space="preserve">
     <value>Folk</value>
   </data>
+  <data name="followers" xml:space="preserve">
+    <value>Seguidores</value>
+  </data>
+  <data name="followies" xml:space="preserve">
+    <value>Seguidos</value>
+  </data>
   <data name="from" xml:space="preserve">
     <value>de</value>
   </data>
@@ -195,6 +201,12 @@
   <data name="no_favorited_song_yet" xml:space="preserve">
     <value>Não tem qualquer música favoritada ainda.</value>
   </data>
+  <data name="no_followers" xml:space="preserve">
+    <value>Segues Ninguém</value>
+  </data>
+  <data name="no_followies" xml:space="preserve">
+    <value>Ninguém Segue-te</value>
+  </data>
   <data name="no_posts" xml:space="preserve">
     <value>Sem posts</value>
   </data>
@@ -212,6 +224,12 @@
   </data>
   <data name="rock" xml:space="preserve">
     <value>Rock</value>
+  </data>
+  <data name="song" xml:space="preserve">
+    <value>Música</value>
+  </data>
+  <data name="submit" xml:space="preserve">
+    <value>Submeter</value>
   </data>
   <data name="techno" xml:space="preserve">
     <value>Techno</value>

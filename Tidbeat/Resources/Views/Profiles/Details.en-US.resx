@@ -195,6 +195,12 @@
   <data name="no_favorited_song_yet" xml:space="preserve">
     <value>You dont have favorited songs yet.</value>
   </data>
+  <data name="no_followers" xml:space="preserve">
+    <value>No Followers</value>
+  </data>
+  <data name="no_followies" xml:space="preserve">
+    <value>No One Follows You</value>
+  </data>
   <data name="no_posts" xml:space="preserve">
     <value>No posts</value>
   </data>
@@ -212,6 +218,12 @@
   </data>
   <data name="rock" xml:space="preserve">
     <value>Rock</value>
+  </data>
+  <data name="song" xml:space="preserve">
+    <value>Song</value>
+  </data>
+  <data name="submit" xml:space="preserve">
+    <value>Submit</value>
   </data>
   <data name="techno" xml:space="preserve">
     <value>Techno</value>
