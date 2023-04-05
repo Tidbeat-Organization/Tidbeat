@@ -18,7 +18,19 @@
 
 <h1>Details</h1>
 
-<h2 class="text-center" style="margin-top: 0; padding-top: 30px; padding-bottom: 30px;">@ViewBag.CurrentUser.FullName > @ViewBag.OtherUser.FullName</h2>
+<h2 class="user-info">
+      <div>
+        <img src="@ViewBag.CurrentUser.ImagePath" alt="@ViewBag.CurrentUser.FullName" width="100" height="100" />
+        <p>@ViewBag.CurrentUser.FullName</p>
+      </div>
+      <div class="arrow">&gt;</div>
+      <div>
+        <img src="@ViewBag.OtherUser.ImagePath" alt="@ViewBag.OtherUser.FullName" width="100" height="100" />
+        <p>@ViewBag.OtherUser.FullName</p>
+      </div>
+</h2>
+
+
 <div class="container" style="height: calc(100% - 110px);">
     <div id="messages" style="background-color: whitesmoke; ">
         <button type="button" id="getRecentMessagesButton" class="@(ViewBag.Messages.Count >= 20 ? "" : "d-none")">More messages...</button>

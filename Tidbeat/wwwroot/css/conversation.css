@@ -2,7 +2,7 @@
     /* default styles */
     width: 100%;
     border: 1px solid #ccc;
-    height: calc(100vh - 275px);
+    height: calc(100vh - 330px);
     max-height: 650px;
     float: none;
     margin: 0px auto;
@@ -114,3 +114,37 @@
     color: #6610F2;
     border-radius: 3px;
 }
+
+/* User images and their respective names at the top - styling */
+
+.user-info {
+    margin-top: 0;
+    padding-top: 30px;
+    padding-bottom: 1px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.user-info div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.user-info img {
+    border-radius: 10px;
+    border: 2px solid black;
+}
+
+.user-info p {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.user-info .arrow {
+     margin: 0 40px;
+     font-size: 24px;
+     font-weight: bold;
+ }
+
