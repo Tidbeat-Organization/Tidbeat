@@ -168,6 +168,13 @@ namespace Tidbeat.Controllers
                     var jsonString2 = responseFollowies.Content.ReadAsStringAsync().Result;
                     var jsonObject2 = JsonConvert.DeserializeObject<List<ApplicationUser>>(jsonString2);
                     TempData["Followies"] = jsonObject2;
+                    if (jsonObject2!=null) 
+                    {
+                        if (jsonObject2.Contains(currentuser))
+                        {
+                            TempData["Follow"] = "";
+                        } 
+                    }
                 }
             }
             // Print bands of songs.

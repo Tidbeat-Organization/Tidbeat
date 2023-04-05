@@ -73,7 +73,7 @@ namespace Tidbeat.Controllers
                     if (finalResult.IsCompletedSuccessfully)
                     {
                         _context.SaveChanges();
-                        return Json("New Follower");
+                        return Json("Sucess");
                     }
                     return Json("Error Ocurred");
                 }

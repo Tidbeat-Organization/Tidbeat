@@ -46,8 +46,15 @@
                     <h1 class="text-primary">@user.FullName</h1>
                     @if (!ViewBag.IsCurrentUser && User.Identity?.IsAuthenticated) {
                         <a class="btn bi bi-chat-right-text fs-4 py-0" href="@Url.Action("StartTwoPersonConversation", "Conversations", new { currentUserId = ViewBag.CurrentUser.Id, otherUserId = Model.Id })"></a>
-                        <a class="btn bi bi-person-add fs-4 py-0"></a>
-                        <a class="btn bi bi-person-dash fs-4 py-0"></a>
+                        <div id="FollowUpButton" class="btn bi @if (TempData.ContainsKey("Follow")){var text="bi-person-check" ;
+                    @text
+;}else{var text="bi-person-plus" ;
+                    @text
+;} fs-4 py-0" onclick="@if (TempData.ContainsKey("Follow")){var text = "unfollow()";
+                    @text
+;}else{var text = "follow()";
+                    @text
+;}"></div>
                     }
                 </div>
                 <div> <span class="text-primary">@Localizer["gender"]:</span> @Localizer[user.Gender]</div>
@@ -229,6 +236,58 @@
 		});
 	});
         */
+    /*eval(@if ((TempData.ContainsKey("Follow")))
+    {
+                var text = "let domChange = document.getElementById('FollowUpButton');domChange.onmouseover = function () {domChange.classList.replace('bi-person-check', 'bi-person-dash');};domChange.onmouseout = function () {domChange.classList.replace('bi-person-dash', 'bi-person-check');};";
+                @text
+    })*/
+    const protocol = window.location.protocol; // "http:" or "https:"
+    const hostname = window.location.hostname; // e.g. "example.com"
+    const homeUrl = `${protocol}//${hostname}`;
+    function follow() {
+        fetch(homeUrl + "/Follows/Follow?userId=@user.Id.Split(':')[0]", {
+            method: 'POST'
+        })
+            .then(response => response.json())
+            .then(data => {
+                // Update the contents of the result container with the new data
+               let domChange = document.getElementById("FollowUpButton");
+               domChange.classList.remove("bi-person-plus");
+               domChange.classList.add("bi-person-check");
+                domChange.onmouseover = function () {
+                    domChange.classList.replace('bi-person-check', 'bi-person-dash');
+                };
+
+                domChange.onmouseout = function () {
+                    domChange.classList.replace('bi-person-dash', 'bi-person-check');
+                };
+               // domChange.onclick = unfollow();
+            })
+            .catch(error => {
+                // Handle errors here
+                console.error(error);
+            });
+    }
+    function unfollow() {
+        fetch(homeUrl + "/Follows/UnFollow?userId=@user.Id.Split(':')[0]", {
+            method: 'POST'
+        })
+            .then(response => response.json())
+            .then(data => {
+                // Update the contents of the result container with the new data
+                let domChange = document.getElementById("FollowUpButton");
+                domChange.classList.remove("bi-person-check");
+                domChange.classList.remove("bi-person-dash");
+                domChange.classList.add("bi-person-plus");
+                domChange.onmouseover = null;
+                domChange.onmouseout = null;
+                domChange.onclick = follow();
+            })
+            .catch(error => {
+                // Handle errors here
+                console.error(error);
+            });
+    }
     document.getElementById("optionAboutMe").classList.add('bg-primary')
     document.getElementById("optionMusicsFav").classList.remove('bg-primary')
     document.getElementById("optionFollowers").classList.remove('bg-primary')
