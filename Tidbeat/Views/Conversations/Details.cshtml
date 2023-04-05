@@ -20,12 +20,13 @@
 
 <h2 class="user-info">
       <div>
-        <img src="@ViewBag.CurrentUser.ImagePath" alt="@ViewBag.CurrentUser.FullName" width="100" height="100" />
+        <img src="@((ViewBag.CurrentUser.ImagePath ?? "/images/UnknownUser.jpg"))" alt="@ViewBag.CurrentUser.FullName" width="100" height="100" />
         <p>@ViewBag.CurrentUser.FullName</p>
       </div>
       <div class="arrow">&gt;</div>
       <div>
-        <img src="@ViewBag.OtherUser.ImagePath" alt="@ViewBag.OtherUser.FullName" width="100" height="100" />
+        <img src="@((ViewBag.OtherUser.ImagePath ?? "/images/UnknownUser.jpg"))" alt="@ViewBag.OtherUser.FullName" width="100" height="100" />
+
         <p>@ViewBag.OtherUser.FullName</p>
       </div>
 </h2>
