@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
+using SpotifyAPI.Web;
 using Tidbeat.Data;
 using Tidbeat.Models;
 
@@ -34,6 +35,11 @@ namespace Tidbeat {
                 await userManager.CreateAsync(InvalidUser);
             }
             //var createUser = await userManager.CreateAsync(normalUser, "Password_123");
+
+            var context = serviceProvider.GetRequiredService<ApplicationDbContext>();
+            var follow = new Follow() { UserAsker = await userManager.FindByEmailAsync(InvalidUser.Email), UserFollowed = await userManager.FindByEmailAsync(InvalidUser.Email) };
+            context.Follow.Add(follow);
+            context.SaveChanges();
         }
 
         /// <summary>
@@ -147,7 +153,8 @@ namespace Tidbeat {
                 Band = band,
                 User = await userManager.FindByEmailAsync("afonsosemeano@gmail.com")
             };
-
+            var follow = new Follow() { UserAsker = await userManager.FindByEmailAsync(InvalidUser.Email), UserFollowed= await userManager.FindByEmailAsync(InvalidUser.Email)};
+            context.Follow.Add(follow);
             context.Songs.Add(song);
             context.Posts.Add(post1);
             context.Posts.Add(post2);
