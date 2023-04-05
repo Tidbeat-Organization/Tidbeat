@@ -110,7 +110,7 @@
             </div>
         </div>
         <div id="FollowersContent">
-            <div class="text-primary">@Localizer["about_me"]</div>
+            <div class="text-primary">Seguidores</div>
             <div>
                 @if (TempData.ContainsKey("Followers"))
                 {
@@ -119,7 +119,14 @@
                         foreach (var item in Followers)
                         {
                             <div class="border border-primary rounded">
-                                <img src="@item.ImagePath">
+                                @if (!string.IsNullOrEmpty(item.ImagePath))
+                                {
+                                    <img src="@item.ImagePath" height="100" class="border border-dark rounded" />
+                                }else
+                                {
+                                    <img src="~/images/UnknownUser.jpg" height="100" class="border border-dark rounded" />
+                                }
+                                <div>@item.FullName</div>
                             </div>
                         }
                     }
@@ -136,7 +143,7 @@
             </div>
         </div>
         <div id="FollowersReverseContent">
-            <div class="text-primary">@Localizer["about_me"]</div>
+            <div class="text-primary">Seguidos</div>
             <div>
                 @if (TempData.ContainsKey("Followies"))
                 {
@@ -145,6 +152,15 @@
                         foreach (var item in Followies)
                         {
                             <div class="border border-primary rounded">
+                                @if (!string.IsNullOrEmpty(item.ImagePath))
+                                {
+                                    <img src="@item.ImagePath" height="100" class="border border-dark rounded" />
+                                }
+                                else
+                                {
+                                    <img src="~/images/UnknownUser.jpg" height="100" class="border border-dark rounded" />
+                                }
+                                    <div>@item.FullName</div>
                             </div>
                         }
 
