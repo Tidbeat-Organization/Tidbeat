@@ -20,26 +20,25 @@ namespace Tidbeat.Controllers
         }
 
         // GET: Follows
-        public async Task<IActionResult> Followers(Guid userId)
+        public async Task<IActionResult> Followers([FromQuery] string userId)
         {
             var user = await _context.Users
-                .FirstOrDefaultAsync(m => m.Id == userId.ToString());
+                .FirstOrDefaultAsync(m => m.Id == userId);
             //var user = await _context.Users.FindAsync(userId);
             if (user != null)
             {
-                var result = _context.Follow.Include(f => f.UserFollowed).Include(f => f.UserAsker).Where(f => f.UserAsker.Id == user.Id).Select(f => f.UserFollowed);
-
+                var result = await  _context.Follow.Include(f => f.UserFollowed).Include(f => f.UserAsker).Where(f => f.UserAsker.Id.Equals(user.Id)).Select(f => f.UserFollowed).ToListAsync();
                 //var result = from follows in _context.Follow where follows.UserAsker == user select follows.UserFollowed;
-                List<ApplicationUser> applicationUsers = result.ToList();
+                List<ApplicationUser> applicationUsers = result;
                 return Json(applicationUsers);
             }
             return Json(null);
         }
 
-        public async Task<IActionResult> Followies(Guid userId)
+        public async Task<IActionResult> Followies([FromQuery] string userId)
         {
             var user = await _context.Users
-                .FirstOrDefaultAsync(m => m.Id == userId.ToString());
+                .FirstOrDefaultAsync(m => m.Id == userId);
             //var user = await _context.Users.FindAsync(userId);
             if (user != null)
             {
@@ -54,7 +53,7 @@ namespace Tidbeat.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Follow(Guid userId)
+        public async Task<IActionResult> Follow([FromQuery] string userId)
         {
             if (ModelState.IsValid)
             {
@@ -85,7 +84,7 @@ namespace Tidbeat.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> UnFollow(Guid userId)
+        public async Task<IActionResult> UnFollow([FromQuery] string userId)
         {
             if (ModelState.IsValid)
             {
