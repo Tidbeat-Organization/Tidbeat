@@ -44,8 +44,10 @@
                 </div>
                 <div class="d-flex">
                     <h1 class="text-primary">@user.FullName</h1>
-                    @if (!ViewBag.IsCurrentUser) {
+                    @if (!ViewBag.IsCurrentUser && User.Identity?.IsAuthenticated) {
                         <a class="btn bi bi-chat-right-text fs-4 py-0" href="@Url.Action("StartTwoPersonConversation", "Conversations", new { currentUserId = ViewBag.CurrentUser.Id, otherUserId = Model.Id })"></a>
+                        <a class="btn bi bi-person-add fs-4 py-0"></a>
+                        <a class="btn bi bi-person-dash fs-4 py-0"></a>
                     }
                 </div>
                 <div> <span class="text-primary">@Localizer["gender"]:</span> @Localizer[user.Gender]</div>
