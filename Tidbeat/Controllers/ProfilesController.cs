@@ -155,14 +155,14 @@ namespace Tidbeat.Controllers
             using (var httpClient = new HttpClient())
             {
                 string currentUrl = Request.Host.Value.ToString();
-                var responseFollowers = httpClient.GetAsync(Request.Scheme.ToString() + "://"+currentuser+"/Follows/Followers/" + id).Result;
+                var responseFollowers = httpClient.GetAsync(Request.Scheme.ToString() + "://"+ currentUrl + "/Follows/Followers/" + id).Result;
                 if (responseFollowers.IsSuccessStatusCode)
                 {
                     var jsonString = responseFollowers.Content.ReadAsStringAsync().Result;
                     var jsonObject = JsonConvert.DeserializeObject<List<ApplicationUser>>(jsonString);
                     TempData["Followers"] = jsonObject;
                 }
-                var responseFollowies = httpClient.GetAsync(Request.Scheme.ToString() + "://" + currentuser +"/Follows/Followies/" + id).Result;
+                var responseFollowies = httpClient.GetAsync(Request.Scheme.ToString() + "://" + currentUrl + "/Follows/Followies/" + id).Result;
                 if (responseFollowies.IsSuccessStatusCode)
                 {
                     var jsonString2 = responseFollowies.Content.ReadAsStringAsync().Result;

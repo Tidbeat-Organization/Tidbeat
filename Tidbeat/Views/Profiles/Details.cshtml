@@ -56,10 +56,10 @@
         </div>
         <hr style="height: 1px" />
         <div class="d-flex w-100 justify-content-around">
-            <a class="text-decoration-none text-dark border-right-1" id="optionAboutMe">Sobre Mim</a>
-            <a class="text-decoration-none text-dark border-right-1" id="optionMusicsFav">Músicas Favoritas</a>
-            <a class="text-decoration-none text-dark border-right-1" id="optionFollowers">Seguidores</a>
-            <a class="text-decoration-none text-dark" id="optionFollowersReverse">Seguidos</a>
+            <a class="text-decoration-none text-dark border-right-1 p-1" id="optionAboutMe">Sobre Mim</a>
+            <a class="text-decoration-none text-dark border-right-1 p-1" id="optionMusicsFav">Músicas Favoritas</a>
+            <a class="text-decoration-none text-dark border-right-1 p-1" id="optionFollowers">Seguidores</a>
+            <a class="text-decoration-none text-dark p-1" id="optionFollowersReverse">Seguidos</a>
         </div>
         <hr style="height: 1px" />
         <div id="favouriteSongsContent">
@@ -226,51 +226,71 @@
 			});
 		});
 	});
-    */
-    document.getElementById("optionAboutMe").style.backgroundColor = "purple";
-    document.getElementById("optionMusicsFav").style.backgroundColor = "white";
-    document.getElementById("optionFollowers").style.backgroundColor = "white";
-    document.getElementById("optionFollowersReverse").style.backgroundColor = "white";
+        */
+    document.getElementById("optionAboutMe").classList.add('bg-primary')
+    document.getElementById("optionMusicsFav").classList.remove('bg-primary')
+    document.getElementById("optionFollowers").classList.remove('bg-primary')
+    document.getElementById("optionFollowersReverse").classList.remove('bg-primary')
+    document.getElementById("optionAboutMe").classList.add('text-white')
+    document.getElementById("optionMusicsFav").classList.remove('text-white')
+    document.getElementById("optionFollowers").classList.remove('text-white')
+    document.getElementById("optionFollowersReverse").classList.remove('text-white')
     document.getElementById("favouriteSongsContent").style.display = "none"
     document.getElementById("AboutMeContent").style.display = "inline"
     document.getElementById("FollowersContent").style.display = "none"
     document.getElementById("FollowersReverseContent").style.display = "none"
     document.getElementById("optionAboutMe").onclick = function () 
     {
-        document.getElementById("optionAboutMe").style.backgroundColor = "purple";
-        document.getElementById("optionMusicsFav").style.backgroundColor = "white";
-        document.getElementById("optionFollowers").style.backgroundColor = "white";
-        document.getElementById("optionFollowersReverse").style.backgroundColor = "white";
+        document.getElementById("optionAboutMe").classList.add('bg-primary')
+        document.getElementById("optionMusicsFav").classList.remove('bg-primary')
+        document.getElementById("optionFollowers").classList.remove('bg-primary')
+        document.getElementById("optionFollowersReverse").classList.remove('bg-primary')
+        document.getElementById("optionAboutMe").classList.add('text-white')
+        document.getElementById("optionMusicsFav").classList.remove('text-white')
+        document.getElementById("optionFollowers").classList.remove('text-white')
+        document.getElementById("optionFollowersReverse").classList.remove('text-white')
         document.getElementById("favouriteSongsContent").style.display = "none"
         document.getElementById("AboutMeContent").style.display = "inline"
         document.getElementById("FollowersContent").style.display = "none"
         document.getElementById("FollowersReverseContent").style.display = "none"
     };
     document.getElementById("optionMusicsFav").onclick = function () {
-        document.getElementById("optionAboutMe").style.backgroundColor = "white";
-        document.getElementById("optionMusicsFav").style.backgroundColor = "purple";
-        document.getElementById("optionFollowers").style.backgroundColor = "white";
-        document.getElementById("optionFollowersReverse").style.backgroundColor = "white";
+        document.getElementById("optionAboutMe").classList.remove('bg-primary')
+        document.getElementById("optionMusicsFav").classList.add('bg-primary')
+        document.getElementById("optionFollowers").classList.remove('bg-primary')
+        document.getElementById("optionFollowersReverse").classList.remove('bg-primary')
+        document.getElementById("optionAboutMe").classList.remove('text-white')
+        document.getElementById("optionMusicsFav").classList.add('text-white')
+        document.getElementById("optionFollowers").classList.remove('text-white')
+        document.getElementById("optionFollowersReverse").classList.remove('text-white')
         document.getElementById("favouriteSongsContent").style.display = "inline"
         document.getElementById("AboutMeContent").style.display = "none"
         document.getElementById("FollowersContent").style.display = "none"
         document.getElementById("FollowersReverseContent").style.display = "none"
     };
     document.getElementById("optionFollowers").onclick = function () {
-        document.getElementById("optionAboutMe").style.backgroundColor = "white";
-        document.getElementById("optionMusicsFav").style.backgroundColor = "white";
-        document.getElementById("optionFollowers").style.backgroundColor = "purple";
-        document.getElementById("optionFollowersReverse").style.backgroundColor = "white";
+        document.getElementById("optionAboutMe").classList.remove('bg-primary')
+        document.getElementById("optionMusicsFav").classList.remove('bg-primary')
+        document.getElementById("optionFollowers").classList.add('bg-primary')
+        document.getElementById("optionFollowersReverse").classList.remove('bg-primary')
+        document.getElementById("optionAboutMe").classList.remove('text-white')
+        document.getElementById("optionMusicsFav").classList.remove('text-white')
+        document.getElementById("optionFollowers").classList.add('text-white')
+        document.getElementById("optionFollowersReverse").classList.remove('text-white')
         document.getElementById("favouriteSongsContent").style.display = "none"
         document.getElementById("AboutMeContent").style.display = "none"
         document.getElementById("FollowersContent").style.display = "inline"
         document.getElementById("FollowersReverseContent").style.display = "none"
     };
     document.getElementById("optionFollowersReverse").onclick = function () {
-        document.getElementById("optionAboutMe").style.backgroundColor = "white";
-        document.getElementById("optionMusicsFav").style.backgroundColor = "white";
-        document.getElementById("optionFollowers").style.backgroundColor = "white";
-        document.getElementById("optionFollowersReverse").style.backgroundColor = "purple";
+        document.getElementById("optionAboutMe").classList.remove('bg-primary')
+        document.getElementById("optionMusicsFav").classList.remove('bg-primary')
+        document.getElementById("optionFollowers").classList.remove('bg-primary')
+        document.getElementById("optionFollowersReverse").classList.add('bg-primary')
+        document.getElementById("optionAboutMe").classList.remove('text-white')
+        document.getElementById("optionMusicsFav").classList.remove('text-white')
+        document.getElementById("optionFollowers").classList.remove('text-white')
+        document.getElementById("optionFollowersReverse").classList.add('text-white')
         document.getElementById("favouriteSongsContent").style.display = "none"
         document.getElementById("AboutMeContent").style.display = "none"
         document.getElementById("FollowersContent").style.display = "none"

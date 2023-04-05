@@ -20,22 +20,36 @@ namespace Tidbeat.Controllers
         }
 
         // GET: Follows
-        //Miss Getting the current user
         public async Task<IActionResult> Followers(string userId)
         {
+            var user = await _context.Users
+                .FirstOrDefaultAsync(m => m.Id == userId);
+            //var user = await _context.Users.FindAsync(userId);
+            if (user != null)
+            {
+                var result = _context.Follow.Include(u => u.UserFollowed != null ? u.UserFollowed : null).Include(f => f.UserAsker != null ? f.UserAsker : null).Where(f => f.UserAsker.Id == user.Id).Select(us => us.UserFollowed);
 
-                var user = _context.Users.FindAsync(userId).Result;
-                var result = _context.Follow.Include(u => u.UserFollowed).Include(f => f.UserAsker).Where(f => f.UserAsker == user).Select(us => us.UserFollowed);
                 //var result = from follows in _context.Follow where follows.UserAsker == user select follows.UserFollowed;
-                return Json(result.ToListAsync().Result);
+                List<ApplicationUser> applicationUsers = result.ToList();
+                return Json(applicationUsers);
+            }
+            Console.WriteLine("Is null");
+            return Json(null);
         }
 
         public async Task<IActionResult> Followies(string userId)
         {
-            var user = _context.Users.FindAsync(userId).Result;
-            var result = _context.Follow.Include(u => u.UserFollowed).Include(f => f.UserAsker).Where(f => f.UserFollowed == user).Select(us => us.UserAsker);
-            //var result = from follows in _context.Follow where follows.UserAsker == user select follows.UserFollowed;
-            return Json(result.ToListAsync().Result);
+            var user = await _context.Users
+                .FirstOrDefaultAsync(m => m.Id == userId);
+            //var user = await _context.Users.FindAsync(userId);
+            if (user != null)
+            {
+                var result = _context.Follow.Include(u => u.UserFollowed).Include(f => f.UserAsker).Where(f => f.UserFollowed.Id == user.Id).Select(us => us.UserAsker);
+                //var result = from follows in _context.Follow where follows.UserAsker == user select follows.UserFollowed;
+                return Json(result.ToListAsync().Result);
+            }
+            Console.WriteLine("Is null");
+            return Json(null);
         }
 
 
@@ -48,9 +62,10 @@ namespace Tidbeat.Controllers
                 if (User.Identity.IsAuthenticated)
                 {
                     var user = await _userManager.GetUserAsync(User);
-                    var possibleFollower = _context.Users.FindAsync(userId).Result;
+                    var possibleFollower = await _context.Users
+                            .FirstOrDefaultAsync(m => m.Id == userId);
                     //var result = from follows in _context.Follow where follows.UserAsker == user && follows.UserFollowed == possibleFollower select follows.UserFollowed;
-                    var result = _context.Follow.Include(u => u.UserFollowed).Include(f => f.UserAsker).Where(f => f.UserAsker == user).Where(u => u.UserFollowed == possibleFollower).Select(us => us.UserFollowed);
+                    var result = _context.Follow.Include(u => u.UserFollowed).Include(f => f.UserAsker).Where(f => f.UserAsker.Id == user.Id).Where(u => u.UserFollowed.Id == possibleFollower.Id).Select(us => us.UserFollowed);
                     if (result.Count() > 0 || possibleFollower == null)
                     {//Follow error
                         return Json("Already Exists");
@@ -77,9 +92,10 @@ namespace Tidbeat.Controllers
                 if (User.Identity.IsAuthenticated)
                 {
                     var user = await _userManager.GetUserAsync(User);
-                    var possibleFollower = _context.Users.FindAsync(userId).Result;
+                    var possibleFollower = await _context.Users
+                            .FirstOrDefaultAsync(m => m.Id == userId);
                     //var result = from follows in _context.Follow where follows.UserAsker == user && follows.UserFollowed == _context.Users.FindAsync(userId).Result select follows;
-                    var result = _context.Follow.Include(u => u.UserFollowed).Include(f => f.UserAsker).Where(f => f.UserAsker == user).Where(u => u.UserFollowed == possibleFollower);
+                    var result = _context.Follow.Include(u => u.UserFollowed).Include(f => f.UserAsker).Where(f => f.UserAsker.Id == user.Id).Where(u => u.UserFollowed.Id == possibleFollower.Id);
                     if (result.Count() > 0)
                     {
                         //Miss Exceptions
