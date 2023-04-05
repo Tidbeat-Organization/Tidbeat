@@ -74,6 +74,7 @@ namespace Tidbeat.Controllers
                     var finalResult = _context.Follow.AddAsync(newFollow);
                     if (finalResult.IsCompletedSuccessfully)
                     {
+                        _context.SaveChanges();
                         return Json("New Follower");
                     }
                     return Json("Error Ocurred");
@@ -103,6 +104,7 @@ namespace Tidbeat.Controllers
                         if (getFollow != null && getFollow.IsCompletedSuccessfully)
                         {
                             var deleteResult = _context.Follow.Remove(getFollow.Result);
+                            _context.SaveChanges();
                             return Json("Sucess");
                         }
                         return Json("Error");

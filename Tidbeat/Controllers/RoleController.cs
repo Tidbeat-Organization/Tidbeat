@@ -55,6 +55,7 @@ namespace Tidbeat.Controllers
             var result = await _userManager.UpdateAsync(dbUser);
             if (result.Succeeded)
             {
+                _context.SaveChanges();
                 await _emailSender.SendEmailAsync(dbUser.Email, "TIDBEAT - " + _localizer["account_updated"],
                      _localizer["email_body_edit"]); 
                 return Json(_localizer["user_update"]);
@@ -157,6 +158,7 @@ namespace Tidbeat.Controllers
             var result = await _userManager.UpdateAsync(dbUser);
             if (result.Succeeded)
             {
+                _context.SaveChanges();
                 await _emailSender.SendEmailAsync(dbUser.Email, "TIDBEAT - " + _localizer["account_ban"],
                     _localizer["email_body_ban"] + BanDateEnd);
                 return Json(_localizer["user_ban"]);
@@ -175,7 +177,9 @@ namespace Tidbeat.Controllers
                 var newPermission = _userManager.AddToRoleAsync(dbUser, Enums.RoleType.NormalUser.ToString());
                 if (newPermission.IsCompletedSuccessfully) 
                 {
-                    dbUser.Role = Enums.RoleType.NormalUser; 
+                    dbUser.Role = Enums.RoleType.NormalUser;
+
+                    _context.SaveChanges();
                 }
             }
 
@@ -194,6 +198,8 @@ namespace Tidbeat.Controllers
                 if (newPermission.IsCompletedSuccessfully)
                 {
                     dbUser.Role = newRole;
+
+                    _context.SaveChanges();
                 }
             }
 
