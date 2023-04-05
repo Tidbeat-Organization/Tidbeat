@@ -69,13 +69,14 @@
         <div class="d-flex flex-row">
             <a class="btn btn-outline-primary mb-3 " asp-action="Details" asp-route-id="@item.Item1.Id">
                 <div class="d-flex flex-row justify-content-center">
-                    <i class="bi bi-chat"></i>
+                    
                     @foreach (string participant in item.Item2)
                     {
-                        <div class="ms-3">
+                        <div class="ms-1">
                             @participant
                         </div>
                     }
+                    <i class="bi bi-chat ms-3"></i>
                 </div>
             </a>
             <form method="post" asp-action="ExitConversation" asp-route-conversationId="@item.Item1.Id" data-conversation-id="@item.Item1.Id">
