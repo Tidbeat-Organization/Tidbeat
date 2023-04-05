@@ -111,7 +111,7 @@
         </div>
         <div id="FollowersContent">
             <div class="text-primary">Seguidores</div>
-            <div>
+            <div class="scrollable-posts h-75">
                 @if (TempData.ContainsKey("Followers"))
                 {
                     if (Followers?.Count > 0)
@@ -144,7 +144,7 @@
         </div>
         <div id="FollowersReverseContent">
             <div class="text-primary">Seguidos</div>
-            <div>
+            <div class="scrollable-posts h-75">
                 @if (TempData.ContainsKey("Followies"))
                 {
                     if (Followies?.Count > 0)
