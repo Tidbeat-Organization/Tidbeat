@@ -60,7 +60,7 @@ namespace Tidbeat.Controllers
                 )
                 .ToListAsync();
 
-
+            
 
 
             return View(await _context.Posts.ToListAsync());
