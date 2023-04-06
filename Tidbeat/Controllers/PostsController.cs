@@ -47,9 +47,23 @@ namespace Tidbeat.Controllers
         /// </summary>
         /// <returns>All posts of the application.</returns>
         // GET: Posts
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index([FromQuery] string name, [FromQuery] string genre, [FromQuery] string order)
         {
-              return View(await _context.Posts.ToListAsync());
+            var results = await _context
+                .Posts
+                .Where(
+                    p => (name == "")
+                    ? true
+                    :    p.Song.Name.Contains(name)
+                      || p.Band.Name.Contains(name)
+                      || p.Title.Contains(name)
+                )
+                .ToListAsync();
+
+
+
+
+            return View(await _context.Posts.ToListAsync());
         }
 
         /// <summary>
