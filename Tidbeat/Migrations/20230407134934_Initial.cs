@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Tidbeat.Migrations
 {
-    public partial class Initi : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -36,6 +36,8 @@ namespace Tidbeat.Migrations
                     ImagePath = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     FavoriteGenre = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Country = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsBanned = table.Column<bool>(type: "bit", nullable: true),
+                    reason = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -190,6 +192,51 @@ namespace Tidbeat.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "BanUser",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Reason = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    EndsAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BanUser", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_BanUser_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Follow",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserAskerId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    UserFollowedId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Follow", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Follow_AspNetUsers_UserAskerId",
+                        column: x => x.UserAskerId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Follow_AspNetUsers_UserFollowedId",
+                        column: x => x.UserFollowedId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Profile",
                 columns: table => new
                 {
@@ -213,7 +260,8 @@ namespace Tidbeat.Migrations
                 {
                     SongId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    BandId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    BandId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Genre = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -434,6 +482,11 @@ namespace Tidbeat.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_BanUser_UserId",
+                table: "BanUser",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Comment_PostId",
                 table: "Comment",
                 column: "PostId");
@@ -452,6 +505,16 @@ namespace Tidbeat.Migrations
                 name: "IX_CommentRating_UserId",
                 table: "CommentRating",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Follow_UserAskerId",
+                table: "Follow",
+                column: "UserAskerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Follow_UserFollowedId",
+                table: "Follow",
+                column: "UserFollowedId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Messages_ConversationId",
@@ -527,7 +590,13 @@ namespace Tidbeat.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "BanUser");
+
+            migrationBuilder.DropTable(
                 name: "CommentRating");
+
+            migrationBuilder.DropTable(
+                name: "Follow");
 
             migrationBuilder.DropTable(
                 name: "Messages");
