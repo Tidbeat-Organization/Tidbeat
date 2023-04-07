@@ -33,8 +33,9 @@
 
 
 .system-message {
-    background: #fff;
-    color: #6610F2;
+    background: #d1d1d1;
+    color: black;
+    font-weight: 600;
 }
 
 .broadcast-message {
@@ -56,6 +57,7 @@
     word-wrap: break-word;
 }
 
+/* Current User message styling*/
 .message-content {
     display: inline-block;
     background-color: #6610F2;
@@ -65,11 +67,24 @@
     max-width: calc(60%);
     word-wrap: break-word;
     border-radius: 15px;
-    transition: box-shadow 0.3s ease-in-out; /* Add a transition effect for the hover */
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+/* Other User message styling*/
+.message-content-otheruser {
+    display: inline-block;
+    background-color: #fff;
+    color: #6610F2;
+    padding: 10px;
+    margin: 0 0.5em;
+    max-width: calc(60%);
+    word-wrap: break-word;
+    border-radius: 15px;
+    transition: box-shadow 0.3s ease-in-out;
 }
 
  .message-content:hover {
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Add a box-shadow when the message content is hovered */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); 
  }
 
 
