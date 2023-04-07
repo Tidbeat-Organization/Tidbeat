@@ -36,7 +36,7 @@
 
 <div class="container" style="height: calc(100% - 110px);">
     <div id="messages" style="background-color: whitesmoke; ">
-        <button type="button" id="getRecentMessagesButton" class="@(ViewBag.Messages.Count >= 20 ? "" : "d-none")">More messages...</button>
+        <button type="button" id="getRecentMessagesButton" class="@(ViewBag.Messages.Count >= 20 ? "" : "d-none")">Mais mensagens...</button>
         @foreach (var message in ViewBag.Messages)
         {
             @if (message.User.Id == ViewBag.CurrentUser.Id)
@@ -83,10 +83,10 @@
     <div style="width: 100%; border-left-style: ridge; border-right-style: ridge;">
         <textarea id="message"
                   style="width: 100%; padding: 5px 10px; border-style: hidden;"
-                  placeholder="Type message and press Enter to send..."></textarea>
+                  placeholder="Digite a mensagem e pressione Enter para enviar..."></textarea>
     </div>
     <div style="overflow: auto; border-style: ridge; border-top-style: hidden;">
-        <button class="btn-success pull-right" id="sendmessage">Send</button>
+        <button class="btn-success pull-right" id="sendmessage">Enviar</button>
     </div>
 </div>
 <div class="modal alert alert-danger fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -364,7 +364,7 @@
         function onConnected(connection) {
             console.log('connection started');
             connection.send('joinChat', '@Model.Id');
-            connection.send('broadcastMessage', '@Model.Id', '_SYSTEM_', username + ' JOINED');
+            connection.send('broadcastMessage', '@Model.Id', '_SYSTEM_', username + ' JUNTOU-SE À CONVERSA');
             connection.send('setSeenMessages', '@Model.Id', '@ViewBag.OtherUser.Id');
             setOtherUsersMessageToSeenInDatabase();
             document.getElementById('sendmessage').addEventListener('click', function (event) {
