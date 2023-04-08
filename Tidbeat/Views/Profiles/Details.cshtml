@@ -35,18 +35,27 @@
                 <img src="~/images/UnknownUser.jpg" height="200" class="border border-dark rounded" />
             }
             <div class="ms-2 text-start w-100">
-                <div>
-                    <img src="~/images/StarImage.png" class="ml-auto" height="20" />
+                <div class="d-flex">
+                    @if (user.Role.Equals(Tidbeat.Enums.RoleType.Administrator))
+                    {
+                        <div class="bi bi-diamond-fill fs-3 py-0 text-primary"></div>
+                    }else if(user.Role.Equals(Tidbeat.Enums.RoleType.Moderator))
+                    {
+                        <div class="bi bi-diamond-fill fs-3 py-0 text-danger"></div>
+                    }else
+                    {
+                        <div class="bi bi-music-note fs-3 py-0 text-black"></div>
+                    }
                     @if (tempval != null)
                     {
-                        <a formmethod="get" asp-area="Identity" asp-page="/Account/Manage/Index" class=" mr-auto text-primary hover-background-grey rounded text-decoration-none px-2 pt-1 pb-1 bi bi-pencil-fill"></a>
+                        <a formmethod="get" asp-area="Identity" asp-page="/Account/Manage/Index" class="align-self-center mr-auto text-primary hover-background-grey rounded text-decoration-none px-2 pt-1 pb-1 bi bi-pencil-fill"></a>
                     }
                 </div>
                 <div class="d-flex">
                     <h1 class="text-primary">@user.FullName</h1>
                     @if (!ViewBag.IsCurrentUser && User.Identity?.IsAuthenticated) {
-                        <a class="btn bi bi-chat-right-text fs-4 py-0" href="@Url.Action("StartTwoPersonConversation", "Conversations", new { currentUserId = ViewBag.CurrentUser.Id, otherUserId = Model.Id })"></a>
-                        <div id="FollowUpButton" class="btn bi @if (TempData.ContainsKey("Follow")){var text="bi-person-check";@text;}else{var text="bi-person-plus";@text;} fs-4 py-0" onclick="@if (TempData.ContainsKey("Follow")){var text = "unfollow()";@text;}else{var text = "follow()";@text;}"></div>
+                        <a class="align-self-center btn bi bi-chat-right-text fs-4 py-0" href="@Url.Action("StartTwoPersonConversation", "Conversations", new { currentUserId = ViewBag.CurrentUser.Id, otherUserId = Model.Id })"></a>
+                        <div id="FollowUpButton" class="align-self-center btn bi @if (TempData.ContainsKey("Follow")){var text="bi-person-check";@text;}else{var text="bi-person-plus";@text;} fs-4 py-0" onclick="@if (TempData.ContainsKey("Follow")){var text = "unfollow()";@text;}else{var text = "follow()";@text;}"></div>
                     }
                 </div>
                 <div> <span class="text-primary">@Localizer["gender"]:</span> @Localizer[user.Gender]</div>
