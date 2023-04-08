@@ -371,10 +371,10 @@
 		});
 	}
     
-    /*
+    
     eval("@if ((TempData.ContainsKey("Follow")))
     {
         var text = "let domChange = document.getElementById('FollowUpButton');domChange.onmouseover = function() {domChange.classList.replace('bi-person-check', 'bi-person-dash');};domChange.onmouseout = function() {domChange.classList.replace('bi-person-dash', 'bi-person-check');};";
         @text
-    }");*/
+    }".replaceAll('&#x27;', "'"));
 </script>
