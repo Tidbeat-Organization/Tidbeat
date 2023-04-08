@@ -52,7 +52,7 @@ namespace Tidbeat.Controllers
 
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
         public async Task<IActionResult> Follow([FromQuery] string userId)
         {
             if (ModelState.IsValid)
@@ -83,7 +83,7 @@ namespace Tidbeat.Controllers
 
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
         public async Task<IActionResult> UnFollow([FromQuery] string userId)
         {
             if (ModelState.IsValid)
