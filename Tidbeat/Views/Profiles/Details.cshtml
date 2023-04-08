@@ -67,7 +67,7 @@
                     <div class="col-md-6">
                         <div class="left-section">
                             <h5 style="color: #6610F2; font-weight: medium;">Dados do Utilizador</h5>
-                            <form id="edit-user-form">
+                            <form id="edit-user-form" style="margin-top: 30px;">
                                 <input type="hidden" id="user-id" name="userId" value="">
                                 <div class="mb-3">
                                     <label for="user-name" class="form-label">Nome</label>
@@ -75,7 +75,7 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="user-about" class="form-label">Sobre mim</label>
-                                    <textarea class="form-control" id="user-about" name="about"></textarea>
+                                    <textarea asp-for="AboutMe" id="postcreate" class="form-control rich-text-index-profile" style="height: 200px; border: 1.5px solid #6610F2; border-radius: 15px;" placeholder="@Localizer["about_me"]..."></textarea>
                                 </div>
                             </form>
                         </div>
@@ -83,6 +83,21 @@
                     <div class="col-md-6">
                         <div class="right-section">
                             <h5 style="color: red; font-weight: medium;">Ações de Moderação</h5>
+                            <form style="margin-top: 30px;">
+                                <div class="mb-3">
+                                    <label for="user-role" class="form-label">Dar Role</label>
+                                    <select class="form-select" id="user-role" name="role">
+                                        <option selected disabled>Escolha um papel</option>
+                                        <option value="admin">Administrador</option>
+                                        <option value="moderator">Moderador</option>
+                                        <option value="normal">Utilizador normal</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3 form-check">
+                                    <input type="checkbox" class="form-check-input" id="delete-photo" name="deletePhoto">
+                                    <label class="form-check-label" for="delete-photo">Apagar foto</label>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -95,6 +110,7 @@
         </div>
     </div>
 </div>
+
 
 
 <!--All music info goes here-->
