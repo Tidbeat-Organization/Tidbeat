@@ -47,5 +47,21 @@ namespace Tidbeat.Controllers {
         {
             return View();
         }
+        /// <summary>
+        /// Finds the Banning Info Warning page.
+        /// </summary>
+        /// <returns>Banning Info warning page.</returns>
+        public IActionResult BanInfoWarning()
+        {
+            return View();
+        }
+        /// <summary>
+        /// Finds the Banning Info Warning page.
+        /// </summary>
+        /// <returns>Banning Info warning page.</returns>
+        public IActionResult PrivilegesInfoWarning()
+        {
+            return View();
+        }
     }
 }
