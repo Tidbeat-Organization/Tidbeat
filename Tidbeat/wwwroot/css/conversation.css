@@ -1,15 +1,41 @@
 ﻿#messages {
+    /* default styles */
     width: 100%;
     border: 1px solid #ccc;
-    height: calc(100% - 120px);
+    height: calc(100vh - 340px);
+    max-height: 650px;
     float: none;
     margin: 0px auto;
     padding-left: 0px;
-    overflow-y: auto;
+    overflow-y: scroll;
 }
 
+/* adjust max-height for screens less than 768px wide */
+@media (max-width: 767px) {
+    #messages {
+        max-height: 600px;
+    }
+}
+
+/* adjust max-height for screens between 768px and 991px wide */
+@media (min-width: 768px) and (max-width: 991px) {
+    #messages {
+        max-height: 700px;
+    }
+}
+
+/* adjust max-height for screens greater than or equal to 992px wide */
+@media (min-width: 992px) {
+    #messages {
+        max-height: 850px;
+    }
+}
+
+
 .system-message {
-    background: #87CEFA;
+    background: #d1d1d1;
+    color: black;
+    font-weight: 600;
 }
 
 .broadcast-message {
@@ -31,14 +57,36 @@
     word-wrap: break-word;
 }
 
+/* Current User message styling*/
 .message-content {
     display: inline-block;
-    background-color: #b2e281;
+    background-color: #6610F2;
+    color: #fff;
     padding: 10px;
     margin: 0 0.5em;
     max-width: calc(60%);
     word-wrap: break-word;
+    border-radius: 15px;
+    transition: box-shadow 0.3s ease-in-out;
 }
+
+/* Other User message styling*/
+.message-content-otheruser {
+    display: inline-block;
+    background-color: #fff;
+    color: #6610F2;
+    padding: 10px;
+    margin: 0 0.5em;
+    max-width: calc(60%);
+    word-wrap: break-word;
+    border-radius: 15px;
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+.message-content:hover {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
 
 .message-content.pull-left:before {
     width: 0;
@@ -47,7 +95,7 @@
     float: left;
     border-top: 10px solid transparent;
     border-bottom: 10px solid transparent;
-    border-right: 10px solid #b2e281;
+    border-right: 10px solid #6610F2;
     margin: 15px 0;
 }
 
@@ -69,3 +117,49 @@
 .pull-right {
     float: right;
 }
+
+#sendmessage {
+    background-color: #6610F2;
+    border-color: black;
+    border-radius: 3px;
+}
+
+#getRecentMessagesButton {
+    background-color: #fff;
+    color: #6610F2;
+    border-radius: 3px;
+}
+
+/* User images and their respective names at the top - styling */
+
+.user-info {
+    margin-top: 0;
+    padding-top: 30px;
+    padding-bottom: 1px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+    .user-info div {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .user-info img {
+        border-radius: 10px;
+        border: 2px solid black;
+    }
+
+    .user-info p {
+        margin-top: 10px;
+        font-size: 16px;
+        font-weight: bold;
+    }
+
+    .user-info .arrow {
+        margin: 0 40px;
+        font-size: 24px;
+        font-weight: bold;
+    }

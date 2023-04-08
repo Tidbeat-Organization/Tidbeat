@@ -5,7 +5,7 @@
     ViewData["Title"] = "Details";
     var messageIndex = 0;
     var mostRecentCurrentUserMessageIndex = 0;
-    foreach(var message in ViewBag.Messages)
+    foreach (var message in ViewBag.Messages)
     {
         if (message.User.Id == ViewBag.CurrentUser.Id)
         {
@@ -18,49 +18,65 @@
 
 <h1>Details</h1>
 
-<h2 class="text-center" style="margin-top: 0; padding-top: 30px; padding-bottom: 30px;">@ViewBag.CurrentUser.FullName > @ViewBag.OtherUser.FullName</h2>
+<h2 class="user-info">
+    <div>
+        <a href="@Url.Action("Details", "Profiles", new { id = ViewBag.CurrentUser.Id })">
+            <img src="@((ViewBag.CurrentUser.ImagePath ?? "/images/UnknownUser.jpg"))" alt="@ViewBag.CurrentUser.FullName" title="Ver perfil do utilizador" width="100" height="100" />
+        </a>
+        <p>@ViewBag.CurrentUser.FullName</p>
+    </div>
+    <div class="arrow mb-4">&gt;</div>
+    <div>
+        <a href="@Url.Action("Details", "Profiles", new { id = ViewBag.OtherUser.Id })">
+            <img src="@((ViewBag.OtherUser.ImagePath ?? "/images/UnknownUser.jpg"))" alt="@ViewBag.OtherUser.FullName" title="Ver perfil do utilizador" width="100" height="100" />
+        </a>
+        <p>@ViewBag.OtherUser.FullName</p>
+    </div>
+</h2>
+
 <div class="container" style="height: calc(100% - 110px);">
     <div id="messages" style="background-color: whitesmoke; ">
-        <button type="button" id="getRecentMessagesButton" class="@(ViewBag.Messages.Count >= 20 ? "" : "d-none")">More messages...</button>
+        <button type="button" id="getRecentMessagesButton" class="@(ViewBag.Messages.Count >= 20 ? "" : "d-none")">Mais mensagens...</button>
         @foreach (var message in ViewBag.Messages)
         {
             @if (message.User.Id == ViewBag.CurrentUser.Id)
             {
-                @if (messageIndex == mostRecentCurrentUserMessageIndex) {
-                    <div data-message-id="@message.Id" class="message-entry">
-                        <div class="message-avatar pull-right">@message.User.FullName</div>
-                        <div class="delete-message-button bi bi-trash-fill text-danger pull-right btn hover-background-grey p-0 px-1"></div>
-                        <div class="edit-message-button bi bi-pencil-fill text-primary pull-right btn hover-background-grey p-0 px-1"></div>
-                        <div class="cancel-message-button bi bi-x text-danger btn hover-background-grey pull-right p-0 px-1 d-none"></div>
-                        <div class="save-message-button bi bi-check text-success btn hover-background-grey pull-right p-0 px-1 d-none"></div>
-                        <div class="d-flex flex-column pull-right">
-                            <input type="text" class="message-content-input message-content pull-right border-0 " style="max-width: 400px;" value="@message.Text" readonly />
-                            <div class="saved-content-temp d-none"></div>
-                            <div id="status-message" class="pull-right text-end">@((message.Status == (int)MessageStatus.Sent) ? "Enviado" : "Lido" )</div>
-                        </div>
-                    </div>
+                @if (messageIndex == mostRecentCurrentUserMessageIndex)
+                {
+                                <div data-message-id="@message.Id" class="message-entry">
+                                    <div class="message-avatar pull-right">@message.User.FullName</div>
+                                    <div class="delete-message-button bi bi-trash-fill text-danger pull-right btn hover-background-grey p-0 px-1"></div>
+                                    <div class="edit-message-button bi bi-pencil-fill text-primary pull-right btn hover-background-grey p-0 px-1"></div>
+                                    <div class="cancel-message-button bi bi-x text-danger btn hover-background-grey pull-right p-0 px-1 d-none"></div>
+                                    <div class="save-message-button bi bi-check text-success btn hover-background-grey pull-right p-0 px-1 d-none"></div>
+                                    <div class="d-flex flex-column pull-right">
+                                        <input type="text" class="message-content-input message-content pull-right border-0 " style="max-width: 400px;" value="@message.Text" readonly />
+                                        <div class="saved-content-temp d-none"></div>
+                                        <div id="status-message" class="pull-right text-end">@((message.Status == (int)MessageStatus.Sent) ? "Enviado" : "Lido")</div>
+                                    </div>
+                                </div>
                 }
                 else
                 {
-                    <div data-message-id="@message.Id" class="message-entry">
-                        <div class="message-avatar pull-right">@message.User.FullName</div>
-                        <div class="delete-message-button bi bi-trash-fill text-danger pull-right btn hover-background-grey p-0 px-1"></div>
-                        <div class="edit-message-button bi-pencil-fill text-primary pull-right btn hover-background-grey p-0 px-1"></div>
-                        <div class="cancel-message-button bi bi-x text-danger btn hover-background-grey pull-right p-0 px-1 d-none"></div>
-                        <div class="save-message-button bi bi-check text-success btn hover-background-grey pull-right p-0 px-1 d-none"></div>
-                        <div class="pull-right">
-                            <input type="text" class="message-content-input message-content pull-right border-0 " style="max-width: 400px;" value="@message.Text" readonly />
-                            <div class="saved-content-temp d-none"></div>
-                        </div>
-                    </div>
+                                <div data-message-id="@message.Id" class="message-entry">
+                                    <div class="message-avatar pull-right">@message.User.FullName</div>
+                                    <div class="delete-message-button bi bi-trash-fill text-danger pull-right btn hover-background-grey p-0 px-1"></div>
+                                    <div class="edit-message-button bi-pencil-fill text-primary pull-right btn hover-background-grey p-0 px-1"></div>
+                                    <div class="cancel-message-button bi bi-x text-danger btn hover-background-grey pull-right p-0 px-1 d-none"></div>
+                                    <div class="save-message-button bi bi-check text-success btn hover-background-grey pull-right p-0 px-1 d-none"></div>
+                                    <div class="pull-right">
+                                        <input type="text" class="message-content-input message-content pull-right border-0 " style="max-width: 400px;" value="@message.Text" readonly />
+                                        <div class="saved-content-temp d-none"></div>
+                                    </div>
+                                </div>
                 }
             }
             else
             {
-                <div data-message-id="@message.Id" class="message-entry">
-                    <div class="message-avatar pull-left">@message.User.FullName</div>
-                    <div class="message-content pull-left">@message.Text</div>
-                </div>
+                        <div data-message-id="@message.Id" class="message-entry">
+                            <div class="message-avatar pull-left">@message.User.FullName</div>
+                            <div class="message-content-otheruser pull-left">@message.Text</div>
+                        </div>
             }
             messageIndex++;
         }
@@ -68,10 +84,10 @@
     <div style="width: 100%; border-left-style: ridge; border-right-style: ridge;">
         <textarea id="message"
                   style="width: 100%; padding: 5px 10px; border-style: hidden;"
-                  placeholder="Type message and press Enter to send..."></textarea>
+                  placeholder="Digite a mensagem e pressione Enter para enviar..."></textarea>
     </div>
     <div style="overflow: auto; border-style: ridge; border-top-style: hidden;">
-        <button class="btn-success pull-right" id="sendmessage">Send</button>
+        <button class="btn-success pull-right" id="sendmessage">Enviar</button>
     </div>
 </div>
 <div class="modal alert alert-danger fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -171,7 +187,7 @@
             connection.on('deleteMessage', deleteMessageCallback);
             connection.onclose(onConnectionError);
         }
-        
+
         function setOtherUsersMessageToSeenInDatabase() {
             fetch('/Conversations/SetUsersMessagesToSeen', {
                 method: 'PUT',
@@ -345,11 +361,11 @@
                 deleteButton.style.display = 'inline-block';
             }
         }
-        
+
         function onConnected(connection) {
             console.log('connection started');
             connection.send('joinChat', '@Model.Id');
-            connection.send('broadcastMessage', '@Model.Id', '_SYSTEM_', username + ' JOINED');
+            connection.send('broadcastMessage', '@Model.Id', '_SYSTEM_', username + ' JUNTOU-SE À CONVERSA');
             connection.send('setSeenMessages', '@Model.Id', '@ViewBag.OtherUser.Id');
             setOtherUsersMessageToSeenInDatabase();
             document.getElementById('sendmessage').addEventListener('click', function (event) {
@@ -369,7 +385,7 @@
                     return false;
                 }
             });
-            
+
             addOnClickToDeleteButtons();
             addOnClickToEditButtons();
             addOnClickToSaveButtons();
@@ -488,9 +504,5 @@
                    </div>`;
         }
     });
-
-    
-    
-    
 
 </script>
