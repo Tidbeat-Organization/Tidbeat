@@ -24,30 +24,73 @@
     }
 }
 
+<style>
+    .btn-secondary {
+        background-color: white;
+        color: #6610F2;
+        border-color: #6610F2;
+    }
+
+        .btn-secondary:hover {
+            background-color: white;
+            color: #6610F2;
+            border-color: #6610F2;
+        }
+
+        .btn-secondary:active,
+        .btn-secondary:focus {
+            background-color: white;
+            color: #6610F2;
+            border-color: #6610F2;
+        }
+
+    .custom-close {
+        background-color: #6610F2;
+        color: white;
+    }
+
+    .modal-footer button {
+        margin-right: 15px;
+    }
+</style>
+
 <!-- Modal -->
 <div class="modal fade" id="edit-user-modal" tabindex="-1" aria-labelledby="edit-user-modal-label" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="edit-user-modal-label">Edit User</h5>
+                <h5 class="modal-title" id="edit-user-modal-label" style="color: #6610F2; font-weight: bold;">Definições de administrador</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="edit-user-form">
-                    <input type="hidden" id="user-id" name="userId" value="">
-                    <div class="mb-3">
-                        <label for="user-name" class="form-label">Nome</label>
-                        <input type="text" class="form-control" id="user-name" name="name">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="left-section">
+                            <h5 style="color: #6610F2; font-weight: medium;">Dados do Utilizador</h5>
+                            <form id="edit-user-form">
+                                <input type="hidden" id="user-id" name="userId" value="">
+                                <div class="mb-3">
+                                    <label for="user-name" class="form-label">Nome</label>
+                                    <input type="text" class="form-control" id="user-name" name="name">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="user-about" class="form-label">Sobre mim</label>
+                                    <textarea class="form-control" id="user-about" name="about"></textarea>
+                                </div>
+                            </form>
+                        </div>
                     </div>
-                    <div class="mb-3">
-                        <label for="user-about" class="form-label">Sobre mim</label>
-                        <textarea class="form-control" id="user-about" name="about"></textarea>
+                    <div class="col-md-6">
+                        <div class="right-section">
+                            <h5 style="color: red; font-weight: medium;">Ações de Moderação</h5>
+                        </div>
                     </div>
-                </form>
+                </div>
+
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-primary" id="edit-user-submit">Save changes</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Sair</button>
+                <button type="button" class="btn btn-primary" id="edit-user-submit">Aplicar</button>
             </div>
         </div>
     </div>
