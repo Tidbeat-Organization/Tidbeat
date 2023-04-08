@@ -243,9 +243,10 @@
     })*/
     const protocol = window.location.protocol; // "http:" or "https:"
     const hostname = window.location.hostname; // e.g. "example.com"
-    const homeUrl = `${protocol}//${hostname}`;
+    const homeUrl = window.location.origin;
     function follow() {
-        fetch(homeUrl + "/Follows/Follow?userId=@user.Id.Split(':')[0]", {
+        fetch(`${homeUrl}/Follows/Follow?userId=@user.Id.Split(':')[0]`, {
+
             method: 'POST'
         })
             .then(response => response.json())
@@ -261,7 +262,8 @@
                 domChange.onmouseout = function () {
                     domChange.classList.replace('bi-person-dash', 'bi-person-check');
                 };
-               // domChange.onclick = unfollow();
+               domChange.removeAttribute("onclick");
+               domChange.onclick = unfollow();
             })
             .catch(error => {
                 // Handle errors here
@@ -281,6 +283,7 @@
                 domChange.classList.add("bi-person-plus");
                 domChange.onmouseover = null;
                 domChange.onmouseout = null;
+                domChange.removeAttribute("onclick");
                 domChange.onclick = follow();
             })
             .catch(error => {
