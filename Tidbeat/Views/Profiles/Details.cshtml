@@ -31,20 +31,39 @@
         border-color: #6610F2;
     }
 
-        .btn-secondary:hover {
-            background-color: white;
-            color: #6610F2;
-            border-color: #6610F2;
-        }
+    .btn-secondary:hover {
+         background-color: white;
+         color: #6610F2;
+         border-color: #6610F2;
+    }
 
-        .btn-secondary:active,
-        .btn-secondary:focus {
-            background-color: white;
-            color: #6610F2;
-            border-color: #6610F2;
-        }
+    .btn-secondary:active,
+    .btn-secondary:focus {
+         background-color: white;
+         color: #6610F2;
+         border-color: #6610F2;
+    }
 
-    .custom-close {
+    .btn-danger {
+        background-color: #e62517;
+        color: white;
+        border-color: #e62517;
+    }
+
+    .btn-danger:hover {
+         background-color: #e62517;
+         color_: white;
+         border-color: #e62517;
+    }
+
+    .btn-danger:active,
+    .btn-danger:focus {
+         background-color: #e62517;
+         color: white;
+         border-color: #e62517;
+    }
+
+    .btn-close {
         background-color: #6610F2;
         color: white;
     }
@@ -52,6 +71,18 @@
     .modal-footer button {
         margin-right: 15px;
     }
+
+    .btn-edit-user {
+        display: inline-block;
+        padding: 0;
+        border: none;
+        background-color: transparent;
+        line-height: 1;
+  }
+
+  .btn-edit-user .bi-pencil-square {
+        margin: 0;
+  }
 </style>
 
 <!-- Modal -->
@@ -60,48 +91,72 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="edit-user-modal-label" style="color: #6610F2; font-weight: bold;">Definições de administrador</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="close custom-close rounded btn btn-primary" data-bs-dismiss="modal" aria-label="Close" id="close-modal">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <div class="col-md-6">
+
+                    <div class="col-md-6" style="border: none; border-right: 1px solid gainsboro;">
                         <div class="left-section">
-                            <h5 style="color: #6610F2; font-weight: medium;">Dados do Utilizador</h5>
+                            <h5 style="color: #6610F2; font-weight: normal; text-decoration: underline;">Dados do Utilizador</h5>
                             <form id="edit-user-form" style="margin-top: 30px;">
                                 <input type="hidden" id="user-id" name="userId" value="">
                                 <div class="mb-3">
-                                    <label for="user-name" class="form-label">Nome</label>
+                                    <label for="user-name" class="form-label" style="color: #6610F2;">Nome:</label>
                                     <input type="text" class="form-control" id="user-name" name="name">
                                 </div>
                                 <div class="mb-3">
-                                    <label for="user-about" class="form-label">Sobre mim</label>
+                                    <label for="user-about" class="form-label" style="color: #6610F2;">Sobre mim:</label>
                                     <textarea asp-for="AboutMe" id="postcreate" class="form-control rich-text-index-profile" style="height: 200px; border: 1.5px solid #6610F2; border-radius: 15px;" placeholder="@Localizer["about_me"]..."></textarea>
                                 </div>
                             </form>
                         </div>
                     </div>
+
                     <div class="col-md-6">
                         <div class="right-section">
-                            <h5 style="color: red; font-weight: medium;">Ações de Moderação</h5>
+                            <h5 style="color: red; font-weight: normal; text-decoration: underline;">Ações de Moderação</h5>
                             <form style="margin-top: 30px;">
                                 <div class="mb-3">
-                                    <label for="user-role" class="form-label">Dar Role</label>
+                                    <label for="user-role" class="form-label" style="color: red;">Dar Role:</label>
                                     <select class="form-select" id="user-role" name="role">
-                                        <option selected disabled>Escolha um papel</option>
+                                        <option disabled>Escolha um papel</option>
                                         <option value="admin">Administrador</option>
                                         <option value="moderator">Moderador</option>
-                                        <option value="normal">Utilizador normal</option>
+                                        <option value="normal" selected>Utilizador normal</option>
                                     </select>
                                 </div>
-                                <div class="mb-3 form-check">
+                                <div class="mb-3 form-check my-3 form-check-inline">
                                     <input type="checkbox" class="form-check-input" id="delete-photo" name="deletePhoto">
-                                    <label class="form-check-label" for="delete-photo">Apagar foto</label>
+                                    <label class="form-check-label" for="delete-photo" style="color: red;">Apagar foto</label>
+                                </div>
+                                <div class="mb-3 my-5">
+                                    <label for="ban-for" class="form-label" style="color: red;">Banir por:</label>
+                                    <div class="input-group">
+                                        <input type="number" class="form-control" id="ban-for" name="banFor" min="1" step="1">
+                                        <select class="form-select" id="ban-for-unit" name="banForUnit">
+                                            <option value="minutes">Minutos</option>
+                                            <option value="hours">Horas</option>
+                                            <option value="days">Dias</option>
+                                            <option value="weeks">Semanas</option>
+                                            <option value="months">Meses</option>
+                                            <option value="years">Anos</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="mb-3 my-5" id="reason-for-ban" style="display:none;">
+                                    <label for="reason-for-ban-input" class="form-label" style="color: red;">Motivo do banimento:</label>
+                                    <input type="text" class="form-control" id="reason-for-ban-input" name="reasonForBan">
+                                </div>
+                                <div class="mb-3 my-5">
+                                    <button type="button" class="btn btn-danger" id="delete-user">Apagar utilizador</button>
                                 </div>
                             </form>
                         </div>
                     </div>
                 </div>
-
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Sair</button>
@@ -110,7 +165,6 @@
         </div>
     </div>
 </div>
-
 
 
 <!--All music info goes here-->
@@ -139,8 +193,9 @@
                     {
                         <a formmethod="get" asp-area="Identity" asp-page="/Account/Manage/Index" class="align-self-center mr-auto text-primary hover-background-grey rounded text-decoration-none px-2 pt-1 pb-1 bi bi-pencil-fill"></a>
                     }
-                    <button type="button" class="btn-edit-user" data-user-id="123">
-                        <div class="bi bi-pencil-square fs-3 py-0 px-5 text-black"></div>
+                    <button type="button" class="btn-edit-user ms-auto" data-user-id="123">
+                        <div class="bi bi-pencil-square fs-3 py-0 text-black"></div>
+                        <span class="visually-hidden">Edit User</span>
                     </button>
                 </div>
                 <div class="d-flex">
@@ -318,6 +373,21 @@
         $('#user-about').val('');
         $('#edit-user-modal').modal('show');
     });
+
+    //Show reason for ban, after entering number
+    $(document).ready(function() {
+    // Listen to changes in the "Ban for" input
+    $('#ban-for').on('input', function() {
+    // Check if the "Ban for" input has a value greater than 0
+    if ($(this).val() > 0) {
+      // Show the "Reason for ban" field
+      $('#reason-for-ban').show();
+    } else {
+      // Hide the "Reason for ban" field
+      $('#reason-for-ban').hide();
+    }
+     });
+  });
 
     // Submit form data to server when submit button is clicked
     $('#edit-user-submit').on('click', function (e) {
