@@ -107,7 +107,7 @@
                                     <label for="user-name" class="form-label" style="color: #6610F2;">Nome:</label>
                                     <input type="text" class="form-control" id="user-name" name="name">
                                 </div>
-                                <div class="mb-3">
+                                <div class="mb-3 my-4">
                                     <label for="user-about" class="form-label" style="color: #6610F2;">Sobre mim:</label>
                                     <textarea asp-for="AboutMe" id="postcreate" class="form-control rich-text-index-profile" style="height: 200px; border: 1.5px solid #6610F2; border-radius: 15px;" placeholder="@Localizer["about_me"]..."></textarea>
                                 </div>
@@ -129,8 +129,8 @@
                                     </select>
                                 </div>
                                 <div class="mb-3 form-check my-3 form-check-inline">
-                                    <input type="checkbox" class="form-check-input" id="delete-photo" name="deletePhoto">
-                                    <label class="form-check-label" for="delete-photo" style="color: red;">Apagar foto</label>
+                                    <input type="checkbox" class="form-check-input" id="delete-photo" name="deletePhoto" style="float: right; margin-left: 10px;" onchange="updateDeletePhotoLabel()">
+                                    <label class="form-check-label" for="delete-photo" style="color: red; float: right;">Apagar foto?</label>
                                 </div>
                                 <div class="mb-3 my-5">
                                     <label for="ban-for" class="form-label" style="color: red;">Banir por:</label>
@@ -388,6 +388,17 @@
     }
      });
   });
+
+    //Checkbox, "Yes" or "No" info on the right side
+    function updateDeletePhotoLabel() {
+        var checkbox = document.getElementById("delete-photo");
+        var label = document.querySelector('label[for="delete-photo"]');
+        if (checkbox.checked) {
+            label.innerHTML = 'Apagar foto? Sim';
+        } else {
+            label.innerHTML = 'Apagar foto? Não';
+    }
+    }
 
     // Submit form data to server when submit button is clicked
     $('#edit-user-submit').on('click', function (e) {
