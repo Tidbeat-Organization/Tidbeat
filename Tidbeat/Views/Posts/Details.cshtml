@@ -150,7 +150,7 @@
                 {
                     <div>@Localizer["no_comments"]</div>
                 }
-                <button id="load-more-comments-button">Carregar mais comentários</button>
+                <button id="load-more-comments-button" class="btn btn-primary mt-2 mb-1">Carregar mais comentários</button>
             </div>
             
             <input id="selectedCommentId" hidden />
@@ -270,6 +270,7 @@
                 },
                 success: function (result) {
                     $("#load-more-comments-button").before(result);
+                    $("#load-more-comments-button").blur();
                     console.log(result);
                     // update the skip count for the next AJAX request
                     skipCount += commentCount;
