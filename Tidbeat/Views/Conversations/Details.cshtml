@@ -138,7 +138,7 @@
                 entry.innerHTML = rightMessage(encodedMsg, '@ViewBag.CurrentUser.FullName', @((int)MessageStatus.Sent))
             } else {
                 entry.innerHTML = `<div class="message-avatar pull-left">@(ViewBag.OtherUser.FullName)</div>` +
-                    `<div class="message-content pull-left">${encodedMsg}<div>`;
+                    `<div class="message-content-otheruser pull-left">${encodedMsg}<div>`;
             }
             return entry;
         }
