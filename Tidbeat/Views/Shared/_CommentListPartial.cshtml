@@ -24,7 +24,7 @@
     </div>
     <div class="border-left border-secondary ml-2 w-75 text-start ms-2">@comment.Content</div>
 
-    @if (ViewBag.currentUser != null && comment.User.Id == ViewBag.currentUser.Id) {
+        @if (ViewData["currentUser"] != null && comment.User.Id == ((ApplicationUser) ViewData["currentUser"]).Id) {
         <div class="align-content-end flex-column justify-content-end">
             <a formmethod="get" class="text-primary hover-background-grey rounded text-decoration-none px-2 pt-1 pb-1 bi bi-pencil-fill" asp-controller="Comments" asp-action="Edit" asp-route-id="@comment.CommentId"></a>
             <form class="mt-2" style="outline: none;" method="post">

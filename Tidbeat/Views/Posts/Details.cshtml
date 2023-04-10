@@ -150,7 +150,9 @@
                 {
                     <div>@Localizer["no_comments"]</div>
                 }
-                <button id="load-more-comments-button" class="btn btn-primary mt-2 mb-1">Carregar mais comentários</button>
+                @if (ViewBag.commentsPosts.Count < ViewBag.totalCommentCount) {
+                    <button id="load-more-comments-button" class="btn btn-primary mt-2 mb-1">Carregar mais comentários</button>
+                }
             </div>
             
             <input id="selectedCommentId" hidden />
@@ -274,6 +276,9 @@
                     console.log(result);
                     // update the skip count for the next AJAX request
                     skipCount += commentCount;
+                    if (skipCount >= @ViewBag.totalCommentCount) {
+                        $("#load-more-comments-button").hide();
+                    }
                 },
                 error: function (xhr, status, error) {
                     // handle the error
