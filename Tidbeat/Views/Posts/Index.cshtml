@@ -20,9 +20,24 @@
 
     <h3 style="color: #6610F2;">@Localizer["recommended_posts"]</h3>
     <hr />
-    <div class="w-100 border border-2">
+    <div class="w-100 border border-2 border-dark" style="border-radius: 6pt; border-width: 0.75pt !important;">
         <!-- Left-aligned text saying Filtros -->
-        
+        <h5 class="text-primary fw-semibold text-start mt-1 ms-2">Filtros</h5>
+        <div class="text-dark fw-semibold mt-3 mb-1 d-flex flex-row">
+            <div class="filter-height-rectifier mb-2 ms-2">Nome:</div>
+            <div class="filter-height-rectifier mb-2 ms-2">
+                <input id="filter-name-input" class="form-control filter-field" placeholder="Escreva termo de pesquisa..." style="border: 1.5px solid #6610F2; border-radius: 15px;" />
+            </div>
+            <div class="filter-height-rectifier mb-2 ms-5">Género:</div>
+            <div class="filter-height-rectifier mb-2 ms-2">
+                <input id="filter-name-input" class="form-control filter-field" placeholder="" style="border: 1.5px solid #6610F2; border-radius: 15px;" />
+            </div>
+            <div class="filter-height-rectifier mb-2 ms-5">Ordenar por:</div>
+            <div class="filter-height-rectifier mb-2 ms-2">
+                <input id="filter-name-input" class="form-control filter-field" placeholder="" style="border: 1.5px solid #6610F2; border-radius: 15px;" />
+            </div>
+            <div class="bi bi-search search-btn ms-5"></div>
+        </div>
     </div>
     @if (User.Identity.IsAuthenticated)
     {
@@ -60,3 +75,13 @@
         });
     });
 </script>
+<style>
+    .filter-height-rectifier {
+        height: 24pt;
+        line-height: 26pt;
+    }
+
+    .filter-field {
+        width: 20vw;
+    }
+</style>

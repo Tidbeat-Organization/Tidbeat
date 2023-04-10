@@ -10581,6 +10581,15 @@ textarea.form-control-lg {
   text-decoration: underline;
 }
 
+.search-btn {
+  width: 28pt;
+  height: 28pt;
+  line-height: 28pt;
+  color: white;
+  background-color: #6610F2;
+  border-radius: 6pt;
+}
+
 .post-label-right-aligned {
   color: #212529;
   font-weight: 600;

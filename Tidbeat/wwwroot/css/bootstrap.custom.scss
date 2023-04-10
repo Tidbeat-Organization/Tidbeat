@@ -139,6 +139,16 @@ nav-link {
     text-decoration: underline;
 }
 
+.search-btn {
+    $local-size: 28pt;
+    width: $local-size;
+    height: $local-size;
+    line-height: $local-size;
+    color: white;
+    background-color: $primary;
+    border-radius: 6pt;
+}
+
 .post-label-right-aligned {
     color: $dark;
     font-weight: $font-weight-semibold;

@@ -12,6 +12,7 @@ using Microsoft.DotNet.MSIdentity.Shared;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 using Newtonsoft.Json.Linq;
+using Tidbeat.AuxilliaryClasses;
 using Tidbeat.Data;
 using Tidbeat.Models;
 using Tidbeat.Services;
@@ -49,10 +50,12 @@ namespace Tidbeat.Controllers
         // GET: Posts
         public async Task<IActionResult> Index([FromQuery] string name, [FromQuery] string genre, [FromQuery] string order)
         {
+            SpotifyAux.TestTrackApiCall();
+            
             var results = await _context
                 .Posts
                 .Where(
-                    p => (name == "")
+                    p => (name == "" && genre == "" && order == "")
                     ? true
                     :    p.Song.Name.Contains(name)
                       || p.Band.Name.Contains(name)

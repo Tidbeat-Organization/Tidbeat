@@ -40,6 +40,25 @@ namespace Tidbeat.Services {
         }
 
         /// <summary>
+        /// Gets a song's genres from the Spotify API.
+        /// </summary>
+        /// <param name="id">The id of the song.</param>
+        /// <returns>The string array with the results.</returns>
+        public async Task<List<string>> GetGenresOfSong(string id)
+        {
+            try
+            {
+                var track = await _client.Tracks.Get(id);
+                var album = await _client.Albums.Get(track.Album.Id);
+                return album.Genres.ToList();
+            }
+            catch (APIException e)
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
         /// Gets a band from the Spotify API.
         /// </summary>
         /// <param name="id">The id of the band.</param>
