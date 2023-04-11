@@ -397,13 +397,13 @@ namespace TidbeatTests2._0.Services {
             var messageFromDb = _fixture.Messages.FirstOrDefault(m => m.Id == message.Id);
            
             var controller = new ConversationsController(_fixture, _mockUserManager.Object, chatBeatService);
-            var taskResult = controller.ExitConversation(conversation.Id);
+            var taskResult = await controller.ExitConversation(conversation.Id);
             _fixture.SaveChanges();
             Assert.Null(messageFromDb);
             var amount = _fixture.Conversations.Count();
             var firstElement = _fixture.Conversations.FirstOrDefault();
-            Assert.Equal(1, amount);
-            Assert.Equal(conversation,firstElement);
+            Assert.Equal(0, amount);
+            Assert.NotEqual(conversation,firstElement);
 
         }
     }
