@@ -170,13 +170,28 @@
     top: 57px;
 }
 
+
 @media (max-width: 767px) {
-    /* Adjust position for small screens */
     .arrow-icon {
-        left: 7px;
+        left: 2%;
         transform: none;
     }
 }
+
+@media (min-width: 768px) and (max-width: 991px) {
+    .arrow-icon {
+        left: 5%;
+        transform: none;
+    }
+}
+
+@media (min-width: 992px) {
+    .arrow-icon {
+        left: 15%;
+        transform: none;
+    }
+}
+
 
 .user-info div {
      display: flex;
@@ -199,4 +214,9 @@
      margin: 0 40px;
      font-size: 24px;
      font-weight: bold;
+}
+
+#message:focus {
+    border: 2px solid #6610F2;
+    outline: none;
 }
