@@ -76,9 +76,17 @@ namespace Tidbeat.Controllers
             {
                 ViewBag.urlSong = _spotifyService.GetSongAsync(post.Song.SongId).Result.PreviewUrl;
             }
+            ViewBag.fetchCommentsCount = 15;
             ViewBag.currentUser = await _userManager.GetUserAsync(User);
-            ViewBag.commentsPosts = _context.Comment.Include(user => user.User).Where(s => s.post.PostId == post.PostId).ToList();
+            ViewBag.commentsPosts = _context.Comment.Include(user => user.User).Where(s => s.post.PostId == post.PostId).Take((int) ViewBag.fetchCommentsCount).ToList();
+            ViewBag.totalCommentCount = _context.Comment.Include(user => user.User).Where(s => s.post.PostId == post.PostId).Count();
             return View(post);
+        }
+
+        public async Task<IActionResult> FetchMoreComments(int postId, int commentCount, int skipCount) {
+            var comments = await _context.Comment.Include(user => user.User).Where(s => s.post.PostId == postId).Skip(skipCount).Take(commentCount).ToListAsync();
+            ViewData["currentUser"] = await _userManager.GetUserAsync(User);
+            return PartialView("_CommentListPartial", comments);
         }
 
         
