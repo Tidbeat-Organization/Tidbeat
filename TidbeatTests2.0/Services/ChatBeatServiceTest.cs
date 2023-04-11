@@ -387,7 +387,7 @@ namespace TidbeatTests2._0.Services {
             _fixture.Users.Add(user2);
             _fixture.Conversations.Add(conversation);
             _fixture.Participants.Add(participant);
-            _fixture.Participants.Add(participant);
+            _fixture.Participants.Add(participant2);
             _fixture.Messages.Add(message);
             _fixture.SaveChanges();
 
@@ -397,7 +397,7 @@ namespace TidbeatTests2._0.Services {
             var messageFromDb = _fixture.Messages.FirstOrDefault(m => m.Id == message.Id);
            
             var controller = new ConversationsController(_fixture, _mockUserManager.Object, chatBeatService);
-            var taskResult = await controller.ExitConversation(conversation.Id);
+            var taskResult = controller.ExitConversation(conversation.Id);
             _fixture.SaveChanges();
             Assert.Null(messageFromDb);
             var amount = _fixture.Conversations.Count();
