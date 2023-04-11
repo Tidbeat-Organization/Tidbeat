@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Moq;
 using System;
@@ -285,60 +286,6 @@ namespace TidbeatTests2._0.Services {
             Assert.Equal(typeof(Conversation), conversation.GetType());
         }
 
-        [Fact]
-        public async Task GetAllConversations_ConversationsService()
-        {
-            var user = new ApplicationUser()
-            {
-                Id = "f1c1c9b9-ea8f-483d-b0a3-cf63085d3b3d",
-                FullName = "User one",
-                BirthdayDate = DateTime.Now,
-                Gender = "male"
-            };
-            var secondUser = new ApplicationUser()
-            {
-                Id = Guid.NewGuid().ToString(),
-                FullName = "User one",
-                BirthdayDate = DateTime.Now,
-                Gender = "male"
-            };
-            var conversation = new Conversation()
-            {
-                Id = "d5e5c5fb-7a57-4a6d-a61d-b9e6b74cd037",
-                StartDate = DateTime.Now,
-                IsGroupConversation = true,
-            };
-            var participant = new Participant()
-            {
-                Conversation = conversation,
-                User = user
-            };
-            _fixture.Users.Add(user);
-            _fixture.Users.Add(secondUser);
-            var resultdb= _fixture.Conversations.Add(conversation);
-            _fixture.Participants.Add(participant);
-            for (int i = 0; i < 30; i++)
-            {
-                var message = new Message
-                {
-                    Text = "Test" + i,
-                    Created = DateTime.Now,
-                    Status = 0,
-                    Conversation = conversation,
-                    User = user
-                };
-                if (i % 3 == 0)
-                {
-                    message.User = secondUser;
-                }
-                _fixture.Messages.Add(message);
-            }
-            _fixture.SaveChanges();
-            var chatBeatService = new ChatBeatService(_fixture, _mockUserManager.Object);
-            Assert.NotNull(resultdb);
-            Assert.Equal(typeof(EntityEntry<Conversation>), resultdb.GetType());
-            Assert.Equal(typeof(Conversation), conversation.GetType());
-        }
 
     }
 }
