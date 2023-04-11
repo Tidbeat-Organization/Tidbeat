@@ -16,9 +16,14 @@
     messageIndex = 0;
 }
 
-<h1>Details</h1>
+<h1>Detalhes</h1>
 
 <h2 class="user-info">
+    <div class="arrow-icon d-flex align-items-center mt-3">
+        <a href="@Url.Action("Index", "Conversations")" title="Voltar às conversas">
+            <i class="bi bi-arrow-left-circle fs-1 me-5 mb-5"></i>
+        </a>
+    </div>
     <div>
         <a href="@Url.Action("Details", "Profiles", new { id = ViewBag.CurrentUser.Id })">
             <img src="@((ViewBag.CurrentUser.ImagePath ?? "/images/UnknownUser.jpg"))" alt="@ViewBag.CurrentUser.FullName" title="Ver perfil do utilizador" width="100" height="100" />
@@ -87,9 +92,12 @@
                   placeholder="Digite a mensagem e pressione Enter para enviar..."></textarea>
     </div>
     <div style="overflow: auto; border-style: ridge; border-top-style: hidden;">
-        <button class="btn-success pull-right" id="sendmessage">Enviar</button>
+        <button class="btn-success pull-right" id="sendmessage">
+            <i class="bi bi-chat-left-text"></i>
+        </button>
     </div>
 </div>
+
 <div class="modal alert alert-danger fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
