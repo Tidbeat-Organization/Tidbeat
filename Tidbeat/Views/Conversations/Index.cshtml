@@ -20,7 +20,7 @@
 
         .btn-danger:hover {
             background-color: #e62517;
-            color_: white;
+            color: white;
             border-color: #e62517;
         }
 
@@ -58,6 +58,7 @@
     .modal-footer button {
         margin-right: 15px;
     }
+
 </style>
 
 
@@ -91,6 +92,15 @@
             </div>
         }
     }
+</div>
+
+<!-- Sidebar -->
+<button type="button" class="btn btn-secondary position-fixed end-0 mt-5" id="sidebarToggle" style="border-width: 2px">
+    <span class="bi bi-caret-left-fill" id="triangle"></span>
+</button>
+
+<div>
+    @{await Html.RenderPartialAsync("_Sidebar");}
 </div>
 
 <!-- Modal -->
@@ -137,4 +147,6 @@
             });
         });
     </script>
+
 }
+    

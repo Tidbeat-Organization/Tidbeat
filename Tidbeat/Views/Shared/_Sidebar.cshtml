@@ -1,0 +1,54 @@
+﻿<!--Sidebar styling -->
+<style>
+    .sidebar {
+        position: fixed;
+        top: 70px;
+        right: -300px; /* move the sidebar off-screen to the right */
+        width: 300px;
+        height: 100%;
+        background-color: #fff;
+        border: 1px solid black;
+        z-index: 1;
+        padding: 20px;
+        transition: right 0.3s ease-in-out;
+    }
+
+    .sidebar.active {
+        right: 0; /* move the sidebar onto the screen */
+    }
+
+    /* Close button*/
+    #close-btn {
+        position: absolute;
+        top: 0;
+        left: 0;
+        font-size: 2rem;
+        cursor: pointer;
+    }
+</style>
+
+<!-- Sidebar-->
+<div class="sidebar" id="sidebar">
+    <div id="close-btn">&times;</div>
+
+    <h3>Titulo</h3>
+    <p>Conteudo</p>
+</div>
+
+<!-- Sidebar Logic -->
+<script>
+    $(function () {
+        const sidebar = $('#sidebar');
+        const closeBtn = $('#close-btn');
+        const triangle = $('#triangle');
+
+        $('#sidebarToggle').on('click', function () {
+            sidebar.toggleClass('active');
+            triangle.toggleClass('rotate-180');
+        });
+
+        closeBtn.on('click', function () {
+            sidebar.removeClass('active');
+        });
+    });
+</script>
