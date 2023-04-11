@@ -86,16 +86,19 @@
             messageIndex++;
         }
     </div>
-    <div style="width: 100%; border-left-style: ridge; border-right-style: ridge;">
-        <textarea id="message"
-                  style="width: 100%; padding: 5px 10px; border-style: hidden;"
-                  placeholder="Digite a mensagem e pressione Enter para enviar..."></textarea>
+
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 5px;">
+            <textarea id="message"
+                  style="width: 100%; padding: 5px 10px; border: 2px solid black; border-radius: 8px; "
+                      placeholder="Digite a mensagem e pressione Enter para enviar...">
+        </textarea> 
+        <div style="margin-left: 10px;">
+            <button class="btn-success" id="sendmessage">
+                <i class="bi bi-chat-left-text"></i>
+            </button>
+        </div>
     </div>
-    <div style="overflow: auto; border-style: ridge; border-top-style: hidden;">
-        <button class="btn-success pull-right" id="sendmessage">
-            <i class="bi bi-chat-left-text"></i>
-        </button>
-    </div>
+
 </div>
 
 <div class="modal alert alert-danger fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -513,4 +516,12 @@
         }
     });
 
+</script>
+
+<script>
+    window.onload = function() {
+        var message = document.getElementById("message");
+        message.value = "";
+        message.placeholder = "Digite a mensagem e pressione Enter para enviar...";
+    };
 </script>

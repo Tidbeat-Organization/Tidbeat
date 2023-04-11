@@ -1,8 +1,9 @@
 ﻿#messages {
     /* default styles */
     width: 100%;
-    border: 1px solid #ccc;
-    height: calc(100vh - 360px);
+    border: 2px solid black;
+    border-radius: 5px;
+    height: calc(100vh - 310px);
     max-height: 650px;
     float: none;
     margin: 0px auto;
@@ -130,18 +131,19 @@
     float: right;
 }
 
+/* Buttons */
+
 #sendmessage {
     background-color: white;
     border-color: #6610F2;
     border-radius: 10px;
     font-size: 25px;
-    padding: 5px 15px 1px 15px; 
+    padding: 10px 15px 10px 15px; 
 }
 
 #sendmessage i {
     color: #6610F2;
 }
-
 
 #getRecentMessagesButton {
     background-color: #fff;
