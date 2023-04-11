@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Tidbeat.Controllers;
 using Tidbeat.Data;
 using Tidbeat.Models;
 using Tidbeat.Services;
@@ -349,6 +350,13 @@ namespace TidbeatTests2._0.Services {
                 BirthdayDate = DateTime.Now,
                 Gender = "male"
             };
+            var user2 = new ApplicationUser()
+            {
+                Id = "f1c1c9b9-ea8f-483d-b0a3-cf63085d3b3e",
+                FullName = "User two",
+                BirthdayDate = DateTime.Now,
+                Gender = "male"
+            };
             var conversation = new Conversation()
             {
                 Id = "d5e5c5fb-7a57-4a6d-a61d-b9e6b74cd037",
@@ -359,6 +367,11 @@ namespace TidbeatTests2._0.Services {
             {
                 Conversation = conversation,
                 User = user
+            };
+            var participant2 = new Participant()
+            {
+                Conversation = conversation,
+                User = user2
             };
             var message = new Message
             {
@@ -371,7 +384,9 @@ namespace TidbeatTests2._0.Services {
             };
 
             _fixture.Users.Add(user);
+            _fixture.Users.Add(user2);
             _fixture.Conversations.Add(conversation);
+            _fixture.Participants.Add(participant);
             _fixture.Participants.Add(participant);
             _fixture.Messages.Add(message);
             _fixture.SaveChanges();
@@ -380,7 +395,16 @@ namespace TidbeatTests2._0.Services {
             _ = chatBeatService.RemoveMessageFromDatabase(message.Id, user.Id);
 
             var messageFromDb = _fixture.Messages.FirstOrDefault(m => m.Id == message.Id);
+           
+            var controller = new ConversationsController(_fixture, _mockUserManager.Object, chatBeatService);
+            var taskResult = controller.ExitConversation(conversation.Id);
+            _fixture.SaveChanges();
             Assert.Null(messageFromDb);
+            var amount = _fixture.Conversations.Count();
+            var firstElement = _fixture.Conversations.FirstOrDefault();
+            Assert.Equal(1, amount);
+            Assert.Equal(conversation,firstElement);
+
         }
     }
 }
