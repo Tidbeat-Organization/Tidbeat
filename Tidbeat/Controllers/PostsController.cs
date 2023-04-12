@@ -86,7 +86,7 @@ namespace Tidbeat.Controllers
             {
                 Console.WriteLine($"Initial Result: Name({result.Title}), Date({result.CreationDate})");
             }
-
+            results = results.Where(p => (p.Band?.Gener?.Any(q => q.Contains(genre)) ?? false) || (p.Song?.Gener?.Any(q => q.Contains(genre)) ?? false)).ToList();
             switch (order)
             {
                 case "a-z":
