@@ -212,6 +212,7 @@ namespace Tidbeat.Controllers
                                 newBand.BandId = Request.Form["BandId"];
                                 newBand.Name = SpotifyBand.Name;
                                 newBand.Image = SpotifyBand.Images[0].Url;
+                                newBand.Gener = SpotifyBand.Genres;
                                 band = newBand;
                                 post.Band = band;
                                 _context.Bands.Add(band);
@@ -227,6 +228,7 @@ namespace Tidbeat.Controllers
                                 Song newSong = new Song();
                                 var SpotifySong = await _spotifyService.GetSongAsync(Request.Form["SongId"]);
                                 var SongBand = await _spotifyService.GetBandAsync(SpotifySong.Artists[0].Id);
+                                var songGener = await _spotifyService.GetGenresOfSong(songId);
                                 var checkBand = _context.Bands.Find(SongBand.Id);
                                 if (checkBand == null)
                                 {
@@ -242,6 +244,7 @@ namespace Tidbeat.Controllers
                                 }
                                 newSong.SongId = Request.Form["SongId"];
                                 newSong.Name = SpotifySong.Name;
+                                newSong.Gener = songGener;
                                 song = newSong;
                                 post.Song = song;
                                 post.Band = song.Band;

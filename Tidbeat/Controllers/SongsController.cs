@@ -49,17 +49,19 @@ namespace Tidbeat.Controllers
                 bandIfAvailable = new Band() {
                     BandId = spotifyBand.Id,
                     Image = spotifyBand.Images[0].Url,
-                    Name = spotifyBand.Name
+                    Name = spotifyBand.Name,
+                    Gener = spotifyBand.Genres,
                 };
                 _context.Bands.Add(bandIfAvailable);
                 _context.SaveChanges();
             }
-
+            var songGener = await _spotifyService.GetGenresOfSong(songId);
             var song = new Song()
             {
                 SongId = songId,
                 Band = bandIfAvailable,
-                Name = spotifySong.Name
+                Name = spotifySong.Name,
+                Gener = songGener
             };
 
             _context.Songs.Add(song);
