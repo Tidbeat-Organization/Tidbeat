@@ -47,11 +47,12 @@ namespace Tidbeat.Controllers
 
         private static Expression<Func<Post, bool>> PostPasses(string name, string genre, string order)
         {
-            if (string.IsNullOrEmpty(name) && string.IsNullOrEmpty(genre) && string.IsNullOrEmpty(order))
-            {
-                return p => true;
-            }
-            return p => p.Song.Name.Contains(name) || p.Band.Name.Contains(name) || p.Title.Contains(name);
+            name = (name == null) ? "" : name;
+            return p => (p.Song.Name.Contains(name))
+                     || (p.Band.Name.Contains(name))
+                     || (p.Title.Contains(name))
+                     || (string.IsNullOrEmpty(genre))
+                     || (string.IsNullOrEmpty(order));
         }
 
 
@@ -62,6 +63,7 @@ namespace Tidbeat.Controllers
         // GET: Posts
         public async Task<IActionResult> Index([FromQuery] string name, [FromQuery] string genre, [FromQuery] string order)
         {
+            order = (order == "") ? "newest" : order;
             TempData["genre"] = genre;
             var songs = await _context.Songs.ToListAsync();
             foreach (var song in songs)
@@ -79,6 +81,12 @@ namespace Tidbeat.Controllers
                 .Where(PostPasses(name, genre, order))
                 .ToListAsync();
 
+            Console.WriteLine("[ Before Ordering ]");
+            foreach (var result in results)
+            {
+                Console.WriteLine($"Initial Result: Name({result.Title}), Date({result.CreationDate})");
+            }
+
             switch (order)
             {
                 case "a-z":
@@ -95,6 +103,11 @@ namespace Tidbeat.Controllers
                     break;
             }
 
+            Console.WriteLine("[ After Ordering ]");
+            foreach (var result in results)
+            {
+                Console.WriteLine($"Posterior Result: Name({result.Title}), Date({result.CreationDate})");
+            }
 
             return View(results);
         }
