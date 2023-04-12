@@ -16,9 +16,14 @@
     messageIndex = 0;
 }
 
-<h1>Details</h1>
+<h1>Detalhes</h1>
 
 <h2 class="user-info">
+    <div class="arrow-icon d-flex align-items-center mt-3">
+        <a href="@Url.Action("Index", "Conversations")" title="Voltar às conversas">
+            <i class="bi bi-arrow-left-circle fs-1 me-5 mb-5"></i>
+        </a>
+    </div>
     <div>
         <a href="@Url.Action("Details", "Profiles", new { id = ViewBag.CurrentUser.Id })">
             <img src="@((ViewBag.CurrentUser.ImagePath ?? "/images/UnknownUser.jpg"))" alt="@ViewBag.CurrentUser.FullName" title="Ver perfil do utilizador" width="100" height="100" />
@@ -43,53 +48,58 @@
             {
                 @if (messageIndex == mostRecentCurrentUserMessageIndex)
                 {
-                                <div data-message-id="@message.Id" class="message-entry">
-                                    <div class="message-avatar pull-right">@message.User.FullName</div>
-                                    <div class="delete-message-button bi bi-trash-fill text-danger pull-right btn hover-background-grey p-0 px-1"></div>
-                                    <div class="edit-message-button bi bi-pencil-fill text-primary pull-right btn hover-background-grey p-0 px-1"></div>
-                                    <div class="cancel-message-button bi bi-x text-danger btn hover-background-grey pull-right p-0 px-1 d-none"></div>
-                                    <div class="save-message-button bi bi-check text-success btn hover-background-grey pull-right p-0 px-1 d-none"></div>
-                                    <div class="d-flex flex-column pull-right">
-                                        <input type="text" class="message-content-input message-content pull-right border-0 " style="max-width: 400px;" value="@message.Text" readonly />
-                                        <div class="saved-content-temp d-none"></div>
-                                        <div id="status-message" class="pull-right text-end">@((message.Status == (int)MessageStatus.Sent) ? "Enviado" : "Lido")</div>
-                                    </div>
-                                </div>
+                    <div data-message-id="@message.Id" class="message-entry">
+                        <div class="message-avatar pull-right">@message.User.FullName</div>
+                        <div class="delete-message-button bi bi-trash-fill text-danger pull-right btn hover-background-grey p-0 px-1"></div>
+                        <div class="edit-message-button bi bi-pencil-fill text-primary pull-right btn hover-background-grey p-0 px-1"></div>
+                        <div class="cancel-message-button bi bi-x text-danger btn hover-background-grey pull-right p-0 px-1 d-none"></div>
+                        <div class="save-message-button bi bi-check text-success btn hover-background-grey pull-right p-0 px-1 d-none"></div>
+                        <div class="d-flex flex-column pull-right">
+                            <input type="text" class="message-content-input message-content pull-right border-0 " style="max-width: 400px;" value="@message.Text" readonly />
+                            <div class="saved-content-temp d-none"></div>
+                            <div id="status-message" class="pull-right text-end">@((message.Status == (int)MessageStatus.Sent) ? "Enviado" : "Lido")</div>
+                        </div>
+                    </div>
                 }
                 else
                 {
-                                <div data-message-id="@message.Id" class="message-entry">
-                                    <div class="message-avatar pull-right">@message.User.FullName</div>
-                                    <div class="delete-message-button bi bi-trash-fill text-danger pull-right btn hover-background-grey p-0 px-1"></div>
-                                    <div class="edit-message-button bi-pencil-fill text-primary pull-right btn hover-background-grey p-0 px-1"></div>
-                                    <div class="cancel-message-button bi bi-x text-danger btn hover-background-grey pull-right p-0 px-1 d-none"></div>
-                                    <div class="save-message-button bi bi-check text-success btn hover-background-grey pull-right p-0 px-1 d-none"></div>
-                                    <div class="pull-right">
-                                        <input type="text" class="message-content-input message-content pull-right border-0 " style="max-width: 400px;" value="@message.Text" readonly />
-                                        <div class="saved-content-temp d-none"></div>
-                                    </div>
-                                </div>
+                    <div data-message-id="@message.Id" class="message-entry">
+                        <div class="message-avatar pull-right">@message.User.FullName</div>
+                        <div class="delete-message-button bi bi-trash-fill text-danger pull-right btn hover-background-grey p-0 px-1"></div>
+                        <div class="edit-message-button bi-pencil-fill text-primary pull-right btn hover-background-grey p-0 px-1"></div>
+                        <div class="cancel-message-button bi bi-x text-danger btn hover-background-grey pull-right p-0 px-1 d-none"></div>
+                        <div class="save-message-button bi bi-check text-success btn hover-background-grey pull-right p-0 px-1 d-none"></div>
+                        <div class="pull-right">
+                            <input type="text" class="message-content-input message-content pull-right border-0 " style="max-width: 400px;" value="@message.Text" readonly />
+                            <div class="saved-content-temp d-none"></div>
+                        </div>
+                    </div>
                 }
             }
             else
             {
-                        <div data-message-id="@message.Id" class="message-entry">
-                            <div class="message-avatar pull-left">@message.User.FullName</div>
-                            <div class="message-content-otheruser pull-left">@message.Text</div>
-                        </div>
+                <div data-message-id="@message.Id" class="message-entry">
+                    <div class="message-avatar pull-left">@message.User.FullName</div>
+                    <div class="message-content-otheruser pull-left">@message.Text</div>
+                </div>
             }
             messageIndex++;
         }
     </div>
-    <div style="width: 100%; border-left-style: ridge; border-right-style: ridge;">
+
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 5px;">
         <textarea id="message"
-                  style="width: 100%; padding: 5px 10px; border-style: hidden;"
+                  style="width: 100%; padding: 5px 10px; border: 2px solid black; border-radius: 8px; "
                   placeholder="Digite a mensagem e pressione Enter para enviar..."></textarea>
+        <div style="margin-left: 10px;">
+            <button class="btn-success" id="sendmessage" title="Enviar mensagem">
+                <i class="bi bi-chat-left-text"></i>
+            </button>
+        </div>
     </div>
-    <div style="overflow: auto; border-style: ridge; border-top-style: hidden;">
-        <button class="btn-success pull-right" id="sendmessage">Enviar</button>
-    </div>
+
 </div>
+
 <div class="modal alert alert-danger fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -100,6 +110,7 @@
         </div>
     </div>
 </div>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.4/signalr.min.js" integrity="sha512-ulHhwQdGlX96gNSRsakG06STFdaQBUTbCX4KqLcYI428blEsttMkg2C3n2KtiYNDwnETBHXDg9ZAtvkfMHTYOQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script type="text/javascript">
     document.addEventListener('DOMContentLoaded', function () {
@@ -213,22 +224,22 @@
                     conversationId: '@Model.Id'
                 })
             })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => {
-                console.log(data); // success response from server
-            })
-            .catch(error => {
-                console.error('There was a problem with the fetch operation:', error);
-            });
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log(data); // success response from server
+                })
+                .catch(error => {
+                    console.error('There was a problem with the fetch operation:', error);
+                });
         }
 
         function editMessageInDb(messageId, text) {
-             fetch('/Conversations/EditMessage', {
+            fetch('/Conversations/EditMessage', {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
@@ -239,21 +250,21 @@
                     userId: '@ViewBag.CurrentUser.Id'
                 })
             })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-            })
-            .then(data => {
-                //console.log(data); // success response from server
-            })
-            .catch(error => {
-                console.error('There was a problem with the fetch operation:', error);
-            });
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                })
+                .then(data => {
+                    //console.log(data); // success response from server
+                })
+                .catch(error => {
+                    console.error('There was a problem with the fetch operation:', error);
+                });
         }
 
         function deleteMessageFromDb(messageId) {
-             fetch('/Conversations/DeleteMessage', {
+            fetch('/Conversations/DeleteMessage', {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json'
@@ -263,17 +274,17 @@
                     userId: '@ViewBag.CurrentUser.Id'
                 })
             })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-            })
-            .then(data => {
-                //console.log(data); // success response from server
-            })
-            .catch(error => {
-                console.error('There was a problem with the fetch operation:', error);
-            });
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                })
+                .then(data => {
+                    //console.log(data); // success response from server
+                })
+                .catch(error => {
+                    console.error('There was a problem with the fetch operation:', error);
+                });
         }
 
         function addOnClickToDeleteButtons() {
@@ -303,7 +314,7 @@
         }
 
         function addOnClickToSaveButtons() {
-             var allSaveButtons = document.getElementsByClassName('save-message-button');
+            var allSaveButtons = document.getElementsByClassName('save-message-button');
             for (var i = 0; i < allSaveButtons.length; i++) {
                 allSaveButtons[i].addEventListener('click', function (event) {
                     var messageId = parseInt(event.target.parentElement.getAttribute('data-message-id'), 10);
@@ -468,7 +479,7 @@
                     }
                 } else {
                     messageElement.innerHTML = `<div class="message-avatar pull-left">${message.user.fullName}</div>` +
-                        `<div class="message-content pull-left">${message.text}<div>`;
+                        `<div class="message-content-otheruser pull-left">${message.text}<div>`;
                 }
                 messageIndex++;
                 messagesContainer.insertBefore(messageElement, messagesContainer.children[1]);
@@ -486,23 +497,41 @@
             if (status === undefined) {
                 return `<div class="message-avatar pull-right">${name}</div>` +
                     `<div class="delete-message-button bi bi-trash-fill text-danger pull-right btn hover-background-grey p-0 px-1"></div>
-                     <div class="edit-message-button bi bi-pencil-fill text-primary pull-right btn hover-background-grey p-0 px-1"></div>
-                     <div class="cancel-message-button bi bi-x text-danger btn hover-background-grey pull-right p-0 px-1 d-none"></div>
-                     <div class="save-message-button bi bi-check text-success btn hover-background-grey pull-right p-0 px-1 d-none"></div>` +
+                         <div class="edit-message-button bi bi-pencil-fill text-primary pull-right btn hover-background-grey p-0 px-1"></div>
+                         <div class="cancel-message-button bi bi-x text-danger btn hover-background-grey pull-right p-0 px-1 d-none"></div>
+                         <div class="save-message-button bi bi-check text-success btn hover-background-grey pull-right p-0 px-1 d-none"></div>` +
                     `<div class="pull-right">
-                        <input type="text" class="message-content-input message-content pull-right border-0 " style="max-width: 400px;" value="${message}" readonly />
-                        <div class="saved-content-temp d-none"></div>
-                    </div>`;
+                            <input type="text" class="message-content-input message-content pull-right border-0 " style="max-width: 400px;" value="${message}" readonly />
+                            <div class="saved-content-temp d-none"></div>
+                        </div>`;
             }
             return `<div class="message-avatar pull-right">${name}</div>` +
-                   `<div class="delete-message-button bi bi-trash-fill text-danger pull-right btn hover-background-grey p-0 px-1"></div>
-                    <div class="edit-message-button bi bi-pencil-fill text-primary pull-right btn hover-background-grey p-0 px-1"></div>` +
-                   `<div class="d-flex flex-column pull-right">
-                       <input type="text" class="message-content-input message-content pull-right border-0 " style="max-width: 400px;" value="${message}" readonly />
-                       <div class="saved-content-temp d-none"></div>
-                       <div id="status-message" class="pull-right text-end">${status === @((int)MessageStatus.Sent) ? "Enviado" : "Lido"}</div>
-                   </div>`;
+                `<div class="delete-message-button bi bi-trash-fill text-danger pull-right btn hover-background-grey p-0 px-1"></div>
+                        <div class="edit-message-button bi bi-pencil-fill text-primary pull-right btn hover-background-grey p-0 px-1"></div>` +
+                `<div class="d-flex flex-column pull-right">
+                           <input type="text" class="message-content-input message-content pull-right border-0 " style="max-width: 400px;" value="${message}" readonly />
+                           <div class="saved-content-temp d-none"></div>
+                           <div id="status-message" class="pull-right text-end">${status === @((int)MessageStatus.Sent) ? "Enviado" : "Lido"}</div>
+                       </div>`;
         }
     });
 
+</script>
+
+<script>
+    window.onload = function () {
+        var message = document.getElementById("message");
+        message.value = "";
+        message.placeholder = "Digite a mensagem e pressione Enter para enviar...";
+    };
+</script>
+
+<script>
+    const message = document.getElementById('message');
+    message.addEventListener('focus', () => {
+        message.style.border = '2px solid #6610F2';
+    });
+    message.addEventListener('blur', () => {
+        message.style.border = '2px solid black';
+    });
 </script>
