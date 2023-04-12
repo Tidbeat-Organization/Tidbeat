@@ -3,6 +3,13 @@
 }
 @model IEnumerable<ApplicationUser>
 
+<style>
+    .profile-pic {
+        border-radius: 10px;
+        border: 2px solid black;
+    }
+</style>
+
 <h1 class="text-start ms-3" style="margin-top: 72px; color: #6610F2;">Filtros</h1>
 
 <form method="get" action="@Url.Action("Index", "Users")">
@@ -44,11 +51,12 @@
                 <div class="col mb-4">
                     <div class="card mt-3">
                         <div class="text-center">
-                            <img src="@(!string.IsNullOrEmpty(user.ImagePath) ? user.ImagePath : "/images/UnknownUser.jpg")" alt="Profile Picture" width="75" height="75">
+                            <img src="@(!string.IsNullOrEmpty(user.ImagePath) ? user.ImagePath : "/images/UnknownUser.jpg")" alt="Profile Picture" width="75" height="75" class="profile-pic">
                         </div>
                         <div class="card-body">
                             <h5 class="card-title">@user.FullName</h5>
-                            <p><strong>Género favorito:</strong> @(string.IsNullOrEmpty(user.FavoriteGenre) ? "Não especificado" : user.FavoriteGenre)</p>
+                            <div class="border border-1 border-light-grey my-2"></div>
+                            <p class="paragraph mt-3"><strong>Género favorito:</strong> @(string.IsNullOrEmpty(user.FavoriteGenre) ? "Não especificado" : user.FavoriteGenre)</p>
                             <p><strong>País:</strong> @(string.IsNullOrEmpty(user.Country) ? "Não especificado" : user.Country)</p>
                             <a href="@Url.Action("Details", "Profiles", new { id = user.Id })" class="btn btn-primary">Ver perfil</a>
                         </div>
