@@ -228,7 +228,7 @@ namespace Tidbeat.Controllers
                                 Song newSong = new Song();
                                 var SpotifySong = await _spotifyService.GetSongAsync(Request.Form["SongId"]);
                                 var SongBand = await _spotifyService.GetBandAsync(SpotifySong.Artists[0].Id);
-                                var songGener = await _spotifyService.GetGenresOfSong(songId);
+                                var songGener = await _spotifyService.GetGenresOfSong(Request.Form["SongId"]);
                                 var checkBand = _context.Bands.Find(SongBand.Id);
                                 if (checkBand == null)
                                 {
