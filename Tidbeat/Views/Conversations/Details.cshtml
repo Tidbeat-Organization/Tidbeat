@@ -478,7 +478,7 @@
                     }
                 } else {
                     messageElement.innerHTML = `<div class="message-avatar pull-left">${message.user.fullName}</div>` +
-                        `<div class="message-content pull-left">${message.text}<div>`;
+                        `<div class="message-content-otheruser pull-left">${message.text}<div>`;
                 }
                 messageIndex++;
                 messagesContainer.insertBefore(messageElement, messagesContainer.children[1]);
