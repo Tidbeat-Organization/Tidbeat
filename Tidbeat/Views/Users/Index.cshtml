@@ -49,8 +49,8 @@
             @foreach (var user in Model)
             {
                 <div class="col mb-4">
-                    <div class="card mt-3">
-                        <div class="text-center">
+                    <div class="card">
+                        <div class="text-center my-2">
                             <img src="@(!string.IsNullOrEmpty(user.ImagePath) ? user.ImagePath : "/images/UnknownUser.jpg")" alt="Profile Picture" width="75" height="75" class="profile-pic">
                         </div>
                         <div class="card-body">
