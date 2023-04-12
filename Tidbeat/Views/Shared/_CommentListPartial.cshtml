@@ -19,7 +19,21 @@
                 </a>
             }
         </div>
-        <div class="text-primary">Role</div>
+            @switch (comment.User.Role)
+            {
+                case RoleType.Administrator:
+                    <div class="text-primary">@Localizer["Admin"]</div>
+                    break;
+                case RoleType.Moderator:
+                    <div class="text-primary">@Localizer["Moderator"]</div>
+                    break;
+                case RoleType.NormalUser:
+                    <div class="text-primary">@Localizer["NormalUser"]</div>
+                    break;
+                default:
+                    <div class="text-primary">@Localizer["Unknown"]</div>
+                    break;
+            }
         <div>@Html.Partial("_RatingPartial", Tuple.Create((int) comment.CommentId , RatingType.Comment))</div>
     </div>
     <div class="border-left border-secondary ml-2 w-75 text-start ms-2">@comment.Content</div>

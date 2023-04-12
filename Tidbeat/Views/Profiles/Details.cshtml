@@ -38,13 +38,15 @@
                 <div class="d-flex">
                     @if (user.Role.Equals(Tidbeat.Enums.RoleType.Administrator))
                     {
-                        <div class="bi bi-diamond-fill fs-3 py-0 text-primary"></div>
-                    }else if(user.Role.Equals(Tidbeat.Enums.RoleType.Moderator))
+                        <div class="bi bi-diamond-fill fs-3 py-0 text-primary" data-toggle="tooltip" data-placement="top" title="Administrador"></div>
+                    }
+                    else if (user.Role.Equals(Tidbeat.Enums.RoleType.Moderator))
                     {
-                        <div class="bi bi-diamond-fill fs-3 py-0 text-danger"></div>
-                    }else
+                        <div class="bi bi-diamond-fill fs-3 py-0 text-danger" data-toggle="tooltip" data-placement="top" title="Moderador"></div>
+                    }
+                    else
                     {
-                        <div class="bi bi-music-note fs-3 py-0 text-black"></div>
+                        <div class="bi bi-music-note fs-3 py-0 text-black" data-toggle="tooltip" data-placement="top" title="Utilizador Normal"></div>
                     }
                     @if (tempval != null)
                     {
@@ -386,4 +388,10 @@
         var text = "let domChange = document.getElementById('FollowUpButton');domChange.onmouseover = function() {domChange.classList.replace('bi-person-check', 'bi-person-dash');};domChange.onmouseout = function() {domChange.classList.replace('bi-person-dash', 'bi-person-check');};";
         @text
     }".replaceAll('&#x27;', "'"));
+</script>
+
+<script>
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
 </script>
