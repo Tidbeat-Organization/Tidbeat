@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Ganss.Xss;
 using Microsoft.AspNetCore.Authorization;
@@ -44,41 +45,15 @@ namespace Tidbeat.Controllers
             _localizer = localizer;
         }
 
-        private static bool PostPasses(Post p, string name, string genre, string order)
+        private static Expression<Func<Post, bool>> PostPasses(string name, string genre, string order)
         {
-            if (name == "" && genre == "" && order == "")
+            if (string.IsNullOrEmpty(name) && string.IsNullOrEmpty(genre) && string.IsNullOrEmpty(order))
             {
-                return true;
+                return p => true;
             }
-
-            return p.Song.Name.Contains(name) || p.Band.Name.Contains(name) || p.Title.Contains(name);
+            return p => p.Song.Name.Contains(name) || p.Band.Name.Contains(name) || p.Title.Contains(name);
         }
 
-        private static object OrderAscCriterium(Post p, string order)
-        {
-            switch (order)
-            {
-                case "newest":
-                    return p.CreationDate;
-                case "a-z":
-                    return p.Title;
-                default:
-                    return null;
-            }
-        }
-
-        private static object OrderDescCriterium(Post p, string order)
-        {
-            switch (order)
-            {
-                case "oldest":
-                    return p.CreationDate;
-                case "z-a":
-                    return p.Title;
-                default:
-                    return null;
-            }
-        }
 
         /// <summary>
         /// Gets all the posts of the application.
@@ -101,9 +76,24 @@ namespace Tidbeat.Controllers
 
             var results = await _context
                 .Posts
-                .Where(p => PostPasses(p, name, genre, order))
-                .OrderBy(p => order == "asc" ? OrderAscCriterium(p, order) : OrderDescCriterium(p, order))
+                .Where(PostPasses(name, genre, order))
                 .ToListAsync();
+
+            switch (order)
+            {
+                case "a-z":
+                    results = results.OrderBy(p => p.Title).ToList();
+                    break;
+                case "oldest":
+                    results = results.OrderBy(p => p.CreationDate).ToList();
+                    break;
+                case "z-a":
+                    results = results.OrderByDescending(p => p.Title).ToList();
+                    break;
+                case "newest":
+                    results = results.OrderByDescending(p => p.CreationDate).ToList();
+                    break;
+            }
 
 
             return View(results);
