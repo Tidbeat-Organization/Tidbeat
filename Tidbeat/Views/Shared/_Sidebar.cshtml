@@ -1,13 +1,23 @@
-﻿<!--Sidebar styling -->
+﻿@{
+    List<ApplicationUser>? Followies = new List<ApplicationUser>();
+
+    @if (TempData.ContainsKey("Followies"))
+    {
+        Followies = (List<ApplicationUser>?)TempData["Followies"];
+    }
+}
+
+<!--Sidebar styling -->
 <style>
     .sidebar {
         position: fixed;
         top: 70px;
         right: -300px; /* move the sidebar off-screen to the right */
         width: 300px;
-        height: 100%;
+        height: 75%;
         background-color: #fff;
-        border: 1px solid black;
+        border: 2px solid #6610F2;
+        border-radius: 4px;
         z-index: 1;
         padding: 20px;
         transition: right 0.3s ease-in-out;
@@ -27,13 +37,54 @@
     }
 </style>
 
-<!-- Sidebar-->
+<!-- Button that opens SideBar-->
+<button type="button" class="btn btn-secondary position-fixed end-0 mt-5" id="sidebarToggle" style="border-width: 2px">
+    <span class="bi bi-caret-left-fill" id="triangle"></span>
+</button>
+
+<!-- SideBar -->
 <div class="sidebar" id="sidebar">
     <div id="close-btn">&times;</div>
 
-    <h3>Titulo</h3>
-    <p>Conteudo</p>
+    <div class="text-primary">Pessoas que segues</div>
+    <div class="scrollable-posts h-100 mt-3">
+        @if (TempData.ContainsKey("Followies"))
+        {
+            if (Followies?.Count > 0)
+            {
+                foreach (var item in Followies)
+                {
+                    <a class="w-100 mt-1 hover-background-grey pointer-active" asp-Controller="Profiles" asp-Action="Details" asp-route-id="@item.Id">
+                        <div class="hover-background-grey pointer-active mt-1 border border-primary rounded d-flex w-100">
+                            @if (!string.IsNullOrEmpty(item.ImagePath))
+                            {
+                                <img src="@item.ImagePath" height="75" class="border border-dark rounded" />
+                            }
+                            else
+                            {
+                                <img src="~/images/UnknownUser.jpg" height="75" class="border border-dark rounded" />
+                            }
+                            <div class="align-self-center">@item.FullName</div>
+                        </div>
+                    </a>
+                }
+
+            }
+            else
+            {
+                <p>Não há pessoas que segues</p>
+                ;
+            }
+
+        }
+        else
+        {
+            <p>Não há pessoas que segues</p>
+            ;
+        }
+    </div>
 </div>
+
 
 <!-- Sidebar Logic -->
 <script>
