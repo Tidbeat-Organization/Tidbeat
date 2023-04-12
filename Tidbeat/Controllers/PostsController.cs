@@ -12,6 +12,7 @@ using Microsoft.DotNet.MSIdentity.Shared;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 using Newtonsoft.Json.Linq;
+using SpotifyAPI.Web;
 using Tidbeat.AuxilliaryClasses;
 using Tidbeat.Data;
 using Tidbeat.Models;
@@ -43,6 +44,42 @@ namespace Tidbeat.Controllers
             _localizer = localizer;
         }
 
+        private static bool PostPasses(Post p, string name, string genre, string order)
+        {
+            if (name == "" && genre == "" && order == "")
+            {
+                return true;
+            }
+
+            return p.Song.Name.Contains(name) || p.Band.Name.Contains(name) || p.Title.Contains(name);
+        }
+
+        private static object OrderAscCriterium(Post p, string order)
+        {
+            switch (order)
+            {
+                case "newest":
+                    return p.CreationDate;
+                case "a-z":
+                    return p.Title;
+                default:
+                    return null;
+            }
+        }
+
+        private static object OrderDescCriterium(Post p, string order)
+        {
+            switch (order)
+            {
+                case "oldest":
+                    return p.CreationDate;
+                case "z-a":
+                    return p.Title;
+                default:
+                    return null;
+            }
+        }
+
         /// <summary>
         /// Gets all the posts of the application.
         /// </summary>
@@ -50,23 +87,26 @@ namespace Tidbeat.Controllers
         // GET: Posts
         public async Task<IActionResult> Index([FromQuery] string name, [FromQuery] string genre, [FromQuery] string order)
         {
-            SpotifyAux.TestTrackApiCall();
-            
+            TempData["genre"] = genre;
+            var songs = await _context.Songs.ToListAsync();
+            foreach (var song in songs)
+            {
+                var genres = await _spotifyService.GetGenresOfSong(song.SongId);
+                Console.WriteLine("Genres of " + song.Name + ":\n");
+                foreach (var _genre in genres)
+                {
+                    Console.WriteLine($"\t{_genre}");
+                }
+            }
+
             var results = await _context
                 .Posts
-                .Where(
-                    p => (name == "" && genre == "" && order == "")
-                    ? true
-                    :    p.Song.Name.Contains(name)
-                      || p.Band.Name.Contains(name)
-                      || p.Title.Contains(name)
-                )
+                .Where(p => PostPasses(p, name, genre, order))
+                .OrderBy(p => order == "asc" ? OrderAscCriterium(p, order) : OrderDescCriterium(p, order))
                 .ToListAsync();
 
-            
 
-
-            return View(await _context.Posts.ToListAsync());
+            return View(results);
         }
 
         /// <summary>

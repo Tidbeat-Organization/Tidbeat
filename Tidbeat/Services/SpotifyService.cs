@@ -49,12 +49,69 @@ namespace Tidbeat.Services {
             try
             {
                 var track = await _client.Tracks.Get(id);
+                //Console.WriteLine($"[ Found track named {track.Name} of ID: {track.Id}]");
                 var album = await _client.Albums.Get(track.Album.Id);
+                //Console.WriteLine($"[ Found album named {album.Name} with genres: ]");
+                //foreach (var genre in album.Genres)
+                //{
+                //    Console.WriteLine($"[ -- ${genre} ]");
+                //}
+                //Console.WriteLine($"[ Count of genres: {album.Genres.Count} ]");
                 return album.Genres.ToList();
             }
             catch (APIException e)
             {
+                Console.WriteLine(e.Message);
                 return null;
+            }
+        }
+        /// <summary>
+        /// Gets a band's genres from the Spotify API.
+        /// </summary>
+        /// <param name="id">The id of the band.</param>
+        /// <returns>The string array with the results.</returns>
+        public async Task<List<string>> GetGenresOfBand(string id)
+        {
+            try
+            {
+                var band = await _client.Artists.Get(id);
+                return band.Genres.ToList();
+            }
+            catch (APIException e)
+            {
+                Console.WriteLine(e.Message);
+                return null;
+            }
+        }
+        
+        public async Task<bool> SongHasGenre(string id, string genre)
+        {
+            try
+            {
+                var track = await _client.Tracks.Get(id);
+                var album = await _client.Albums.Get(track.Album.Id);
+                
+                return album.Genres.Any(g => g.Contains(genre));
+            }
+            catch (APIException e)
+            {
+                Console.WriteLine(e.Message);
+                return false;
+            }
+        }
+
+        public async Task<bool> BandHasGenre(string id, string genre)
+        {
+            try
+            {
+                var band = await _client.Artists.Get(id);
+                
+                return band.Genres.Any(g => g.Contains(genre));
+            }
+            catch (APIException e)
+            {
+                Console.WriteLine(e.Message);
+                return false;
             }
         }
 
