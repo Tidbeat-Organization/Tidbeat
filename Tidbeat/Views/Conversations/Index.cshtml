@@ -1,4 +1,6 @@
 ﻿@model IEnumerable<Tidbeat.Models.Conversation>
+@using Microsoft.AspNetCore.Mvc.Localization;
+@inject IViewLocalizer Localizer
 
 @{
     ViewData["Title"] = "Index";
@@ -61,12 +63,12 @@
 </style>
 
 
-<h1 class="mt-5 pt-5">As Minhas Conversas</h1>
+<h1 class="mt-5 pt-5">@Localizer["my_conversations"]</h1>
 
 <div class="d-flex flex-column align-items-center pt-3 w-75 mx-auto bordered-div">
     @if (ViewBag.ConversationsParticipantsPairs == null || ViewBag.ConversationsParticipantsPairs.Count == 0)
     {
-        <p>Não existem quaisquer conversas ativas.</p>
+        <p>@Localizer["no_active_conversations"]</p>
     }
     else
     {
@@ -98,21 +100,22 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="deleteConversationModalLabel">Apagar conversa</h5>
+                <h5 class="modal-title" id="deleteConversationModalLabel">@Localizer["delete_conversation"]</h5>
                 <button type="button" class="close custom-close rounded btn btn-primary" data-dismiss="modal" aria-label="Close" id="close-modal">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                Tem a certeza que quer apagar esta conversa?
+                @Localizer["confirm_delete_conversation"]
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn btn-danger" id="deleteConversationConfirmBtn">Apagar</button>
+            <div class="modal-footer">            
+                <button type="button" class="btn btn-danger" id="deleteConversationConfirmBtn">@Localizer["delete"]</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">@Localizer["cancel"]</button>
             </div>
         </div>
     </div>
 </div>
+
 
 @section scripts {
     <script>
