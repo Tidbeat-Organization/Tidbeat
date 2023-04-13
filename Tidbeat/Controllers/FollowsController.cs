@@ -98,10 +98,10 @@ namespace Tidbeat.Controllers
                     if (result.Count() > 0)
                     {
                         //Miss Exceptions
-                        var getFollow = result.FirstAsync();
-                        if (getFollow != null && getFollow.IsCompletedSuccessfully)
+                        var getFollow = result.First();
+                        if (getFollow != null)
                         {
-                            var deleteResult = _context.Follow.Remove(getFollow.Result);
+                            var deleteResult = _context.Follow.Remove(getFollow);
                             _context.SaveChanges();
                             return Json("Sucess");
                         }
