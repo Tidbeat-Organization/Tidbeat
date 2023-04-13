@@ -3,6 +3,13 @@
 }
 @model IEnumerable<ApplicationUser>
 
+<!-- SideBar -->
+<div>
+    @{
+        await Html.RenderPartialAsync("_Sidebar");
+    }
+</div>
+
 <h1 class="text-start ms-3" style="margin-top: 70px; color: #6610F2;">Filtros</h1>
 
 <form method="get" action="@Url.Action("Index", "Users")">

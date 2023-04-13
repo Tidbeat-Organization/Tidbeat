@@ -1,13 +1,4 @@
-﻿@{
-    List<ApplicationUser>? Followies = new List<ApplicationUser>();
-
-    @if (TempData.ContainsKey("Followies"))
-    {
-        Followies = (List<ApplicationUser>?)TempData["Followies"];
-    }
-}
-
-<!--Sidebar styling -->
+﻿<!--Sidebar styling -->
 <style>
     .sidebar {
         position: fixed;
@@ -23,8 +14,35 @@
         transition: right 0.3s ease-in-out;
     }
 
-    .sidebar.active {
-        right: 0; /* move the sidebar onto the screen */
+        .sidebar.active {
+            right: 0; /* move the sidebar onto the screen */
+        }
+
+    #sidebarToggle {
+        position: fixed;
+        top: 300px;
+        right: 0;
+        z-index: 1;
+    }
+
+    /* Open button*/
+    .btn-secondary {
+        background-color: white;
+        color: #6610F2;
+        border-color: #6610F2;
+    }
+
+    .btn-secondary:hover {
+        background-color: white;
+        color: #6610F2;
+        border-color: #6610F2;
+    }
+
+    .btn-secondary:active,
+    .btn-secondary:focus {
+        background-color: white;
+        color: #6610F2;
+        border-color: #6610F2;
     }
 
     /* Close button*/
@@ -37,13 +55,28 @@
     }
 </style>
 
-<!-- Button that opens SideBar-->
-<button type="button" class="btn btn-secondary position-fixed end-0 mt-5" id="sidebarToggle" style="border-width: 2px">
-    <span class="bi bi-caret-left-fill" id="triangle"></span>
-</button>
+
+@{
+    List<ApplicationUser>? Followies = new List<ApplicationUser>();
+
+    @if (TempData.ContainsKey("Followies"))
+    {
+        Followies = (List<ApplicationUser>?)TempData["Followies"];
+    }
+}
+
+
+@if (User.Identity.IsAuthenticated)
+{
+    <!-- Button that opens SideBar -->
+    <button type="button" class="btn btn-secondary" id="sidebarToggle" style="border-width: 2px">
+        <span class="bi bi-caret-left-fill" id="triangle"></span>
+    </button>
+}
 
 <!-- SideBar -->
 <div class="sidebar" id="sidebar">
+
     <div id="close-btn">&times;</div>
 
     <div class="text-primary">Pessoas que segues</div>

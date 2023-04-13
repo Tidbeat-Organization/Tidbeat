@@ -61,6 +61,12 @@
 
 </style>
 
+<!-- SideBar -->
+<div>
+    @{
+        await Html.RenderPartialAsync("_Sidebar");
+    }
+</div>
 
 <h1 class="mt-5 pt-5">As Minhas Conversas</h1>
 
@@ -92,11 +98,6 @@
             </div>
         }
     }
-</div>
-
-<!-- SideBar -->
-<div>
-    @{await Html.RenderPartialAsync("_Sidebar");}
 </div>
 
 <!-- Modal -->

@@ -7,6 +7,13 @@
     var isUserLogged = User.Identity.IsAuthenticated;
 }
 
+<!-- SideBar -->
+<div>
+    @{
+        await Html.RenderPartialAsync("_Sidebar");
+    }
+</div>
+
 <div class="mb-2">
     <div class="container-fluid">
         <!-- Top image with texts -->
