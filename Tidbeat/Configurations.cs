@@ -19,7 +19,9 @@ namespace Tidbeat {
             UserName = "invalid@email.com",
             Email = "invalid@email.com",
             BirthdayDate = DateTime.Now,
-            Gender = "male"
+            Gender = "male",
+            IsBanned = false,
+            Role = Enums.RoleType.NormalUser
         };
 
         /// <summary>
