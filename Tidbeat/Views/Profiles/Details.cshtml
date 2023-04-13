@@ -38,15 +38,15 @@
                 <div class="d-flex">
                     @if (user.Role.Equals(Tidbeat.Enums.RoleType.Administrator))
                     {
-                        <div class="bi bi-diamond-fill fs-3 py-0 text-primary" data-toggle="tooltip" data-placement="top" title="Administrador"></div>
+                        <div class="bi bi-diamond-fill fs-3 py-0 text-primary" data-toggle="tooltip" data-placement="top" title="@Localizer["admin"]"></div>
                     }
                     else if (user.Role.Equals(Tidbeat.Enums.RoleType.Moderator))
                     {
-                        <div class="bi bi-diamond-fill fs-3 py-0 text-danger" data-toggle="tooltip" data-placement="top" title="Moderador"></div>
+                        <div class="bi bi-diamond-fill fs-3 py-0 text-danger" data-toggle="tooltip" data-placement="top" title="@Localizer["moderator"]"></div>
                     }
                     else
                     {
-                        <div class="bi bi-music-note fs-3 py-0 text-black" data-toggle="tooltip" data-placement="top" title="Utilizador Normal"></div>
+                        <div class="bi bi-music-note fs-3 py-0 text-black" data-toggle="tooltip" data-placement="top" title="@Localizer["normal_user"]"></div>
                     }
                     @if (tempval != null)
                     {

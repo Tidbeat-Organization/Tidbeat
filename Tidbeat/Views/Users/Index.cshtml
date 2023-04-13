@@ -1,7 +1,10 @@
-﻿@{
+﻿@model IEnumerable<ApplicationUser>
+@using Microsoft.AspNetCore.Mvc.Localization;
+@inject IViewLocalizer Localizer
+
+@{
     ViewData["Title"] = "Lista de utilizadores";
 }
-@model IEnumerable<ApplicationUser>
 
 <style>
     .profile-pic {
@@ -10,20 +13,20 @@
     }
 </style>
 
-<h1 class="text-start ms-3" style="margin-top: 72px; color: #6610F2;">Filtros</h1>
+<h1 class="text-start ms-3" style="margin-top: 72px; color: #6610F2;">@Localizer["filters"]</h1>
 
 <form method="get" action="@Url.Action("Index", "Users")">
     <div class="row justify-content-center">
         <div class="col-md-4">
             <div class="form-group ms-4">
-                <label for="inputName" class="row justify-content-left ms-1">Nome:</label>
-                <input type="text" class="form-control" id="inputName" name="name" placeholder="Procurar">
+                <label for="inputName" class="row justify-content-left ms-1">@Localizer["name"]</label>
+                <input type="text" class="form-control" id="inputName" name="name" placeholder="@Localizer["search"]">
             </div>
         </div>
         <div class="col-md-4 mb-3">
             <div class="form-group">
-                <label for="inputCountry" class="row justify-content-left ms-4">País:</label>
-                <input type="text" class="form-control ms-4" id="inputCountry" name="country" placeholder="Procurar">
+                <label for="inputCountry" class="row justify-content-left ms-4">@Localizer["country"]</label>
+                <input type="text" class="form-control ms-4" id="inputCountry" name="country" placeholder="@Localizer["search"]">
             </div>
         </div>
         <div class="col-md-1 ms-2 mt-3">
@@ -36,12 +39,12 @@
 
 <div class="border border-1 border-light-grey my-2"></div>
 
-<h2 class="text-start ms-3 my-4">Utilizadores</h2>
+<h2 class="text-start ms-3 my-4">@Localizer["users"]</h2>
 
 <div class="container">
     @if (!Model.Any())
     {
-        <p class="text-center">Não foram encontrados utilizadores com base nesses critérios.</p>
+        <p class="text-center">@Localizer["not_found_users"]</p>
     }
     else
     {
@@ -56,9 +59,9 @@
                         <div class="card-body">
                             <h5 class="card-title">@user.FullName</h5>
                             <div class="border border-1 border-light-grey my-2"></div>
-                            <p class="paragraph mt-3"><strong>Género favorito:</strong> @(string.IsNullOrEmpty(user.FavoriteGenre) ? "Não especificado" : user.FavoriteGenre)</p>
-                            <p><strong>País:</strong> @(string.IsNullOrEmpty(user.Country) ? "Não especificado" : user.Country)</p>
-                            <a href="@Url.Action("Details", "Profiles", new { id = user.Id })" class="btn btn-primary">Ver perfil</a>
+                            <p class="paragraph mt-3"><strong>@Localizer["favorite_genre"]</strong> @(string.IsNullOrEmpty(user.FavoriteGenre) ? @Localizer["non_specified"] : user.FavoriteGenre)</p>
+                            <p><strong>@Localizer["country"]</strong> @(string.IsNullOrEmpty(user.Country) ? @Localizer["non_specified"] : user.Country)</p>
+                            <a href="@Url.Action("Details", "Profiles", new { id = user.Id })" class="btn btn-primary">@Localizer["view_profile"]</a>
                         </div>
                     </div>
                 </div>
