@@ -117,130 +117,34 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="about_me" xml:space="preserve">
-    <value>Sobre mim</value>
+  <data name="back_to_conversations" xml:space="preserve">
+    <value>Voltar às conversas</value>
   </data>
-  <data name="admin" xml:space="preserve">
-    <value>Administrador</value>
+  <data name="connection_error" xml:space="preserve">
+    <value>Erro de conexão...</value>
   </data>
-  <data name="birth_date" xml:space="preserve">
-    <value>Data de Nascimento</value>
+  <data name="hit_refresh_f5" xml:space="preserve">
+    <value>Recarregue a página ou faça F5</value>
   </data>
-  <data name="children" xml:space="preserve">
-    <value>Crianças</value>
+  <data name="joined_the_conversation" xml:space="preserve">
+    <value>JUNTOU-SE À CONVERSA</value>
   </data>
-  <data name="classical" xml:space="preserve">
-    <value>Clássica</value>
+  <data name="more_messages" xml:space="preserve">
+    <value>Mais mensagens...</value>
   </data>
-  <data name="country" xml:space="preserve">
-    <value>Country</value>
+  <data name="read" xml:space="preserve">
+    <value>Lido</value>
   </data>
-  <data name="created_in" xml:space="preserve">
-    <value>Criado em</value>
+  <data name="sent" xml:space="preserve">
+    <value>Enviado</value>
   </data>
-  <data name="create_post" xml:space="preserve">
-    <value>Criar Post</value>
+  <data name="to_rejoin" xml:space="preserve">
+    <value>para se voltar a conectar</value>
   </data>
-  <data name="dance" xml:space="preserve">
-    <value>Dança</value>
+  <data name="type_message_and_press_enter" xml:space="preserve">
+    <value>Digite a mensagem e pressione Enter para enviar...</value>
   </data>
-  <data name="disco" xml:space="preserve">
-    <value>Disco</value>
-  </data>
-  <data name="favorite_genre" xml:space="preserve">
-    <value>Género Favorito</value>
-  </data>
-  <data name="favorite_songs" xml:space="preserve">
-    <value>Músicas Favoritas</value>
-  </data>
-  <data name="female" xml:space="preserve">
-    <value>Feminino</value>
-  </data>
-  <data name="first_post" xml:space="preserve">
-    <value>Ainda não postaste nada... Cria o teu primeiro post!</value>
-  </data>
-  <data name="folk" xml:space="preserve">
-    <value>Folk</value>
-  </data>
-  <data name="followers" xml:space="preserve">
-    <value>Seguidores</value>
-  </data>
-  <data name="followies" xml:space="preserve">
-    <value>Seguidos</value>
-  </data>
-  <data name="from" xml:space="preserve">
-    <value>de</value>
-  </data>
-  <data name="funk" xml:space="preserve">
-    <value>Funk</value>
-  </data>
-  <data name="gender" xml:space="preserve">
-    <value>Género</value>
-  </data>
-  <data name="hip-hop" xml:space="preserve">
-    <value>Hip Hop</value>
-  </data>
-  <data name="indian" xml:space="preserve">
-    <value>Indiana</value>
-  </data>
-  <data name="k-pop" xml:space="preserve">
-    <value>K-Pop</value>
-  </data>
-  <data name="male" xml:space="preserve">
-    <value>Masculino</value>
-  </data>
-  <data name="metal" xml:space="preserve">
-    <value>Metal</value>
-  </data>
-  <data name="moderator" xml:space="preserve">
-    <value>Moderador</value>
-  </data>
-  <data name="my_posts" xml:space="preserve">
-    <value>Meus posts</value>
-  </data>
-  <data name="nation" xml:space="preserve">
-    <value>País</value>
-  </data>
-  <data name="non_binary" xml:space="preserve">
-    <value>Não Binário</value>
-  </data>
-  <data name="normal_user" xml:space="preserve">
-    <value>Utilizador Normal</value>
-  </data>
-  <data name="no_favorited_song_yet" xml:space="preserve">
-    <value>Não tem qualquer música favoritada ainda.</value>
-  </data>
-  <data name="no_followers" xml:space="preserve">
-    <value>Segues Ninguém</value>
-  </data>
-  <data name="no_followies" xml:space="preserve">
-    <value>Ninguém Segue-te</value>
-  </data>
-  <data name="no_posts" xml:space="preserve">
-    <value>Sem posts</value>
-  </data>
-  <data name="piano" xml:space="preserve">
-    <value>Piano</value>
-  </data>
-  <data name="pop" xml:space="preserve">
-    <value>Pop</value>
-  </data>
-  <data name="punk" xml:space="preserve">
-    <value>Punk</value>
-  </data>
-  <data name="reggae" xml:space="preserve">
-    <value>Reggae</value>
-  </data>
-  <data name="rock" xml:space="preserve">
-    <value>Rock</value>
-  </data>
-  <data name="song" xml:space="preserve">
-    <value>Música</value>
-  </data>
-  <data name="submit" xml:space="preserve">
-    <value>Submeter</value>
-  </data>
-  <data name="techno" xml:space="preserve">
-    <value>Techno</value>
+  <data name="view_user_profile" xml:space="preserve">
+    <value>Ver perfil do utilizador</value>
   </data>
 </root>

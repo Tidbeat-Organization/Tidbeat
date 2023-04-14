@@ -120,6 +120,9 @@
   <data name="about_me" xml:space="preserve">
     <value>About me</value>
   </data>
+  <data name="admin" xml:space="preserve">
+    <value>Administrator</value>
+  </data>
   <data name="birth_date" xml:space="preserve">
     <value>Birth Date</value>
   </data>
@@ -189,6 +192,9 @@
   <data name="metal" xml:space="preserve">
     <value>Metal</value>
   </data>
+  <data name="moderator" xml:space="preserve">
+    <value>Moderator</value>
+  </data>
   <data name="my_posts" xml:space="preserve">
     <value>My posts</value>
   </data>
@@ -197,6 +203,9 @@
   </data>
   <data name="non_binary" xml:space="preserve">
     <value>Non Binary</value>
+  </data>
+  <data name="normal_user" xml:space="preserve">
+    <value>Normal User</value>
   </data>
   <data name="no_favorited_song_yet" xml:space="preserve">
     <value>You dont have favorited songs yet.</value>

@@ -1,5 +1,7 @@
 ﻿@model Tidbeat.Models.Conversation
 @using Tidbeat.Enums
+@using Microsoft.AspNetCore.Mvc.Localization;
+@inject IViewLocalizer Localizer
 
 @{
     ViewData["Title"] = "Details";
@@ -20,20 +22,20 @@
 
 <h2 class="user-info">
     <div class="arrow-icon d-flex align-items-center mt-3">
-        <a href="@Url.Action("Index", "Conversations")" title="Voltar às conversas">
+        <a href="@Url.Action("Index", "Conversations")" title="@Localizer["back_to_conversations"]">
             <i class="bi bi-arrow-left-circle fs-1 me-5 mb-5"></i>
         </a>
     </div>
     <div>
         <a href="@Url.Action("Details", "Profiles", new { id = ViewBag.CurrentUser.Id })">
-            <img src="@((ViewBag.CurrentUser.ImagePath ?? "/images/UnknownUser.jpg"))" alt="@ViewBag.CurrentUser.FullName" title="Ver perfil do utilizador" width="100" height="100" />
+            <img src="@((ViewBag.CurrentUser.ImagePath ?? "/images/UnknownUser.jpg"))" alt="@ViewBag.CurrentUser.FullName" title="@Localizer["view_user_profile"]" width="100" height="100" />
         </a>
         <p>@ViewBag.CurrentUser.FullName</p>
     </div>
     <div class="arrow mb-4">&gt;</div>
     <div>
         <a href="@Url.Action("Details", "Profiles", new { id = ViewBag.OtherUser.Id })">
-            <img src="@((ViewBag.OtherUser.ImagePath ?? "/images/UnknownUser.jpg"))" alt="@ViewBag.OtherUser.FullName" title="Ver perfil do utilizador" width="100" height="100" />
+            <img src="@((ViewBag.OtherUser.ImagePath ?? "/images/UnknownUser.jpg"))" alt="@ViewBag.OtherUser.FullName" title="@Localizer["view_user_profile"]" width="100" height="100" />
         </a>
         <p>@ViewBag.OtherUser.FullName</p>
     </div>
@@ -41,7 +43,7 @@
 
 <div class="container" style="height: calc(100% - 110px);">
     <div id="messages" style="background-color: whitesmoke; ">
-        <button type="button" id="getRecentMessagesButton" class="@(ViewBag.Messages.Count >= 20 ? "" : "d-none")">Mais mensagens...</button>
+        <button type="button" id="getRecentMessagesButton" class="@(ViewBag.Messages.Count >= 20 ? "" : "d-none")">@Localizer["more_messages"]</button>
         @foreach (var message in ViewBag.Messages)
         {
             @if (message.User.Id == ViewBag.CurrentUser.Id)
@@ -90,7 +92,7 @@
     <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 5px;">
         <textarea id="message"
                   style="width: 100%; padding: 5px 10px; border: 2px solid black; border-radius: 8px; "
-                  placeholder="Digite a mensagem e pressione Enter para enviar..."></textarea>
+                  placeholder="@Localizer["type_message_and_press_enter"]"></textarea>
         <div style="margin-left: 10px;">
             <button class="btn-success" id="sendmessage" title="Enviar mensagem">
                 <i class="bi bi-chat-left-text"></i>
@@ -104,8 +106,8 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <div>Connection Error...</div>
-                <div><strong style="font-size: 1.5em;">Hit Refresh/F5</strong> to rejoin. ;)</div>
+                <div>@Localizer["connection_error"]</div>
+                <div><strong style="font-size: 1.5em;">@Localizer["hit_refresh_f5"]</strong> @Localizer["to_rejoin"]</div>
             </div>
         </div>
     </div>
@@ -376,7 +378,7 @@
         function onConnected(connection) {
             console.log('connection started');
             connection.send('joinChat', '@Model.Id');
-            connection.send('broadcastMessage', '@Model.Id', '_SYSTEM_', username + ' JUNTOU-SE À CONVERSA');
+            connection.send('broadcastMessage', '@Model.Id', '_SYSTEM_', username + ' @Localizer["joined_the_conversation"]');
             connection.send('setSeenMessages', '@Model.Id', '@ViewBag.OtherUser.Id');
             setOtherUsersMessageToSeenInDatabase();
             document.getElementById('sendmessage').addEventListener('click', function (event) {
@@ -522,7 +524,7 @@
     window.onload = function () {
         var message = document.getElementById("message");
         message.value = "";
-        message.placeholder = "Digite a mensagem e pressione Enter para enviar...";
+        message.placeholder = "@Localizer["type_message_and_press_enter"]";
     };
 </script>
 
