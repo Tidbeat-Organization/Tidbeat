@@ -187,7 +187,7 @@
             var editMessageCallback = function (messageId, newText) {
                 let message = document.querySelector(`[data-message-id="${messageId}"]`);
                 if (message) {
-                    let messageContent = message.querySelector('.message-content');
+                    let messageContent = message.querySelector('.message-content-otheruser');
                     if (messageContent) {
                         messageContent.textContent = newText;
                     }
