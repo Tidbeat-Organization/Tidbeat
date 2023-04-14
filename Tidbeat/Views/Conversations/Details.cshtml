@@ -171,10 +171,6 @@
                 messageBox.scrollTop = messageBox.scrollHeight;
                 connection.send('setSeenMessages', '@Model.Id', '@ViewBag.OtherUser.Id');
                 setOtherUsersMessageToSeenInDatabase();
-
-                if (userId !== '@ViewBag.CurrentUser.Id') {
-                    messageEntry.classList.add("other-user-message-entry");
-                }
             };
             var seenCallback = function (userId) {
                 if (userId === '@ViewBag.CurrentUser.Id') {
@@ -186,6 +182,7 @@
             };
             var editMessageCallback = function (messageId, newText) {
                 let message = document.querySelector(`[data-message-id="${messageId}"]`);
+                console.log(message);
                 if (message) {
                     let messageContent = message.querySelector('.message-content-otheruser');
                     if (messageContent) {
@@ -199,10 +196,17 @@
                     message.remove();
                 }
             };
+            var addMessageIdCallback = function (messageId) {
+                const allMessages = document.getElementById('messages');
+                const allDirectChildren = allMessages.children;
+                const latestChildWithoutClass = Array.from(allDirectChildren).reverse().find(child => child.classList.contains('other-user-message-entry'));
+                latestChildWithoutClass.setAttribute('data-message-id', messageId);
+            }
             connection.on('broadcastMessage', messageCallback);
             connection.on('setSeenMessages', seenCallback);
             connection.on('editMessage', editMessageCallback);
             connection.on('deleteMessage', deleteMessageCallback);
+            connection.on('addMessageId', addMessageIdCallback);
             connection.onclose(onConnectionError);
         }
 
@@ -240,10 +244,12 @@
                     console.log(finalResponse);
                     const allMessages = document.getElementById('messages');
                     const allDirectChildren = allMessages.children;
+                    connection.send('addMessageId', '@Model.Id', finalResponse['messageId']);
                     setTimeout(() => {
                         const latestChildWithoutClass = Array.from(allDirectChildren).reverse().find(child => !child.classList.contains('other-user-message-entry'));
                         console.log(latestChildWithoutClass);
                         latestChildWithoutClass.setAttribute('data-message-id', finalResponse['messageId']);
+
                         addOnTextSizeChangeToTextAreas();
                         addOnClickToDeleteButtons();
                         addOnClickToEditButtons();
@@ -322,7 +328,9 @@
             for (var i = 0; i < allEditButtons.length; i++) {
                 allEditButtons[i].addEventListener('click', function (event) {
                     var messageId = parseInt(event.target.parentElement.getAttribute('data-message-id'), 10);
+                    console.log(messageId);
                     var message = document.querySelector(`[data-message-id="${messageId}"]`);
+                    console.log(message);
                     var savedContentTemp = message.querySelector(`.saved-content-temp`);
                     savedContentTemp.textContent = message.querySelector(`.message-content-input`).value;
                     toggleEditMode(messageId);
