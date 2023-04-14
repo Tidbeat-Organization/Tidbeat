@@ -182,7 +182,6 @@
             };
             var editMessageCallback = function (messageId, newText) {
                 let message = document.querySelector(`[data-message-id="${messageId}"]`);
-                console.log(message);
                 if (message) {
                     let messageContent = message.querySelector('.message-content-otheruser');
                     if (messageContent) {
@@ -241,13 +240,11 @@
                     }
                     return response.json();
                 }).then(finalResponse => {
-                    console.log(finalResponse);
                     const allMessages = document.getElementById('messages');
                     const allDirectChildren = allMessages.children;
                     connection.send('addMessageId', '@Model.Id', finalResponse['messageId']);
                     setTimeout(() => {
                         const latestChildWithoutClass = Array.from(allDirectChildren).reverse().find(child => !child.classList.contains('other-user-message-entry'));
-                        console.log(latestChildWithoutClass);
                         latestChildWithoutClass.setAttribute('data-message-id', finalResponse['messageId']);
 
                         addOnTextSizeChangeToTextAreas();
@@ -311,65 +308,71 @@
                 });
         }
 
+        function onClickDelete(event) {
+            var messageId = parseInt(event.target.parentElement.getAttribute('data-message-id'), 10);
+            connection.send('deleteMessage', '@Model.Id', messageId);
+            deleteMessageFromDb(messageId);
+            event.preventDefault();
+        }
+
         function addOnClickToDeleteButtons() {
             var allDeleteButtons = document.getElementsByClassName('delete-message-button');
             for (var i = 0; i < allDeleteButtons.length; i++) {
-                allDeleteButtons[i].addEventListener('click', function (event) {
-                    var messageId = parseInt(event.target.parentElement.getAttribute('data-message-id'), 10);
-                    connection.send('deleteMessage', '@Model.Id', messageId);
-                    deleteMessageFromDb(messageId);
-                    event.preventDefault();
-                });
+                allDeleteButtons[i].addEventListener('click', onClickDelete);
             }
+        }
+
+        function onClickEdit(event) {
+            var messageId = parseInt(event.target.parentElement.getAttribute('data-message-id'), 10);
+            var message = document.querySelector(`[data-message-id="${messageId}"]`);
+            var savedContentTemp = message.querySelector(`.saved-content-temp`);
+            savedContentTemp.textContent = message.querySelector(`.message-content-input`).value;
+            toggleEditMode(messageId);
+            event.preventDefault();
         }
 
         function addOnClickToEditButtons() {
             var allEditButtons = document.getElementsByClassName('edit-message-button');
             for (var i = 0; i < allEditButtons.length; i++) {
-                allEditButtons[i].addEventListener('click', function (event) {
-                    var messageId = parseInt(event.target.parentElement.getAttribute('data-message-id'), 10);
-                    console.log(messageId);
-                    var message = document.querySelector(`[data-message-id="${messageId}"]`);
-                    console.log(message);
-                    var savedContentTemp = message.querySelector(`.saved-content-temp`);
-                    savedContentTemp.textContent = message.querySelector(`.message-content-input`).value;
-                    toggleEditMode(messageId);
-                    event.preventDefault();
-                });
+                allEditButtons[i].addEventListener('click', onClickEdit);
             }
+        }
+
+        function onClickSave(event) {
+            var messageId = parseInt(event.target.parentElement.getAttribute('data-message-id'), 10);
+            var message = document.querySelector(`[data-message-id="${messageId}"]`);
+            var savedContentTemp = message.querySelector(`.saved-content-temp`);
+            savedContentTemp.textContent = "";
+            var messageInput = message.querySelector(`.message-content-input`);
+            connection.send("editMessage", '@Model.Id', messageId, messageInput.value);
+            editMessageInDb(messageId, messageInput.value);
+            toggleEditMode(messageId);
+            event.preventDefault();
         }
 
         function addOnClickToSaveButtons() {
             var allSaveButtons = document.getElementsByClassName('save-message-button');
             for (var i = 0; i < allSaveButtons.length; i++) {
-                allSaveButtons[i].addEventListener('click', function (event) {
-                    var messageId = parseInt(event.target.parentElement.getAttribute('data-message-id'), 10);
-                    var message = document.querySelector(`[data-message-id="${messageId}"]`);
-                    var savedContentTemp = message.querySelector(`.saved-content-temp`);
-                    savedContentTemp.textContent = "";
-                    var messageInput = message.querySelector(`.message-content-input`);
-                    connection.send("editMessage", '@Model.Id', messageId, messageInput.value);
-                    editMessageInDb(messageId, messageInput.value);
-                    toggleEditMode(messageId);
-                    event.preventDefault();
-                });
+                allSaveButtons[i].addEventListener('click', onClickSave);
             }
+        }
+
+        function onClickCancel(event) {
+            var messageId = parseInt(event.target.parentElement.getAttribute('data-message-id'), 10);
+            var message = document.querySelector(`[data-message-id="${messageId}"]`);
+            var messageInput = message.querySelector(`.message-content-input`);
+            var savedContentTemp = message.querySelector(`.saved-content-temp`);
+            messageInput.value = savedContentTemp.textContent;
+
+            savedContentTemp.textContent = "";
+            toggleEditMode(messageId);
+            event.preventDefault();
         }
 
         function addOnClickToCancelButtons() {
             var allCancelButtons = document.getElementsByClassName('cancel-message-button');
             for (var i = 0; i < allCancelButtons.length; i++) {
-                allCancelButtons[i].addEventListener('click', function (event) {
-                    var messageId = parseInt(event.target.parentElement.getAttribute('data-message-id'), 10);
-                    var message = document.querySelector(`[data-message-id="${messageId}"]`);
-                    var messageInput = message.querySelector(`.message-content-input`);
-                    var savedContentTemp = message.querySelector(`.saved-content-temp`);
-                    messageInput.value = savedContentTemp.textContent;
-
-                    savedContentTemp.textContent = "";
-                    toggleEditMode(messageId);
-                    event.preventDefault();
-                });
+                allCancelButtons[i].addEventListener('click', onClickCancel);
             }
         }
 
