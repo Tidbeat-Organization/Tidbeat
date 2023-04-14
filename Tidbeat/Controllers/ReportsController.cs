@@ -4,10 +4,12 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Tidbeat.Data;
+using Tidbeat.Enums;
 using Tidbeat.Models;
 
 namespace Tidbeat.Controllers
@@ -16,11 +18,15 @@ namespace Tidbeat.Controllers
     {
         private readonly ApplicationDbContext _context;
 
-        public ReportsController(ApplicationDbContext context)
+        private readonly UserManager<ApplicationUser> _userManager;
+
+        public ReportsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
+        //Add filtres
         // GET: Reports
         [Authorize(Roles = "Moderator,Administrator")]
         public async Task<IActionResult> Index()
@@ -38,15 +44,61 @@ namespace Tidbeat.Controllers
             {
                 return NotFound();
             }
-
-            var report = await _context.Report
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (report == null)
+            var user = await _userManager.GetUserAsync(User);
+            if (User?.Identity.IsAuthenticated == true)
             {
-                return NotFound();
+                var report = await _context.Report
+                .FirstOrDefaultAsync(m => m.Id == id);
+                if (report == null)
+                {
+                    return NotFound();
+                }
+                if (report.Status.Equals(ReportStatus.Created))
+                {
+                    report.ModAssigned = user;
+                    report.Status = ReportStatus.Open;
+                    _context.Report.Update(report);
+                }
+                switch (report.ReportItemType)
+                {
+                    case ReportedItemType.Post:
+                        var post = await _context.Posts.Include(p => p.User).Where(p => p.PostId.ToString().Equals(report.ReportItemId)).FirstOrDefaultAsync();
+                        if (post != null)
+                        {
+                            TempData["Post"] = post;
+                        }
+                        else 
+                        {
+                            return NotFound();
+                        }
+                        break;
+                    case ReportedItemType.Comment:
+                        var comment = await _context.Comment.Include(p=>p.User).Where(p => p.CommentId.ToString().Equals(report.ReportItemId)).FirstOrDefaultAsync();
+                        if (comment != null) {
+                            TempData["Comment"] = comment;
+                        }
+                        else 
+                        {
+                            return NotFound();
+                        }
+                        break;
+                    case ReportedItemType.User:
+                        var userReportedAccount = await _context.Users.Where(p => p.Id.ToString().Equals(report.ReportItemId)).FirstOrDefaultAsync();
+                        if (userReportedAccount != null) {
+                            TempData["UserReported"] = userReportedAccount;
+                        }
+                        else 
+                        {
+                            return NotFound();
+                        }
+                        break;
+                    default:
+                        return NotFound();
+                        break;
+                }
+                return View(report); 
             }
-
-            return View(report);
+            return NotFound();
         }
 
         // POST: Reports/Create
