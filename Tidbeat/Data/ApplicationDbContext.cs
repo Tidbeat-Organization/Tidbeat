@@ -77,5 +77,7 @@ namespace Tidbeat.Data {
         public DbSet<Tidbeat.Models.Profile>? Profile { get; set; }
 
         public DbSet<Tidbeat.Models.Follow>? Follow { get; set; }
+
+        public DbSet<Tidbeat.Models.Report>? Report { get; set; }
     }
 }
