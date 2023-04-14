@@ -1,9 +1,9 @@
 ﻿<!--Sidebar styling -->
 <style>
-    .sidebar {
+        .sidebar {
         position: fixed;
         top: 70px;
-        right: -300px; /* move the sidebar off-screen to the right */
+        right: -300px;
         width: 300px;
         height: 75%;
         background-color: #fff;
@@ -12,47 +12,55 @@
         z-index: 1;
         padding: 20px;
         transition: right 0.3s ease-in-out;
+        overflow: hidden; /* Add this line */
     }
 
-        .sidebar.active {
-            right: 0; /* move the sidebar onto the screen */
-        }
 
-    #sidebarToggle {
-        position: fixed;
-        top: 300px;
-        right: 0;
-        z-index: 1;
-    }
+.sidebar.active {
+    right: 0; /* move the sidebar onto the screen */
+}
 
-    /* Open button*/
-    .btn-secondary {
-        background-color: white;
-        color: #6610F2;
-        border-color: #6610F2;
-    }
+#sidebarToggle {
+    position: fixed;
+    top: 300px;
+    right: 0;
+    z-index: 1;
+}
 
-        .btn-secondary:hover {
-            background-color: white;
-            color: #6610F2;
-            border-color: #6610F2;
-        }
+/* Open button*/
+.btn-secondary {
+    background-color: white;
+    color: #6610F2;
+    border-color: #6610F2;
+}
 
-        .btn-secondary:active,
-        .btn-secondary:focus {
-            background-color: white;
-            color: #6610F2;
-            border-color: #6610F2;
-        }
+.btn-secondary:hover {
+    background-color: white;
+    color: #6610F2;
+    border-color: #6610F2;
+}
 
-    /* Close button*/
-    #close-btn {
-        position: absolute;
-        top: 0;
-        left: 0;
-        font-size: 2rem;
-        cursor: pointer;
-    }
+.btn-secondary:active,
+.btn-secondary:focus {
+    background-color: white;
+    color: #6610F2;
+    border-color: #6610F2;
+}
+
+/* Close button*/
+#close-btn {
+    position: absolute;
+    top: 0;
+    left: 0;
+    font-size: 2rem;
+    cursor: pointer;
+}
+
+    .scrollable-posts {
+        height: calc(100% - 30px);
+        overflow-y: auto;
+}
+
 </style>
 
 
@@ -80,7 +88,7 @@
     <div id="close-btn">&times;</div>
 
     <div class="text-primary">Pessoas que segues</div>
-    <div class="scrollable-posts h-100 mt-3">
+    <div class="scrollable-posts h-100">
         @if (TempData.ContainsKey("Followies"))
         {
             if (Followies?.Count > 0)
