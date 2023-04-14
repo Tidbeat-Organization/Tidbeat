@@ -30,7 +30,7 @@ namespace Tidbeat.Services {
         /// <param name="userId">The id of the user.</param>
         /// <param name="text">The text of the message.</param>
         /// <returns></returns>
-        public async Task AddMessageToDatabase(string conversationId, string userId, string text) {
+        public async Task<int> AddMessageToDatabase(string conversationId, string userId, string text) {
             var message = new Message {
                 Text = text,
                 Status = (int)MessageStatus.Sent,
@@ -40,6 +40,7 @@ namespace Tidbeat.Services {
             };
             _context.Messages.Add(message);
             await _context.SaveChangesAsync();
+            return message.Id;
         }
 
         /// <summary>

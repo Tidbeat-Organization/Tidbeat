@@ -57,7 +57,7 @@
                         <div class="cancel-message-button bi bi-x text-danger btn hover-background-grey pull-right p-0 px-1 d-none"></div>
                         <div class="save-message-button bi bi-check text-success btn hover-background-grey pull-right p-0 px-1 d-none"></div>
                         <div class="d-flex flex-column pull-right">
-                            <input type="text" class="message-content-input message-content pull-right border-0 " style="max-width: 400px;" value="@message.Text" readonly />
+                            <textarea type="text" class="message-content-input message-content pull-right border-0 text-wrap" style="max-width: 400px;" value="@message.Text" readonly>@message.Text</textarea>
                             <div class="saved-content-temp d-none"></div>
                             <div id="status-message" class="pull-right text-end">@((message.Status == (int)MessageStatus.Sent) ? "Enviado" : "Lido")</div>
                         </div>
@@ -72,7 +72,7 @@
                         <div class="cancel-message-button bi bi-x text-danger btn hover-background-grey pull-right p-0 px-1 d-none"></div>
                         <div class="save-message-button bi bi-check text-success btn hover-background-grey pull-right p-0 px-1 d-none"></div>
                         <div class="pull-right">
-                            <input type="text" class="message-content-input message-content pull-right border-0 " style="max-width: 400px;" value="@message.Text" readonly />
+                            <textarea type="text" class="message-content-input message-content pull-right border-0 " style="max-width: 400px;" value="@message.Text" readonly>@message.Text</textarea>
                             <div class="saved-content-temp d-none"></div>
                         </div>
                     </div>
@@ -80,9 +80,9 @@
             }
             else
             {
-                <div data-message-id="@message.Id" class="message-entry">
+                <div data-message-id="@message.Id" class="other-user-message-entry message-entry">
                     <div class="message-avatar pull-left">@message.User.FullName</div>
-                    <div class="message-content-otheruser pull-left">@message.Text</div>
+                    <div class="text-start message-content-otheruser pull-left" style="max-width: 400px;">@message.Text</div>
                 </div>
             }
             messageIndex++;
@@ -150,8 +150,9 @@
                 }
                 entry.innerHTML = rightMessage(encodedMsg, '@ViewBag.CurrentUser.FullName', @((int)MessageStatus.Sent))
             } else {
+                entry.classList.add("other-user-message-entry");
                 entry.innerHTML = `<div class="message-avatar pull-left">@(ViewBag.OtherUser.FullName)</div>` +
-                    `<div class="message-content-otheruser pull-left">${encodedMsg}<div>`;
+                    `<div class="text-start message-content-otheruser pull-left" style="max-width: 400px;">${encodedMsg}<div>`;
             }
             return entry;
         }
@@ -170,6 +171,10 @@
                 messageBox.scrollTop = messageBox.scrollHeight;
                 connection.send('setSeenMessages', '@Model.Id', '@ViewBag.OtherUser.Id');
                 setOtherUsersMessageToSeenInDatabase();
+
+                if (userId !== '@ViewBag.CurrentUser.Id') {
+                    messageEntry.classList.add("other-user-message-entry");
+                }
             };
             var seenCallback = function (userId) {
                 if (userId === '@ViewBag.CurrentUser.Id') {
@@ -231,9 +236,20 @@
                         throw new Error('Network response was not ok');
                     }
                     return response.json();
-                })
-                .then(data => {
-                    console.log(data); // success response from server
+                }).then(finalResponse => {
+                    console.log(finalResponse);
+                    const allMessages = document.getElementById('messages');
+                    const allDirectChildren = allMessages.children;
+                    setTimeout(() => {
+                        const latestChildWithoutClass = Array.from(allDirectChildren).reverse().find(child => !child.classList.contains('other-user-message-entry'));
+                        console.log(latestChildWithoutClass);
+                        latestChildWithoutClass.setAttribute('data-message-id', finalResponse['messageId']);
+                        addOnTextSizeChangeToTextAreas();
+                        addOnClickToDeleteButtons();
+                        addOnClickToEditButtons();
+                        addOnClickToSaveButtons();
+                        addOnClickToCancelButtons();
+                    }, 200);
                 })
                 .catch(error => {
                     console.error('There was a problem with the fetch operation:', error);
@@ -349,6 +365,16 @@
             }
         }
 
+        function addOnTextSizeChangeToTextAreas() {
+            let messageContentInput = document.getElementsByClassName("message-content-input");
+            for (let i = 0; i < messageContentInput.length; i++) {
+                messageContentInput[i].style.height = (messageContentInput[i].scrollHeight) + "px";
+                messageContentInput[i].addEventListener("change", function (event) {
+                    this.style.height = (this.scrollHeight) + "px";
+                });
+            }
+        }
+
         function toggleEditMode(messageId) {
             var message = document.querySelector(`[data-message-id="${messageId}"]`);
             var messageContent = message.querySelector('.message-content');
@@ -399,6 +425,7 @@
                 }
             });
 
+            addOnTextSizeChangeToTextAreas();
             addOnClickToDeleteButtons();
             addOnClickToEditButtons();
             addOnClickToSaveButtons();
@@ -489,6 +516,7 @@
                     getRecentMessagesButton.style.display = 'none';
                 }
             });
+            addOnTextSizeChangeToTextAreas();
             addOnClickToDeleteButtons();
             addOnClickToEditButtons();
             addOnClickToSaveButtons();
@@ -503,15 +531,17 @@
                          <div class="cancel-message-button bi bi-x text-danger btn hover-background-grey pull-right p-0 px-1 d-none"></div>
                          <div class="save-message-button bi bi-check text-success btn hover-background-grey pull-right p-0 px-1 d-none"></div>` +
                     `<div class="pull-right">
-                            <input type="text" class="message-content-input message-content pull-right border-0 " style="max-width: 400px;" value="${message}" readonly />
+                            <textarea type="text" class="message-content-input message-content pull-right border-0 " style="max-width: 400px;" readonly>${message}</textarea>
                             <div class="saved-content-temp d-none"></div>
                         </div>`;
             }
             return `<div class="message-avatar pull-right">${name}</div>` +
                 `<div class="delete-message-button bi bi-trash-fill text-danger pull-right btn hover-background-grey p-0 px-1"></div>
-                        <div class="edit-message-button bi bi-pencil-fill text-primary pull-right btn hover-background-grey p-0 px-1"></div>` +
+                        <div class="edit-message-button bi bi-pencil-fill text-primary pull-right btn hover-background-grey p-0 px-1"></div>
+                        <div class="cancel-message-button bi bi-x text-danger btn hover-background-grey pull-right p-0 px-1 d-none"></div>
+                        <div class="save-message-button bi bi-check text-success btn hover-background-grey pull-right p-0 px-1 d-none"></div>` +
                 `<div class="d-flex flex-column pull-right">
-                           <input type="text" class="message-content-input message-content pull-right border-0 " style="max-width: 400px;" value="${message}" readonly />
+                           <textarea type="text" class="message-content-input message-content pull-right border-0 " style="max-width: 400px;" readonly>${message}</textarea>
                            <div class="saved-content-temp d-none"></div>
                            <div id="status-message" class="pull-right text-end">${status === @((int)MessageStatus.Sent) ? "Enviado" : "Lido"}</div>
                        </div>`;
