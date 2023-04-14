@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Composition;
 using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
@@ -28,14 +29,83 @@ namespace Tidbeat.Controllers
             _userManager = userManager;
         }
 
-        //Add filtres
         // GET: Reports
         [Authorize(Roles = "Moderator,Administrator")]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index([FromQuery] string name, [FromQuery] string reason, [FromQuery] string type, [FromQuery] string state, [FromQuery] string sort)
         {
-              return _context.Report != null ? 
-                          View(await _context.Report.ToListAsync()) :
-                          Problem("Entity set 'ApplicationDbContext.Report'  is null.");
+            if (_context.Report != null)
+            {
+                var result = await _context.Report.Include(p=>p.UserReported).Include(p=>p.Status).Include(p=>p.ReportItemType).Include(p=>p.Reason).ToListAsync();
+
+                if (!string.IsNullOrEmpty(name)) 
+                {
+                    result = result.Where(p=>p.UserReported.FullName.Contains(name)).ToList();
+                }
+                switch (type.ToLower())
+                {
+                    case "user":
+                        result = result.Where(p => p.ReportItemType.Equals(ReportedItemType.User)).ToList();
+                        break;
+                    case "post":
+                        result = result.Where(p => p.ReportItemType.Equals(ReportedItemType.Post)).ToList();
+                        break;
+                    case "comment":
+                        result = result.Where(p => p.ReportItemType.Equals(ReportedItemType.Comment)).ToList();
+                        break;
+                    default:
+                        break;
+                }
+
+                switch (state.ToLower())
+                {
+                    case "created":
+                        result = result.Where(p => p.Status.Equals(ReportStatus.Created)).ToList();
+                        break;
+                    case "open":
+                        result = result.Where(p => p.Status.Equals(ReportStatus.Open)).ToList();
+                        break;
+                    case "close":
+                        result = result.Where(p => p.Status.Equals(ReportStatus.Closed)).ToList();
+                        break;
+                    default:
+                        break;
+                }
+
+                switch (reason.ToLower())
+                {
+                    case "gore":
+                        result = result.Where(p => p.Reason.Equals(ReportReason.GoreContent)).ToList();
+                        break;
+                    case "hate":
+                        result = result.Where(p => p.Reason.Equals(ReportReason.HateSpeech)).ToList();
+                        break;
+                    case "other":
+                        result = result.Where(p => p.Reason.Equals(ReportReason.Other)).ToList();
+                        break;
+                    case "sexual":
+                        result = result.Where(p => p.Reason.Equals(ReportReason.SexualContent)).ToList();
+                        break;
+                    case "innappropriate":
+                        result = result.Where(p => p.Reason.Equals(ReportReason.InnappropriateBehaviour)).ToList();
+                        break;
+                    default:
+                        break;
+                }
+
+                switch (sort.ToLower())
+                {
+                    case "new":
+                        result = result.OrderByDescending(p => p.Date).ToList();
+                        break;
+                    case "old":
+                        result = result.OrderBy(p=>p.Date).ToList();
+                        break;
+                    default:
+                        break;
+                }
+                return View(result);
+            }
+            return NotFound();
         }
 
         // GET: Reports/Details/5
@@ -111,7 +181,7 @@ namespace Tidbeat.Controllers
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Reason,DetailedReason,ReportItemId,ReportItemType")] Report report)
+        public async Task<IActionResult> Create([Bind("Reason,DetailedReason,ReportItemId,ReportItemType,UserReported")] Report report)
         {
             if (ModelState.IsValid)
             {

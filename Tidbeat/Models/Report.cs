@@ -13,6 +13,8 @@ namespace Tidbeat.Models
 
         [Required]
         public ApplicationUser UserReporter { get; set; }
+        [Required]
+        public ApplicationUser UserReported { get; set; }
 
         [Required]
         public string ReportItemId { get; set; }
