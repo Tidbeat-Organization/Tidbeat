@@ -183,26 +183,40 @@ namespace Tidbeat.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Reason,DetailedReason,ReportItemId,ReportItemType,UserReported")] Report report)
         {
-            if (ModelState.IsValid)
-            {
-                var sanitizer = new HtmlSanitizer();
-                var sanitizedContent = sanitizer.Sanitize(report?.DetailedReason);
-                if (string.IsNullOrEmpty(sanitizedContent))
+            if (report.UserReporter != null && report.Reason != null && !string.IsNullOrEmpty(report.ReportItemId)) {
+                if (!Enum.IsDefined(typeof(ReportReason), report.Reason))
                 {
-                    ModelState.AddModelError(string.Empty, "error_content");
+                    ModelState.AddModelError("ReportReason", "Invalid value for ReportReason.");
                     return Json("Error");
+
                 }
-                var user = await _userManager.GetUserAsync(User);
-                if (User?.Identity.IsAuthenticated == true)
+                if (!Enum.IsDefined(typeof(ReportedItemType), report.ReportItemType))
                 {
-                    report.Id = Guid.NewGuid();
-                    report.UserReporter = user;
-                    report.Date = DateTime.Now;
-                    report.Status = ReportStatus.Created;
-                    _context.Add(report);
-                    await _context.SaveChangesAsync();
-                    return Json("Sucess");
+                    ModelState.AddModelError("ReportItemType", "Invalid value for ReportItemType.");
+                    return Json("Error");
+
                 }
+                if (ModelState.IsValid)
+                {
+                    var sanitizer = new HtmlSanitizer();
+                    var sanitizedContent = sanitizer.Sanitize(report?.DetailedReason);
+                    if (string.IsNullOrEmpty(sanitizedContent))
+                    {
+                        ModelState.AddModelError(string.Empty, "error_content");
+                        return Json("Error");
+                    }
+                    var user = await _userManager.GetUserAsync(User);
+                    if (User?.Identity.IsAuthenticated == true)
+                    {
+                        report.Id = Guid.NewGuid();
+                        report.UserReporter = user;
+                        report.Date = DateTime.Now;
+                        report.Status = ReportStatus.Created;
+                        _context.Add(report);
+                        await _context.SaveChangesAsync();
+                        return Json("Sucess");
+                    }
+                } 
             }
             return Json("Error");
         }
