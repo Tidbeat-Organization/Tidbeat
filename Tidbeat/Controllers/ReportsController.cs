@@ -199,7 +199,7 @@ namespace Tidbeat.Controllers
                 if (ModelState.IsValid)
                 {
                     var sanitizer = new HtmlSanitizer();
-                    var sanitizedContent = sanitizer.Sanitize(report?.DetailedReason);
+                    var sanitizedContent = sanitizer.Sanitize(report.DetailedReason != null ? report.DetailedReason : "");
                     if (string.IsNullOrEmpty(sanitizedContent))
                     {
                         ModelState.AddModelError(string.Empty, "error_content");
