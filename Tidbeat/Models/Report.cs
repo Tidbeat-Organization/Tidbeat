@@ -8,7 +8,7 @@ namespace Tidbeat.Models
         [Key]
         public Guid Id { get; set; }
         [Required]
-        public ReportReason Reason { get; set; }
+        public ReportReason? Reason { get; set; }
         public string? DetailedReason { get; set; }
 
         [Required]

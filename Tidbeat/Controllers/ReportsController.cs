@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
+using Ganss.Xss;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting;
 using Tidbeat.Data;
 using Tidbeat.Enums;
 using Tidbeat.Models;
@@ -58,6 +60,7 @@ namespace Tidbeat.Controllers
                     report.ModAssigned = user;
                     report.Status = ReportStatus.Open;
                     _context.Report.Update(report);
+                    await _context.SaveChangesAsync();
                 }
                 switch (report.ReportItemType)
                 {
@@ -104,18 +107,34 @@ namespace Tidbeat.Controllers
         // POST: Reports/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // Missing Checks
         [HttpPost]
+        [Authorize]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Reason,DetailedReason,ReportItemId,ReportItemType,Status,Date")] Report report)
+        public async Task<IActionResult> Create([Bind("Reason,DetailedReason,ReportItemId,ReportItemType")] Report report)
         {
             if (ModelState.IsValid)
             {
-                report.Id = Guid.NewGuid();
-                _context.Add(report);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                var sanitizer = new HtmlSanitizer();
+                var sanitizedContent = sanitizer.Sanitize(report?.DetailedReason);
+                if (string.IsNullOrEmpty(sanitizedContent))
+                {
+                    ModelState.AddModelError(string.Empty, "error_content");
+                    return Json("Error");
+                }
+                var user = await _userManager.GetUserAsync(User);
+                if (User?.Identity.IsAuthenticated == true)
+                {
+                    report.Id = Guid.NewGuid();
+                    report.UserReporter = user;
+                    report.Date = DateTime.Now;
+                    report.Status = ReportStatus.Created;
+                    _context.Add(report);
+                    await _context.SaveChangesAsync();
+                    return Json("Sucess");
+                }
             }
-            return View(report);
+            return Json("Error");
         }
 
 
@@ -124,7 +143,9 @@ namespace Tidbeat.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Reason,DetailedReason,ReportItemId,ReportItemType,Status,Date")] Report report)
+
+        [Authorize(Roles = "Moderator,Administrator")]
+        public async Task<IActionResult> Edit(Guid id, [Bind("Status")] Report report)
         {
             if (id != report.Id)
             {
@@ -133,62 +154,36 @@ namespace Tidbeat.Controllers
 
             if (ModelState.IsValid)
             {
-                try
+                var user = await _userManager.GetUserAsync(User);
+                if (User?.Identity.IsAuthenticated == true)
                 {
-                    _context.Update(report);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ReportExists(report.Id))
+                    try
                     {
-                        return NotFound();
+                        var reportSaved = await _context.Report.Where(r => r.Id.Equals(id)).FirstOrDefaultAsync();
+                        if (reportSaved == null)
+                        {
+                            return NotFound();
+                        }
+                        reportSaved.Status = report.Status;
+                        reportSaved.ModAssigned = user;
+                        _context.Update(reportSaved.Status);
+                        await _context.SaveChangesAsync();
                     }
-                    else
+                    catch (DbUpdateConcurrencyException)
                     {
-                        throw;
+                        if (!ReportExists(report.Id))
+                        {
+                            return NotFound();
+                        }
+                        else
+                        {
+                            throw;
+                        }
                     }
+                    return Json("Sucess");
                 }
-                return RedirectToAction(nameof(Index));
             }
-            return View(report);
-        }
-
-        // GET: Reports/Delete/5
-        public async Task<IActionResult> Delete(Guid? id)
-        {
-            if (id == null || _context.Report == null)
-            {
-                return NotFound();
-            }
-
-            var report = await _context.Report
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (report == null)
-            {
-                return NotFound();
-            }
-
-            return View(report);
-        }
-
-        // POST: Reports/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(Guid id)
-        {
-            if (_context.Report == null)
-            {
-                return Problem("Entity set 'ApplicationDbContext.Report'  is null.");
-            }
-            var report = await _context.Report.FindAsync(id);
-            if (report != null)
-            {
-                _context.Report.Remove(report);
-            }
-            
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return NotFound();
         }
 
         private bool ReportExists(Guid id)
