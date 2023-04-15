@@ -80,8 +80,8 @@ namespace Tidbeat.Hub {
             return Clients.Group(conversationId).SendAsync("deleteMessage", messageId);
         }
 
-        public Task AddMessageId(string conversationId, int messageId) {
-            return Clients.Group(conversationId).SendAsync("addMessageId", messageId);
+        public Task AddMessageId(string conversationId, int messageId, string userId) {
+            return Clients.Group(conversationId).SendAsync("addMessageId", messageId, userId);
         }
     }
 }

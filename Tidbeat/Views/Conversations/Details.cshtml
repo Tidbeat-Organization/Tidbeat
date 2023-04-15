@@ -195,7 +195,8 @@
                     message.remove();
                 }
             };
-            var addMessageIdCallback = function (messageId) {
+            var addMessageIdCallback = function (messageId, userId) {
+                if (userId === '@ViewBag.CurrentUser.Id') return;
                 const allMessages = document.getElementById('messages');
                 const allDirectChildren = allMessages.children;
                 const latestChildWithoutClass = Array.from(allDirectChildren).reverse().find(child => child.classList.contains('other-user-message-entry'));
@@ -242,7 +243,7 @@
                 }).then(finalResponse => {
                     const allMessages = document.getElementById('messages');
                     const allDirectChildren = allMessages.children;
-                    connection.send('addMessageId', '@Model.Id', finalResponse['messageId']);
+                    connection.send('addMessageId', '@Model.Id', finalResponse['messageId'], '@ViewBag.CurrentUser.Id');
                     setTimeout(() => {
                         const latestChildWithoutClass = Array.from(allDirectChildren).reverse().find(child => !child.classList.contains('other-user-message-entry'));
                         latestChildWithoutClass.setAttribute('data-message-id', finalResponse['messageId']);
@@ -324,7 +325,9 @@
 
         function onClickEdit(event) {
             var messageId = parseInt(event.target.parentElement.getAttribute('data-message-id'), 10);
+            console.log(messageId);
             var message = document.querySelector(`[data-message-id="${messageId}"]`);
+            console.log(message);
             var savedContentTemp = message.querySelector(`.saved-content-temp`);
             savedContentTemp.textContent = message.querySelector(`.message-content-input`).value;
             toggleEditMode(messageId);
