@@ -1,5 +1,6 @@
 ﻿@model IEnumerable<ApplicationUser>
 @using Microsoft.AspNetCore.Mvc.Localization;
+@using Tidbeat.Services;
 @inject IViewLocalizer Localizer
 
 @{
@@ -26,7 +27,13 @@
         <div class="col-md-4 mb-3">
             <div class="form-group">
                 <label for="inputCountry" class="row justify-content-left ms-4">@Localizer["country"]</label>
-                <input type="text" class="form-control ms-4" id="inputCountry" name="country" placeholder="@Localizer["search"]">
+                <select class="form-control ms-4" id="inputCountry" name="country">
+                    <option value="">@Localizer["select_country"]</option>
+                    @foreach (var country in ViewBag.Countries)
+                    {
+                        <option value="@country">@country</option>
+                    }
+                </select>
             </div>
         </div>
         <div class="col-md-1 ms-2 mt-3">
