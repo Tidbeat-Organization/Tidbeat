@@ -424,3 +424,14 @@ input[type="file"] {
         width: 20% !important;
     }
 }
+
+.message-content-input {
+    word-break: break-word;
+    overflow-wrap: break-word;
+    resize: none
+}
+
+.message-content-otheruser {
+    word-break: break-word;
+    overflow-wrap: break-word;
+}

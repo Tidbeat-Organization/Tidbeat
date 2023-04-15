@@ -46,7 +46,7 @@ namespace Tidbeat.Services {
         /// <param name="userId">The id of the user.</param>
         /// <param name="message">The text of the message.</param>
         /// <returns></returns>
-        Task AddMessageToDatabase(string conversationId, string userId, string message);
+        Task<int> AddMessageToDatabase(string conversationId, string userId, string message);
 
         /// <summary>
         /// Edits a message in the database.

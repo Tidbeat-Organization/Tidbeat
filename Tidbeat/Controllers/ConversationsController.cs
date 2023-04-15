@@ -130,8 +130,12 @@ namespace Tidbeat.Controllers
         /// <remarks> POST: Conversations/SaveMessage</remarks>
         /// <returns></returns>
         [HttpPost]
-        public async Task SaveMessage([FromBody] MessageDto messageDto) {
-            await _chatBeatService.AddMessageToDatabase(messageDto.ConversationId, messageDto.UserId, messageDto.Text);
+        public async Task<IActionResult> SaveMessage([FromBody] MessageDto messageDto) {
+            var messageId = await _chatBeatService.AddMessageToDatabase(messageDto.ConversationId, messageDto.UserId, messageDto.Text);
+            var customResponse = new {
+                MessageId = messageId
+            };
+            return Ok(customResponse);
         }
 
         /// <summary>
