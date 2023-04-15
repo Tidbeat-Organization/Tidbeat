@@ -390,13 +390,15 @@
             }
         }
 
+        function onChangeTextSize(event) {
+            this.style.height = (this.scrollHeight) + "px";
+        }
+
         function addOnTextSizeChangeToTextAreas() {
             let messageContentInput = document.getElementsByClassName("message-content-input");
             for (let i = 0; i < messageContentInput.length; i++) {
                 messageContentInput[i].style.height = (messageContentInput[i].scrollHeight) + "px";
-                messageContentInput[i].addEventListener("change", function (event) {
-                    this.style.height = (this.scrollHeight) + "px";
-                });
+                messageContentInput[i].addEventListener("change", onChangeTextSize);
             }
         }
 
