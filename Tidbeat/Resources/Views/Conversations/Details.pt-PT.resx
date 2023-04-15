@@ -117,8 +117,14 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="almost_done_with_sending" xml:space="preserve">
+    <value>Prestes a terminar o envio...</value>
+  </data>
   <data name="back_to_conversations" xml:space="preserve">
     <value>Voltar às conversas</value>
+  </data>
+  <data name="connecting_to_conversation" xml:space="preserve">
+    <value>A conectar à conversa... Se demorar demasiado tempo, experimente recarregar a página.</value>
   </data>
   <data name="connection_error" xml:space="preserve">
     <value>Erro de conexão...</value>
@@ -134,6 +140,9 @@
   </data>
   <data name="read" xml:space="preserve">
     <value>Lido</value>
+  </data>
+  <data name="refresh" xml:space="preserve">
+    <value>Recarregar</value>
   </data>
   <data name="sent" xml:space="preserve">
     <value>Enviado</value>
