@@ -560,6 +560,10 @@
                 }
             }
 
+            const containerScrollTop = messagesContainer.scrollTop;
+            const containerScrollHeight = messagesContainer.scrollHeight;
+            const containerHeight = messagesContainer.offsetHeight;
+
             messages.forEach((message) => {
                 const messageElement = document.createElement('div');
                 messageElement.classList.add("message-entry");
@@ -580,6 +584,15 @@
                     getRecentMessagesButton.style.display = 'none';
                 }
             });
+
+            const newContainerHeight = messagesContainer.offsetHeight;
+            const newContainerScrollHeight = messagesContainer.scrollHeight;
+            const scrollPosition = newContainerScrollHeight - containerScrollHeight + containerScrollTop;
+
+            if (newContainerHeight >= containerHeight) {
+                messagesContainer.scrollTop = scrollPosition;
+            }
+
             addOnTextSizeChangeToTextAreas();
             addOnClickToDeleteButtons();
             addOnClickToEditButtons();
