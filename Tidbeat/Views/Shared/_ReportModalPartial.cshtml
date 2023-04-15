@@ -1,19 +1,52 @@
-﻿@{
+﻿@using Tidbeat.Enums
+@using Microsoft.AspNetCore.Mvc.Localization;
+@inject IViewLocalizer Localizer;
+@model Tuple<string, ReportedItemType> ///The id of the element, the type of the element
+@{
+    var reportedItemTypeString = Model.Item2.ToString();
 }
 
-<div class="modal" tabindex="-1">
+<div id="postModal" class="modal d-flex" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Modal title</h5>
+                <div class="d-flex align-items-center">
+                    <div class="bi bi-exclamation-triangle-fill text-danger me-2 fs-2"></div>
+                    <h5 class="text-danger modal-title text-center text-decoration-underline">Denunciar @Localizer[reportedItemTypeString]</h5>
+                </div>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <p>Modal body text goes here.</p>
+                <form class="d-flex flex-column text-start">
+                    <div class="text-danger">Tipo de Denúncia</div>
+                    <div class="">
+                        <input type="radio" name="option" id="option1" value="@ReportReason.Other" />
+                        <label for="option1">Other</label>
+                    </div>
+                    <div class="">
+                        <input type="radio" name="option" id="option2" value="@ReportReason.GoreContent" />
+                        <label for="option2">Gore Content</label>
+                    </div>
+                    <div class="">
+                        <input type="radio" name="option" id="option3" value="@ReportReason.InnappropriateBehaviour" />
+                        <label for="option3">Innappropriate Behaviour</label>
+                    </div>
+                    <div class="">
+                        <input type="radio" name="option" id="option4" value="@ReportReason.HateSpeech" />
+                        <label for="option4">Hate Speech</label>
+                    </div>
+                    <div class="">
+                        <input type="radio" name="option" id="option5" value="@ReportReason.SexualContent" />
+                        <label for="option5">Sexual Content</label>
+                    </div>
+
+                    <div class="text-danger mt-3">Explique porquê para sabermos mais</div>
+                    <textarea placeholder="Escreva aqui o motivo..."></textarea>
+                </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="button" class="btn" data-bs-dismiss="modal" style="border: thick solid #DC3545; border-width: 3px">Enviar</button>
+                <button type="button" class="btn btn-danger bg-danger text-white">Cancelar</button>
             </div>
         </div>
     </div>

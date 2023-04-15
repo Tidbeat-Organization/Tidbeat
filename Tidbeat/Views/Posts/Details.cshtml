@@ -180,7 +180,9 @@
         </div>
 
     </div>
-
+    <div class="w-75">
+        @Html.Partial("_ReportModalPartial", Tuple.Create<string, ReportedItemType>(Model.PostId.ToString(), ReportedItemType.Post))
+    </div>
     <!--<a class="text-primary" asp-action="Index">Voltar</a>-->
 </div>
 <script>
@@ -248,6 +250,7 @@
 </script>
 <script>
     $(document).ready(function () {
+        $('#postModal').modal('show');
         // Hide the success and error messages after 5 seconds
         $("#success-alert, #error-alert").delay(5000).fadeOut(500);
 
