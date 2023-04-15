@@ -42,7 +42,13 @@
 </h2>
 
 <div class="container" style="height: calc(100% - 110px);">
-    <div id="messages" style="background-color: whitesmoke; ">
+    <div id="connection-loading">
+        <div class="spinner-border text-primary fs-4" role="status" style="width: 3rem; height: 3rem;">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+        <div class="text-primary fs-5 mt-3">A carregar... se demorar demasiado tempo, recarregue a página!</div>
+    </div>
+    <div id="messages" class="d-none" style="background-color: whitesmoke; ">
         <button type="button" id="getRecentMessagesButton" class="@(ViewBag.Messages.Count >= 20 ? "" : "d-none")">@Localizer["more_messages"]</button>
         @foreach (var message in ViewBag.Messages)
         {
@@ -89,7 +95,7 @@
         }
     </div>
 
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 5px;">
+    <div id="full-message-input-area" class="d-none" style="display: flex; justify-content: space-between; align-items: center; margin-top: 5px;">
         <textarea id="message"
                   style="width: 100%; padding: 5px 10px; border: 2px solid black; border-radius: 8px; "
                   placeholder="@Localizer["type_message_and_press_enter"]"></textarea>
@@ -437,6 +443,21 @@
             }
         }
 
+        function toggleConnectionLoading() {
+            var allMessages = document.getElementById('messages');
+            var fullMessageInputArea = document.getElementById('full-message-input-area');
+            var connectionLoading = document.getElementById('connection-loading');
+            if (allMessages.classList.contains('d-none')) {
+                allMessages.classList.remove('d-none');
+                fullMessageInputArea.classList.remove('d-none');
+                connectionLoading.classList.add('d-none');
+            } else {
+                allMessages.classList.add('d-none');
+                fullMessageInputArea.classList.add('d-none');
+                connectionLoading.classList.remove('d-none');
+            }
+        }
+
         function onConnected(connection) {
             console.log('connection started');
             connection.send('joinChat', '@Model.Id');
@@ -462,13 +483,14 @@
                 }
             });
 
-            addOnTextSizeChangeToTextAreas();
             addOnClickToDeleteButtons();
             addOnClickToEditButtons();
             addOnClickToSaveButtons();
             addOnClickToCancelButtons();
 
             toggleMessageInput();
+            toggleConnectionLoading();
+            addOnTextSizeChangeToTextAreas();
         }
 
         function onConnectionError(error) {
