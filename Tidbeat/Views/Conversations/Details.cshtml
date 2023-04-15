@@ -41,8 +41,14 @@
     </div>
 </h2>
 
-<div class="container" style="height: calc(100% - 110px);">
-    <div id="messages" style="background-color: whitesmoke; ">
+<div class="container">
+    <div id="connection-loading">
+        <div class="spinner-border text-primary fs-4" role="status" style="width: 3rem; height: 3rem;">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+        <div class="text-primary fs-5 mt-3">A carregar... se demorar demasiado tempo, recarregue a página!</div>
+    </div>
+    <div id="messages" class="d-none" style="background-color: whitesmoke; ">
         <button type="button" id="getRecentMessagesButton" class="@(ViewBag.Messages.Count >= 20 ? "" : "d-none")">@Localizer["more_messages"]</button>
         @foreach (var message in ViewBag.Messages)
         {
@@ -57,7 +63,7 @@
                         <div class="cancel-message-button bi bi-x text-danger btn hover-background-grey pull-right p-0 px-1 d-none"></div>
                         <div class="save-message-button bi bi-check text-success btn hover-background-grey pull-right p-0 px-1 d-none"></div>
                         <div class="d-flex flex-column pull-right">
-                            <input type="text" class="message-content-input message-content pull-right border-0 " style="max-width: 400px;" value="@message.Text" readonly />
+                            <textarea type="text" class="message-content-input message-content pull-right border-0 text-wrap" style="max-width: 400px;" value="@message.Text" readonly>@message.Text</textarea>
                             <div class="saved-content-temp d-none"></div>
                             <div id="status-message" class="pull-right text-end">@((message.Status == (int)MessageStatus.Sent) ? "Enviado" : "Lido")</div>
                         </div>
@@ -72,7 +78,7 @@
                         <div class="cancel-message-button bi bi-x text-danger btn hover-background-grey pull-right p-0 px-1 d-none"></div>
                         <div class="save-message-button bi bi-check text-success btn hover-background-grey pull-right p-0 px-1 d-none"></div>
                         <div class="pull-right">
-                            <input type="text" class="message-content-input message-content pull-right border-0 " style="max-width: 400px;" value="@message.Text" readonly />
+                            <textarea type="text" class="message-content-input message-content pull-right border-0 " style="max-width: 400px;" value="@message.Text" readonly>@message.Text</textarea>
                             <div class="saved-content-temp d-none"></div>
                         </div>
                     </div>
@@ -80,16 +86,16 @@
             }
             else
             {
-                <div data-message-id="@message.Id" class="message-entry">
+                <div data-message-id="@message.Id" class="other-user-message-entry message-entry">
                     <div class="message-avatar pull-left">@message.User.FullName</div>
-                    <div class="message-content-otheruser pull-left">@message.Text</div>
+                    <div class="text-start message-content-otheruser pull-left" style="max-width: 400px;">@message.Text</div>
                 </div>
             }
             messageIndex++;
         }
     </div>
 
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 5px;">
+    <div id="full-message-input-area" class="d-none" style="display: flex; justify-content: space-between; align-items: center; margin-top: 5px;">
         <textarea id="message"
                   style="width: 100%; padding: 5px 10px; border: 2px solid black; border-radius: 8px; "
                   placeholder="@Localizer["type_message_and_press_enter"]"></textarea>
@@ -106,8 +112,11 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <div>@Localizer["connection_error"]</div>
-                <div><strong style="font-size: 1.5em;">@Localizer["hit_refresh_f5"]</strong> @Localizer["to_rejoin"]</div>
+                <div class="text-danger"><strong style="font-size: 1.5em;">@Localizer["connection_error"]</strong></div>
+            </div>
+            <div class="modal-body d-flex flex-column justify-content-center">
+                <div class="text-danger">@Localizer["hit_refresh_f5"] @Localizer["to_rejoin"]</div>
+                <button class="btn btn-danger bg-danger text-white mt-2" onclick="(() => location.reload())()">@Localizer["refresh"]</button>
             </div>
         </div>
     </div>
@@ -116,7 +125,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.4/signalr.min.js" integrity="sha512-ulHhwQdGlX96gNSRsakG06STFdaQBUTbCX4KqLcYI428blEsttMkg2C3n2KtiYNDwnETBHXDg9ZAtvkfMHTYOQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script type="text/javascript">
     document.addEventListener('DOMContentLoaded', function () {
-
+        toggleMessageInput('@Localizer["connecting_to_conversation"]');
         const generateRandomName = () =>
             Math.random().toString(36).substring(2, 10);
 
@@ -150,8 +159,9 @@
                 }
                 entry.innerHTML = rightMessage(encodedMsg, '@ViewBag.CurrentUser.FullName', @((int)MessageStatus.Sent))
             } else {
+                entry.classList.add("other-user-message-entry");
                 entry.innerHTML = `<div class="message-avatar pull-left">@(ViewBag.OtherUser.FullName)</div>` +
-                    `<div class="message-content-otheruser pull-left">${encodedMsg}<div>`;
+                    `<div class="text-start message-content-otheruser pull-left" style="max-width: 400px;">${encodedMsg}<div>`;
             }
             return entry;
         }
@@ -182,7 +192,7 @@
             var editMessageCallback = function (messageId, newText) {
                 let message = document.querySelector(`[data-message-id="${messageId}"]`);
                 if (message) {
-                    let messageContent = message.querySelector('.message-content');
+                    let messageContent = message.querySelector('.message-content-otheruser');
                     if (messageContent) {
                         messageContent.textContent = newText;
                     }
@@ -194,10 +204,18 @@
                     message.remove();
                 }
             };
+            var addMessageIdCallback = function (messageId, userId) {
+                if (userId === '@ViewBag.CurrentUser.Id') return;
+                const allMessages = document.getElementById('messages');
+                const allDirectChildren = allMessages.children;
+                const latestChildWithoutClass = Array.from(allDirectChildren).reverse().find(child => child.classList.contains('other-user-message-entry'));
+                latestChildWithoutClass.setAttribute('data-message-id', messageId);
+            }
             connection.on('broadcastMessage', messageCallback);
             connection.on('setSeenMessages', seenCallback);
             connection.on('editMessage', editMessageCallback);
             connection.on('deleteMessage', deleteMessageCallback);
+            connection.on('addMessageId', addMessageIdCallback);
             connection.onclose(onConnectionError);
         }
 
@@ -231,9 +249,22 @@
                         throw new Error('Network response was not ok');
                     }
                     return response.json();
-                })
-                .then(data => {
-                    console.log(data); // success response from server
+                }).then(finalResponse => {
+                    const allMessages = document.getElementById('messages');
+                    const allDirectChildren = allMessages.children;
+                    connection.send('addMessageId', '@Model.Id', finalResponse['messageId'], '@ViewBag.CurrentUser.Id');
+                    setTimeout(() => {
+                        const latestChildWithoutClass = Array.from(allDirectChildren).reverse().find(child => !child.classList.contains('other-user-message-entry'));
+                        latestChildWithoutClass.setAttribute('data-message-id', finalResponse['messageId']);
+
+                        addOnTextSizeChangeToTextAreas();
+                        addOnClickToDeleteButtons();
+                        addOnClickToEditButtons();
+                        addOnClickToSaveButtons();
+                        addOnClickToCancelButtons();
+
+                        toggleMessageInput();
+                    }, 200);
                 })
                 .catch(error => {
                     console.error('There was a problem with the fetch operation:', error);
@@ -289,62 +320,82 @@
                 });
         }
 
+        function onClickDelete(event) {
+            var messageId = parseInt(event.target.parentElement.getAttribute('data-message-id'), 10);
+            connection.send('deleteMessage', '@Model.Id', messageId);
+            deleteMessageFromDb(messageId);
+            event.preventDefault();
+        }
+
         function addOnClickToDeleteButtons() {
             var allDeleteButtons = document.getElementsByClassName('delete-message-button');
             for (var i = 0; i < allDeleteButtons.length; i++) {
-                allDeleteButtons[i].addEventListener('click', function (event) {
-                    var messageId = parseInt(event.target.parentElement.getAttribute('data-message-id'), 10);
-                    connection.send('deleteMessage', '@Model.Id', messageId);
-                    deleteMessageFromDb(messageId);
-                    event.preventDefault();
-                });
+                allDeleteButtons[i].addEventListener('click', onClickDelete);
             }
+        }
+
+        function onClickEdit(event) {
+            var messageId = parseInt(event.target.parentElement.getAttribute('data-message-id'), 10);
+            console.log(messageId);
+            var message = document.querySelector(`[data-message-id="${messageId}"]`);
+            console.log(message);
+            var savedContentTemp = message.querySelector(`.saved-content-temp`);
+            savedContentTemp.textContent = message.querySelector(`.message-content-input`).value;
+            toggleEditMode(messageId);
+            event.preventDefault();
         }
 
         function addOnClickToEditButtons() {
             var allEditButtons = document.getElementsByClassName('edit-message-button');
             for (var i = 0; i < allEditButtons.length; i++) {
-                allEditButtons[i].addEventListener('click', function (event) {
-                    var messageId = parseInt(event.target.parentElement.getAttribute('data-message-id'), 10);
-                    var message = document.querySelector(`[data-message-id="${messageId}"]`);
-                    var savedContentTemp = message.querySelector(`.saved-content-temp`);
-                    savedContentTemp.textContent = message.querySelector(`.message-content-input`).value;
-                    toggleEditMode(messageId);
-                    event.preventDefault();
-                });
+                allEditButtons[i].addEventListener('click', onClickEdit);
             }
+        }
+
+        function onClickSave(event) {
+            var messageId = parseInt(event.target.parentElement.getAttribute('data-message-id'), 10);
+            var message = document.querySelector(`[data-message-id="${messageId}"]`);
+            var savedContentTemp = message.querySelector(`.saved-content-temp`);
+            savedContentTemp.textContent = "";
+            var messageInput = message.querySelector(`.message-content-input`);
+            connection.send("editMessage", '@Model.Id', messageId, messageInput.value);
+            editMessageInDb(messageId, messageInput.value);
+            toggleEditMode(messageId);
+            event.preventDefault();
         }
 
         function addOnClickToSaveButtons() {
             var allSaveButtons = document.getElementsByClassName('save-message-button');
             for (var i = 0; i < allSaveButtons.length; i++) {
-                allSaveButtons[i].addEventListener('click', function (event) {
-                    var messageId = parseInt(event.target.parentElement.getAttribute('data-message-id'), 10);
-                    var message = document.querySelector(`[data-message-id="${messageId}"]`);
-                    var savedContentTemp = message.querySelector(`.saved-content-temp`);
-                    savedContentTemp.textContent = "";
-                    var messageInput = message.querySelector(`.message-content-input`);
-                    connection.send("editMessage", '@Model.Id', messageId, messageInput.value);
-                    editMessageInDb(messageId, messageInput.value);
-                    toggleEditMode(messageId);
-                    event.preventDefault();
-                });
+                allSaveButtons[i].addEventListener('click', onClickSave);
             }
+        }
+
+        function onClickCancel(event) {
+            var messageId = parseInt(event.target.parentElement.getAttribute('data-message-id'), 10);
+            var message = document.querySelector(`[data-message-id="${messageId}"]`);
+            var messageInput = message.querySelector(`.message-content-input`);
+            var savedContentTemp = message.querySelector(`.saved-content-temp`);
+            messageInput.value = savedContentTemp.textContent;
+
+            savedContentTemp.textContent = "";
+            toggleEditMode(messageId);
+            event.preventDefault();
         }
 
         function addOnClickToCancelButtons() {
             var allCancelButtons = document.getElementsByClassName('cancel-message-button');
             for (var i = 0; i < allCancelButtons.length; i++) {
-                allCancelButtons[i].addEventListener('click', function (event) {
-                    var messageId = parseInt(event.target.parentElement.getAttribute('data-message-id'), 10);
-                    var message = document.querySelector(`[data-message-id="${messageId}"]`);
-                    var messageInput = message.querySelector(`.message-content-input`);
-                    var savedContentTemp = message.querySelector(`.saved-content-temp`);
-                    messageInput.value = savedContentTemp.textContent;
+                allCancelButtons[i].addEventListener('click', onClickCancel);
+            }
+        }
 
-                    savedContentTemp.textContent = "";
-                    toggleEditMode(messageId);
-                    event.preventDefault();
+        function addOnTextSizeChangeToTextAreas() {
+            let messageContentInput = document.getElementsByClassName("message-content-input");
+            for (let i = 0; i < messageContentInput.length; i++) {
+                messageContentInput[i].style.height = (messageContentInput[i].scrollHeight) + "px";
+                messageContentInput[i].addEventListener("change", function (event) {
+                    this.style.height = (this.scrollHeight) + "px";
                 });
             }
         }
@@ -375,6 +426,38 @@
             }
         }
 
+        function toggleMessageInput(blockedMessage) {
+            var messageInput = document.getElementById('message');
+            var sendMessageButton = document.getElementById('sendmessage');
+            if (messageInput.disabled) {
+                messageInput.disabled = false;
+                sendMessageButton.disabled = false;
+                messageInput.placeholder = '@Localizer["type_message_and_press_enter"]';
+                messageInput.style.backgroundColor = 'white';
+            } else {
+                messageInput.disabled = true;
+                sendMessageButton.disabled = true;
+                setTimeout(() => messageInput.placeholder = blockedMessage, 0);
+                //messageInput.placeholder = blockedMessage;
+                messageInput.style.backgroundColor = 'rgb(209, 209, 209)';
+            }
+        }
+
+        function toggleConnectionLoading() {
+            var allMessages = document.getElementById('messages');
+            var fullMessageInputArea = document.getElementById('full-message-input-area');
+            var connectionLoading = document.getElementById('connection-loading');
+            if (allMessages.classList.contains('d-none')) {
+                allMessages.classList.remove('d-none');
+                fullMessageInputArea.classList.remove('d-none');
+                connectionLoading.classList.add('d-none');
+            } else {
+                allMessages.classList.add('d-none');
+                fullMessageInputArea.classList.add('d-none');
+                connectionLoading.classList.remove('d-none');
+            }
+        }
+
         function onConnected(connection) {
             console.log('connection started');
             connection.send('joinChat', '@Model.Id');
@@ -383,6 +466,7 @@
             setOtherUsersMessageToSeenInDatabase();
             document.getElementById('sendmessage').addEventListener('click', function (event) {
                 if (messageInput.value) {
+                    toggleMessageInput('@Localizer["almost_done_with_sending"]');
                     connection.send('broadcastMessage', '@Model.Id', '@ViewBag.CurrentUser.Id', messageInput.value);
                     saveMessageInDb(messageInput.value);
                 }
@@ -403,6 +487,10 @@
             addOnClickToEditButtons();
             addOnClickToSaveButtons();
             addOnClickToCancelButtons();
+
+            toggleMessageInput();
+            toggleConnectionLoading();
+            addOnTextSizeChangeToTextAreas();
         }
 
         function onConnectionError(error) {
@@ -410,9 +498,10 @@
                 console.error(error.message);
             }
             //connection.send('leaveChat', '@Model.Id');
-            var modal = document.getElementById('myModal');
-            modal.classList.add('in');
-            modal.style = 'display: block;';
+            $('#myModal').modal('show');
+            //var modal = document.getElementById('myModal');
+            //modal.classList.add('in');
+            //modal.style = 'display: block;';
         }
 
         const connection = new signalR.HubConnectionBuilder()
@@ -489,6 +578,7 @@
                     getRecentMessagesButton.style.display = 'none';
                 }
             });
+            addOnTextSizeChangeToTextAreas();
             addOnClickToDeleteButtons();
             addOnClickToEditButtons();
             addOnClickToSaveButtons();
@@ -503,15 +593,17 @@
                          <div class="cancel-message-button bi bi-x text-danger btn hover-background-grey pull-right p-0 px-1 d-none"></div>
                          <div class="save-message-button bi bi-check text-success btn hover-background-grey pull-right p-0 px-1 d-none"></div>` +
                     `<div class="pull-right">
-                            <input type="text" class="message-content-input message-content pull-right border-0 " style="max-width: 400px;" value="${message}" readonly />
+                            <textarea type="text" class="message-content-input message-content pull-right border-0 " style="max-width: 400px;" readonly>${message}</textarea>
                             <div class="saved-content-temp d-none"></div>
                         </div>`;
             }
             return `<div class="message-avatar pull-right">${name}</div>` +
                 `<div class="delete-message-button bi bi-trash-fill text-danger pull-right btn hover-background-grey p-0 px-1"></div>
-                        <div class="edit-message-button bi bi-pencil-fill text-primary pull-right btn hover-background-grey p-0 px-1"></div>` +
+                        <div class="edit-message-button bi bi-pencil-fill text-primary pull-right btn hover-background-grey p-0 px-1"></div>
+                        <div class="cancel-message-button bi bi-x text-danger btn hover-background-grey pull-right p-0 px-1 d-none"></div>
+                        <div class="save-message-button bi bi-check text-success btn hover-background-grey pull-right p-0 px-1 d-none"></div>` +
                 `<div class="d-flex flex-column pull-right">
-                           <input type="text" class="message-content-input message-content pull-right border-0 " style="max-width: 400px;" value="${message}" readonly />
+                           <textarea type="text" class="message-content-input message-content pull-right border-0 " style="max-width: 400px;" readonly>${message}</textarea>
                            <div class="saved-content-temp d-none"></div>
                            <div id="status-message" class="pull-right text-end">${status === @((int)MessageStatus.Sent) ? "Enviado" : "Lido"}</div>
                        </div>`;
