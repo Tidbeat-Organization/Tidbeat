@@ -1,5 +1,9 @@
-﻿namespace Tidbeat.Enums {
-    public enum ReportedItemType {
-        User, Post, Comment
+﻿namespace Tidbeat.Enums
+{
+    public enum ReportedItemType
+    {
+        Post,
+        Comment,
+        User
     }
 }
