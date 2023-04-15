@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Composition;
 using System.Data;
 using System.Linq;
@@ -183,7 +184,7 @@ namespace Tidbeat.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Reason,DetailedReason,ReportItemId,ReportItemType,UserReported")] Report report)
         {
-            if (report.UserReporter != null && report.Reason != null && !string.IsNullOrEmpty(report.ReportItemId)) {
+            if (report.Reason != null && !string.IsNullOrEmpty(report.ReportItemId)) {
                 if (!Enum.IsDefined(typeof(ReportReason), report.Reason))
                 {
                     ModelState.AddModelError("ReportReason", "Invalid value for ReportReason.");
@@ -196,7 +197,43 @@ namespace Tidbeat.Controllers
                     return Json("Error");
 
                 }
-                if (ModelState.IsValid)
+
+                var currentUser = await _userManager.GetUserAsync(User);
+                report.UserReporter = currentUser;
+
+                if (report.ReportItemType.Equals(ReportedItemType.Post)) {
+                    var post = await _context.Posts.Include(p => p.User).Where(p => p.PostId.ToString().Equals(report.ReportItemId)).FirstOrDefaultAsync();
+                    if (post == null) {
+                        ModelState.AddModelError("ReportItemId", "Invalid value for ReportItemId.");
+                        return Json("Error");
+                    }
+                    report.UserReported = post.User;
+                }
+                else if (report.ReportItemType.Equals(ReportedItemType.Comment)) {
+                    var comment = await _context.Comment.Include(c => c.User).Where(p => p.CommentId.ToString().Equals(report.ReportItemId)).FirstOrDefaultAsync();
+                    if (comment == null) {
+                        ModelState.AddModelError("ReportItemId", "Invalid value for ReportItemId.");
+                        return Json("Error");
+                    }
+                    report.UserReported = comment.User;
+                }
+                else if (report.ReportItemType.Equals(ReportedItemType.User)) {
+                    var user = await _context.Users.Where(p => p.Id.ToString().Equals(report.ReportItemId)).FirstOrDefaultAsync();
+                    if (user == null) {
+                        ModelState.AddModelError("ReportItemId", "Invalid value for ReportItemId.");
+                        return Json("Error");
+                    }
+                    report.UserReported = user;
+                }
+                else {
+                    ModelState.AddModelError("ReportItemType", "Invalid value for ReportItemType.");
+                    return Json("Error");
+                }
+                var context = new ValidationContext(report);
+                var results = new List<ValidationResult>();
+                var isModelValid = Validator.TryValidateObject(report, context, results, true);
+
+                if (isModelValid)
                 {
                     var sanitizer = new HtmlSanitizer();
                     var sanitizedContent = sanitizer.Sanitize(report?.DetailedReason);

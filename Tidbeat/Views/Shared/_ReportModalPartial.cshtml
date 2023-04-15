@@ -1,53 +1,88 @@
 ﻿@using Tidbeat.Enums
 @using Microsoft.AspNetCore.Mvc.Localization;
 @inject IViewLocalizer Localizer;
-@model Tuple<string, ReportedItemType> ///The id of the element, the type of the element
 @{
-    var reportedItemTypeString = Model.Item2.ToString();
+    var reportedItemTypeString = Model;
 }
 
-<div id="postModal" class="modal d-flex" tabindex="-1">
+<div id="postModal" class="modal" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <div class="d-flex align-items-center">
                     <div class="bi bi-exclamation-triangle-fill text-danger me-2 fs-2"></div>
-                    <h5 class="text-danger modal-title text-center text-decoration-underline">Denunciar @Localizer[reportedItemTypeString]</h5>
+                    <h5 id="report-modal-title" class="text-danger modal-title text-center text-decoration-underline">@Localizer["report"]</h5>
                 </div>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form class="d-flex flex-column text-start">
-                    <div class="text-danger">Tipo de Denúncia</div>
+                <form asp-controller="Reports" asp-action="Create" method="post" id="report-modal-form" class="d-flex flex-column text-start">
+                    <div class="text-danger">@Localizer["report_type"]</div>
                     <div class="">
                         <input type="radio" name="option" id="option1" value="@ReportReason.Other" />
-                        <label for="option1">Other</label>
+                        <label for="option1">@Localizer["other"]</label>
                     </div>
                     <div class="">
                         <input type="radio" name="option" id="option2" value="@ReportReason.GoreContent" />
-                        <label for="option2">Gore Content</label>
+                        <label for="option2">@Localizer["gore_content"]</label>
                     </div>
                     <div class="">
                         <input type="radio" name="option" id="option3" value="@ReportReason.InnappropriateBehaviour" />
-                        <label for="option3">Innappropriate Behaviour</label>
+                        <label for="option3">@Localizer["innappropriate_behaviour"]</label>
                     </div>
                     <div class="">
                         <input type="radio" name="option" id="option4" value="@ReportReason.HateSpeech" />
-                        <label for="option4">Hate Speech</label>
+                        <label for="option4">@Localizer["hate_speech"]</label>
                     </div>
                     <div class="">
                         <input type="radio" name="option" id="option5" value="@ReportReason.SexualContent" />
-                        <label for="option5">Sexual Content</label>
+                        <label for="option5">@Localizer["sexual_content"]</label>
                     </div>
 
-                    <div class="text-danger mt-3">Explique porquê para sabermos mais</div>
-                    <textarea placeholder="Escreva aqui o motivo..."></textarea>
+                    <input name="Reason" id="report-modal-reason-type-input" type="hidden" value="" />
+                    <input name="ReportItemId" id="report-modal-report-item-id-input" type="hidden" value="" />
+                    <input name="UserReported.Id" id="report-modal-user-reported-id-input" type="hidden" value="" />
+
+                    <div class="text-danger mt-3">@Localizer["explain_why_to_know_more"]</div>
+                    <textarea name="DetailedReason" placeholder="@Localizer["type_here_your_reason"]"></textarea>
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn" data-bs-dismiss="modal" style="border: thick solid #DC3545; border-width: 3px">Enviar</button>
-                <button type="button" class="btn btn-danger bg-danger text-white">Cancelar</button>
+                <button type="button" id="report-modal-send-button" class="btn text-danger" style="border: thick solid #DC3545; border-width: 3px">@Localizer["send"]</button>
+                <button type="button" data-bs-dismiss="modal" class="btn btn-danger bg-danger text-white">@Localizer["cancel"]</button>
             </div>
         </div>
     </div>
 </div>
+<script>
+    $(document).ready(function () {
+        $("#postModal").on("show.bs.modal", function (e) {
+            var id = $(e.relatedTarget).data("id");
+            var type = $(e.relatedTarget).data("type");
+            console.log(id);
+            console.log(type);
+            $('#report-modal-report-item-id-input').val(id);
+            let typeString = type;
+            if (type === "@ReportedItemType.Post.ToString()") {
+                typeString = '@Localizer[ReportedItemType.Post.ToString()]';
+            } else if (type === "@ReportedItemType.Comment.ToString()") {
+                typeString = '@Localizer[ReportedItemType.Comment.ToString()]';
+            } else if (type === "@ReportedItemType.User.ToString()") {
+                typeString = '@Localizer[ReportedItemType.User.ToString()]';
+            }
+            $('#report-modal-title').text("@Localizer["report"] " + typeString);
+        });
+
+        $('input[name="option"]').on('change', function () {
+            // Get the selected value
+            var selectedValue = $('input[name="option"]:checked').val();
+            $('#report-modal-reason-type-input').val(selectedValue);
+            console.log('Selected value:', selectedValue);
+            // You can use the selected value for further processing
+        });
+
+        $("#report-modal-send-button").click(function() {
+            $("#report-modal-form").submit();
+        })
+    });
+</script>

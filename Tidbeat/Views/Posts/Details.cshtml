@@ -71,6 +71,10 @@
                         <a class="text-primary rounded text-decoration-none bi bi-pencil-fill fs-6 px-2 py-1 mb-1 hover-background-grey" asp-action="Edit" asp-route-id="@Model.PostId"></a>
                         <a class="text-danger rounded text-decoration-none bi bi-trash-fill fs-6 px-2 py-1 hover-background-grey" asp-action="Delete" asp-route-id="@Model.PostId"></a>
                     </div>
+                } else {
+                    <div>
+                        <button class="bi bi-exclamation-triangle-fill text-danger fs-4 hover-background-grey py-0 px-1 btn" data-bs-toggle="modal" data-bs-target="#postModal" data-id="@Model.PostId" data-type="Post"></button>
+                    </div>
                 }
             </div>
             <hr />
@@ -181,7 +185,7 @@
 
     </div>
     <div class="w-75">
-        @Html.Partial("_ReportModalPartial", Tuple.Create<string, ReportedItemType>(Model.PostId.ToString(), ReportedItemType.Post))
+        @Html.Partial("_ReportModalPartial")
     </div>
     <!--<a class="text-primary" asp-action="Index">Voltar</a>-->
 </div>
@@ -250,7 +254,6 @@
 </script>
 <script>
     $(document).ready(function () {
-        $('#postModal').modal('show');
         // Hide the success and error messages after 5 seconds
         $("#success-alert, #error-alert").delay(5000).fadeOut(500);
 
