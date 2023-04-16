@@ -17,7 +17,9 @@ namespace Tidbeat.Controllers
 
         public async Task<IActionResult> Index(string name, string genre, string country)
         {
-            var users = await _userManager.Users.ToListAsync();
+            var users = await _userManager.Users
+            .Where(u => u.FullName != "[deleted]")
+            .ToListAsync();
 
             // filter by name
             if (!string.IsNullOrEmpty(name))
