@@ -15,11 +15,11 @@ namespace Tidbeat.Controllers
             _userManager = userManager;
         }
 
-        public async Task<IActionResult> Index(string name, string genre, string country)
+        public async Task<IActionResult> Index(string name, string country)
         {
             var users = await _userManager.Users
-            .Where(u => u.FullName != "[deleted]")
-            .ToListAsync();
+                .Where(u => u.FullName != "[deleted]")
+                .ToListAsync();
 
             // filter by name
             if (!string.IsNullOrEmpty(name))
@@ -36,6 +36,10 @@ namespace Tidbeat.Controllers
             }
 
             ViewBag.Countries = GlobalizationService.CountryList().OrderBy(c => c).ToList();
+
+            // store the search filters in ViewData so they can be used in the view
+            ViewData["NameFilter"] = name;
+            ViewData["CountryFilter"] = country;
 
             return View(users);
         }

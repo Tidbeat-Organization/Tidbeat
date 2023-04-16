@@ -21,7 +21,7 @@
         <div class="col-md-4">
             <div class="form-group ms-4">
                 <label for="inputName" class="row justify-content-left ms-1">@Localizer["name"]</label>
-                <input type="text" class="form-control" id="inputName" name="name" placeholder="@Localizer["search"]">
+                <input type="text" class="form-control" id="inputName" name="name" placeholder="@Localizer["search"]" value="@ViewData["NameFilter"]">
             </div>
         </div>
         <div class="col-md-4 mb-3">
@@ -31,7 +31,7 @@
                     <option value="">@Localizer["select_country"]</option>
                     @foreach (var country in ViewBag.Countries)
                     {
-                            <option value="@country">@country</option>
+                                <option value="@country">@country</option>
                     }
                 </select>
             </div>
@@ -51,28 +51,28 @@
 <div class="container">
     @if (!Model.Any())
     {
-        <p class="text-center">@Localizer["not_found_users"]</p>
+            <p class="text-center">@Localizer["not_found_users"]</p>
     }
     else
     {
-        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3">
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3">
             @foreach (var user in Model)
             {
-                <div class="col mb-4">
-                    <div class="card">
-                        <div class="text-center my-2">
-                            <img src="@(!string.IsNullOrEmpty(user.ImagePath) ? user.ImagePath : "/images/UnknownUser.jpg")" alt="Profile Picture" width="75" height="75" class="profile-pic">
+                        <div class="col mb-4">
+                            <div class="card">
+                                <div class="text-center my-2">
+                                    <img src="@(!string.IsNullOrEmpty(user.ImagePath) ? user.ImagePath : "/images/UnknownUser.jpg")" alt="Profile Picture" width="75" height="75" class="profile-pic">
+                                </div>
+                                <div class="card-body">
+                                    <h5 class="card-title">@user.FullName</h5>
+                                    <div class="border border-1 border-light-grey my-2"></div>
+                                    <p class="paragraph mt-3"><strong>@Localizer["favorite_genre"]</strong> @(!string.IsNullOrEmpty(user.FavoriteGenre) ? user.FavoriteGenre.Substring(0, 1).ToUpper() + user.FavoriteGenre.Substring(1) : @Localizer["non_specified"])</p>
+                                    <p><strong>@Localizer["country"]</strong> @(string.IsNullOrEmpty(user.Country) ? @Localizer["non_specified"] : user.Country)</p>
+                                    <a href="@Url.Action("Details", "Profiles", new { id = user.Id })" class="btn btn-primary">@Localizer["view_profile"]</a>
+                                </div>
+                            </div>
                         </div>
-                        <div class="card-body">
-                            <h5 class="card-title">@user.FullName</h5>
-                            <div class="border border-1 border-light-grey my-2"></div>
-                            <p class="paragraph mt-3"><strong>@Localizer["favorite_genre"]</strong> @(!string.IsNullOrEmpty(user.FavoriteGenre) ? user.FavoriteGenre.Substring(0, 1).ToUpper() + user.FavoriteGenre.Substring(1) : @Localizer["non_specified"])</p>
-                            <p><strong>@Localizer["country"]</strong> @(string.IsNullOrEmpty(user.Country) ? @Localizer["non_specified"] : user.Country)</p>
-                            <a href="@Url.Action("Details", "Profiles", new { id = user.Id })" class="btn btn-primary">@Localizer["view_profile"]</a>
-                        </div>
-                    </div>
-                </div>
             }
-        </div>
+            </div>
     }
 </div>
