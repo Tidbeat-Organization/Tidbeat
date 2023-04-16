@@ -83,5 +83,13 @@ namespace Tidbeat.Hub {
         public Task AddMessageId(string conversationId, int messageId, string userId) {
             return Clients.Group(conversationId).SendAsync("addMessageId", messageId, userId);
         }
+
+        public Task SetOnlineStatus(string conversationId, string currentUserId, bool hasCheckOthersOnlineStatus) {
+            return Clients.Group(conversationId).SendAsync("setOnlineStatus", currentUserId, hasCheckOthersOnlineStatus);
+        }
+
+        public Task SetOfflineStatus(string conversationId, string currentUserId) {
+            return Clients.Group(conversationId).SendAsync("setOfflineStatus", currentUserId);
+        }
     }
 }

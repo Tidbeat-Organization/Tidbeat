@@ -158,6 +158,9 @@ namespace Tidbeat.Services {
         /// <exception cref="Exception"></exception>
         public async Task RemoveMessageFromDatabase(int messageId, string userId) {
             var message = await _context.Messages.Include(m => m.User).FirstOrDefaultAsync(m => m.Id == messageId);
+            if (message == null || message.User == null || userId == null) {
+                return;
+            }
             if (message.User.Id != userId)
                 throw new Exception("You can't remove a message that isn't yours.");
             _context.Messages.Remove(message);

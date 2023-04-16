@@ -123,6 +123,12 @@
   <data name="back_to_conversations" xml:space="preserve">
     <value>Go back to conversations</value>
   </data>
+  <data name="connected" xml:space="preserve">
+    <value>Connected</value>
+  </data>
+  <data name="connecting" xml:space="preserve">
+    <value>Connecting</value>
+  </data>
   <data name="connecting_to_conversation" xml:space="preserve">
     <value>Connecting to Conversation... If it takes too long, try refreshing the page.</value>
   </data>
