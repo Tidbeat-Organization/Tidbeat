@@ -33,10 +33,15 @@
     <div class="d-flex flex-column flex-md-row flex-sm-column">
         <div class="col-md-6 col-sm-12 border-md-end vh-100-minus-navbar pe-0">
             <div class="d-flex justify-content-between">
-                <div class="w-100">
-                    <div class="d-flex flex-column ms-2 align-items-start mt-3">
+                <div class="w-100 d-flex">
+                    @if (Model.User.ImagePath != null) {
+                        <img class="rounded" src="@Model.User.ImagePath" width="80" />
+                    } else {
+                        <img src="/images/UnknownUser.jpg" width="80" />
+                    }
+                    <div class="d-flex flex-column ms-3 align-items-start mt-3">
                         <div class="d-flex flex-row">
-                            <div class="post-label-right-aligned fs-6">@fromUpper: </div>
+                            <div class="fw-bold fs-6">@fromUpper: </div>
                             <div>
                                 @if (Model.User.Email == Configurations.InvalidUser.Email) {
                                     <div class="ms-2">
@@ -50,7 +55,7 @@
                             </div>
                         </div>
                         <div class="d-flex flex-row">
-                            <div class="post-label-right-aligned fs-6">
+                            <div class="fw-bold fs-6">
                                 @Localizer["created_in"]:
                             </div>
                             <span class="text-dark fw-light ms-2">@Model.CreationDate.Date.ToShortDateString()</span>
