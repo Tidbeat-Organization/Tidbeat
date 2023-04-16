@@ -36,7 +36,7 @@ namespace Tidbeat.Controllers
         {
             if (_context.Report != null)
             {
-                var result = await _context.Report.Include(p=>p.UserReported).Include(p=>p.Status).Include(p=>p.ReportItemType).Include(p=>p.Reason).ToListAsync();
+                var result = await _context.Report.Include(p=>p.UserReported).ToListAsync();
 
                 if (!string.IsNullOrEmpty(name)) 
                 {
