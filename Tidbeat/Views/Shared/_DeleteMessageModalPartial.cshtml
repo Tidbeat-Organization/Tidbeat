@@ -1,0 +1,25 @@
+﻿
+<div id="delete-message-modal" class="modal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="bi bi-trash-fill text-danger fs-5 me-2"></div>
+                <h5 class="modal-title text-danger">Delete Message</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p class="text-danger">Are you sure you want to delete that message?</p>
+                <div class="float-end">
+                    <button type="button" class="btn text-danger" onclick="onClickDelete" style="border: thick solid #DC3545; border-width: 3px">Yes</button>
+                    <button type="button" class="btn bg-danger text-white" data-bs-dismiss="modal">No</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('#delete-message-modal').modal('show');
+    });
+</script>

@@ -27,6 +27,10 @@
         </a>
     </div>
     <div>
+        <div class="d-flex flex-row mb-1">
+            <div id="current-user-connection-status" class="spinner-border spinner-border-sm text-primary fs-7 me-1"></div>
+            <div id="current-user-connection-status-name" class="fs-6">@Localizer["connecting"]</div>
+        </div>
         <a href="@Url.Action("Details", "Profiles", new { id = ViewBag.CurrentUser.Id })">
             <img src="@((ViewBag.CurrentUser.ImagePath ?? "/images/UnknownUser.jpg"))" alt="@ViewBag.CurrentUser.FullName" title="@Localizer["view_user_profile"]" width="100" height="100" />
         </a>
@@ -34,6 +38,10 @@
     </div>
     <div class="arrow mb-4">&gt;</div>
     <div>
+        <div class="d-flex flex-row">
+            <div id="other-user-circle-online-status" class="bi bi-circle text-danger fs-6 me-1"></div>
+            <div id="other-user-online-status-name" class="fs-6">Offline</div>
+        </div>
         <a href="@Url.Action("Details", "Profiles", new { id = ViewBag.OtherUser.Id })">
             <img src="@((ViewBag.OtherUser.ImagePath ?? "/images/UnknownUser.jpg"))" alt="@ViewBag.OtherUser.FullName" title="@Localizer["view_user_profile"]" width="100" height="100" />
         </a>
@@ -49,7 +57,10 @@
         <div class="text-primary fs-5 mt-3">A carregar... se demorar demasiado tempo, recarregue a página!</div>
     </div>
     <div id="messages" class="d-none" style="background-color: whitesmoke; ">
-        <button type="button" id="getRecentMessagesButton" class="@(ViewBag.Messages.Count >= 20 ? "" : "d-none")">@Localizer["more_messages"]</button>
+        <div>
+            <button type="button" id="getRecentMessagesButton" class="@(ViewBag.Messages.Count >= 20 ? "" : "d-none")">@Localizer["more_messages"]</button>
+            <span id="getMoreMessagesButtonSpinner" class="spinner-border spinner-border-sm text-primary d-none" role="status" aria-hidden="true"></span>
+        </div>
         @foreach (var message in ViewBag.Messages)
         {
             @if (message.User.Id == ViewBag.CurrentUser.Id)
@@ -108,6 +119,27 @@
 
 </div>
 
+<input id="delete-message-id-input" type="hidden" />
+
+<div id="delete-message-modal" class="modal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="bi bi-trash-fill text-danger fs-5 me-2"></div>
+                <h5 class="modal-title text-danger">Delete Message</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p class="text-danger">Are you sure you want to delete that message?</p>
+                <div class="float-end">
+                    <button id="delete-message-modal-button-yes" type="button" class="btn text-danger" style="border: thick solid #DC3545; border-width: 3px">Yes</button>
+                    <button type="button" class="btn bg-danger text-white" data-bs-dismiss="modal">No</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="modal alert alert-danger fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -121,6 +153,8 @@
         </div>
     </div>
 </div>
+
+
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.4/signalr.min.js" integrity="sha512-ulHhwQdGlX96gNSRsakG06STFdaQBUTbCX4KqLcYI428blEsttMkg2C3n2KtiYNDwnETBHXDg9ZAtvkfMHTYOQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script type="text/javascript">
@@ -147,9 +181,10 @@
             let statusMessage = document.getElementById('status-message');
             entry.classList.add("message-entry");
             if (encodedUserId === "_SYSTEM_") {
-                entry.innerHTML = encodedMsg;
-                entry.classList.add("text-center");
-                entry.classList.add("system-message");
+                //entry.innerHTML = encodedMsg;
+                //entry.classList.add("text-center");
+                //entry.classList.add("system-message");
+
             } else if (encodedUserId === "_BROADCAST_") {
                 entry.classList.add("text-center");
                 entry.innerHTML = `<div class="text-center broadcast-message">${encodedMsg}</div>`;
@@ -211,11 +246,42 @@
                 const latestChildWithoutClass = Array.from(allDirectChildren).reverse().find(child => child.classList.contains('other-user-message-entry'));
                 latestChildWithoutClass.setAttribute('data-message-id', messageId);
             }
+            var setOnlineStatusCallback = function (currentUserId, hasCheckOthersOnlineStatus) {
+                if (currentUserId === '@ViewBag.OtherUser.Id') {
+                    let otherUserOnlineStatusName = document.getElementById('other-user-online-status-name');
+                    let otherUserCircleOnlineStatus = document.getElementById('other-user-circle-online-status');
+                    if (otherUserCircleOnlineStatus.classList.contains('bi-circle')) {
+                        otherUserCircleOnlineStatus.classList.remove('bi-circle');
+                        otherUserCircleOnlineStatus.classList.add('bi-circle-fill');
+                        otherUserCircleOnlineStatus.classList.remove('text-danger');
+                        otherUserCircleOnlineStatus.classList.add('text-success');
+                        otherUserOnlineStatusName.innerHTML = 'Online';
+                    }
+                    if (!hasCheckOthersOnlineStatus) {
+                        connection.send('setOnlineStatus', '@Model.Id', '@ViewBag.CurrentUser.Id', true);
+                    }
+                }
+            };
+            var setOfflineStatusCallback = function (currentUserId) {
+                if (currentUserId === '@ViewBag.OtherUser.Id') {
+                    let otherUserOnlineStatusName = document.getElementById('other-user-online-status-name');
+                    let otherUserCircleOnlineStatus = document.getElementById('other-user-circle-online-status');
+                    if (otherUserCircleOnlineStatus.classList.contains('bi-circle-fill')) {
+                        otherUserCircleOnlineStatus.classList.remove('bi-circle-fill');
+                        otherUserCircleOnlineStatus.classList.add('bi-circle');
+                        otherUserCircleOnlineStatus.classList.remove('text-success');
+                        otherUserCircleOnlineStatus.classList.add('text-danger');
+                        otherUserOnlineStatusName.innerHTML = 'Offline';
+                    }
+                }
+            }
             connection.on('broadcastMessage', messageCallback);
             connection.on('setSeenMessages', seenCallback);
             connection.on('editMessage', editMessageCallback);
             connection.on('deleteMessage', deleteMessageCallback);
             connection.on('addMessageId', addMessageIdCallback);
+            connection.on('setOnlineStatus', setOnlineStatusCallback);
+            connection.on('setOfflineStatus', setOfflineStatusCallback);
             connection.onclose(onConnectionError);
         }
 
@@ -320,10 +386,20 @@
                 });
         }
 
-        function onClickDelete(event) {
-            var messageId = parseInt(event.target.parentElement.getAttribute('data-message-id'), 10);
+        function onClickDeleteModal(event) {
+            let deleteMessageIdInput = document.getElementById('delete-message-id-input');
+            let messageId = parseInt(deleteMessageIdInput.value, 10);
             connection.send('deleteMessage', '@Model.Id', messageId);
             deleteMessageFromDb(messageId);
+            $("#delete-message-modal").modal('hide');
+        }
+
+        function onClickDelete(event) {
+            var messageId = parseInt(event.target.parentElement.getAttribute('data-message-id'), 10);
+            let deleteMessageIdInput = document.getElementById('delete-message-id-input');
+            deleteMessageIdInput.value = messageId;
+            $("#delete-message-modal").modal('show');
+            
             event.preventDefault();
         }
 
@@ -332,6 +408,8 @@
             for (var i = 0; i < allDeleteButtons.length; i++) {
                 allDeleteButtons[i].addEventListener('click', onClickDelete);
             }
+            var deleteButtonModal = document.getElementById('delete-message-modal-button-yes');
+            deleteButtonModal.addEventListener('click', onClickDeleteModal);
         }
 
         function onClickEdit(event) {
@@ -436,6 +514,7 @@
                 sendMessageButton.disabled = false;
                 messageInput.placeholder = '@Localizer["type_message_and_press_enter"]';
                 messageInput.style.backgroundColor = 'white';
+                messageInput.focus();
             } else {
                 messageInput.disabled = true;
                 sendMessageButton.disabled = true;
@@ -463,7 +542,8 @@
         function onConnected(connection) {
             console.log('connection started');
             connection.send('joinChat', '@Model.Id');
-            connection.send('broadcastMessage', '@Model.Id', '_SYSTEM_', username + ' @Localizer["joined_the_conversation"]');
+            //connection.send('broadcastMessage', '@Model.Id', '_SYSTEM_', username);
+            connection.send('setOnlineStatus', '@Model.Id', '@ViewBag.CurrentUser.Id', false);
             connection.send('setSeenMessages', '@Model.Id', '@ViewBag.OtherUser.Id');
             setOtherUsersMessageToSeenInDatabase();
             document.getElementById('sendmessage').addEventListener('click', function (event) {
@@ -493,9 +573,23 @@
             toggleMessageInput();
             toggleConnectionLoading();
             addOnTextSizeChangeToTextAreas();
+
+            let currentUserConnectionStatus = document.getElementById('current-user-connection-status');
+            currentUserConnectionStatus.classList.remove('spinner-border');
+            currentUserConnectionStatus.classList.remove('spinner-border-sm');
+            currentUserConnectionStatus.classList.remove('text-primary');
+            currentUserConnectionStatus.classList.remove('me-1');
+            currentUserConnectionStatus.classList.remove('fs-7');
+            currentUserConnectionStatus.classList.add('text-success');
+            currentUserConnectionStatus.classList.add('bi-check');
+            currentUserConnectionStatus.classList.add('fs-5');
+            
+            let currentUserConnectionStatusName = document.getElementById('current-user-connection-status-name');
+            currentUserConnectionStatusName.innerText = '@Localizer["connected"]';
         }
 
         function onConnectionError(error) {
+            //connection.send("setOfflineStatus", '@Model.Id', '@ViewBag.CurrentUser.Id');
             if (error && error.message) {
                 console.error(error.message);
             }
@@ -504,6 +598,7 @@
             //var modal = document.getElementById('myModal');
             //modal.classList.add('in');
             //modal.style = 'display: block;';
+            
         }
 
         const connection = new signalR.HubConnectionBuilder()
@@ -519,6 +614,8 @@
         var skipAmount = @ViewBag.Messages.Count;
 
         getRecentMessagesButton.addEventListener('click', async () => {
+            let getMoreMessagesButtonSpinner = document.getElementById('getMoreMessagesButtonSpinner');
+            getMoreMessagesButtonSpinner.classList.remove('d-none');
             try {
                 const conversationId = "@Model.Id";
                 const messageAmount = @ViewBag.MessageAmountPerCall;
@@ -540,6 +637,7 @@
                 }
 
                 const messages = await response.json();
+                getMoreMessagesButtonSpinner.classList.add('d-none');
                 console.log(messages);
                 skipAmount += messages.length;
                 updateMessagesContainer(messages);
