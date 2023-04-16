@@ -96,21 +96,21 @@
             <a id="registerSubmit" class="second-phase btn btn-primary mr-5 text-nowrap mb-1" onclick="RegisterFunction()">@Localizer["register"]</a>
             <a id="registerFinalSubmit" type="submit" class="hidden" onclick=""></a>
         </div>
-        
-        @foreach (var provider in Model.ExternalLogins!) {
-            if (provider.Name == "Google") {
-                <button type="submit" class="btn border hover-background-grey mt-4" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">
-                    <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google logo" width="50" height="50">
+    </form>
+    <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
+    @foreach (var provider in Model.ExternalLogins!) {
+        if (provider.Name == "Google") {
+            <button type="submit" class="btn border hover-background-grey mt-4" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">
+                <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google logo" width="50" height="50">
 
-                </button>
-            }
-            else {
-                <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">
-                    @provider.DisplayName
-                </button>
-            }
+            </button>
         }
-
+        else {
+            <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">
+                @provider.DisplayName
+            </button>
+        }
+    }
     </form>
 </div>
 <script>
