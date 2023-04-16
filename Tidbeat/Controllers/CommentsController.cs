@@ -119,7 +119,7 @@ namespace Tidbeat.Controllers
                     if (User?.Identity.IsAuthenticated == true)
                     {
                         var user = await _userManager.GetUserAsync(User);
-                        var commentStored = await _context.Comment.Include(c => c.post).FirstOrDefaultAsync(c => c.CommentId == comment.CommentId);
+                        var commentStored = await _context.Comment.Include(c => c.post).Include(c => c.User).FirstOrDefaultAsync(c => c.CommentId == comment.CommentId);
                         if (commentStored != null) {
                             if (user.Id == commentStored.User.Id || _userManager.IsInRoleAsync(user, "Administrator").Result || _userManager.IsInRoleAsync(user, "Moderator").Result) //Add for Roles
                             {

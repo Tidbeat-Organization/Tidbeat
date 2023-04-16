@@ -273,7 +273,7 @@ namespace Tidbeat.Controllers
             {
                 return NotFound();
             }
-            if (post.User.Id != (await _userManager.GetUserAsync(User)).Id) {
+            if (post.User.Id != (await _userManager.GetUserAsync(User)).Id && !(User.IsInRole("Moderator") || User.IsInRole("Administrator")) ) {
                 return Redirect("/");
             }
             return View(post);
@@ -297,7 +297,7 @@ namespace Tidbeat.Controllers
                 try
                 {
                     var user = await _userManager.GetUserAsync(User);
-                    var ogPost = _context.Posts.Find(id);
+                    var ogPost = await _context.Posts.Include(p => p.User).FirstOrDefaultAsync(p => p.PostId == id);
                     if (ogPost == null) {
                         return NotFound();
                     }

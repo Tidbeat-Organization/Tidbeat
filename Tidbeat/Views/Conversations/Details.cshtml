@@ -573,6 +573,7 @@
             toggleMessageInput();
             toggleConnectionLoading();
             addOnTextSizeChangeToTextAreas();
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
 
             let currentUserConnectionStatus = document.getElementById('current-user-connection-status');
             currentUserConnectionStatus.classList.remove('spinner-border');
