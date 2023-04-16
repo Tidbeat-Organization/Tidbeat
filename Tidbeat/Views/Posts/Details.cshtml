@@ -65,7 +65,7 @@
 
 
                 </div>
-                @if (Model.User.Id == ViewBag.currentUser?.Id)
+                @if (Model.User.Id == ViewBag.currentUser?.Id || User.IsInRole("Moderator") || User.IsInRole("Administrator"))
                 {
                     <div class="d-flex flex-column border  border-top-0 border-primary me-2">
                         <a class="text-primary rounded text-decoration-none bi bi-pencil-fill fs-6 px-2 py-1 mb-1 hover-background-grey" asp-action="Edit" asp-route-id="@Model.PostId"></a>
