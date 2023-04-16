@@ -71,6 +71,13 @@
                         <a class="text-primary rounded text-decoration-none bi bi-pencil-fill fs-6 px-2 py-1 mb-1 hover-background-grey" asp-action="Edit" asp-route-id="@Model.PostId"></a>
                         <a class="text-danger rounded text-decoration-none bi bi-trash-fill fs-6 px-2 py-1 hover-background-grey" asp-action="Delete" asp-route-id="@Model.PostId"></a>
                     </div>
+                } else {
+                    if (User.Identity.IsAuthenticated)
+                    {
+                        <div>
+                            <button class="bi bi-exclamation-triangle-fill text-danger fs-4 hover-background-grey py-0 px-1 btn" data-bs-toggle="modal" data-bs-target="#report-modal" data-id="@Model.PostId" data-type="Post"></button>
+                        </div>
+                    }
                 }
             </div>
             <hr />
@@ -180,7 +187,9 @@
         </div>
 
     </div>
-
+    <div class="w-75">
+        @Html.Partial("_ReportModalPartial")
+    </div>
     <!--<a class="text-primary" asp-action="Index">Voltar</a>-->
 </div>
 <script>

@@ -51,6 +51,12 @@
                     @if (tempval != null)
                     {
                         <a formmethod="get" asp-area="Identity" asp-page="/Account/Manage/Index" class="align-self-center mr-auto text-primary hover-background-grey rounded text-decoration-none px-2 pt-1 pb-1 bi bi-pencil-fill"></a>
+                    } else {
+                        if (User.Identity.IsAuthenticated) {
+                            <div>
+                                <button class="bi bi-exclamation-triangle-fill text-danger fs-4 hover-background-grey py-0 px-1 btn" data-bs-toggle="modal" data-bs-target="#report-modal" data-id="@Model.Id" data-type="User"></button>
+                            </div>
+                        }
                     }
                 </div>
                 <div class="d-flex">
@@ -217,7 +223,9 @@
         }
     </div>
 </div>
-
+<div class="w-75">
+    @Html.Partial("_ReportModalPartial")
+</div>
 <script>
     /*
     $(document).ready(function () {
