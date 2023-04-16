@@ -87,9 +87,9 @@
                                     @Localizer["other_contents"]
                                 </button>
                                 <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="@Url.Action("Index", "Users")">@Localizer["users"]</a></li>
                                     <li><a class="dropdown-item" href="/Songs">@Localizer["songs"]</a></li>
                                     <li><a class="dropdown-item" href="/Bands">@Localizer["bands"]</a></li>
+                                     <li><a class="dropdown-item" href="@Url.Action("Index", "Users")">@Localizer["users"]</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -105,6 +105,7 @@
                                     <ul class="dropdown-menu" style="min-width: 60px">
                                         <li><a class="dropdown-item d-flex" href="#" id="search-songs"><div class="bi bi-music-note me-1"></div><div>@Localizer["songs"]</div></a></li>
                                         <li><a class="dropdown-item d-flex" href="#" id="search-bands"><div class="bi bi-person-fill me-1"></div><div>@Localizer["bands"]</div></a></li>
+                                        <li><a class="dropdown-item d-flex" href="#" id="search-users"><div class="bi bi-people-fill me-1"></div><div>@Localizer["users"]</div></a></li>
                                     </ul>
                                 </div>
                                 <div class="form-outline">
