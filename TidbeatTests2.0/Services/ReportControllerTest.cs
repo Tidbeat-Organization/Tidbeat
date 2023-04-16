@@ -11,6 +11,8 @@ using Tidbeat.Controllers;
 using Tidbeat.Data;
 using Microsoft.AspNetCore.Identity;
 using Tidbeat.Models;
+using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
 namespace TidbeatTests2._0.Services
 {
@@ -28,6 +30,56 @@ namespace TidbeatTests2._0.Services
                 Mock.Of<IUserStore<ApplicationUser>>(),
                 null, null, null, null, null, null, null, null
             );
+            var normalUser = new ApplicationUser
+            {
+                FullName = "Utilizador Normal",
+                UserName = "user@gmail.com",
+                Email = "user@gmail.com",
+                BirthdayDate = DateTime.Now,
+                Gender = "Masculino",
+                FavoriteSongIds = null,
+                PasswordHash = null,
+                EmailConfirmed = false,
+                PhoneNumberConfirmed = false,
+                TwoFactorEnabled = false,
+                LockoutEnabled = false,
+                AccessFailedCount = 0,
+                Role = Tidbeat.Enums.RoleType.NormalUser
+            };
+            _context.Users.Add(normalUser);
+            var modUser = new ApplicationUser
+            {
+                FullName = "Utilizador Special",
+                UserName = "userspecial@gmail.com",
+                Email = "userspecial@gmail.com",
+                BirthdayDate = DateTime.Now,
+                Gender = "Masculino",
+                FavoriteSongIds = null,
+                PasswordHash = null,
+                EmailConfirmed = false,
+                PhoneNumberConfirmed = false,
+                TwoFactorEnabled = false,
+                LockoutEnabled = false,
+                AccessFailedCount = 0,
+                Role = Tidbeat.Enums.RoleType.Moderator
+            };
+            _context.Users.Add(normalUser);
+            _context.Users.Add(modUser);
+            var report = new Report()
+            {
+                Id = new Guid(),
+                DetailedReason = "yes",
+                Date = DateTime.Now,
+                ModAssigned = modUser,
+                Reason = Tidbeat.Enums.ReportReason.Other,
+                ReportItemType = Tidbeat.Enums.ReportedItemType.User,
+                ReportItemId = normalUser.Id,
+                Status = Tidbeat.Enums.ReportStatus.Created,
+                UserReported = normalUser,
+                UserReporter = modUser
+            };
+            _context.Report.Add(report);
+            _context.SaveChanges();
         }
 
         [Fact]
@@ -51,7 +103,7 @@ namespace TidbeatTests2._0.Services
             var controller = new ReportsController(_context, _mockUserManager.Object);
 
             // Act
-            var result = await controller.Details(new Guid());
+            var result = await controller.Details(_context.Report.FirstOrDefaultAsync().Result.Id);
 
             // Assert
             var viewResult = Assert.IsAssignableFrom<IActionResult>(result);
@@ -64,12 +116,27 @@ namespace TidbeatTests2._0.Services
             // Arrange
             var controller = new ReportsController(_context, _mockUserManager.Object);
 
-            var report = new Report() {DetailedReason="yes",Status=Tidbeat.Enums.ReportStatus.Open,Reason=Tidbeat.Enums.ReportReason.Other,ReportItemType=Tidbeat.Enums.ReportedItemType.User };
+            var user = await _context.Users.FirstOrDefaultAsync();
+            var report = new Report()
+            {
+                Id = new Guid(),
+                DetailedReason = "yes",
+                Date = DateTime.Now,
+                ModAssigned = user,
+                Reason = Tidbeat.Enums.ReportReason.Other,
+                ReportItemType = Tidbeat.Enums.ReportedItemType.User,
+                ReportItemId = user.Id,
+                Status = Tidbeat.Enums.ReportStatus.Created,
+                UserReported = user,
+                UserReporter = user
+            };
+            
             // Act
-            var result = await controller.Details(new Guid());
+            var result = await controller.Create(report);
 
             // Assert
             var viewResult = Assert.IsAssignableFrom<IActionResult>(result);
+            Assert.Equal(1, _context.Report.ToListAsync().Result.Count);
 
         }
 
