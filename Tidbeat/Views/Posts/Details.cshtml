@@ -58,13 +58,13 @@
                             <div class="fw-bold fs-6">
                                 @Localizer["created_in"]:
                             </div>
-                            <span class="text-dark fw-light ms-2">@Model.CreationDate.Date.ToShortDateString()</span>
+                            <span class="text-dark fw-light ms-2">@Model.CreationDate.Date.ToString("dd/MM/yyyy")</span>
 
                         </div>
 
                         @if (Model.IsEdited)
                         {
-                            <span class="fs-6 ">&nbsp;(@Localizer["edited_in"] - @Model.EditDate.Date.ToShortDateString())</span>
+                            <span class="fs-6 ">&nbsp;(@Localizer["edited_in"] - @Model.EditDate.Date.ToString("dd/MM/yyyy"))</span>
                         }
                     </div>
 
