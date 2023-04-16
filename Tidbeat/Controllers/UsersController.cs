@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Tidbeat.Models;
+using Tidbeat.Services;
 
 namespace Tidbeat.Controllers
 {
@@ -32,9 +33,11 @@ namespace Tidbeat.Controllers
                 users = users.Where(u => u.Country != null && u.Country.ToLower().Contains(country)).ToList();
             }
 
-            return View(users);
+            ViewBag.Countries = GlobalizationService.CountryList().OrderBy(c => c).ToList();
 
+            return View(users);
         }
+
 
     }
 }
