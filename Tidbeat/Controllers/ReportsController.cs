@@ -237,11 +237,6 @@ namespace Tidbeat.Controllers
                 {
                     var sanitizer = new HtmlSanitizer();
                     var sanitizedContent = sanitizer.Sanitize(report?.DetailedReason);
-                    if (string.IsNullOrEmpty(sanitizedContent))
-                    {
-                        ModelState.AddModelError(string.Empty, "error_content");
-                        return Json("Error");
-                    }
                     var user = await _userManager.GetUserAsync(User);
                     if (User?.Identity.IsAuthenticated == true)
                     {
@@ -249,6 +244,7 @@ namespace Tidbeat.Controllers
                         report.UserReporter = user;
                         report.Date = DateTime.Now;
                         report.Status = ReportStatus.Created;
+                        report.DetailedReason = sanitizedContent;
                         _context.Add(report);
                         await _context.SaveChangesAsync();
                         return Json("Sucess");

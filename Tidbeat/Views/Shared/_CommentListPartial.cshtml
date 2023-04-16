@@ -47,8 +47,12 @@
                     <button type="button" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick="(() => selectComment(@comment.CommentId))()" style="border: none;" class="bg-transparent text-danger text-decoration-none px-2 py-1 bg-info bi-trash-fill"></button>
                 </div>
             </form>
-        </div>
-    }
-</div>
+            </div>
+        } else {
+            <div>
+                <button class="bi bi-exclamation-triangle-fill text-danger fs-4 hover-background-grey py-0 px-1 btn" data-bs-toggle="modal" data-bs-target="#report-modal" data-id="@comment.CommentId" data-type="Comment"></button>
+            </div>
+        }
+    </div>
 }
 

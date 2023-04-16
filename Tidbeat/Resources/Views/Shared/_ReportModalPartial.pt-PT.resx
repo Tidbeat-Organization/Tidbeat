@@ -117,8 +117,14 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="an_admin_will_check_this_case_soon" xml:space="preserve">
+    <value>Um administrador irá verificar este caso em breve.</value>
+  </data>
   <data name="cancel" xml:space="preserve">
     <value>Cancelar</value>
+  </data>
+  <data name="characters" xml:space="preserve">
+    <value>caracteres</value>
   </data>
   <data name="Comment" xml:space="preserve">
     <value>Comentário</value>
@@ -135,14 +141,29 @@
   <data name="innappropriate_behaviour" xml:space="preserve">
     <value>Comportamento Inapropriado</value>
   </data>
+  <data name="max_characters_reached" xml:space="preserve">
+    <value>Número máximo de characteres atingido</value>
+  </data>
   <data name="other" xml:space="preserve">
     <value>Outro</value>
+  </data>
+  <data name="please_select_a_report_type" xml:space="preserve">
+    <value>Por favor, escolha um tipo de denúncia</value>
+  </data>
+  <data name="please_try_again_later" xml:space="preserve">
+    <value>Por favor, tente novamente mais tarde.</value>
   </data>
   <data name="Post" xml:space="preserve">
     <value>Post</value>
   </data>
   <data name="report" xml:space="preserve">
     <value>Denunciar</value>
+  </data>
+  <data name="report_sent_sucessfully" xml:space="preserve">
+    <value>Denúncia enviada com sucesso</value>
+  </data>
+  <data name="report_submission_failed" xml:space="preserve">
+    <value>Envio da denúncia falhado</value>
   </data>
   <data name="report_type" xml:space="preserve">
     <value>Tipo de Denúncia</value>
@@ -152,6 +173,9 @@
   </data>
   <data name="sexual_content" xml:space="preserve">
     <value>Conteúdo Sexual</value>
+  </data>
+  <data name="something_went_wrong" xml:space="preserve">
+    <value>Algo correu mal...</value>
   </data>
   <data name="type_here_your_reason" xml:space="preserve">
     <value>Escreva aqui o motivo...</value>
