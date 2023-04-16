@@ -49,7 +49,10 @@
         <div class="text-primary fs-5 mt-3">A carregar... se demorar demasiado tempo, recarregue a página!</div>
     </div>
     <div id="messages" class="d-none" style="background-color: whitesmoke; ">
-        <button type="button" id="getRecentMessagesButton" class="@(ViewBag.Messages.Count >= 20 ? "" : "d-none")">@Localizer["more_messages"]</button>
+        <div>
+            <button type="button" id="getRecentMessagesButton" class="@(ViewBag.Messages.Count >= 20 ? "" : "d-none")">@Localizer["more_messages"]</button>
+            <span id="getMoreMessagesButtonSpinner" class="spinner-border spinner-border-sm text-primary d-none" role="status" aria-hidden="true"></span>
+        </div>
         @foreach (var message in ViewBag.Messages)
         {
             @if (message.User.Id == ViewBag.CurrentUser.Id)
@@ -436,6 +439,7 @@
                 sendMessageButton.disabled = false;
                 messageInput.placeholder = '@Localizer["type_message_and_press_enter"]';
                 messageInput.style.backgroundColor = 'white';
+                messageInput.focus();
             } else {
                 messageInput.disabled = true;
                 sendMessageButton.disabled = true;
@@ -519,6 +523,8 @@
         var skipAmount = @ViewBag.Messages.Count;
 
         getRecentMessagesButton.addEventListener('click', async () => {
+            let getMoreMessagesButtonSpinner = document.getElementById('getMoreMessagesButtonSpinner');
+            getMoreMessagesButtonSpinner.classList.remove('d-none');
             try {
                 const conversationId = "@Model.Id";
                 const messageAmount = @ViewBag.MessageAmountPerCall;
@@ -540,6 +546,7 @@
                 }
 
                 const messages = await response.json();
+                getMoreMessagesButtonSpinner.classList.add('d-none');
                 console.log(messages);
                 skipAmount += messages.length;
                 updateMessagesContainer(messages);
