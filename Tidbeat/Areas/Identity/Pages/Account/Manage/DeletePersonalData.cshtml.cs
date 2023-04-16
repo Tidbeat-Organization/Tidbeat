@@ -134,6 +134,21 @@ namespace Tidbeat.Areas.Identity.Pages.Account.Manage
                 commentRating.User = invalidUser;
             }
 
+            var userReporters = _context.Report.Where(report => report.UserReporter.Email == user.Email);
+            foreach (var report in userReporters) {
+                report.UserReporter = invalidUser;
+            }
+
+            var userReported = _context.Report.Where(report => report.UserReported.Email == user.Email);
+            foreach (var report in userReported) {
+                if (report.ReportItemId.Equals(report.UserReported.Id)) {
+                    _context.Report.Remove(report);
+                    continue;
+                }
+                report.UserReported = invalidUser;
+            }
+
+
             _context.SaveChanges();
 
             var result = await _userManager.DeleteAsync(user);
