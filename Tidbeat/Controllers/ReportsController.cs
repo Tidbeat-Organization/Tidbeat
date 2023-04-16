@@ -218,7 +218,8 @@ namespace Tidbeat.Controllers
                     report.UserReported = comment.User;
                 }
                 else if (report.ReportItemType.Equals(ReportedItemType.User)) {
-                    var user = await _context.Users.Where(p => p.Id.ToString().Equals(report.ReportItemId)).FirstOrDefaultAsync();
+                    var user = await _userManager.FindByIdAsync(report.ReportItemId);
+                    //var user = await _context.Users.Where(p => p.Id.ToString().Equals(report.ReportItemId)).FirstOrDefaultAsync();
                     if (user == null) {
                         ModelState.AddModelError("ReportItemId", "Invalid value for ReportItemId.");
                         return Json("Error");
