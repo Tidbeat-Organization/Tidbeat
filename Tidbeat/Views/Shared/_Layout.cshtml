@@ -155,9 +155,9 @@
                                 </ul>
                             </div>
                             <div class="form-outline">
-                                <input type="search" id="searchInput" class="form-control" placeholder="@Localizer["search"]" />
+                                <input type="search" id="searchInput2" class="form-control" placeholder="@Localizer["search"]" />
                             </div>
-                            <button type="button" id="searchButton" class="btn btn-primary">
+                            <button type="button" id="searchButton2" class="btn btn-primary">
                                 <img class="no-padding" src="~/images/SearchIcon.png" height="26" width="30" />
                             </button>
                         </div>
@@ -375,7 +375,9 @@
     <!-- This scripts implements all the searchbar dropdown menu logic-->
     <script>
         var searchButton = document.getElementById('searchButton');
+        var searchButton2 = document.getElementById('searchButton2');
         var searchInput = document.getElementById('searchInput');
+        var searchInput2 = document.getElementById('searchInput2');
         var searchType = 'songs'; // Default to searching for songs
         var searchTypeText = document.getElementById('searchTypeText'); // Get the search type text element
 
@@ -399,7 +401,7 @@
             changeFilterIcon1.classList.remove('bi-music-note');
             changeFilterIcon1.classList.add('bi-mic-fill');
             changeFilterIcon2.classList.remove('bi-music-note');
-            changeFilterIcon2.classList.add('bi-person-fill');
+            changeFilterIcon2.classList.add('bi-mic-fill');
             searchType = 'bands';
         }
 
@@ -424,8 +426,8 @@
         document.getElementById('search-users').addEventListener('click', changeUser);
         document.getElementById('search-users2').addEventListener('click', changeUser);
 
-        searchButton.addEventListener('click', function () {
-            var searchQuery = searchInput.value.trim();
+        function onClickSearch(theSearchInput) {
+            var searchQuery = theSearchInput.value.trim();
             console.log("search clicked.");
             if (searchQuery !== '') {
                 var newUrl = "";
@@ -437,7 +439,10 @@
                 }
                 window.location.href = newUrl;
             }
-        });
+        }
+
+        searchButton.addEventListener('click', () => onClickSearch(searchInput));
+        searchButton2.addEventListener('click', () => onClickSearch(searchInput2));
 
         searchInput.addEventListener("keypress", function (event) {
             // If the user presses the "Enter" key on the keyboard
@@ -446,6 +451,16 @@
                 event.preventDefault();
                 // Trigger the button element with a click
                 document.getElementById('searchButton').click();
+            }
+        });
+        
+        searchInput2.addEventListener("keypress", function (event) {
+            // If the user presses the "Enter" key on the keyboard
+            if (event.key === "Enter") {
+                // Cancel the default action, if needed
+                event.preventDefault();
+                // Trigger the button element with a click
+                document.getElementById('searchButton2').click();
             }
         });
     </script>
