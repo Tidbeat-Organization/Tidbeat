@@ -1,65 +1,102 @@
 ﻿@model IEnumerable<Tidbeat.Models.Report>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Lista de denúncias";
 }
 
-<h1>Index</h1>
+<h1 class="text-start ms-3" style="color: #6610F2; margin-top: 72px;">Filtros</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
+<!-- Form -->
+<form method="get">
+    <div class="row">
+        <div class="form-group col-md-4">
+            <label for="name" class="row justify-content-left ms-1">Nome do utilizador:</label>
+            <input type="text" class="form-control" id="name" name="name">
+        </div>
+        <div class="form-group col-md-4">
+            <label for="type" class="row justify-content-left ms-1">Tipo de denúncia:</label>
+            <select class="form-control" id="type" name="type">
+                <option value="">Todos</option>
+                <option value="user">Utilizador</option>
+                <option value="post">Publicação</option>
+                <option value="comment">Comentário</option>
+            </select>
+        </div>
+        <div class="form-group col-md-4">
+            <label for="reason" class="row justify-content-left ms-1">Razão da denúncia:</label>
+            <select class="form-control" id="reason" name="reason">
+                <option value="">Todas</option>
+                <option value="gore">Conteúdo gráfico</option>
+                <option value="hate">Discurso de ódio</option>
+                <option value="other">Outro</option>
+                <option value="sexual">Conteúdo sexual</option>
+                <option value="innappropriate">Comportamento inapropriado</option>
+            </select>
+        </div>
+    </div>
+    <div class="row mt-3">
+        <div class="form-group col-md-4">
+            <label for="state" class="row justify-content-left ms-1">Estado da denúncia:</label>
+            <select class="form-control" id="state" name="state">
+                <option value="">Todos</option>
+                <option value="created">Criada</option>
+                <option value="open">Em aberto</option>
+                <option value="closed">Fechada</option>
+            </select>
+        </div>
+        <div class="form-group col-md-4">
+            <label for="sort" class="row justify-content-left ms-1">Ordenar por:</label>
+            <select class="form-control" id="sort" name="sort">
+                <option value="">Data (mais recente primeiro)</option>
+                <option value="new">Data (mais recente primeiro)</option>
+                <option value="old">Data (mais antiga primeiro)</option>
+            </select>
+        </div>
+        <div class="form-group col-md-4 mt-3">
+            <label></label>
+            <button type="submit" class="btn btn-primary btn-block">
+                <img src="/images/SearchIcon.png" alt="Procurar" height="37" width="45" />
+            </button>
+        </div>
+    </div>
+</form>
+
+<div class="border border-1 border-light-grey my-4"></div>
+
+<h2 class="text-start ms-3 my-4">Denúncias</h2>
+
+<!-- Table -->
+<table class="table table-striped table-bordered">
+    <thead class="thead-dark" style="background-color: #6610F2; color: white;">
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Reason)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DetailedReason)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ReportItemId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ReportItemType)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Status)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Date)
-            </th>
+            <th>ID</th>
+            <th>Utilizador denunciado</th>
+            <th>Tipo de denúncia</th>
+            <th>Razão da denúncia</th>
+            <th>Estado da denúncia</th>
+            <th>Data da denúncia</th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Reason)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DetailedReason)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ReportItemId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ReportItemType)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Status)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Date)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.Id)</td>
+                <td>@Html.DisplayFor(modelItem => item.UserReported.FullName)</td>
+                <td>@Html.DisplayFor(modelItem => item.ReportItemType)</td>
+                <td>@Html.DisplayFor(modelItem => item.Reason)</td>
+                <td>@Html.DisplayFor(modelItem => item.Status)</td>
+                <td>@Html.DisplayFor(modelItem => item.Date)</td>
+                <td><a class="btn btn-sm btn-primary" asp-action="Details" asp-route-id="@item.Id">Detalhes</a></td>
+            </tr>
+        }
+
+        @if (!Model.Any())
+        {
+            <tr>
+                <td colspan="7">Não foram encontradas denúncias com base nesses critérios.</td>
+            </tr>
+        }
     </tbody>
 </table>
