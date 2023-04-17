@@ -10861,3 +10861,36 @@ input[type=file] {
   word-break: break-word;
   overflow-wrap: break-word;
 }
+
+/* Styles for replacing a checkbox with a switch */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 40px;
+  height: 20px;
+  background-color: #ccc;
+  border-radius: 20px;
+  transition: background-color 0.2s ease;
+  pointer-events: none;
+}
+
+.switch:before {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  background-color: #00cc44;
+  border-radius: 50%;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+input[type=checkbox] {
+  display: none;
+}
+
+input[type=checkbox]:checked + .switch:before {
+  transform: translateX(20px);
+  background-color: #ff4444;
+}

@@ -16,11 +16,9 @@ namespace Tidbeat.Models
         [Required]
         public ApplicationUser UserReported { get; set; }
 
-        [Required]
-        public string ReportItemId { get; set; }
-
-        [Required]
-        public ReportedItemType ReportItemType { get; set; }
+        public string? ReportItemId { get; set; }
+        
+        public ReportedItemType? ReportItemType { get; set; }
 
         [Required]
         public ReportStatus Status { get; set; } = ReportStatus.Created;

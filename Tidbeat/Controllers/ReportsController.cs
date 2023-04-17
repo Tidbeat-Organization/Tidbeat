@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 using Tidbeat.Data;
+using Tidbeat.DTOs.Reports;
 using Tidbeat.Enums;
 using Tidbeat.Models;
 
@@ -42,7 +43,7 @@ namespace Tidbeat.Controllers
                 {
                     result = result.Where(p=>p.UserReported.FullName.Contains(name)).ToList();
                 }
-                switch (type.ToLower())
+                switch (type?.ToLower())
                 {
                     case "user":
                         result = result.Where(p => p.ReportItemType.Equals(ReportedItemType.User)).ToList();
@@ -120,7 +121,7 @@ namespace Tidbeat.Controllers
             var user = await _userManager.GetUserAsync(User);
             if (User?.Identity.IsAuthenticated == true)
             {
-                var report = await _context.Report
+                var report = await _context.Report.Include(r => r.UserReported).Include(r => r.UserReporter)
                 .FirstOrDefaultAsync(m => m.Id == id);
                 if (report == null)
                 {
@@ -139,7 +140,7 @@ namespace Tidbeat.Controllers
                         var post = await _context.Posts.Include(p => p.User).Where(p => p.PostId.ToString().Equals(report.ReportItemId)).FirstOrDefaultAsync();
                         if (post != null)
                         {
-                            TempData["Post"] = post;
+                            ViewBag.Post = post;
                         }
                         else 
                         {
@@ -147,9 +148,9 @@ namespace Tidbeat.Controllers
                         }
                         break;
                     case ReportedItemType.Comment:
-                        var comment = await _context.Comment.Include(p=>p.User).Where(p => p.CommentId.ToString().Equals(report.ReportItemId)).FirstOrDefaultAsync();
+                        var comment = await _context.Comment.Include(p=>p.User).Include(p => p.post).Where(p => p.CommentId.ToString().Equals(report.ReportItemId)).FirstOrDefaultAsync();
                         if (comment != null) {
-                            TempData["Comment"] = comment;
+                            ViewBag.Comment = comment;
                         }
                         else 
                         {
@@ -157,17 +158,15 @@ namespace Tidbeat.Controllers
                         }
                         break;
                     case ReportedItemType.User:
-                        var userReportedAccount = await _context.Users.Where(p => p.Id.ToString().Equals(report.ReportItemId)).FirstOrDefaultAsync();
+                        var userReportedAccount = await _userManager.FindByIdAsync(report.ReportItemId);
+                        //var userReportedAccount = await _context.Users.Where(p => p.Id.ToString() == report.ReportItemId).FirstOrDefaultAsync();
                         if (userReportedAccount != null) {
-                            TempData["UserReported"] = userReportedAccount;
+                            ViewBag.UserReported = userReportedAccount;
                         }
                         else 
                         {
                             return NotFound();
                         }
-                        break;
-                    default:
-                        return NotFound();
                         break;
                 }
                 return View(report); 
@@ -295,6 +294,44 @@ namespace Tidbeat.Controllers
                         }
                         else
                         {
+                            throw;
+                        }
+                    }
+                    return Json("Sucess");
+                }
+            }
+            return NotFound();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SetReportStatus([FromBody] SetReportStatusDTO setReportStatusDTO) {
+             var reportId = setReportStatusDTO.ReportId;
+             var status = setReportStatusDTO.Status;
+             if (reportId != null) {
+                var user = await _userManager.GetUserAsync(User);
+                if (User?.Identity.IsAuthenticated == true) {
+                    try {
+                        var reportSaved = await _context.Report.Where(r => r.Id.ToString().Equals(reportId)).FirstOrDefaultAsync();
+                        if (reportSaved == null) {
+                            return NotFound();
+                        }
+                        if (status == Convert.ToInt32(ReportStatus.Open)) {
+                            reportSaved.Status = ReportStatus.Open;
+                        } else if (status == Convert.ToInt32(ReportStatus.Closed)){
+                            reportSaved.Status = ReportStatus.Closed;
+                        } else {
+                            reportSaved.Status = ReportStatus.Created;
+                        }
+                        
+                        //reportSaved.ModAssigned = user;
+                        //_context.Update(reportSaved.Status);
+                        await _context.SaveChangesAsync();
+                    }
+                    catch (DbUpdateConcurrencyException) {
+                        if (!ReportExists(Guid.Parse(reportId))) {
+                            return NotFound();
+                        }
+                        else {
                             throw;
                         }
                     }
