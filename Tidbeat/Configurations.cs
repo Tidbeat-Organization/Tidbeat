@@ -65,18 +65,20 @@ namespace Tidbeat {
             var modUserExists = await userManager.FindByEmailAsync(ModUser.Email);
             if (modUserExists == null)
             {
-                await userManager.CreateAsync(ModUser, "ModPassword");
-                token = await userManager.GeneratePasswordResetTokenAsync(ModUser);
-                await userManager.ResetPasswordAsync(ModUser, token, "ModPassword");
-                await userManager.AddToRoleAsync(ModUser, "Moderator");
+               var resultmod = await userManager.CreateAsync(ModUser, "ModPassword");
+                if (resultmod.Succeeded)
+                {
+                    await userManager.AddToRoleAsync(ModUser, "Moderator");
+                }
             }
             var adminUserExists = await userManager.FindByEmailAsync(AdminUser.Email);
             if (adminUserExists == null)
             {
-                await userManager.CreateAsync(AdminUser,"AdminPassword");
-                token = await userManager.GeneratePasswordResetTokenAsync(AdminUser);
-                await userManager.ResetPasswordAsync(AdminUser, token, "AdminPassword");
-                await userManager.AddToRoleAsync(AdminUser, "Admin");
+                var resultadmin = await userManager.CreateAsync(AdminUser,"AdminPassword");
+                if (resultadmin.Succeeded)
+                {
+                    await userManager.AddToRoleAsync(AdminUser, "Admin");
+                }
             }
             //var createUser = await userManager.CreateAsync(normalUser, "Password_123");
         }
