@@ -163,10 +163,10 @@
     <value>Folk</value>
   </data>
   <data name="followers" xml:space="preserve">
-    <value>Seguidores</value>
+    <value>Teus Seguidores</value>
   </data>
   <data name="followies" xml:space="preserve">
-    <value>Seguidos</value>
+    <value>Pessoas que Segues</value>
   </data>
   <data name="from" xml:space="preserve">
     <value>de</value>
