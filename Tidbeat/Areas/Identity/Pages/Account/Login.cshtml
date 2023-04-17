@@ -9,7 +9,7 @@
 
 <div class="text-center d-flex flex-column temporary-margin">
     <h3 class="display-4 text-primary">@Localizer["login_in_tidbeat"]</h3>
-    <form class="mx-auto d-flex flex-column" id="account" method="post">
+    <form class="mx-auto d-flex flex-column w-lg-25" id="account" method="post">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="text-danger" id="Danger">
             @if (ModelState.ContainsKey("Danger"))

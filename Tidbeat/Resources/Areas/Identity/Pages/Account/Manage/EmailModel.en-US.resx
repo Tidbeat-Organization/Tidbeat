@@ -133,7 +133,7 @@
     <value>Your email is unchanged.</value>
   </data>
   <data name="password_must_contain_at_least" xml:space="preserve">
-    <value>Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character.</value>
+    <value>Invalid password. Must be at least 6 characters, with at least 1 number, 1 uppercase letter, and 1 lowercase letter.</value>
   </data>
   <data name="please_confirm_link" xml:space="preserve">
     <value>Please, confirm your account by</value>
