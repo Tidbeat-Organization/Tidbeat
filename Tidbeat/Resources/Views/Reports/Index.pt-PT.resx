@@ -180,7 +180,7 @@
   <data name="reports" xml:space="preserve">
     <value>Denúncias</value>
   </data>
-  <data name="report_date&quot;" xml:space="preserve">
+  <data name="report_date" xml:space="preserve">
     <value>Data da denúncia</value>
   </data>
   <data name="report_reason" xml:space="preserve">
