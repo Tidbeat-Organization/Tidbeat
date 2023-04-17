@@ -31,6 +31,7 @@ namespace Tidbeat.Controllers
         }
 
         // GET: Reports
+        
         [Authorize(Roles = "Moderator,Administrator,Admin")]
         public async Task<IActionResult> Index([FromQuery] string name, [FromQuery] string reason, [FromQuery] string type, [FromQuery] string state, [FromQuery] string sort)
         {
@@ -40,7 +41,7 @@ namespace Tidbeat.Controllers
 
                 if (!string.IsNullOrEmpty(name)) 
                 {
-                    result = result.Where(p=>p.UserReported.FullName.Contains(name)).ToList();
+                    result = result.Where(p => p.UserReported.FullName.ToLower().Contains(name.ToLower())).ToList();
                 }
                 if (!string.IsNullOrEmpty(type))
                 {
@@ -113,6 +114,7 @@ namespace Tidbeat.Controllers
                             break;
                     }
                 }
+                ViewData["NameFilter"] = name;
                 return View(result);
             }
             return NotFound();
