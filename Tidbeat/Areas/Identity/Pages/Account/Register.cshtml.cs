@@ -33,7 +33,7 @@ namespace Tidbeat.Areas.Identity.Pages.Account
     /// </summary>
     public class RegisterModel : PageModel
     {
-        public static string Pattern = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&_-])[A-Za-z\\d@$!%*?&_-]{6,}$";
+        public static string Pattern = "^(?!_)(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?!.*[<>\\'\\\"])[a-zA-Z\\d\\s<>\\'\\\"]{6,}$";
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IUserStore<ApplicationUser> _userStore;
@@ -196,11 +196,15 @@ namespace Tidbeat.Areas.Identity.Pages.Account
 
                     await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                     await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
+
+                    _userManager.PasswordValidators.Clear();
+                    _userManager.PasswordValidators.Add(new CustomPasswordValidator<ApplicationUser>());
                     var result = await _userManager.CreateAsync(user, Input.Password);
-                    await _userManager.AddToRoleAsync(user, "NormalUser");
+                    
 
                     if (result.Succeeded)
                     {
+                        await _userManager.AddToRoleAsync(user, "NormalUser");
                         _logger.LogInformation("User created a new account with password.");
 
                         var userId = await _userManager.GetUserIdAsync(user);
