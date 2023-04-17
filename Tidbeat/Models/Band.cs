@@ -25,6 +25,6 @@ namespace Tidbeat.Models {
         /// <summary>
         /// The band's genre.
         /// </summary>
-        public List<string>? Gener { get; set; }
+        public string? Gener { get; set; }
     }
 }

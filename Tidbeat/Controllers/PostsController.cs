@@ -65,28 +65,30 @@ namespace Tidbeat.Controllers
         {
             order = (order == "") ? "newest" : order;
             TempData["genre"] = genre;
-            var songs = await _context.Songs.ToListAsync();
-            foreach (var song in songs)
-            {
-                var genres = await _spotifyService.GetGenresOfSong(song.SongId);
-                Console.WriteLine("Genres of " + song.Name + ":\n");
-                foreach (var _genre in genres)
-                {
-                    Console.WriteLine($"\t{_genre}");
-                }
-            }
+            //var songs = await _context.Songs.ToListAsync();
+             /*foreach (var song in songs)
+             {
+                 var genres = await _spotifyService.GetGenresOfSong(song.SongId);
+                 Console.WriteLine("Genres of " + song.Name + ":\n");
+                 foreach (var _genre in genres)
+                 {
+                     Console.WriteLine($"\t{_genre}");
+                 }
+             }*/
 
             var results = await _context
                 .Posts
                 .Where(PostPasses(name, genre, order))
                 .ToListAsync();
 
-            Console.WriteLine("[ Before Ordering ]");
-            foreach (var result in results)
-            {
-                Console.WriteLine($"Initial Result: Name({result.Title}), Date({result.CreationDate})");
+            /* Console.WriteLine("[ Before Ordering ]");
+             foreach (var result in results)
+             {
+                 Console.WriteLine($"Initial Result: Name({result.Title}), Date({result.CreationDate})");
+             }*/
+            if (!string.IsNullOrEmpty(genre)) {
+            results = results.Where(p => (p.Band?.Gener?.Contains(genre) ?? false) || (p.Song?.Gener?.Contains(genre) ?? false)).ToList(); 
             }
-            results = results.Where(p => (p.Band?.Gener?.Any(q => q.Contains(genre)) ?? false) || (p.Song?.Gener?.Any(q => q.Contains(genre)) ?? false)).ToList();
             switch (order)
             {
                 case "a-z":
@@ -102,12 +104,12 @@ namespace Tidbeat.Controllers
                     results = results.OrderByDescending(p => p.CreationDate).ToList();
                     break;
             }
-
+            /*
             Console.WriteLine("[ After Ordering ]");
             foreach (var result in results)
             {
                 Console.WriteLine($"Posterior Result: Name({result.Title}), Date({result.CreationDate})");
-            }
+            }*/
 
             return View(results);
         }
@@ -220,7 +222,7 @@ namespace Tidbeat.Controllers
                                 newBand.BandId = Request.Form["BandId"];
                                 newBand.Name = SpotifyBand.Name;
                                 newBand.Image = SpotifyBand.Images[0].Url;
-                                newBand.Gener = SpotifyBand.Genres;
+                                newBand.Gener = string.Join(',', SpotifyBand.Genres.Where(s => s.Length > 1));
                                 band = newBand;
                                 post.Band = band;
                                 _context.Bands.Add(band);
@@ -252,7 +254,7 @@ namespace Tidbeat.Controllers
                                 }
                                 newSong.SongId = Request.Form["SongId"];
                                 newSong.Name = SpotifySong.Name;
-                                newSong.Gener = songGener;
+                                newSong.Gener = string.Join(',', songGener.Where(s => s.Length > 1));
                                 song = newSong;
                                 post.Song = song;
                                 post.Band = song.Band;

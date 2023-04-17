@@ -50,8 +50,8 @@ namespace Tidbeat.Controllers
                     BandId = spotifyBand.Id,
                     Image = spotifyBand.Images[0].Url,
                     Name = spotifyBand.Name,
-                    Gener = spotifyBand.Genres,
-                };
+                    Gener = string.Join(',', spotifyBand.Genres.Where(s => s.Length > 1))
+            };
                 _context.Bands.Add(bandIfAvailable);
                 _context.SaveChanges();
             }
@@ -61,7 +61,7 @@ namespace Tidbeat.Controllers
                 SongId = songId,
                 Band = bandIfAvailable,
                 Name = spotifySong.Name,
-                Gener = songGener
+                Gener = string.Join(',', songGener.Where(s => s.Length > 1))
             };
 
             _context.Songs.Add(song);
