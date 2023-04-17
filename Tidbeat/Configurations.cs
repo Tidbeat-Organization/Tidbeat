@@ -24,6 +24,32 @@ namespace Tidbeat {
             Role = Enums.RoleType.NormalUser
         };
 
+        public static ApplicationUser AdminUser = new ApplicationUser
+        {
+            Id = new Guid("00000000-0000-0000-0000-000000000001").ToString(),
+            FullName = "admin",
+            UserName = "admin@email.com",
+            Email = "admin@email.com",
+            BirthdayDate = DateTime.Now,
+            Gender = "male",
+            IsBanned = false,
+            Role = Enums.RoleType.Administrator,
+            EmailConfirmed = true,
+        };
+
+        public static ApplicationUser ModUser = new ApplicationUser
+        {
+            Id = new Guid("00000000-0000-0000-0000-000000000002").ToString(),
+            FullName = "mod",
+            UserName = "mod@email.com",
+            Email = "mod@email.com",
+            BirthdayDate = DateTime.Now,
+            Gender = "male",
+            IsBanned = false,
+            Role = Enums.RoleType.Moderator,
+            EmailConfirmed = true,
+        };
+
         /// <summary>
         /// This will add an "invalid" user to the database. This user is used for deleted users.
         /// </summary>
@@ -31,10 +57,26 @@ namespace Tidbeat {
         /// <returns></returns>
         public static async Task CreateStartingUsers(IServiceProvider serviceProvider) {
             var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
-
+            var token = "";
             var deletedUserExists = await userManager.FindByEmailAsync(InvalidUser.Email);
             if (deletedUserExists == null) {
                 await userManager.CreateAsync(InvalidUser);
+            }
+            var modUserExists = await userManager.FindByEmailAsync(ModUser.Email);
+            if (modUserExists == null)
+            {
+                await userManager.CreateAsync(ModUser);
+                token = await userManager.GeneratePasswordResetTokenAsync(ModUser);
+                await userManager.ResetPasswordAsync(ModUser, token, "ModPassword");
+                await userManager.AddToRoleAsync(ModUser, "Moderator");
+            }
+            var adminUserExists = await userManager.FindByEmailAsync(AdminUser.Email);
+            if (adminUserExists == null)
+            {
+                await userManager.CreateAsync(AdminUser);
+                token = await userManager.GeneratePasswordResetTokenAsync(AdminUser);
+                await userManager.ResetPasswordAsync(AdminUser, token, "AdminPassword");
+                await userManager.AddToRoleAsync(AdminUser, "Admin");
             }
             //var createUser = await userManager.CreateAsync(normalUser, "Password_123");
         }
