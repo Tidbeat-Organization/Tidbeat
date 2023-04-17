@@ -12,104 +12,120 @@
 
 <div class="container-fluid mt-5 pt-5">
     <div class="d-flex justify-content-center">
-        <div class="d-flex flex-column text-start position-relative">
+        <div class="d-flex flex-column text-start position-relative ms-5 ms-md-0">
             <div class="bi bi-arrow-left-circle fs-1 text-primary position-absolute" style="left: -70px"></div>
             <div class="d-flex">
-                <div>Detalhes da Denúncia a</div>
-                <div class="text-primary">&nbsp;@Model.UserReported.FirstName()&nbsp;</div>
-                <div>por</div>
-                <div class="text-primary">&nbsp;@Model.UserReporter.FirstName()</div>
+                <div>@Localizer["report_details_to"]</div>
+                <div>&nbsp;</div>
+                @if (Model.UserReported.Email == Configurations.InvalidUser.Email) {
+                     <div class="text-primary">@Localizer["[deleted]"]&nbsp;</div>
+                } else {
+                    <a href="/Profiles/Details/@Model.UserReported.Id" class="text-primary">@Model.UserReported.FirstName()</a>
+                }
+                <div>&nbsp;@Localizer["by"]&nbsp;</div>
+                @if (Model.UserReporter.Email == Configurations.InvalidUser.Email) {
+                    <div class="text-primary">@Localizer["[deleted]"]</div>
+                } else {
+                    <a href="/Profiles/Details/@Model.UserReporter.Id" class="text-primary">@Model.UserReporter.FirstName()</a>
+                }
             </div>
 
             <div class="d-flex">
-                <div style="color: lightgrey">Data: @Model.Date.ToString("dd/MM/yyyy")</div>
+                <div style="color: lightgrey">@Localizer["date"]: @Model.Date.ToString("dd/MM/yyyy")</div>
                 <div style="color: lightgrey">&nbsp;|&nbsp;</div>
-                <div style="color: lightgrey">Id da Denúncia: @Model.Id</div>
+                <div style="color: lightgrey">@Localizer["report_id"]: @Model.Id</div>
             </div>
         </div>
     </div>
 
     <div class="mt-5 row">
-        <div class="col-4"></div>
-        <div class="report-options col-4">
-            @if (reportRefersAnything)
-            {
-                <div class="d-flex flex-row ms-2">
-                    <div class="me-2">Tipo de Denúncia:</div>
-                    <div class="border border-2 rounded border-primary ms-2 text-start ps-2 py-1" style="width: 300px">@Localizer[Model.ReportItemType.ToString()]</div>
+        <div class="col-sm-2 col-md-3 col-lg-4"></div>
+        <div class="report-options col-sm-8 col-md-6 col-lg-4">
+            
+            <div class="d-flex flex-row ms-2 align-items-center">
+                <div class="me-2">@Localizer["type_of_item"]:</div>
+                <div class="border border-2 rounded border-primary ms-2 text-start ps-2 py-1" style="width: 300px">
+                    @if (reportRefersAnything) {
+                        @Localizer[Model.ReportItemType.ToString()]
+                    } else {
+                        @Localizer["deleted"]
+                    }
                 </div>
-            }
-            <div class="d-flex flex-row mt-2">
-                <div>Razão de Denúncia:</div>
+            </div>
+            
+            <div class="d-flex flex-row mt-2 align-items-center">
+                <div>@Localizer["report_reason"]:</div>
                 <div class="border border-2 rounded border-primary ms-2 text-start ps-2 py-1" style="width: 300px">@Localizer[Model.Reason.ToString()]</div>
             </div>
-            <div class="d-flex flex-row mt-2">
-                <div class="me-1">Estado da Denúncia:</div>
+            <div class="d-flex flex-row mt-2 align-items-center">
+                <div class="me-1">@Localizer["report_state"]:</div>
                 <div class="mt-1 d-flex flex-row">
                     <label class="switch me-2">
                         <input type="checkbox" id="report-state-checkbox" @(isReportOpen ? "" : "checked")>
                         <label id="report-state-label" for="report-state-checkbox" class="switch"></label>
                     </label>
                     <div class="d-flex flex-row">
-                        <div id="report_state_open" class="@(isReportOpen ? "fw-bold" : "text-light-grey")">Aberto</div>
+                        <div id="report_state_open" class="@(isReportOpen ? "fw-bold" : "text-light-grey")">@Localizer["open"]</div>
                         <div class="text-light-grey">&nbsp;/&nbsp;</div>
-                        <div id="report_state_closed" class="@(isReportOpen ? "text-light-grey" : "fw-bold")">Fechado</div>
+                        <div id="report_state_closed" class="@(isReportOpen ? "text-light-grey" : "fw-bold")">@Localizer["closed"]</div>
                     </div>
                 </div>
             </div>
             <div class="d-flex flex-column align-items-start pt-3">
-                <div class="">Descrição:</div>
+                <div class="">@Localizer["more_details"]:</div>
                 <div class="border border-2 border-primary rounded text-start p-2 w-100" style="height: 200px">@Model.DetailedReason</div>
             </div>
         </div>
-        <div class="col-4"></div>
+        <div class="col-sm-2 col-md-3 col-lg-4"></div>
     </div>
     <div class="mt-5">
-        <a asp-controller="Profiles" asp-action="Details" asp-route-id="@Model.UserReported.Id" class="btn btn-primary">Abrir perfil do Utilizador</a>
-        @if (reportRefersAnything) {
-            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Abrir comentário</button>
-            @if (isReportOpen) {
-                <button id="close-report-button" class="btn bg-danger text-white">Fechar Denúncia</button>
-            } else {
-                <button id="open-report-button" class="btn bg-danger text-white">Reabrir Denúncia</button>
+        @if (Model.UserReported.Email != Configurations.InvalidUser.Email) {
+            <a asp-controller="Profiles" asp-action="Details" asp-route-id="@Model.UserReported.Id" class="btn btn-primary">@Localizer["open_user_profile"]</a>
+        }
+        @if (isReportOpen) {
+            @if (reportRefersAnything && Model.ReportItemType != ReportedItemType.User) {
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">@Localizer["to_open"] @(isComment ? Localizer["Comment"] : Localizer["Post"])</button>
             }
-
+            <button id="close-report-button" class="btn bg-danger text-white">@Localizer["close_report"]</button>
+        } else {
+            <button id="open-report-button" class="btn bg-danger text-white">@Localizer["open_report"]</button>
         }
     </div>
 </div>
 
-@if (reportRefersAnything)
-{
+@if (reportRefersAnything && Model.ReportItemType != ReportedItemType.User) {
     <!-- Modal -->
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Conteúdo do @(
+                    <h5 class="modal-title" id="exampleModalLabel">@Localizer["content_of_the"] @(
                     isComment ? Localizer["Comment"] : Localizer["Post"]
                     ):</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    @if (!isComment)
-                    {
+                    @if (!isComment) {
                         <div class="text-start fw-bold fs-5">@ViewBag.Post.Title</div>
                     }
                     <div class="text-start">
-                        @(
-                            isComment ? ViewBag.Comment.Content : Html.Raw(ViewBag.Post.Content)
-                            )
+                        @if (isComment) {
+                            @ViewBag.Comment.Content
+                        }
+                        else if (Model.ReportItemType == ReportedItemType.Post) {
+                            @Html.Raw(ViewBag.Post.Content)
+                        }
                     </div>
                 </div>
                 <div class="modal-footer d-flex justify-content-between">
-                    <a class="mr-auto" href="@goToLink">Go to Post</a>
+                    <a class="mr-auto" href="@goToLink">@Localizer["go_to"] @Localizer["Post"]</a>
                     <div class="d-flex flex-row">
-                        <a asp-controller="@itemController" asp-action="Edit" asp-route-id="@Model.ReportItemId" class="btn btn-primary bi bi-pencil-fill"></a>
+                        <a asp-controller="@itemController" asp-action="Edit" asp-route-id="@Model.ReportItemId" class="btn btn-primary bi bi-pencil-fill me-1"></a>
                         @if (isComment)
                         {
                                 <div class="d-flex flex-row">
                                     <button id="delete-comment-button" class="btn bg-danger text-white bi bi-trash-fill"></button>
-                                    <button id="confirm-delete-comment-button" class="bi btn bg-danger text-white bi-check ms-2 d-none"></button>
+                                    <button id="confirm-delete-comment-button" class="bi btn bg-danger text-white bi-check ms-2 me-1 d-none"></button>
                                     <button id="cancel-delete-comment-button" class="bi btn bg-danger text-white bi-x me-2 d-none"></button>
                                 </div>
                         }
@@ -117,7 +133,7 @@
                         {
                             <a asp-controller="Posts" asp-action="Delete" asp-route-id="@ViewBag.Comment.Id" class="btn bg-danger text-white bi bi-trash-fill"></a>
                         }
-                        <button type="button" class="btn bg-danger text-white" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn bg-danger text-white ms-1" data-bs-dismiss="modal">@Localizer["to_close"]</button>
                     </div>
                 </div>
             </div>

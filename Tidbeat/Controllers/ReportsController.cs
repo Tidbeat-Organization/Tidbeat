@@ -158,7 +158,8 @@ namespace Tidbeat.Controllers
                         }
                         break;
                     case ReportedItemType.User:
-                        var userReportedAccount = await _context.Users.Where(p => p.Id.ToString().Equals(report.ReportItemId)).FirstOrDefaultAsync();
+                        var userReportedAccount = await _userManager.FindByIdAsync(report.ReportItemId);
+                        //var userReportedAccount = await _context.Users.Where(p => p.Id.ToString() == report.ReportItemId).FirstOrDefaultAsync();
                         if (userReportedAccount != null) {
                             ViewBag.UserReported = userReportedAccount;
                         }
