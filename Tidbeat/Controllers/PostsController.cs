@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Ganss.Xss;
 using Microsoft.AspNetCore.Authorization;
@@ -12,6 +13,8 @@ using Microsoft.DotNet.MSIdentity.Shared;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 using Newtonsoft.Json.Linq;
+using SpotifyAPI.Web;
+using Tidbeat.AuxilliaryClasses;
 using Tidbeat.Data;
 using Tidbeat.Models;
 using Tidbeat.Services;
@@ -42,14 +45,71 @@ namespace Tidbeat.Controllers
             _localizer = localizer;
         }
 
+        private static Expression<Func<Post, bool>> PostPasses(string name, string genre, string order)
+        {
+            name = (name == null) ? "" : name;
+            return p => (p.Song.Name.Contains(name))
+                     || (p.Band.Name.Contains(name))
+                     || (p.Title.Contains(name))
+                     || (string.IsNullOrEmpty(genre))
+                     || (string.IsNullOrEmpty(order));
+        }
+
+
         /// <summary>
         /// Gets all the posts of the application.
         /// </summary>
         /// <returns>All posts of the application.</returns>
         // GET: Posts
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index([FromQuery] string name, [FromQuery] string genre, [FromQuery] string order)
         {
-              return View(await _context.Posts.ToListAsync());
+            order = (order == "") ? "newest" : order;
+            TempData["genre"] = genre;
+            var songs = await _context.Songs.ToListAsync();
+            foreach (var song in songs)
+            {
+                var genres = await _spotifyService.GetGenresOfSong(song.SongId);
+                Console.WriteLine("Genres of " + song.Name + ":\n");
+                foreach (var _genre in genres)
+                {
+                    Console.WriteLine($"\t{_genre}");
+                }
+            }
+
+            var results = await _context
+                .Posts
+                .Where(PostPasses(name, genre, order))
+                .ToListAsync();
+
+            Console.WriteLine("[ Before Ordering ]");
+            foreach (var result in results)
+            {
+                Console.WriteLine($"Initial Result: Name({result.Title}), Date({result.CreationDate})");
+            }
+            results = results.Where(p => (p.Band?.Gener?.Any(q => q.Contains(genre)) ?? false) || (p.Song?.Gener?.Any(q => q.Contains(genre)) ?? false)).ToList();
+            switch (order)
+            {
+                case "a-z":
+                    results = results.OrderBy(p => p.Title).ToList();
+                    break;
+                case "oldest":
+                    results = results.OrderBy(p => p.CreationDate).ToList();
+                    break;
+                case "z-a":
+                    results = results.OrderByDescending(p => p.Title).ToList();
+                    break;
+                case "newest":
+                    results = results.OrderByDescending(p => p.CreationDate).ToList();
+                    break;
+            }
+
+            Console.WriteLine("[ After Ordering ]");
+            foreach (var result in results)
+            {
+                Console.WriteLine($"Posterior Result: Name({result.Title}), Date({result.CreationDate})");
+            }
+
+            return View(results);
         }
 
         /// <summary>
@@ -160,6 +220,7 @@ namespace Tidbeat.Controllers
                                 newBand.BandId = Request.Form["BandId"];
                                 newBand.Name = SpotifyBand.Name;
                                 newBand.Image = SpotifyBand.Images[0].Url;
+                                newBand.Gener = SpotifyBand.Genres;
                                 band = newBand;
                                 post.Band = band;
                                 _context.Bands.Add(band);
@@ -175,6 +236,7 @@ namespace Tidbeat.Controllers
                                 Song newSong = new Song();
                                 var SpotifySong = await _spotifyService.GetSongAsync(Request.Form["SongId"]);
                                 var SongBand = await _spotifyService.GetBandAsync(SpotifySong.Artists[0].Id);
+                                var songGener = await _spotifyService.GetGenresOfSong(Request.Form["SongId"]);
                                 var checkBand = _context.Bands.Find(SongBand.Id);
                                 if (checkBand == null)
                                 {
@@ -190,6 +252,7 @@ namespace Tidbeat.Controllers
                                 }
                                 newSong.SongId = Request.Form["SongId"];
                                 newSong.Name = SpotifySong.Name;
+                                newSong.Gener = songGener;
                                 song = newSong;
                                 post.Song = song;
                                 post.Band = song.Band;

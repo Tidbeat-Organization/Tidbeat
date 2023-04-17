@@ -21,5 +21,10 @@ namespace Tidbeat.Models {
         /// The band's image external URL.
         /// </summary>
         public string? Image { get; set; }
+
+        /// <summary>
+        /// The band's genre.
+        /// </summary>
+        public List<string>? Gener { get; set; }
     }
 }

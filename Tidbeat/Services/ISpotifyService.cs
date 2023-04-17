@@ -15,6 +15,25 @@ namespace Tidbeat.Services {
         Task<FullTrack> GetSongAsync(string id);
 
         /// <summary>
+        /// Gets a song's genres from the Spotify API.
+        /// </summary>
+        /// <param name="id">The id of the song.</param>
+        /// <returns>The string array with the results.</returns>
+        Task<List<string>> GetGenresOfSong(string id);
+
+        /// <summary>
+        /// Gets a band's genres from the Spotify API.
+        /// </summary>
+        /// <param name="id">The id of the band.</param>
+        /// <returns>The string array with the results.</returns>
+        Task<List<string>> GetGenresOfBand(string id);
+
+        Task<bool> SongHasGenre(string id, string genre);
+
+        Task<bool> BandHasGenre(string id, string genre);
+
+        
+        /// <summary>
         /// Gets a band from the Spotify API.
         /// </summary>
         /// <param name="id">The id of the band.</param>
