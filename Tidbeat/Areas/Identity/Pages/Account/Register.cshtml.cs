@@ -178,7 +178,10 @@ namespace Tidbeat.Areas.Identity.Pages.Account
                 if (String.IsNullOrEmpty(Input.FullName))
                 {
                     ModelState.AddModelError("NameRed", _localizer["invalid_name"]);
-                } else
+                } else if (Input.FullName.Contains('<') || Input.FullName.Contains('>') || Input.FullName.StartsWith('_') || Input.FullName.Contains('"') || Input.FullName.Contains("'")) {
+                    ModelState.AddModelError("NameRed", _localizer["name_may_not_contain"]);
+                }
+                else
                 if (Input.Gender != "male" && Input.Gender != "female" && Input.Gender != "non_binary")
                 {
                     ModelState.AddModelError("GenderRed", _localizer["invalid_gender"]);

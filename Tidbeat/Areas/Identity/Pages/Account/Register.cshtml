@@ -245,6 +245,13 @@
             console.log(username);
             return false
         }
+        if (username.value.includes("<") || username.value.includes(">") || username.value.includes("'") || username.value.includes('"') || username.value[0] === "_") {
+            ResetDanger();
+            document.getElementById('nameDanger').innerHTML = "@Localizer["name_may_not_contain"].Value";
+            event.preventDefault();
+            console.log(username);
+            return false
+        }
         document.getElementById("registerForm").submit();
     }
 

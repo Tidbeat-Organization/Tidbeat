@@ -162,6 +162,9 @@
   <data name="male" xml:space="preserve">
     <value>Masculino</value>
   </data>
+  <data name="name_may_not_contain" xml:space="preserve">
+    <value>O seu nome não pode conter &lt;&gt;' " nem iniciar com _</value>
+  </data>
   <data name="non_binary" xml:space="preserve">
     <value>Não-Binário</value>
   </data>
