@@ -29,7 +29,7 @@ namespace Tidbeat.Controllers
             _localizer = localizer;
         }
 
-        [Authorize(Roles = "Moderator,Administrator")]
+        [Authorize(Roles = "Moderator,Administrator,Admin")]
         [HttpPost]
         public async Task<ActionResult> EditAsync(string userId,string name, string about )
         {
@@ -63,7 +63,7 @@ namespace Tidbeat.Controllers
             return Json(_localizer["operation_fail"]);
         }
 
-        [Authorize(Roles = "Moderator,Administrator")]
+        [Authorize(Roles = "Moderator,Administrator,Admin")]
         [HttpPost]
         public async Task<ActionResult> DeleteAsync(string userId, string reason)
         {
@@ -118,7 +118,7 @@ namespace Tidbeat.Controllers
             return Json(_localizer["operation_fail"]);
         }
 
-        [Authorize(Roles = "Moderator,Administrator")]
+        [Authorize(Roles = "Moderator,Administrator,Admin")]
         [HttpPost]
         public async Task<ActionResult> BanAsync(string userId, string reason, int time, string date) // date, passes month, day, years, weeks
         {
@@ -166,7 +166,7 @@ namespace Tidbeat.Controllers
             return Json(_localizer["operation_fail"]);
         }
 
-        [Authorize(Roles = "Administrator")]
+        [Authorize(Roles = "Administrator,Admin")]
         [HttpPost]
         public async Task<ActionResult> RevokePermisson(string userId)
         {
@@ -186,7 +186,7 @@ namespace Tidbeat.Controllers
             return Json("Error");
         }
 
-        [Authorize(Roles = "Administrator")]
+        [Authorize(Roles = "Administrator,Admin")]
         [HttpPost]
         public async Task<ActionResult> GivePermisson(string userId, RoleType newRole)
         {
