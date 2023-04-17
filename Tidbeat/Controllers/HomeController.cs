@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System.Diagnostics;
+using System.Net;
 using Tidbeat.Models;
 
 namespace Tidbeat.Controllers {
@@ -8,15 +11,36 @@ namespace Tidbeat.Controllers {
     /// </summary>
     public class HomeController : Controller {
         private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger) {
+        private readonly UserManager<ApplicationUser> _userManager;
+        public HomeController(ILogger<HomeController> logger, UserManager<ApplicationUser> userManager) {
             _logger = logger;
+            _userManager = userManager;
         }
         /// <summary>
         /// Finds the Index view.
         /// </summary>
         /// <returns>Index view.</returns>
-        public IActionResult Index() {
+        public async Task<IActionResult> Index() {
+            if (User.Identity.IsAuthenticated)
+            {
+                using (var client = new HttpClient())
+                {
+                    var user = await _userManager.GetUserAsync(User);
+                    var request = HttpContext.Request;
+                    var currentUrl = string.Format("{0}://{1}", request.Scheme, request.Host);
+                    Console.WriteLine(currentUrl);
+                    // Call the second action and get the JSON result
+                    var response = await client.GetAsync(currentUrl+"/Follows/Followers?userId=" + user.Id);
+                    response.EnsureSuccessStatusCode(); // Throws an exception if the status code is not 2xx
+
+                    // Deserialize the JSON result and store it in TempData
+                    var jsonResult = await response.Content.ReadAsStringAsync();
+                    var data = JsonConvert.DeserializeObject<List<ApplicationUser>>(jsonResult);
+                    TempData["Friends"] = data;
+                }
+                
+ 
+            }
             return View();
         }
 

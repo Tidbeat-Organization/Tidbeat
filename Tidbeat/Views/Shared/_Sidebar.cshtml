@@ -67,9 +67,9 @@
 @{
     List<ApplicationUser>? Followies = new List<ApplicationUser>();
 
-    @if (TempData.ContainsKey("Followies"))
+    @if (TempData.ContainsKey("Friends"))
     {
-        Followies = (List<ApplicationUser>?)TempData["Followies"];
+        Followies = (List<ApplicationUser>?)TempData["Friends"];
     }
 }
 
@@ -89,7 +89,7 @@
 
     <div class="text-primary">Pessoas que segues</div>
     <div class="scrollable-posts h-100">
-        @if (TempData.ContainsKey("Followies"))
+        @if (TempData.ContainsKey("Friends"))
         {
             if (Followies?.Count > 0)
             {
