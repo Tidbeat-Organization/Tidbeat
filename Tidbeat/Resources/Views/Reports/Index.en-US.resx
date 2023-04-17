@@ -192,6 +192,9 @@
   <data name="report_type" xml:space="preserve">
     <value>Report type</value>
   </data>
+  <data name="search" xml:space="preserve">
+    <value>Search</value>
+  </data>
   <data name="see" xml:space="preserve">
     <value>See</value>
   </data>

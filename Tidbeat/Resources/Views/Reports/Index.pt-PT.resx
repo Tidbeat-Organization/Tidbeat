@@ -192,6 +192,9 @@
   <data name="report_type" xml:space="preserve">
     <value>Tipo de denúncia</value>
   </data>
+  <data name="search" xml:space="preserve">
+    <value>Procurar</value>
+  </data>
   <data name="see" xml:space="preserve">
     <value>Ver</value>
   </data>
