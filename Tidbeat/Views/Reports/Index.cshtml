@@ -7,11 +7,11 @@
 <h1 class="text-start ms-3" style="color: #6610F2; margin-top: 72px;">Filtros</h1>
 
 <!-- Form -->
-<form method="get">
+<form method="get" action="@Url.Action("Index", "Reports")">
     <div class="row">
         <div class="form-group col-md-4">
             <label for="name" class="row justify-content-left ms-1">Nome do utilizador:</label>
-            <input type="text" class="form-control" id="name" name="name">
+            <input type="text" class="form-control" id="name" name="name" value="@ViewData["NameFilter"]">
         </div>
         <div class="form-group col-md-4">
             <label for="type" class="row justify-content-left ms-1">Tipo de denúncia:</label>
