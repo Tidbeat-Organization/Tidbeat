@@ -121,7 +121,7 @@
     //    TempData["Gender"];
     //}
     function showPhase(isPhaseOne) {
-        let pattern = /^(?!_)(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?!.*[<>\'\"])[a-zA-Z\d\s<>\'\"]{6,}$/;
+        let pattern = /^(?!_)(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?!.*[<>\'\"])[^\x3C\x3E\x27\x22]{6,}$/;
         let email = document.getElementById('registerEmailField').value;
         let password = document.getElementById('registerPasswordField').value;
         let confirmPassword = document.getElementById('registerConfirmPasswordField').value;

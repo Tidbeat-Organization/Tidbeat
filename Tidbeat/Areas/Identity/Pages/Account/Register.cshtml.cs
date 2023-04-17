@@ -33,7 +33,7 @@ namespace Tidbeat.Areas.Identity.Pages.Account
     /// </summary>
     public class RegisterModel : PageModel
     {
-        public static string Pattern = "^(?!_)(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?!.*[<>\\'\\\"])[a-zA-Z\\d\\s<>\\'\\\"]{6,}$";
+        public static string Pattern = "^(?!_)(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?!.*[<>\\'\\\"])[^\\x3C\\x3E\\x27\\x22]{6,}$";
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IUserStore<ApplicationUser> _userStore;
