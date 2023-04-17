@@ -7,33 +7,28 @@
 <div class="form-control d-flex flex-row">
     <div class="align-content-end flex-column w-25 border-end">
             <div class="fs-7">@Localizer["created_in"]: @comment.CreationDate.Date.ToString("dd/MM/yyyy")</div>
-        <div class="font-weigth-bold">
+        <div class="font-weigth-bold d-flex">
             @if (comment.User.Email == Configurations.InvalidUser.Email) {
                 <div>
                     @Localizer["[deleted]"]
                 </div>
             }
             else {
+                    @if (comment.User.Role.Equals(Tidbeat.Enums.RoleType.Administrator)) {
+                        <div class="bi bi-diamond-fill fs-6 me-1 py-0 text-primary" data-toggle="tooltip" data-placement="top" title="@Localizer["admin"]"></div>
+                    }
+                    else if (comment.User.Role.Equals(Tidbeat.Enums.RoleType.Moderator)) {
+                        <div class="bi bi-diamond-fill fs-6 me-1 py-0 text-danger" data-toggle="tooltip" data-placement="top" title="@Localizer["moderator"]"></div>
+                    }
+                    else {
+                        <div class="bi bi-music-note fs-6 me-1 py-0 text-black" data-toggle="tooltip" data-placement="top" title="@Localizer["normal_user"]"></div>
+                    }
                 <a class="text-decoration-none" asp-Controller="Profiles" asp-Action="Details" asp-route-id="@comment.User.Id">
                     @comment.User.FullName
                 </a>
             }
         </div>
-            @switch (comment.User.Role)
-            {
-                case RoleType.Administrator:
-                    <div class="text-primary">@Localizer["Admin"]</div>
-                    break;
-                case RoleType.Moderator:
-                    <div class="text-primary">@Localizer["Moderator"]</div>
-                    break;
-                case RoleType.NormalUser:
-                    <div class="text-primary">@Localizer["NormalUser"]</div>
-                    break;
-                default:
-                    <div class="text-primary">@Localizer["Unknown"]</div>
-                    break;
-            }
+            
         <div>@Html.Partial("_RatingPartial", Tuple.Create((int) comment.CommentId , RatingType.Comment))</div>
     </div>
     <div class="border-left border-secondary ml-2 w-75 text-start ms-2">@comment.Content</div>

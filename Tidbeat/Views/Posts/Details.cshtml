@@ -42,7 +42,7 @@
                     <div class="d-flex flex-column ms-3 align-items-start mt-3">
                         <div class="d-flex flex-row">
                             <div class="fw-bold fs-6">@fromUpper: </div>
-                            <div>
+                            <div class="d-flex align-content-center">
                                 @if (Model.User.Email == Configurations.InvalidUser.Email) {
                                     <div class="ms-2">
                                         @Localizer["[deleted]"]
@@ -51,6 +51,15 @@
                                     <a class="fw-light text-decoration-none ms-2" asp-Controller="Profiles" asp-Action="Details" asp-route-id="@Model.User.Id">
                                         @Model.User.FullName
                                     </a>
+                                    @if (Model.User.Role.Equals(Tidbeat.Enums.RoleType.Administrator)) {
+                                        <div class="bi bi-diamond-fill fs-6 ms-1 py-0 text-primary" data-toggle="tooltip" data-placement="top" title="@Localizer["admin"]"></div>
+                                    }
+                                    else if (Model.User.Role.Equals(Tidbeat.Enums.RoleType.Moderator)) {
+                                        <div class="bi bi-diamond-fill fs-6 ms-1 py-0 text-danger" data-toggle="tooltip" data-placement="top" title="@Localizer["moderator"]"></div>
+                                    }
+                                    else {
+                                        <div class="bi bi-music-note fs-6 ms-1 py-0 text-black" data-toggle="tooltip" data-placement="top" title="@Localizer["normal_user"]"></div>
+                                    }
                                 }
                             </div>
                         </div>
@@ -262,6 +271,9 @@
 </script>
 <script>
     $(document).ready(function () {
+        
+        $('[data-toggle="tooltip"]').tooltip();
+        
         // Hide the success and error messages after 5 seconds
         $("#success-alert, #error-alert").delay(5000).fadeOut(500);
 
