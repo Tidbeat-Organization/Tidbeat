@@ -16,6 +16,8 @@
         messageIndex++;
     }
     messageIndex = 0;
+    var currentUserName = ViewBag.CurrentUser.FirstName();
+    var otherUserName = ViewBag.OtherUser.FirstName();
 }
 
 <h1>Detalhes</h1>
@@ -68,7 +70,7 @@
                 @if (messageIndex == mostRecentCurrentUserMessageIndex)
                 {
                     <div data-message-id="@message.Id" class="message-entry">
-                        <div class="message-avatar pull-right">@message.User.FullName</div>
+                        <div class="message-avatar pull-right">@currentUserName</div>
                         <div class="delete-message-button bi bi-trash-fill text-danger pull-right btn hover-background-grey p-0 px-1"></div>
                         <div class="edit-message-button bi bi-pencil-fill text-primary pull-right btn hover-background-grey p-0 px-1"></div>
                         <div class="cancel-message-button bi bi-x text-danger btn hover-background-grey pull-right p-0 px-1 d-none"></div>
@@ -83,7 +85,7 @@
                 else
                 {
                     <div data-message-id="@message.Id" class="message-entry">
-                        <div class="message-avatar pull-right">@message.User.FullName</div>
+                        <div class="message-avatar pull-right">@currentUserName</div>
                         <div class="delete-message-button bi bi-trash-fill text-danger pull-right btn hover-background-grey p-0 px-1"></div>
                         <div class="edit-message-button bi-pencil-fill text-primary pull-right btn hover-background-grey p-0 px-1"></div>
                         <div class="cancel-message-button bi bi-x text-danger btn hover-background-grey pull-right p-0 px-1 d-none"></div>
@@ -98,7 +100,7 @@
             else
             {
                 <div data-message-id="@message.Id" class="other-user-message-entry message-entry">
-                    <div class="message-avatar pull-left">@message.User.FullName</div>
+                    <div class="message-avatar pull-left">@otherUserName</div>
                     <div class="text-start message-content-otheruser pull-left" style="max-width: 400px;">@message.Text</div>
                 </div>
             }
@@ -192,10 +194,10 @@
                 if (statusMessage) {
                     statusMessage.remove();
                 }
-                entry.innerHTML = rightMessage(encodedMsg, '@ViewBag.CurrentUser.FullName', @((int)MessageStatus.Sent))
+                entry.innerHTML = rightMessage(encodedMsg, '@currentUserName', @((int)MessageStatus.Sent))
             } else {
                 entry.classList.add("other-user-message-entry");
-                entry.innerHTML = `<div class="message-avatar pull-left">@(ViewBag.OtherUser.FullName)</div>` +
+                entry.innerHTML = `<div class="message-avatar pull-left">@(otherUserName)</div>` +
                     `<div class="text-start message-content-otheruser pull-left" style="max-width: 400px;">${encodedMsg}<div>`;
             }
             return entry;
@@ -667,14 +669,15 @@
                 const messageElement = document.createElement('div');
                 messageElement.classList.add("message-entry");
                 messageElement.setAttribute('data-message-id', message.id);
+                var firstName = message.user.fullName.split(' ')[0];
                 if (message.user.id === "@(ViewBag.CurrentUser.Id)") {
                     if (messageIndex == mostRecentMessageIndex && !statusMessageAlreadyExists) {
-                        messageElement.innerHTML = rightMessage(message.text, message.user.fullName, message.status);
+                        messageElement.innerHTML = rightMessage(message.text, firstName, message.status);
                     } else {
-                        messageElement.innerHTML = rightMessage(message.text, message.user.fullName, undefined);
+                        messageElement.innerHTML = rightMessage(message.text, firstName, undefined);
                     }
                 } else {
-                    messageElement.innerHTML = `<div class="message-avatar pull-left">${message.user.fullName}</div>` +
+                    messageElement.innerHTML = `<div class="message-avatar pull-left">${firstName}</div>` +
                         `<div class="message-content-otheruser pull-left">${message.text}<div>`;
                 }
                 messageIndex++;

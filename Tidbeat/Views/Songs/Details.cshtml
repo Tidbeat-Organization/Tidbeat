@@ -114,7 +114,12 @@
                                 @Localizer["[deleted]"]
                             }
                             else {
-                                @post.User.FullName
+                                string personName = post.User.FirstAndLastName();
+                                if (personName.Length > 15) {
+                                    personName = personName.Substring(0, 15);
+                                    personName += "...";
+                                }
+                                @personName
                             }
                         </div>
                         <div class="fs-7">@Localizer["created_in"]: @post.CreationDate.Date.ToString("dd/MM/yyyy")</div>

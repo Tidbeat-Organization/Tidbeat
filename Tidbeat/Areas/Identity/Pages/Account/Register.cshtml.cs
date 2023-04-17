@@ -94,6 +94,7 @@ namespace Tidbeat.Areas.Identity.Pages.Account
             /// </summary>
             [Required]
             [DataType(DataType.Text)]
+            [MaxLength(30, ErrorMessage = "name_too_long")]
             [Display(Name = "Nome apresentado")]
             public string FullName { get; set; }
             /// <summary>

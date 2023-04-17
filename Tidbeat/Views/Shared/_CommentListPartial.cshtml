@@ -7,7 +7,7 @@
 <div class="form-control d-flex flex-row">
     <div class="align-content-end flex-column w-25 border-end">
             <div class="fs-7">@Localizer["created_in"]: @comment.CreationDate.Date.ToString("dd/MM/yyyy")</div>
-        <div class="font-weigth-bold d-flex">
+        <div class="font-weigth-bold d-flex justify-content-center">
             @if (comment.User.Email == Configurations.InvalidUser.Email) {
                 <div>
                     @Localizer["[deleted]"]
@@ -23,8 +23,15 @@
                     else {
                         <div class="bi bi-music-note fs-6 me-1 py-0 text-black" data-toggle="tooltip" data-placement="top" title="@Localizer["normal_user"]"></div>
                     }
-                <a class="text-decoration-none" asp-Controller="Profiles" asp-Action="Details" asp-route-id="@comment.User.Id">
-                    @comment.User.FullName
+                    <a class="text-decoration-none text-start text-wrap text-break" asp-Controller="Profiles" asp-Action="Details" asp-route-id="@comment.User.Id">
+                        @{
+                            string personName = comment.User.FirstAndLastName();
+                            if (personName.Length > 15) {
+                                personName = personName.Substring(0, 15);
+                                personName += "...";
+                            }
+                        }
+                        @personName
                 </a>
             }
         </div>

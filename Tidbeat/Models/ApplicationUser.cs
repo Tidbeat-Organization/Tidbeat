@@ -62,6 +62,20 @@ namespace Tidbeat.Models {
         public List<BanUser>? Bans { get; set; }
         public RoleType Role { get; set; }
 
+
+        public string FirstName() {
+            return FullName.Split(' ')[0];
+        }
+
+        public string LastName() {
+            var allNames = FullName.Split(' ');
+            return allNames[allNames.Length - 1];
+        }
+
+        public string FirstAndLastName() { 
+            return FirstName() + " " + LastName();
+        }
+
         /// <summary>
         /// Function which deserializes the FavoriteSongIds string into a list of strings.
         /// </summary>

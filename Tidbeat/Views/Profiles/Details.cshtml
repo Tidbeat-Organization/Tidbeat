@@ -214,7 +214,15 @@
             <a class="text-decoration-none text-black" href="@Url.Action("Details", "Posts", new { id = post.PostId })">
                 <div class="d-flex align-items-center border border-2 border-primary p-1 rounded mb-2 hover-background-grey">
                     <div class="border-end border-2 border-primary pe-2">
-                        <div>@post.User.FullName</div>
+                        <div>@{
+                                string personName = post.User.FirstAndLastName();
+                                if (personName.Length > 15) {
+                                    personName = personName.Substring(0, 15);
+                                    personName += "...";
+                                }
+                              }
+                            @personName
+                        </div>
                         <div class="fs-7">@Localizer["created_in"]: @post.CreationDate.Date.ToString("dd/MM/yyyy")</div>
                     </div>
                     <div class="ms-2">@post.Title</div>
