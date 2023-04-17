@@ -395,6 +395,14 @@ namespace Tidbeat.Controllers
                     }
 
                     _context.Posts.Remove(post);
+
+                    var nonNullReports = await _context.Report.Where(r => r.ReportItemId != null).ToListAsync();
+                    var reports = nonNullReports.Where(r => r.ReportItemId.ToString() == post.PostId.ToString()).ToList();
+                    //var reports = await _context.Report.Where(r => r.ReportItemId != null && r.ReportItemId.ToString() == post.PostId.ToString()).ToListAsync();
+                    foreach (Report report in reports) {
+                        report.ReportItemType = null;
+                        report.ReportItemId = null;
+                    }
                     await _context.SaveChangesAsync();
 
                     TempData["Message"] = _localizer["post_deleted_sucessfully"].Value;

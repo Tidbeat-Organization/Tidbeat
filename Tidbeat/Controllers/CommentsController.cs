@@ -177,6 +177,13 @@ namespace Tidbeat.Controllers
                 {
                     _context.CommentRatings.Remove(rating);
                 }
+
+                var nonNullReports = await _context.Report.Where(r => r.ReportItemId != null).ToListAsync();
+                var reports = nonNullReports.Where(r => r.ReportItemId.ToString() == id.ToString()).ToList();
+                foreach (Report report in reports) {
+                    report.ReportItemType = null;
+                    report.ReportItemId = null;
+                }
                 if (comment != null)
                 {
                     _context.Comment.Remove(comment);
