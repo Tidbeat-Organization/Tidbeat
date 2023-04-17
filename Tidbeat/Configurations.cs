@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using SpotifyAPI.Web;
+using Tidbeat.Areas.Identity.Pages.Account;
 using Tidbeat.Data;
 using Tidbeat.Models;
 
@@ -62,10 +63,12 @@ namespace Tidbeat {
             if (deletedUserExists == null) {
                 await userManager.CreateAsync(InvalidUser);
             }
+            userManager.PasswordValidators.Clear();
+            userManager.PasswordValidators.Add(new CustomPasswordValidator<ApplicationUser>());
             var modUserExists = await userManager.FindByEmailAsync(ModUser.Email);
             if (modUserExists == null)
             {
-               var resultmod = await userManager.CreateAsync(ModUser, "ModPassword");
+               var resultmod = await userManager.CreateAsync(ModUser, "ModPassword1");
                 if (resultmod.Succeeded)
                 {
                     await userManager.AddToRoleAsync(ModUser, "Moderator");
@@ -74,7 +77,7 @@ namespace Tidbeat {
             var adminUserExists = await userManager.FindByEmailAsync(AdminUser.Email);
             if (adminUserExists == null)
             {
-                var resultadmin = await userManager.CreateAsync(AdminUser,"AdminPassword");
+                var resultadmin = await userManager.CreateAsync(AdminUser,"AdminPassword1");
                 if (resultadmin.Succeeded)
                 {
                     await userManager.AddToRoleAsync(AdminUser, "Admin");
