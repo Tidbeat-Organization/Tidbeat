@@ -114,8 +114,9 @@ app.MapControllerRoute(
 app.MapRazorPages();
 
 using var scope = app.Services.CreateScope();
+
+await Configurations.CreateStartingRoles(scope.ServiceProvider);
 await Configurations.CreateStartingUsers(scope.ServiceProvider);
 //await Configurations.CreateStartingPosts(scope.ServiceProvider);
-await Configurations.CreateStartingRoles(scope.ServiceProvider);
 
 app.Run();
