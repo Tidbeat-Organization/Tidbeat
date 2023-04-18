@@ -55,8 +55,8 @@
 
 <h2 class="text-start ms-3 my-4">@Localizer["users"]</h2>
 
-<div class="container">
-    @if (!Model.Any())
+<div class="container"  id="mainUserList">
+   <!--@if (!Model.Any())
     {
             <p class="text-center">@Localizer["not_found_users"]</p>
     }
@@ -81,5 +81,42 @@
                         </div>
             }
             </div>
-    }
+    }-->
+    <partial name="_UserListPartial" />
+
 </div>
+
+<script>
+    var loading = false;
+    var offset = 0;
+
+    $(function () {
+        // Listen for scroll events on the window
+        $(window).scroll(function () {
+            // Check if we've reached the bottom of the page
+            if ($(window).scrollTop() == $(document).height() - $(window).height() && !loading) {
+                loading = true;
+
+                // Load more data
+                $.ajax({
+                    url: "@Url.Action("getData")",
+                    data: { offset: offset, name: @ViewData["NameFilter"], country:"" },
+                    dataType: "html",
+                    success: function (data) {
+                        if (data.length > 0) {
+                            // Append the data to the table
+                            document.getElementbyID("mainUserList").html(data);
+                            // Increment the offset for the next load
+                            offset += 10;
+                        }
+                        loading = false;
+                    },
+                    error: function (xhr, status, error) {
+                        loading = false;
+                    }
+                });
+            }
+        });
+    });
+
+</script>
