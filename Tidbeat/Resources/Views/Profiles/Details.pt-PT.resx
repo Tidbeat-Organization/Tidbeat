@@ -211,10 +211,10 @@
     <value>Não tem qualquer música favoritada ainda.</value>
   </data>
   <data name="no_followers" xml:space="preserve">
-    <value>Segues Ninguém</value>
+    <value>Ninguém te segue</value>
   </data>
   <data name="no_followies" xml:space="preserve">
-    <value>Ninguém Segue-te</value>
+    <value>Não Segues Ninguém</value>
   </data>
   <data name="no_posts" xml:space="preserve">
     <value>Sem posts</value>

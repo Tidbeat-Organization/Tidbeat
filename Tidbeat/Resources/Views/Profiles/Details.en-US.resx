@@ -214,7 +214,7 @@
     <value>No Followers</value>
   </data>
   <data name="no_followies" xml:space="preserve">
-    <value>No One Follows You</value>
+    <value>You Don't Follow Anyone</value>
   </data>
   <data name="no_posts" xml:space="preserve">
     <value>No posts</value>
