@@ -28,6 +28,10 @@ namespace Tidbeat.Controllers
                 users = users.Where(u => u.FullName.ToLower().Contains(name)).ToList();
             }
 
+            // store the search filters in ViewData so they can be used in the view
+            ViewData["NameFilter"] = name;
+            ViewData["CountryFilter"] = country;
+
             // filter by country
             if (!string.IsNullOrEmpty(country))
             {
@@ -36,10 +40,6 @@ namespace Tidbeat.Controllers
             }
 
             ViewBag.Countries = GlobalizationService.CountryList().OrderBy(c => c).ToList();
-
-            // store the search filters in ViewData so they can be used in the view
-            ViewData["NameFilter"] = name;
-            ViewData["CountryFilter"] = country;
 
             if (User.Identity.IsAuthenticated)
             {

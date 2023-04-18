@@ -38,7 +38,7 @@
                     <option value="">@Localizer["select_country"]</option>
                     @foreach (var country in ViewBag.Countries)
                     {
-                                <option value="@country">@country</option>
+                        <option value="@country" selected="@((string)ViewData["CountryFilter"] == country)">@country</option>
                     }
                 </select>
             </div>
