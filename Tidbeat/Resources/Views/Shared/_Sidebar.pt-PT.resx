@@ -117,10 +117,16 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="access_profile" xml:space="preserve">
+    <value>Aceder ao perfil</value>
+  </data>
   <data name="no_users_you_are_following" xml:space="preserve">
     <value>Não segues nenhuma pessoa</value>
   </data>
   <data name="people_that_you_follow" xml:space="preserve">
     <value>Pessoas que segues</value>
+  </data>
+  <data name="send_message" xml:space="preserve">
+    <value>Enviar mensagem</value>
   </data>
 </root>
