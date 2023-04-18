@@ -5,7 +5,7 @@ VisualStudioVersion = 17.3.32922.545
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tidbeat", "Tidbeat\Tidbeat.csproj", "{0D80532B-973E-4A74-A774-1A3279DE1670}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TidbeatTests2.0", "TidbeatTests2.0\TidbeatTests2.0.csproj", "{D1A4EBCC-0006-48E1-97FE-9AC6DC26260B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TidbeatTests2.0", "TidbeatTests2.0\TidbeatTests2.0.csproj", "{D1A4EBCC-0006-48E1-97FE-9AC6DC26260B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
