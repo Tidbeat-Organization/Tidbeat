@@ -59,6 +59,10 @@ namespace Tidbeat.Controllers
             {
                 dbUser.AboutMe = about;
             }
+
+            if (editAsyncDto.ShouldDeletePhoto != null && (bool) editAsyncDto.ShouldDeletePhoto) {
+                dbUser.ImagePath = "";
+            }
             
 
             BanTime banTime;
