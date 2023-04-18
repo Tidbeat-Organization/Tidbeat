@@ -28,8 +28,7 @@
     }
 
     <h3 style="color: #6610F2;">@Localizer["recommended_posts"]</h3>
-    <hr />
-    <div id="filter" class="w-100 border border-2 border-dark rounded" style="border-radius: 6pt; border-width: 0.75pt !important;">
+    <div id="filter" class="w-100" style="border-radius: 6pt; border-width: 0.75pt !important;">
         <!-- Left-aligned text saying Filtros -->
         <h5 class="text-primary fw-semibold text-start mt-1 ms-2">@Localizer["filters"]</h5>
         <div class="text-dark fw-semibold mt-3 mb-1 d-flex flex-row">
@@ -77,6 +76,7 @@
             </div>
         </div>
     </div>
+    <div class="border border-1 border-light-grey my-4"></div>
     @if (User.Identity.IsAuthenticated)
     {
         <p>
