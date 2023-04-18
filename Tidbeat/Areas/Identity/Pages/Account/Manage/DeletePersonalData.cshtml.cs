@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
+using Tidbeat.Controllers;
 using Tidbeat.Data;
 using Tidbeat.Models;
 
@@ -86,6 +87,15 @@ namespace Tidbeat.Areas.Identity.Pages.Account.Manage
             }
 
             RequirePassword = await _userManager.HasPasswordAsync(user);
+
+            if (User.Identity.IsAuthenticated)
+            {
+                var userr = await _userManager.GetUserAsync(User);
+                var request = HttpContext.Request;
+                var currentUrl = string.Format("{0}://{1}", request.Scheme, request.Host);
+                TempData["Friends"] = await UtilityClass.SideBarAsync(userr.Id, currentUrl);
+            }
+
             return Page();
         }
 

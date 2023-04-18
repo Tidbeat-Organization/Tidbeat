@@ -7,6 +7,12 @@
     ViewData["ActivePage"] = ManageNavPages.PersonalData;
 }
 
+<div>
+    @{
+        await Html.RenderPartialAsync("_Sidebar");
+    }
+</div>
+
 <style>
     .btn-danger {
         background-color: #e62517;

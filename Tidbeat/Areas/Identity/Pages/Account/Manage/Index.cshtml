@@ -18,6 +18,12 @@
     genres.AddRange(MusicService.AllGenres().Select(g => new SelectListItem { Text = Localizer[g].Value, Value = g}).ToList());
 }
 
+<div>
+    @{
+        await Html.RenderPartialAsync("_Sidebar");
+    }
+</div>
+
 <h3>@ViewData["Title"]</h3>
 <partial name="_StatusMessage" for="StatusMessage" />
 <div class="row justify-content-center">

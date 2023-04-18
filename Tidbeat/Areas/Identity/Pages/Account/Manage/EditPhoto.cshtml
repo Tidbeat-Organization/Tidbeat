@@ -5,6 +5,13 @@
 @{
     string currentPhoto = await Model.GetUserPhotoUrlAsync();
 }
+
+<div>
+    @{
+        await Html.RenderPartialAsync("_Sidebar");
+    }
+</div>
+
 <h1>@Localizer["edit_photo"]</h1>
 
 <div id="imageErrors" class="text-danger mb-2"></div>
