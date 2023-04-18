@@ -144,7 +144,8 @@
     }
     }
 <script>
-
+        // Select the body element
+        const body = document.querySelector('body');
         function onInputSong() {
             var val = document.getElementById("SongIdInput");
             var opts = document.getElementById('SongOptions').childNodes;
@@ -168,6 +169,8 @@
                 }
             }
             if (boolCheck) {
+                // Set the cursor to "wait" before starting the long-running operation
+                body.style.cursor = 'wait';
                 fetch(window.location.origin + '/Posts/SongInfo/?searchKey=' + val.value)
                     .then(response => response.json())
                     .then(data => {
@@ -198,6 +201,7 @@
                             // Your code here
                             console.log(item.name);
                         });
+                        body.style.cursor = 'auto';
                     })
             }
         }
@@ -223,6 +227,8 @@
                 }
             }
             if (boolCheck) {
+                // Set the cursor to "wait" before starting the long-running operation
+                body.style.cursor = 'wait';
                 //RedirectToLink
                 fetch(window.location.origin + '/Posts/BandsInfo?searchKey=' + val.value)
                 .then(response => response.json())
@@ -249,6 +255,7 @@
                         // Your code here
                         console.log(item.name);
                     });
+                     body.style.cursor = 'auto';
                 })
             }
         }
