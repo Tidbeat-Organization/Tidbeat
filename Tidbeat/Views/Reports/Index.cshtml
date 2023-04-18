@@ -26,20 +26,20 @@
             <label for="type" class="row justify-content-left ms-1">@Localizer["type"]</label>
             <select class="form-control" id="type" name="type">
                 <option value="">@Localizer["all_types"]</option>
-                <option value="user" selected="@((string)ViewData["TypeFilter"] == "user")">@Localizer["user"]</option>
-                <option value="post" selected="@((string)ViewData["TypeFilter"] == "post")">@Localizer["post"]</option>
-                <option value="comment" selected="@((string)ViewData["TypeFilter"] == "comment")">@Localizer["comment"]</option>
+                <option value="user" selected="@((string)ViewData["TypeFilter"] == "user")">@Localizer["userf"]</option>
+                <option value="post" selected="@((string)ViewData["TypeFilter"] == "post")">@Localizer["postf"]</option>
+                <option value="comment" selected="@((string)ViewData["TypeFilter"] == "comment")">@Localizer["commentf"]</option>
             </select>
         </div>
         <div class="form-group col-md-4">
             <label for="reason" class="row justify-content-left ms-1">@Localizer["reason"]</label>
             <select class="form-control" id="reason" name="reason">
                 <option value="">@Localizer["all_reasons"]</option>
-                <option value="gore" selected="@((string)ViewData["ReasonFilter"] == "gore")">@Localizer["gore"]</option>
-                <option value="hate" selected="@((string)ViewData["ReasonFilter"] == "hate")">@Localizer["hate"]</option>
-                <option value="other" selected="@((string)ViewData["ReasonFilter"] == "other")">@Localizer["other"]</option>
-                <option value="sexual" selected="@((string)ViewData["ReasonFilter"] == "sexual")">@Localizer["sexual"]</option>
-                <option value="innappropriate" selected="@((string)ViewData["ReasonFilter"] == "innappropriate")">@Localizer["innappropriate"]</option>
+                <option value="gore" selected="@((string)ViewData["ReasonFilter"] == "gore")">@Localizer["goref"]</option>
+                <option value="hate" selected="@((string)ViewData["ReasonFilter"] == "hate")">@Localizer["hatef"]</option>
+                <option value="other" selected="@((string)ViewData["ReasonFilter"] == "other")">@Localizer["otherf"]</option>
+                <option value="sexual" selected="@((string)ViewData["ReasonFilter"] == "sexual")">@Localizer["sexualf"]</option>
+                <option value="innappropriate" selected="@((string)ViewData["ReasonFilter"] == "innappropriate")">@Localizer["innappropriatef"]</option>
             </select>
         </div>
     </div>
@@ -48,16 +48,16 @@
             <label for="state" class="row justify-content-left ms-1">@Localizer["state"]</label>
             <select class="form-control" id="state" name="state">
                 <option value="">@Localizer["all_states"]</option>
-                <option value="created" selected="@((string)ViewData["StateFilter"] == "created")">@Localizer["created"]</option>
-                <option value="open" selected="@((string)ViewData["StateFilter"] == "open")">@Localizer["open"]</option>
-                <option value="close" selected="@((string)ViewData["StateFilter"] == "close")">@Localizer["closed"]</option>
+                <option value="created" selected="@((string)ViewData["StateFilter"] == "created")">@Localizer["createdf"]</option>
+                <option value="open" selected="@((string)ViewData["StateFilter"] == "open")">@Localizer["openf"]</option>
+                <option value="close" selected="@((string)ViewData["StateFilter"] == "close")">@Localizer["closedf"]</option>
             </select>
         </div>
         <div class="form-group col-md-4">
             <label for="sort" class="row justify-content-left ms-1">@Localizer["sort"]</label>
             <select class="form-control" id="sort" name="sort">
-                <option value="new" selected="@((string)ViewData["SortFilter"] == "new")">@Localizer["new"]</option>
-                <option value="old" selected="@((string)ViewData["SortFilter"] == "old")">@Localizer["old"]</option>
+                <option value="new" selected="@((string)ViewData["SortFilter"] == "new")">@Localizer["newf"]</option>
+                <option value="old" selected="@((string)ViewData["SortFilter"] == "old")">@Localizer["oldf"]</option>
             </select>
         </div>
         <div class="form-group col-md-4 mt-3">
@@ -90,9 +90,9 @@
         {
             <tr>
                 <td>@Html.DisplayFor(modelItem => item.UserReported.FullName)</td>
-                <td>@Html.DisplayFor(modelItem => item.ReportItemType)</td>
-                <td>@Html.DisplayFor(modelItem => item.Reason)</td>
-                <td>@Html.DisplayFor(modelItem => item.Status)</td>
+                <td>@Localizer[item.ReportItemType.ToString()]</td>
+                <td>@Localizer[item.Reason.ToString()]</td>
+                <td>@Localizer[item.Status.ToString()]</td>
                 <td>@Html.DisplayFor(modelItem => item.Date)</td>
                 <td><a class="btn btn-sm btn-primary" asp-action="Details" asp-route-id="@item.Id">@Localizer["details"]</a></td>
             </tr>
