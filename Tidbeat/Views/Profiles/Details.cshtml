@@ -248,7 +248,9 @@
                         }
                     }
                     <button type="button" class="btn-edit-user ms-auto" data-user-id="@Model.Id">
-                        <div class="bi bi-pencil-square fs-3 py-0 text-black"></div>
+                        @if ((User.IsInRole("Moderator") || User.IsInRole("Admin")) && ViewBag.CurrentUser.Id != Model.Id) {
+                            <div class="btn bi bi-pencil-square text-danger fs-3 py-0 hover-background-grey px-1 py-0"></div>
+                        }
                         <span class="visually-hidden">Edit User</span>
                     </button>
                 </div>
