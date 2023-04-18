@@ -41,6 +41,13 @@ namespace Tidbeat.Controllers
             ViewData["NameFilter"] = name;
             ViewData["CountryFilter"] = country;
 
+            if (User.Identity.IsAuthenticated)
+            {
+                var user = await _userManager.GetUserAsync(User);
+                var request = HttpContext.Request;
+                var currentUrl = string.Format("{0}://{1}", request.Scheme, request.Host);
+                TempData["Friends"] = await UtilityClass.SideBarAsync(user.Id, currentUrl);
+            }
             return View(users);
         }
 

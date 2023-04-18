@@ -195,6 +195,13 @@ namespace Tidbeat.Controllers
             {
                 Console.WriteLine($"-- {song.Name} by {song.Band.Name}");
             }
+            if (User.Identity.IsAuthenticated)
+            {
+                var user = await _userManager.GetUserAsync(User);
+                var request = HttpContext.Request;
+                var currentUrl = string.Format("{0}://{1}", request.Scheme, request.Host);
+                TempData["Friends"] = await UtilityClass.SideBarAsync(user.Id, currentUrl);
+            }
             return View(profile);
         }
 

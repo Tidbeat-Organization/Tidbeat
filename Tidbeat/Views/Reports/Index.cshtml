@@ -6,6 +6,13 @@
     ViewData["Title"] = "Lista de denúncias";
 }
 
+<!-- SideBar -->
+<div>
+    @{
+        await Html.RenderPartialAsync("_Sidebar");
+    }
+</div>
+
 <h1 class="text-start ms-3" style="color: #6610F2; margin-top: 72px;">@Localizer["filters"]</h1>
 
 <!-- Form -->

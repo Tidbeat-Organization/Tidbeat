@@ -32,7 +32,7 @@ namespace Tidbeat.Controllers
         }
 
         // GET: Reports
-        [Authorize(Roles = "Moderator,Administrator,Admin")]
+       
         public async Task<IActionResult> Index([FromQuery] string name, [FromQuery] string reason, [FromQuery] string type, [FromQuery] string state, [FromQuery] string sort)
         {
             if (_context.Report != null)
@@ -115,13 +115,21 @@ namespace Tidbeat.Controllers
                     }
                 }
                 ViewData["NameFilter"] = name;
+
+                if (User.Identity.IsAuthenticated)
+                {
+                    var user = await _userManager.GetUserAsync(User);
+                    var request = HttpContext.Request;
+                    var currentUrl = string.Format("{0}://{1}", request.Scheme, request.Host);
+                    TempData["Friends"] = await UtilityClass.SideBarAsync(user.Id, currentUrl);
+                }
                 return View(result);
             }
             return NotFound();
         }
 
         // GET: Reports/Details/5
-        [Authorize(Roles = "Moderator,Administrator")]
+        
         public async Task<IActionResult> Details(Guid? id)
         {
             if (id == null || _context.Report == null)
