@@ -25,6 +25,9 @@ namespace Tidbeat.Controllers
         /// <returns>Index view.</returns>
         public async Task<IActionResult> Index()
         {
+            var currentuser = await _userManager.GetUserAsync(User);
+            ViewBag.CurrentUser = currentuser;
+
             if (User.Identity.IsAuthenticated)
             {
                 var user = await _userManager.GetUserAsync(User);
