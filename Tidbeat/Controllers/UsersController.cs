@@ -48,7 +48,7 @@ namespace Tidbeat.Controllers
                 var currentUrl = string.Format("{0}://{1}", request.Scheme, request.Host);
                 TempData["Friends"] = await UtilityClass.SideBarAsync(user.Id, currentUrl);
             }
-            return View(users.Take(10));
+            return View(users.Take(9));
         }
 
         public async Task<IActionResult> getData(string name, string country, int offset = 0)
@@ -70,7 +70,7 @@ namespace Tidbeat.Controllers
                 country = country.ToLower();
                 users = users.Where(u => u.Country != null && u.Country.ToLower().Contains(country)).ToList();
             }
-            return PartialView("_UserListPartial", users.Skip(offset).Take(10));
+            return PartialView("_UserListPartial", users.Skip(offset).Take(9));
         }
 
 
