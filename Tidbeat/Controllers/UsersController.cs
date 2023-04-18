@@ -63,7 +63,7 @@ namespace Tidbeat.Controllers
                 name = name.ToLower();
                 users = users.Where(u => u.FullName.ToLower().Contains(name)).ToList();
             }
-
+            ViewData["offset"] = offset;
             // filter by country
             if (!string.IsNullOrEmpty(country))
             {

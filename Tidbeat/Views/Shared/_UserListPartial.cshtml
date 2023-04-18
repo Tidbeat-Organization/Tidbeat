@@ -4,9 +4,10 @@
 @inject IViewLocalizer Localizer;
 
 @{
+    var resulti = ViewData["offset"] != null ? (int)ViewData["offset"] : 0;
 }
 
-@if (!Model.Any())
+@if (!Model.Any() && resulti == 0)
 {
     <p class="text-center">@Localizer["not_found_users"]</p>
 }
