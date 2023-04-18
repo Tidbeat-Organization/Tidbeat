@@ -32,79 +32,89 @@ namespace Tidbeat.Controllers
         }
 
         // GET: Reports
-        [Authorize(Roles = "Moderator,Administrator")]
+        [Authorize(Roles = "Moderator,Administrator,Admin")]
         public async Task<IActionResult> Index([FromQuery] string name, [FromQuery] string reason, [FromQuery] string type, [FromQuery] string state, [FromQuery] string sort)
         {
             if (_context.Report != null)
             {
-                var result = await _context.Report.Include(p=>p.UserReported).ToListAsync();
+                var result = await _context.Report.Include(p => p.UserReported).ToListAsync();
 
-                if (!string.IsNullOrEmpty(name)) 
+                if (!string.IsNullOrEmpty(name))
                 {
-                    result = result.Where(p=>p.UserReported.FullName.Contains(name)).ToList();
+                    result = result.Where(p => p.UserReported.FullName.ToLower().Contains(name.ToLower())).ToList();
                 }
-                switch (type?.ToLower())
+                if (!string.IsNullOrEmpty(type))
                 {
-                    case "user":
-                        result = result.Where(p => p.ReportItemType.Equals(ReportedItemType.User)).ToList();
-                        break;
-                    case "post":
-                        result = result.Where(p => p.ReportItemType.Equals(ReportedItemType.Post)).ToList();
-                        break;
-                    case "comment":
-                        result = result.Where(p => p.ReportItemType.Equals(ReportedItemType.Comment)).ToList();
-                        break;
-                    default:
-                        break;
+                    switch (type.ToLower())
+                    {
+                        case "user":
+                            result = result.Where(p => p.ReportItemType.Equals(ReportedItemType.User)).ToList();
+                            break;
+                        case "post":
+                            result = result.Where(p => p.ReportItemType.Equals(ReportedItemType.Post)).ToList();
+                            break;
+                        case "comment":
+                            result = result.Where(p => p.ReportItemType.Equals(ReportedItemType.Comment)).ToList();
+                            break;
+                        default:
+                            break;
+                    }
                 }
-
-                switch (state.ToLower())
+                if (!string.IsNullOrEmpty(state))
                 {
-                    case "created":
-                        result = result.Where(p => p.Status.Equals(ReportStatus.Created)).ToList();
-                        break;
-                    case "open":
-                        result = result.Where(p => p.Status.Equals(ReportStatus.Open)).ToList();
-                        break;
-                    case "close":
-                        result = result.Where(p => p.Status.Equals(ReportStatus.Closed)).ToList();
-                        break;
-                    default:
-                        break;
+                    switch (state.ToLower())
+                    {
+                        case "created":
+                            result = result.Where(p => p.Status.Equals(ReportStatus.Created)).ToList();
+                            break;
+                        case "open":
+                            result = result.Where(p => p.Status.Equals(ReportStatus.Open)).ToList();
+                            break;
+                        case "close":
+                            result = result.Where(p => p.Status.Equals(ReportStatus.Closed)).ToList();
+                            break;
+                        default:
+                            break;
+                    }
                 }
-
-                switch (reason.ToLower())
+                if (!string.IsNullOrEmpty(reason))
                 {
-                    case "gore":
-                        result = result.Where(p => p.Reason.Equals(ReportReason.GoreContent)).ToList();
-                        break;
-                    case "hate":
-                        result = result.Where(p => p.Reason.Equals(ReportReason.HateSpeech)).ToList();
-                        break;
-                    case "other":
-                        result = result.Where(p => p.Reason.Equals(ReportReason.Other)).ToList();
-                        break;
-                    case "sexual":
-                        result = result.Where(p => p.Reason.Equals(ReportReason.SexualContent)).ToList();
-                        break;
-                    case "innappropriate":
-                        result = result.Where(p => p.Reason.Equals(ReportReason.InnappropriateBehaviour)).ToList();
-                        break;
-                    default:
-                        break;
+                    switch (reason.ToLower())
+                    {
+                        case "gore":
+                            result = result.Where(p => p.Reason.Equals(ReportReason.GoreContent)).ToList();
+                            break;
+                        case "hate":
+                            result = result.Where(p => p.Reason.Equals(ReportReason.HateSpeech)).ToList();
+                            break;
+                        case "other":
+                            result = result.Where(p => p.Reason.Equals(ReportReason.Other)).ToList();
+                            break;
+                        case "sexual":
+                            result = result.Where(p => p.Reason.Equals(ReportReason.SexualContent)).ToList();
+                            break;
+                        case "innappropriate":
+                            result = result.Where(p => p.Reason.Equals(ReportReason.InnappropriateBehaviour)).ToList();
+                            break;
+                        default:
+                            break;
+                    }
                 }
-
-                switch (sort.ToLower())
+                if (!string.IsNullOrEmpty(sort))
                 {
-                    case "new":
-                        result = result.OrderByDescending(p => p.Date).ToList();
-                        break;
-                    case "old":
-                        result = result.OrderBy(p=>p.Date).ToList();
-                        break;
-                    default:
-                        break;
+                    switch (sort.ToLower())
+                    {
+                        case "new":
+                            result = result.OrderByDescending(p => p.Date).ToList();
+                            break;
+                        case "old":
+                            result = result.OrderBy(p => p.Date).ToList();
+                            break;
+                        default:
+                            break;
+                    }
                 }
+                ViewData["NameFilter"] = name;
                 return View(result);
             }
             return NotFound();
