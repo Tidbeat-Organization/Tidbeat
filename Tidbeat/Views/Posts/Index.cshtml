@@ -8,6 +8,12 @@
     var genre = TempData["genre"]?.ToString();
 }
 
+<div>
+    @{
+        await Html.RenderPartialAsync("_Sidebar");
+    }
+</div>
+
 <div style="margin-top: 100px;">
     @if (TempData["Message"] != null)
     {

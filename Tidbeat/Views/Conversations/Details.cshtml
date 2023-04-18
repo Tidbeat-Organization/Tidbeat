@@ -20,6 +20,12 @@
     var otherUserName = ViewBag.OtherUser.FirstName();
 }
 
+<div>
+    @{
+        await Html.RenderPartialAsync("_Sidebar");
+    }
+</div>
+
 <h1>Detalhes</h1>
 
 <h2 class="user-info">

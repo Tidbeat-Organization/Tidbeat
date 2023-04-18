@@ -6,6 +6,12 @@
     ViewData["Title"] = "Index";
 }
 
+<div>
+    @{
+        await Html.RenderPartialAsync("_Sidebar");
+    }
+</div>
+
 <style>
     .bordered-div {
         border: 1.75px solid black;

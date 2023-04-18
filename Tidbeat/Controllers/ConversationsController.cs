@@ -60,7 +60,15 @@ namespace Tidbeat.Controllers
             }
             ViewBag.ConversationsParticipantsPairs = conversationsParticipantsPairs;
 
-              return _context.Conversations != null ? 
+            if (User.Identity.IsAuthenticated)
+            {
+                var user = await _userManager.GetUserAsync(User);
+                var request = HttpContext.Request;
+                var currentUrl = string.Format("{0}://{1}", request.Scheme, request.Host);
+                TempData["Friends"] = await UtilityClass.SideBarAsync(user.Id, currentUrl);
+            }
+
+            return _context.Conversations != null ? 
                           View(await _context.Conversations.ToListAsync()) :
                           Problem("Entity set 'ApplicationDbContext.Conversations'  is null.");
         }
@@ -96,6 +104,14 @@ namespace Tidbeat.Controllers
             var topMessages = await _chatBeatService.GetRecentMessages(id, messageAmountPerCall, 0);
             topMessages.Reverse();
             ViewBag.Messages = topMessages;
+
+            if (User.Identity.IsAuthenticated)
+            {
+                var user = await _userManager.GetUserAsync(User);
+                var request = HttpContext.Request;
+                var currentUrl = string.Format("{0}://{1}", request.Scheme, request.Host);
+                TempData["Friends"] = await UtilityClass.SideBarAsync(user.Id, currentUrl);
+            }
 
             return View(conversation);
         }
