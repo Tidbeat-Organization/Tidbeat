@@ -1,34 +1,51 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System.Diagnostics;
+using System.Net;
 using Tidbeat.Models;
 
-namespace Tidbeat.Controllers {
+namespace Tidbeat.Controllers
+{
     /// <summary>
     /// Controls the Index (Main Page) and the Error404 page.
     /// </summary>
-    public class HomeController : Controller {
+    public class HomeController : Controller
+    {
         private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger) {
+        private readonly UserManager<ApplicationUser> _userManager;
+        public HomeController(ILogger<HomeController> logger, UserManager<ApplicationUser> userManager)
+        {
             _logger = logger;
+            _userManager = userManager;
         }
         /// <summary>
         /// Finds the Index view.
         /// </summary>
         /// <returns>Index view.</returns>
-        public IActionResult Index() {
+        public async Task<IActionResult> Index()
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                var user = await _userManager.GetUserAsync(User);
+                var request = HttpContext.Request;
+                var currentUrl = string.Format("{0}://{1}", request.Scheme, request.Host);
+                TempData["Friends"] = await UtilityClass.SideBarAsync(user.Id, currentUrl);
+            }
             return View();
         }
 
-        public IActionResult Privacy() {
+        public IActionResult Privacy()
+        {
             return View();
         }
 
         //Temporary for now
-        public IActionResult Post() {
+        public IActionResult Post()
+        {
             return View();
         }
-        
+
         public IActionResult Register(EnumRegisterPhase phase)
         {
             ViewBag.RegisterPhase = phase;
@@ -36,7 +53,8 @@ namespace Tidbeat.Controllers {
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error() {
+        public IActionResult Error()
+        {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
         /// <summary>
