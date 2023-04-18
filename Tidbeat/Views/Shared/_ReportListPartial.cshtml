@@ -1,0 +1,29 @@
+﻿@model IEnumerable<Tidbeat.Models.Report>
+@using Microsoft.AspNetCore.Mvc.Localization;
+@inject IViewLocalizer Localizer
+
+@{
+    ViewData["Title"] = "Lista de denúncias";
+
+    var offset = ViewData["offset"] != null ? (int)ViewData["offset"] : 0;
+}
+
+
+@foreach (var item in Model)
+{
+    <tr>
+        <td>@Html.DisplayFor(modelItem => item.UserReported.FullName)</td>
+        <td>@Localizer[item.ReportItemType.ToString()]</td>
+        <td>@Localizer[item.Reason.ToString()]</td>
+        <td>@Localizer[item.Status.ToString()]</td>
+        <td>@Html.DisplayFor(modelItem => item.Date)</td>
+        <td><a class="btn btn-sm btn-primary" asp-action="Details" asp-route-id="@item.Id">@Localizer["details"]</a></td>
+    </tr>
+}
+
+@if (!Model.Any() && offset == 0)
+{
+    <tr>
+        <td colspan="7">@Localizer["not_found"]</td>
+    </tr>
+}
