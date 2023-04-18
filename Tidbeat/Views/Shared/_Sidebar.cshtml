@@ -1,4 +1,7 @@
-﻿<!--Sidebar styling -->
+﻿@using Microsoft.AspNetCore.Mvc.Localization;
+@inject IViewLocalizer Localizer
+
+<!--Sidebar styling -->
 <style>
     .sidebar {
         position: fixed;
@@ -22,7 +25,7 @@
 
     #sidebarToggle {
         position: fixed;
-        top: 300px;
+        top: 100px;
         right: 0;
         z-index: 1;
     }
@@ -35,9 +38,9 @@
     }
 
         .btn-secondary:hover {
-            background-color: white;
-            color: #6610F2;
-            border-color: #6610F2;
+            background-color: #6610F2;
+            color: white;
+            border-color: black;
         }
 
         .btn-secondary:active,
@@ -87,8 +90,9 @@
 
     <div id="close-btn">&times;</div>
 
-    <div class="text-primary">Os teus seguidores</div>
-    <div class="scrollable-posts h-100">
+    <div class="text-primary fs-5">@Localizer["people_that_you_follow"]</div>
+    <div class="border border-1 border-light-grey my-2"></div>
+    <div class="scrollable-posts h-100 my-2">
         @if (TempData.ContainsKey("Friends"))
         {
             if (Followies?.Count > 0)
@@ -113,14 +117,14 @@
             }
             else
             {
-                <p>Não há pessoas que segues</p>
+                <p>@Localizer["no_users_you_are_following"]</p>
                 ;
             }
 
         }
         else
         {
-            <p>Não há pessoas que segues</p>
+            <p>@Localizer["no_users_you_are_following"]</p>
             ;
         }
     </div>
