@@ -77,7 +77,6 @@
 <table class="table table-striped table-bordered">
     <thead class="thead-dark" style="background-color: #6610F2; color: white;">
         <tr>
-            <th>@Localizer["id"]</th>
             <th>@Localizer["reported_user"]</th>
             <th>@Localizer["report_type"]</th>
             <th>@Localizer["report_reason"]</th>
@@ -90,7 +89,6 @@
         @foreach (var item in Model)
         {
             <tr>
-                <td>@Html.DisplayFor(modelItem => item.Id)</td>
                 <td>@Html.DisplayFor(modelItem => item.UserReported.FullName)</td>
                 <td>@Html.DisplayFor(modelItem => item.ReportItemType)</td>
                 <td>@Html.DisplayFor(modelItem => item.Reason)</td>
