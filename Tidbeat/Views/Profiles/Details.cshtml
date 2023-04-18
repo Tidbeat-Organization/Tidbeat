@@ -111,7 +111,7 @@
                                         <div class="d-flex align-items-center">
                                             <div id="admin-definitions-edit-full-name-reset-button" class="bi bi-arrow-clockwise text-primary fs-5 btn hover-background-grey px-1 py-0 d-none"></div>
                                             <div id="admin-definitions-edit-full-name-button" class="bi bi-pencil-fill text-primary me-2 btn hover-background-grey px-1 py-0"></div>
-                                            <input id="admin-definitions-full-name-input" disabled type="text" class="form-control" id="user-name" name="name" />
+                                            <input id="admin-definitions-full-name-input" disabled type="text" class="form-control" id="user-name" name="name" value="@Model.FullName" />
                                             <input id="admin-definitions-full-name-hidden-input" type="hidden" />
                                         </div>
                                     </div>
@@ -435,7 +435,7 @@
         e.preventDefault();
         var userId = $(this).data('user-id');
         $('#user-id').val(userId);
-        $('#admin-definitions-full-name-input').val('@Model.FullName');
+        //$('#admin-definitions-full-name-input').val('@Model.FullName');
         $('#user-about').val();
         $('#edit-user-modal').modal('show');
         let toxDiv = document.querySelector('.tox');
