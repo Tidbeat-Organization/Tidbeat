@@ -29,7 +29,7 @@
 
     <h3 style="color: #6610F2;">@Localizer["recommended_posts"]</h3>
     <hr />
-    <div id="filter" class="w-100 border border-2 border-dark" style="border-radius: 6pt; border-width: 0.75pt !important;">
+    <div id="filter" class="w-100 border border-2 border-dark rounded" style="border-radius: 6pt; border-width: 0.75pt !important;">
         <!-- Left-aligned text saying Filtros -->
         <h5 class="text-primary fw-semibold text-start mt-1 ms-2">@Localizer["filters"]</h5>
         <div class="text-dark fw-semibold mt-3 mb-1 d-flex flex-row">
@@ -39,7 +39,7 @@
             </div>
             <div class="filter-height-rectifier mb-2 ms-5">@Localizer["gender"]:</div>
             <div class="filter-height-rectifier mb-2 ms-2">
-                <select class="form-control w-100" id="filter-genre-input" name="filter-genre-input">
+                <select class="form-control w-100 border-primary" id="filter-genre-input" name="filter-genre-input">
                             <!option selected value="">@Localizer["pick_gender"]</!option>
                             <!option value="rock" @(genre == "rock" ? "selected" : "")>@Localizer["rock"]</!option>
                     <!option value="pop" @(genre == "pop" ? "selected" : "")>@Localizer["pop"]</!option>
@@ -60,7 +60,7 @@
                     <!option value="techno" @(genre == "techno" ? "selected" : "")>@Localizer["techno"]</!option>
                         </select>
             </div>
-            <div class="filter-height-rectifier mb-2 ms-5">Ordenar por:</div>
+            <div class="filter-height-rectifier mb-2 ms-5">@Localizer["order"]:</div>
             <div class="filter-height-rectifier mb-2 ms-2">
                 <select id="filter-order-input" class="form-control filter-field" placeholder="" style="border: 1.5px solid #6610F2; border-radius: 15px;">
                     <!option value="">@Localizer["order"]</!option>
@@ -70,7 +70,11 @@
                     <!option value="oldest" @(order == "oldest" ? "selected" : "")>@Localizer["oldest"]</!option>
                 </select>
             </div>
-            <div class="bi bi-search search-btn ms-5" onclick="actualEvent()"></div>
+            <div class="align-self-center px-3">
+                <button class="btn btn-primary">
+                    <img id="imgBand" class="no-padding align-self-center px-3" src="~/images/SearchIcon.png" height="37" width="45" onclick="actualEvent()" />
+                </button>
+            </div>
         </div>
     </div>
     @if (User.Identity.IsAuthenticated)
