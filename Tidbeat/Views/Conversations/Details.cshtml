@@ -81,10 +81,11 @@
                         <div class="edit-message-button bi bi-pencil-fill text-primary pull-right btn hover-background-grey p-0 px-1"></div>
                         <div class="cancel-message-button bi bi-x text-danger btn hover-background-grey pull-right p-0 px-1 d-none"></div>
                         <div class="save-message-button bi bi-check text-success btn hover-background-grey pull-right p-0 px-1 d-none"></div>
-                        <div class="d-flex flex-column pull-right">
-                            <textarea type="text" class="message-content-input message-content pull-right border-0 text-wrap" style="max-width: 400px;" value="@message.Text" readonly>@message.Text</textarea>
+                        <div class="d-flex flex-column pull-right position-relative">
+                            <textarea type="text" class="message-content-input message-content pull-right border-0 text-wrap pb-3" style="max-width: 400px;" value="@message.Text" readonly>@message.Text</textarea>
                             <div class="saved-content-temp d-none"></div>
                             <div id="status-message" class="pull-right text-end">@((message.Status == (int)MessageStatus.Sent) ? "Enviado" : "Lido")</div>
+                            <div id="message-date" class="fs-7 text-light-grey position-absolute end-0 pe-3" style="bottom: 25px">@message.Created.ToString("dd/MM/yyyy HH:mm")</div>
                         </div>
                     </div>
                 }
@@ -96,9 +97,10 @@
                         <div class="edit-message-button bi-pencil-fill text-primary pull-right btn hover-background-grey p-0 px-1"></div>
                         <div class="cancel-message-button bi bi-x text-danger btn hover-background-grey pull-right p-0 px-1 d-none"></div>
                         <div class="save-message-button bi bi-check text-success btn hover-background-grey pull-right p-0 px-1 d-none"></div>
-                        <div class="pull-right">
+                        <div class="pull-right position-relative">
                             <textarea type="text" class="message-content-input message-content pull-right border-0 " style="max-width: 400px;" value="@message.Text" readonly>@message.Text</textarea>
                             <div class="saved-content-temp d-none"></div>
+                            <div id="message-date" class="fs-7 text-light-grey position-absolute end-0 pe-3" style="bottom: 2px">@message.Created.ToString("dd/MM/yyyy HH:mm")</div>
                         </div>
                     </div>
                 }
@@ -107,7 +109,10 @@
             {
                 <div data-message-id="@message.Id" class="other-user-message-entry message-entry">
                     <div class="message-avatar pull-left">@otherUserName</div>
-                    <div class="text-start message-content-otheruser pull-left" style="max-width: 400px;">@message.Text</div>
+                    <div class="text-start message-content-otheruser pull-left pb-3 position-relative" style="max-width: 400px; min-width: 150px">
+                        <div>@message.Text</div>
+                        <div id="message-date" class="fs-7 position-absolute pe-3 text-black bottom-0" style="bottom: 25px">@message.Created.ToString("dd/MM/yyyy HH:mm")</div>
+                    </div>
                 </div>
             }
             messageIndex++;
@@ -188,6 +193,8 @@
             var entry = document.createElement('div');
             let statusMessage = document.getElementById('status-message');
             entry.classList.add("message-entry");
+            const dateNow = new Date();
+            const formattedDateNow = convertDateObjectToFormatted(dateNow);
             if (encodedUserId === "_SYSTEM_") {
                 //entry.innerHTML = encodedMsg;
                 //entry.classList.add("text-center");
@@ -200,13 +207,25 @@
                 if (statusMessage) {
                     statusMessage.remove();
                 }
-                entry.innerHTML = rightMessage(encodedMsg, '@currentUserName', @((int)MessageStatus.Sent))
+                entry.innerHTML = rightMessage(encodedMsg, '@currentUserName', @((int)MessageStatus.Sent), formattedDateNow);
             } else {
                 entry.classList.add("other-user-message-entry");
                 entry.innerHTML = `<div class="message-avatar pull-left">@(otherUserName)</div>` +
-                    `<div class="text-start message-content-otheruser pull-left" style="max-width: 400px;">${encodedMsg}<div>`;
+                    `<div class="text-start message-content-otheruser pull-left pb-3 position-relative" style="max-width: 400px; min-width: 150px;">
+                        <div>${encodedMsg}</div>
+                        <div id="message-date" class="fs-7 position-absolute pe-3 text-black bottom-0" style="bottom: 25px">${formattedDateNow}</div>
+                    <div>`;
             }
             return entry;
+        }
+
+        function convertDateObjectToFormatted(date) {
+            const day = date.getDate().toString().padStart(2, '0');
+            const month = (date.getMonth() + 1).toString().padStart(2, '0');
+            const year = date.getFullYear();
+            const hours = date.getHours().toString().padStart(2, '0');
+            const minutes = date.getMinutes().toString().padStart(2, '0');
+            return `${day}/${month}/${year} ${hours}:${minutes}`;
         }
 
         function bindConnectionMessage(connection) {
@@ -676,15 +695,20 @@
                 messageElement.classList.add("message-entry");
                 messageElement.setAttribute('data-message-id', message.id);
                 var firstName = message.user.fullName.split(' ')[0];
+                const date = new Date(Date.parse(message.created));
+                const dateString = convertDateObjectToFormatted(date);
                 if (message.user.id === "@(ViewBag.CurrentUser.Id)") {
                     if (messageIndex == mostRecentMessageIndex && !statusMessageAlreadyExists) {
-                        messageElement.innerHTML = rightMessage(message.text, firstName, message.status);
+                        messageElement.innerHTML = rightMessage(message.text, firstName, message.status, dateString);
                     } else {
-                        messageElement.innerHTML = rightMessage(message.text, firstName, undefined);
+                        messageElement.innerHTML = rightMessage(message.text, firstName, undefined, dateString);
                     }
                 } else {
                     messageElement.innerHTML = `<div class="message-avatar pull-left">${firstName}</div>` +
-                        `<div class="message-content-otheruser pull-left">${message.text}<div>`;
+                        `<div class="text-start message-content-otheruser pull-left pb-3 position-relative" style="max-width: 400px; min-width: 150px;">
+                            <div>${message.text}</div>
+                            <div id="message-date" class="fs-7 position-absolute pe-3 text-black bottom-0" style="bottom: 25px">${dateString}</div>
+                        <div>`;
                 }
                 messageIndex++;
                 messagesContainer.insertBefore(messageElement, messagesContainer.children[1]);
@@ -708,16 +732,17 @@
             addOnClickToCancelButtons();
         }
 
-        function rightMessage(message, name, status) {
+        function rightMessage(message, name, status, date) {
             if (status === undefined) {
                 return `<div class="message-avatar pull-right">${name}</div>` +
                     `<div class="delete-message-button bi bi-trash-fill text-danger pull-right btn hover-background-grey p-0 px-1"></div>
                          <div class="edit-message-button bi bi-pencil-fill text-primary pull-right btn hover-background-grey p-0 px-1"></div>
                          <div class="cancel-message-button bi bi-x text-danger btn hover-background-grey pull-right p-0 px-1 d-none"></div>
                          <div class="save-message-button bi bi-check text-success btn hover-background-grey pull-right p-0 px-1 d-none"></div>` +
-                    `<div class="pull-right">
+                    `<div class="pull-right position-relative">
                             <textarea type="text" class="message-content-input message-content pull-right border-0 " style="max-width: 400px;" readonly>${message}</textarea>
                             <div class="saved-content-temp d-none"></div>
+                            <div id="message-date" class="fs-7 text-light-grey position-absolute end-0 pe-3" style="bottom: 2px">${date}</div>
                         </div>`;
             }
             return `<div class="message-avatar pull-right">${name}</div>` +
@@ -725,10 +750,11 @@
                         <div class="edit-message-button bi bi-pencil-fill text-primary pull-right btn hover-background-grey p-0 px-1"></div>
                         <div class="cancel-message-button bi bi-x text-danger btn hover-background-grey pull-right p-0 px-1 d-none"></div>
                         <div class="save-message-button bi bi-check text-success btn hover-background-grey pull-right p-0 px-1 d-none"></div>` +
-                `<div class="d-flex flex-column pull-right">
+                `<div class="d-flex flex-column pull-right position-relative">
                            <textarea type="text" class="message-content-input message-content pull-right border-0 " style="max-width: 400px;" readonly>${message}</textarea>
                            <div class="saved-content-temp d-none"></div>
                            <div id="status-message" class="pull-right text-end">${status === @((int)MessageStatus.Sent) ? "Enviado" : "Lido"}</div>
+                               <div id="message-date" class="fs-7 text-light-grey position-absolute end-0 pe-3" style="bottom: 25px">${date}</div>
                        </div>`;
         }
     });
