@@ -119,7 +119,7 @@ namespace Tidbeat.Controllers
                 ViewData["TypeFilter"] = type;
                 ViewData["StateFilter"] = state;
                 ViewData["SortFilter"] = sort;
-
+                ViewData["offset"] = 0;
                 var currentuser = await _userManager.GetUserAsync(User);
                 ViewBag.CurrentUser = currentuser;
 
@@ -130,10 +130,101 @@ namespace Tidbeat.Controllers
                     var currentUrl = string.Format("{0}://{1}", request.Scheme, request.Host);
                     TempData["Friends"] = await UtilityClass.SideBarAsync(user.Id, currentUrl);
                 }
-                return View(result);
+                return View(result.Take(20));
             }
             return NotFound();
         }
+
+        [Authorize(Roles = "Moderator,Admin,Admin")]
+        public async Task<IActionResult> getData(string name,  string reason,  string type, string state, string sort, int offset = 0)
+        {
+                var result = await _context.Report.Include(p => p.UserReported).ToListAsync();
+
+                if (!string.IsNullOrEmpty(name))
+                {
+                    result = result.Where(p => p.UserReported.FullName.ToLower().Contains(name.ToLower())).ToList();
+                }
+                if (!string.IsNullOrEmpty(type))
+                {
+                    switch (type.ToLower())
+                    {
+                        case "user":
+                            result = result.Where(p => p.ReportItemType.Equals(ReportedItemType.User)).ToList();
+                            break;
+                        case "post":
+                            result = result.Where(p => p.ReportItemType.Equals(ReportedItemType.Post)).ToList();
+                            break;
+                        case "comment":
+                            result = result.Where(p => p.ReportItemType.Equals(ReportedItemType.Comment)).ToList();
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                if (!string.IsNullOrEmpty(state))
+                {
+                    switch (state.ToLower())
+                    {
+                        case "created":
+                            result = result.Where(p => p.Status.Equals(ReportStatus.Created)).ToList();
+                            break;
+                        case "open":
+                            result = result.Where(p => p.Status.Equals(ReportStatus.Open)).ToList();
+                            break;
+                        case "close":
+                            result = result.Where(p => p.Status.Equals(ReportStatus.Closed)).ToList();
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                if (!string.IsNullOrEmpty(reason))
+                {
+                    switch (reason.ToLower())
+                    {
+                        case "gore":
+                            result = result.Where(p => p.Reason.Equals(ReportReason.GoreContent)).ToList();
+                            break;
+                        case "hate":
+                            result = result.Where(p => p.Reason.Equals(ReportReason.HateSpeech)).ToList();
+                            break;
+                        case "other":
+                            result = result.Where(p => p.Reason.Equals(ReportReason.Other)).ToList();
+                            break;
+                        case "sexual":
+                            result = result.Where(p => p.Reason.Equals(ReportReason.SexualContent)).ToList();
+                            break;
+                        case "innappropriate":
+                            result = result.Where(p => p.Reason.Equals(ReportReason.InnappropriateBehaviour)).ToList();
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                if (!string.IsNullOrEmpty(sort))
+                {
+                    switch (sort.ToLower())
+                    {
+                        case "new":
+                            result = result.OrderByDescending(p => p.Date).ToList();
+                            break;
+                        case "old":
+                            result = result.OrderBy(p => p.Date).ToList();
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                ViewData["NameFilter"] = name;
+                ViewData["ReasonFilter"] = reason;
+                ViewData["TypeFilter"] = type;
+                ViewData["StateFilter"] = state;
+                ViewData["SortFilter"] = sort;
+                ViewData["offset"] = offset;
+
+            return PartialView("_ReportListPartial", result.Skip(offset).Take(20));
+        }
+
 
         // GET: Reports/Details/5
         [Authorize(Roles = "Moderator,Admin")]

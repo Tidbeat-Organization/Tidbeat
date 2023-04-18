@@ -4,6 +4,12 @@
 
 @{
     ViewData["Title"] = "Lista de denúncias";
+    var name = ViewData["NameFilter"];
+    var reason = ViewData["ReasonFilter"];
+    var type= ViewData["TypeFilter"];
+    var state=ViewData["StateFilter"];
+    var sort=ViewData["SortFilter"];
+    var offset = ViewData["offset"];
 }
 
 <style>
@@ -93,8 +99,8 @@
             <th>@Localizer["see"]</th>
         </tr>
     </thead>
-    <tbody>
-        @foreach (var item in Model)
+        <tbody id="mainReportList">
+       <!-- @foreach (var item in Model)
         {
             <tr>
                 <td>@Html.DisplayFor(modelItem => item.UserReported.FullName)</td>
@@ -111,7 +117,42 @@
             <tr>
                 <td colspan="7">@Localizer["not_found"]</td>
             </tr>
-        }
+        }-->
+
+            <partial name="_ReportListPartial" />
     </tbody>
 </table>
 </div>
+<script>
+    var loading = false;
+    var offset = 0;
+    $(function () {
+        // Listen for scroll events on the window
+        $(window).scroll(function () {
+            // Check if we've reached the bottom of the page
+            console.log("here")
+            if (Math.ceil($(window).scrollTop()) == Math.round($(document).height() - $(window).height()) && !loading) {
+                loading = true;
+                console.log("here")
+                // Load more data
+                $.ajax({
+                    url: "@Url.Action("getData")",
+                    data: { offset: offset, name: "@name", reason: "@reason", type: "@type",state:"@state" , sort:"@sort" },
+                    dataType: "html",
+                    success: function (data) {
+                        if (data.length > 0) {
+                            // Append the data to the table
+                            $("#mainReportList").append(data);
+                            // Increment the offset for the next load
+                            offset += 20;
+                        }
+                        loading = false;
+                    },
+                    error: function (xhr, status, error) {
+                        loading = false;
+                    }
+                });
+            }
+        });
+    });
+</script>
