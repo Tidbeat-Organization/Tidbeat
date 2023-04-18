@@ -109,11 +109,11 @@
                             {
                                 <img src="~/images/UnknownUser.jpg" height="65" class="border border-dark rounded" />
                             }
-                            <div class="align-self-center">@item.FullName</div>
+                            <div class="align-self-center" title="@Localizer["access_profile"]">@item.FullName</div>
 
                             @if (ViewBag.CurrentUser != null)
                             {
-                                <a class="align-self-center btn bi bi-chat-right-text fs-4 py-0" href="@Url.Action("StartTwoPersonConversation", "Conversations", new { currentUserId = ViewBag.CurrentUser.Id, otherUserId = item.Id })"></a>
+                                <a class="align-self-center btn bi bi-chat-right-text fs-4 py-0" href="@Url.Action("StartTwoPersonConversation", "Conversations", new { currentUserId = ViewBag.CurrentUser.Id, otherUserId = item.Id })" title="@Localizer["send_message"]"></a>
                             }
 
                         </div>
@@ -151,6 +151,14 @@
 
         closeBtn.on('click', function () {
             sidebar.removeClass('active');
+        });
+
+        $('.bi-chat-right-text').tooltip({
+            placement: 'bottom'
+        });
+
+        $('.align-self-center').tooltip({
+            placement: 'bottom'
         });
     });
 </script>
