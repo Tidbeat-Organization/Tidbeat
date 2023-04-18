@@ -247,6 +247,10 @@
                             </div>
                         }
                     }
+                    @if (((User.IsInRole("Moderator") && ViewBag.CurrentUser.Id == Model.Id) || (User.IsInRole("Admin")) && ViewBag.CurrentUser.Id == Model.Id))
+                    {
+                        <a class="btn bi bi-archive-fill text-primary fs-3 py-0 hover-background-grey px-1 py-0" href="@Url.Action("Index", "Reports")"></a>
+                    }
                     <button type="button" class="btn-edit-user ms-auto" data-user-id="@Model.Id">
                         @if ((User.IsInRole("Moderator") || User.IsInRole("Admin")) && ViewBag.CurrentUser.Id != Model.Id) {
                             <div class="btn bi bi-pencil-square text-danger fs-3 py-0 hover-background-grey px-1 py-0"></div>
