@@ -109,7 +109,13 @@
                             {
                                 <img src="~/images/UnknownUser.jpg" height="65" class="border border-dark rounded" />
                             }
-                            <div class="align-self-center ms-2">@item.FullName</div>
+                            <div class="align-self-center">@item.FullName</div>
+
+                            @if (ViewBag.CurrentUser != null)
+                            {
+                                <a class="align-self-center btn bi bi-chat-right-text fs-4 py-0" href="@Url.Action("StartTwoPersonConversation", "Conversations", new { currentUserId = ViewBag.CurrentUser.Id, otherUserId = item.Id })"></a>
+                            }
+
                         </div>
                     </a>
                 }

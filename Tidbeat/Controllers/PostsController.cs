@@ -112,6 +112,9 @@ namespace Tidbeat.Controllers
             {
                 Console.WriteLine($"Posterior Result: Name({result.Title}), Date({result.CreationDate})");
             }*/
+            var currentuser = await _userManager.GetUserAsync(User);
+            ViewBag.CurrentUser = currentuser;
+
             if (User.Identity.IsAuthenticated)
             {
                 var user = await _userManager.GetUserAsync(User);
@@ -200,6 +203,9 @@ namespace Tidbeat.Controllers
             ViewBag.commentsPosts = _context.Comment.Include(user => user.User).Where(s => s.post.PostId == post.PostId).Take((int) ViewBag.fetchCommentsCount).ToList();
             ViewBag.totalCommentCount = _context.Comment.Include(user => user.User).Where(s => s.post.PostId == post.PostId).Count();
 
+            var currentuser = await _userManager.GetUserAsync(User);
+            ViewBag.CurrentUser = currentuser;
+
             if (User.Identity.IsAuthenticated)
             {
                 var user = await _userManager.GetUserAsync(User);
@@ -244,6 +250,9 @@ namespace Tidbeat.Controllers
             }
             ViewBag.songs = _spotifyService.GetMultipleSongsAsync("a").Result.Tracks.Items;
             ViewBag.bands = _spotifyService.GetMultipleBandsAsync("a").Result.Artists.Items;
+
+            var currentuser = await _userManager.GetUserAsync(User);
+            ViewBag.CurrentUser = currentuser;
 
             if (User.Identity.IsAuthenticated)
             {
@@ -417,6 +426,9 @@ namespace Tidbeat.Controllers
                 return Redirect("/");
             }
 
+            var currentuser = await _userManager.GetUserAsync(User);
+            ViewBag.CurrentUser = currentuser;
+
             if (User.Identity.IsAuthenticated)
             {
                 var user = await _userManager.GetUserAsync(User);
@@ -502,6 +514,9 @@ namespace Tidbeat.Controllers
             {
                 return NotFound();
             }
+
+            var currentuser = await _userManager.GetUserAsync(User);
+            ViewBag.CurrentUser = currentuser;
 
             if (User.Identity.IsAuthenticated)
             {

@@ -111,7 +111,7 @@
                                         <div class="d-flex align-items-center">
                                             <div id="admin-definitions-edit-full-name-reset-button" class="bi bi-arrow-clockwise text-primary fs-5 btn hover-background-grey px-1 py-0 d-none"></div>
                                             <div id="admin-definitions-edit-full-name-button" class="bi bi-pencil-fill text-primary me-2 btn hover-background-grey px-1 py-0"></div>
-                                            <input id="admin-definitions-full-name-input" disabled type="text" class="form-control" id="user-name" name="name" />
+                                            <input id="admin-definitions-full-name-input" disabled type="text" class="form-control" id="user-name" name="name" value="@Model.FullName" />
                                             <input id="admin-definitions-full-name-hidden-input" type="hidden" />
                                         </div>
                                     </div>
@@ -159,7 +159,7 @@
                                         <label for="ban-for" class="form-label" style="color: red;">Banir por:</label>
                                         <div class="input-group">
                                             <input type="number" class="form-control" id="ban-for" name="banFor" min="1" step="1">
-                                            <select disabled class="form-select" id="ban-for-unit" name="banForUnit">
+                                            <select class="form-select" id="ban-for-unit" name="banForUnit">
                                                 <option value="@BanTime.Minutes">Minutos</option>
                                                 <option value="@BanTime.Hours">Horas</option>
                                                 <option value="@BanTime.Days">Dias</option>
@@ -439,9 +439,15 @@
         e.preventDefault();
         var userId = $(this).data('user-id');
         $('#user-id').val(userId);
-        $('#admin-definitions-full-name-input').val('@Model.FullName');
+        //$('#admin-definitions-full-name-input').val('@Model.FullName');
         $('#user-about').val();
         $('#edit-user-modal').modal('show');
+        let toxDiv = document.querySelector('.tox');
+        if (toxDiv) {
+            toxDiv.classList.add('d-none');
+        }
+        //$('#admin-definitions-edit-about-me-button').click();
+        //$('#admin-definitions-edit-about-me-reset-button').click();
     });
 
     //Show reason for ban, after entering number
@@ -466,11 +472,7 @@
                 resetButton.classList.remove('d-none');
             }
         }
-
-        let toxDiv = document.querySelector('.tox');
-        if (toxDiv) {
-            toxDiv.classList.add('d-none');
-        }
+        
 
         $('#admin-definitions-edit-full-name-button').on('click', function (e) {
             e.preventDefault();
@@ -499,7 +501,8 @@
             e.preventDefault();
             let aboutMeDiv = document.getElementById('admin-definitions-about-me-div');
             aboutMeDiv.classList.add('d-none');
-            toxDiv.classList.remove('d-none');
+            let toxDiv1 = document.querySelector('.tox');
+            toxDiv1.classList.remove('d-none');
 
             let aboutMeHiddenInput = document.getElementById('admin-definitions-about-me-hidden-input');
             aboutMeHiddenInput.value = aboutMeDiv.innerHTML;
@@ -511,7 +514,8 @@
             e.preventDefault();
             let aboutMeDiv = document.getElementById('admin-definitions-about-me-div');
             aboutMeDiv.classList.remove('d-none');
-            toxDiv.classList.add('d-none');
+            let toxDiv1 = document.querySelector('.tox');
+            toxDiv1.classList.add('d-none');
 
             let aboutMeHiddenInput = document.getElementById('admin-definitions-about-me-hidden-input');
             let editor = tinymce.get('postcreate');

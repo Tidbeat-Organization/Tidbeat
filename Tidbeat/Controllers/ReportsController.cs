@@ -120,6 +120,9 @@ namespace Tidbeat.Controllers
                 ViewData["StateFilter"] = state;
                 ViewData["SortFilter"] = sort;
 
+                var currentuser = await _userManager.GetUserAsync(User);
+                ViewBag.CurrentUser = currentuser;
+
                 if (User.Identity.IsAuthenticated)
                 {
                     var user = await _userManager.GetUserAsync(User);
@@ -191,6 +194,10 @@ namespace Tidbeat.Controllers
                         }
                         break;
                 }
+
+                var currentuser = await _userManager.GetUserAsync(User);
+                ViewBag.CurrentUser = currentuser;
+
                 if (User.Identity.IsAuthenticated)
                 {
                     var userr = await _userManager.GetUserAsync(User);

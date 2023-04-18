@@ -41,6 +41,9 @@ namespace Tidbeat.Controllers
 
             ViewBag.Countries = GlobalizationService.CountryList().OrderBy(c => c).ToList();
 
+            var currentuser = await _userManager.GetUserAsync(User);
+            ViewBag.CurrentUser = currentuser;
+
             if (User.Identity.IsAuthenticated)
             {
                 var user = await _userManager.GetUserAsync(User);
