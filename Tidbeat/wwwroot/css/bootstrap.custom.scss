@@ -478,7 +478,7 @@ input[type="file"] {
     transition: transform 0.2s ease, background-color 0.2s ease;
 }
 
-input[type="checkbox"] {
+input[type="checkbox"][id="report-state-checkbox"] {
     display: none;
 }
 

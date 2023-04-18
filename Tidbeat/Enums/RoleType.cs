@@ -14,6 +14,6 @@
         /// <summary>
         /// The administrator role.
         /// </summary>
-        Administrator
+        Admin
     }
 }

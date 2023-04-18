@@ -338,7 +338,7 @@ namespace Tidbeat.Controllers
             {
                 return NotFound();
             }
-            if (post.User.Id != (await _userManager.GetUserAsync(User)).Id && !(User.IsInRole("Moderator") || User.IsInRole("Administrator")) ) {
+            if (post.User.Id != (await _userManager.GetUserAsync(User)).Id && !(User.IsInRole("Moderator") || User.IsInRole("Admin")) ) {
                 return Redirect("/");
             }
             return View(post);
@@ -366,7 +366,7 @@ namespace Tidbeat.Controllers
                     if (ogPost == null) {
                         return NotFound();
                     }
-                    if (user.Id == ogPost.User.Id || _userManager.IsInRoleAsync(user, "Moderator").Result || _userManager.IsInRoleAsync(user, "Administrator").Result) //Add for Roles
+                    if (user.Id == ogPost.User.Id || _userManager.IsInRoleAsync(user, "Moderator").Result || _userManager.IsInRoleAsync(user, "Admin").Result) //Add for Roles
                     {
                         ogPost.Content = post.Content;
                         ogPost.Title = post.Title;
@@ -444,7 +444,7 @@ namespace Tidbeat.Controllers
             if (post != null)
             {
                 var user = await _userManager.GetUserAsync(User);
-                if (user.Id == post.User.Id || _userManager.IsInRoleAsync(user, "Moderator").Result || _userManager.IsInRoleAsync(user, "Administrator").Result) //Add for Roles
+                if (user.Id == post.User.Id || _userManager.IsInRoleAsync(user, "Moderator").Result || _userManager.IsInRoleAsync(user, "Admin").Result) //Add for Roles
                 {
                     var commentRatings = await _context.CommentRatings.Where(cr => cr.Comment.post.PostId == post.PostId).ToListAsync();
                     foreach (var rating in commentRatings)
