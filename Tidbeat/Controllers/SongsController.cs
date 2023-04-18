@@ -123,6 +123,10 @@ namespace Tidbeat.Controllers
         /// <remarks>GET: Songs/</remarks>
         /// <returns>The Index view with the found songs according to its filters included.</returns>
         public async Task<IActionResult> Index([FromQuery] string searchKey, [FromQuery] string gener, [FromQuery] string band, [FromQuery] string album, [FromQuery] string yearStart, [FromQuery] string yearEnd) {
+
+            var currentuser = await _userManager.GetUserAsync(User);
+            ViewBag.CurrentUser = currentuser;
+
             if (User.Identity.IsAuthenticated)
             {
                 var user = await _userManager.GetUserAsync(User);
@@ -185,6 +189,9 @@ namespace Tidbeat.Controllers
 
             var allPosts = _context.Posts.Include(p => p.User).Include(p => p.Song).Where(p => p.Song != null && p.Song.SongId == id).ToList();
             ViewBag.posts = allPosts;
+
+            var currentuser = await _userManager.GetUserAsync(User);
+            ViewBag.CurrentUser = currentuser;
 
             if (User.Identity.IsAuthenticated)
             {

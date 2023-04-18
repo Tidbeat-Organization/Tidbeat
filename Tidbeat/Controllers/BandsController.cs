@@ -66,6 +66,9 @@ namespace Tidbeat.Controllers
 
             }
             //Alfabeticamnete a-z
+            var currentuser = await _userManager.GetUserAsync(User);
+            ViewBag.CurrentUser = currentuser;
+
             if (User.Identity.IsAuthenticated)
             {
                 var user = await _userManager.GetUserAsync(User);
@@ -112,6 +115,9 @@ namespace Tidbeat.Controllers
 
             var allPosts = _context.Posts.Include(p => p.User).Include(p => p.Band).Where(p => p.Band != null && p.Band.BandId == id).ToList();
             ViewBag.posts = allPosts;
+
+            var currentuser = await _userManager.GetUserAsync(User);
+            ViewBag.CurrentUser = currentuser;
 
             if (User.Identity.IsAuthenticated)
             {
