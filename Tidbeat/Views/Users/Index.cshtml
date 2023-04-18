@@ -5,6 +5,7 @@
 
 @{
     ViewData["Title"] = "Lista de utilizadores";
+    var countrySaved = ViewData["CountryFilter"];
 }
 
 <style>
@@ -101,7 +102,7 @@
                 // Load more data
                 $.ajax({
                     url: "@Url.Action("getData")",
-                    data: { offset: offset, name: "@ViewData["NameFilter"]", country:"" },
+                    data: { offset: offset, name: "@ViewData["NameFilter"]", country: "@countrySaved" },
                     dataType: "html",
                     success: function (data) {
                         if (data.length > 0) {

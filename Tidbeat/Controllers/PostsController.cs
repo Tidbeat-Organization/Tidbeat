@@ -65,16 +65,18 @@ namespace Tidbeat.Controllers
         {
             order = (order == "") ? "newest" : order;
             TempData["genre"] = genre;
+            TempData["name"] = name;
+            TempData["order"] = order;
             //var songs = await _context.Songs.ToListAsync();
-             /*foreach (var song in songs)
-             {
-                 var genres = await _spotifyService.GetGenresOfSong(song.SongId);
-                 Console.WriteLine("Genres of " + song.Name + ":\n");
-                 foreach (var _genre in genres)
-                 {
-                     Console.WriteLine($"\t{_genre}");
-                 }
-             }*/
+            /*foreach (var song in songs)
+            {
+                var genres = await _spotifyService.GetGenresOfSong(song.SongId);
+                Console.WriteLine("Genres of " + song.Name + ":\n");
+                foreach (var _genre in genres)
+                {
+                    Console.WriteLine($"\t{_genre}");
+                }
+            }*/
 
             var results = await _context
                 .Posts

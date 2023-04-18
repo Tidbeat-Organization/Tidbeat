@@ -6,6 +6,8 @@
 @{
     ViewData["Title"] = "Index";
     var genre = TempData["genre"]?.ToString();
+    var name = TempData["name"]?.ToString();
+    var order = TempData["order"]?.ToString();
 }
 
 <div>
@@ -33,7 +35,7 @@
         <div class="text-dark fw-semibold mt-3 mb-1 d-flex flex-row">
             <div class="filter-height-rectifier mb-2 ms-2">@Localizer["name"]:</div>
             <div class="filter-height-rectifier mb-2 ms-2">
-                <input id="filter-name-input" class="form-control filter-field" placeholder="Escreva termo de pesquisa..." style="border: 1.5px solid #6610F2; border-radius: 15px;" />
+                <input id="filter-name-input" class="form-control filter-field" placeholder="Escreva termo de pesquisa..." style="border: 1.5px solid #6610F2; border-radius: 15px;" value="@name"/>
             </div>
             <div class="filter-height-rectifier mb-2 ms-5">@Localizer["gender"]:</div>
             <div class="filter-height-rectifier mb-2 ms-2">
@@ -61,11 +63,11 @@
             <div class="filter-height-rectifier mb-2 ms-5">Ordenar por:</div>
             <div class="filter-height-rectifier mb-2 ms-2">
                 <select id="filter-order-input" class="form-control filter-field" placeholder="" style="border: 1.5px solid #6610F2; border-radius: 15px;">
-                    <!option selected value="">@Localizer["order"]</!option>
-                    <!option value="a-z">@Localizer["alfabetically_a_to_z"]</!option>
-                    <!option value="z-a">@Localizer["alfabetically_z_to_a"]</!option>
-					<!option value="newest">@Localizer["recent"]</!option>
-					<!option value="oldest">@Localizer["oldest"]</!option>
+                    <!option value="">@Localizer["order"]</!option>
+                    <!option value="a-z" @(order == "a-z" ? "selected" : "")>@Localizer["alfabetically_a_to_z"]</!option>
+                    <!option value="z-a" @(order == "z-a" ? "selected" : "")>@Localizer["alfabetically_z_to_a"]</!option>
+                    <!option value="newest" @(order == "newest" ? "selected" : "")>@Localizer["recent"]</!option>
+                    <!option value="oldest" @(order == "oldest" ? "selected" : "")>@Localizer["oldest"]</!option>
                 </select>
             </div>
             <div class="bi bi-search search-btn ms-5" onclick="actualEvent()"></div>
