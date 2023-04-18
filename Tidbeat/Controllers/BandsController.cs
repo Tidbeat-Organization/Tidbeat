@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -17,16 +18,18 @@ namespace Tidbeat.Controllers
     public class BandsController : Controller {
         private readonly ApplicationDbContext _context;
         private readonly ISpotifyService _spotifyService;
+        private readonly UserManager<ApplicationUser> _userManager;
 
         /// <summary>
         /// Initializes needed services for the controller.
         /// </summary>
         /// <param name="context">The context of the application.</param>
         /// <param name="spotifyService">The access to the spotify API.</param>
-        public BandsController(ApplicationDbContext context, ISpotifyService spotifyService)
+        public BandsController(ApplicationDbContext context, ISpotifyService spotifyService, UserManager<ApplicationUser> userManager)
         {
             _context = context;
             _spotifyService = spotifyService;
+            _userManager = userManager;
         }
 
         /// <summary>
@@ -63,6 +66,13 @@ namespace Tidbeat.Controllers
 
             }
             //Alfabeticamnete a-z
+            if (User.Identity.IsAuthenticated)
+            {
+                var user = await _userManager.GetUserAsync(User);
+                var request = HttpContext.Request;
+                var currentUrl = string.Format("{0}://{1}", request.Scheme, request.Host);
+                TempData["Friends"] = await UtilityClass.SideBarAsync(user.Id, currentUrl);
+            }
             return View();
 
         }
@@ -103,6 +113,13 @@ namespace Tidbeat.Controllers
             var allPosts = _context.Posts.Include(p => p.User).Include(p => p.Band).Where(p => p.Band != null && p.Band.BandId == id).ToList();
             ViewBag.posts = allPosts;
 
+            if (User.Identity.IsAuthenticated)
+            {
+                var user = await _userManager.GetUserAsync(User);
+                var request = HttpContext.Request;
+                var currentUrl = string.Format("{0}://{1}", request.Scheme, request.Host);
+                TempData["Friends"] = await UtilityClass.SideBarAsync(user.Id, currentUrl);
+            }
             return View(band);
         }
     }

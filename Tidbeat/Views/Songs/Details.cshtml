@@ -18,6 +18,12 @@
     int favoritesAmount = ViewBag.favoritesAmount;
 }
 
+<div>
+    @{
+        await Html.RenderPartialAsync("_Sidebar");
+    }
+</div>
+
 <!--All music info goes here-->
 <div class="container-fluid row w-100 d-flex flex-column flex-lg-row mx-0">
     <div class="d-flex flex-column col-lg-6 col-md-12 vh-100-minus-navbar border-lg-end pe-1">

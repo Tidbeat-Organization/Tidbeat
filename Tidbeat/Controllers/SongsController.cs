@@ -123,6 +123,14 @@ namespace Tidbeat.Controllers
         /// <remarks>GET: Songs/</remarks>
         /// <returns>The Index view with the found songs according to its filters included.</returns>
         public async Task<IActionResult> Index([FromQuery] string searchKey, [FromQuery] string gener, [FromQuery] string band, [FromQuery] string album, [FromQuery] string yearStart, [FromQuery] string yearEnd) {
+            if (User.Identity.IsAuthenticated)
+            {
+                var user = await _userManager.GetUserAsync(User);
+                var request = HttpContext.Request;
+                var currentUrl = string.Format("{0}://{1}", request.Scheme, request.Host);
+                TempData["Friends"] = await UtilityClass.SideBarAsync(user.Id, currentUrl);
+            }
+
             TempData["Search"] = searchKey;
             TempData["Gener"] = gener;
             TempData["Band"] = band;
@@ -135,6 +143,7 @@ namespace Tidbeat.Controllers
 
             }
             ViewBag.Result = await _spotifyService.GetSearchSongsbyValuesAsync(searchKey, gener, band, album, yearStart, yearEnd);
+
             return View();
 
         }
@@ -176,6 +185,14 @@ namespace Tidbeat.Controllers
 
             var allPosts = _context.Posts.Include(p => p.User).Include(p => p.Song).Where(p => p.Song != null && p.Song.SongId == id).ToList();
             ViewBag.posts = allPosts;
+
+            if (User.Identity.IsAuthenticated)
+            {
+                var user = await _userManager.GetUserAsync(User);
+                var request = HttpContext.Request;
+                var currentUrl = string.Format("{0}://{1}", request.Scheme, request.Host);
+                TempData["Friends"] = await UtilityClass.SideBarAsync(user.Id, currentUrl);
+            }
 
             return View(song);
         }

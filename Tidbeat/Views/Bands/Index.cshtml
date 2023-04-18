@@ -11,6 +11,12 @@
     var gender = TempData["Gener"]?.ToString();
 }
 
+<div>
+    @{
+        await Html.RenderPartialAsync("_Sidebar");
+    }
+</div>
+
 <div class="mt-4 pt-5">
     <div class="mx-3">
         <div id="filter" class="pb-2">
