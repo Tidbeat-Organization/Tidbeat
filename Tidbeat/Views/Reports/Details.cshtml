@@ -10,6 +10,12 @@
     var goToLink = isComment ? Url.Action("Details", "Posts", new { id = ViewBag.Comment.post.PostId }) : Url.Action("Details", "Posts", new { id = Model.ReportItemId });
 }
 
+<div>
+    @{
+        await Html.RenderPartialAsync("_Sidebar");
+    }
+</div>
+
 <div class="container-fluid mt-5 pt-5">
     <div class="d-flex justify-content-center">
         <div class="d-flex flex-column text-start position-relative ms-5 ms-md-0">
