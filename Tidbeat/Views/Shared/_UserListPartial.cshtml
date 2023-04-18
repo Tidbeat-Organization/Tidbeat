@@ -8,7 +8,7 @@
 
 @if (!Model.Any())
 {
-    <p class="text-center">Localizer["not_found_users"]</p>
+    <p class="text-center">@Localizer["not_found_users"]</p>
 }
 else
 {
@@ -23,9 +23,9 @@ else
                     <div class="card-body">
                         <h5 class="card-title">@user.FullName</h5>
                         <div class="border border-1 border-light-grey my-2"></div>
-                        <p class="paragraph mt-3"><strong>@Localizer["favorite_genre"]</strong> @(!string.IsNullOrEmpty(user.FavoriteGenre) ? user.FavoriteGenre.Substring(0, 1).ToUpper() + user.FavoriteGenre.Substring(1) : Localizer["non_specified"])</p>
-                        <p><strong>Localizer["country"]</strong> @(string.IsNullOrEmpty(user.Country) ? Localizer["non_specified"] : user.Country)</p>
-                        <a href="@Url.Action("Details", "Profiles", new { id = user.Id })" class="btn btn-primary">Localizer["view_profile"]</a>
+                        <p class="paragraph mt-3"><strong>@Localizer["favorite_genre"]</strong> @(!string.IsNullOrEmpty(user.FavoriteGenre) ? user.FavoriteGenre.Substring(0, 1).ToUpper() + user.FavoriteGenre.Substring(1) : @Localizer["non_specified"])</p>
+                        <p><strong>@Localizer["country"]</strong> @(string.IsNullOrEmpty(user.Country) ? @Localizer["non_specified"] : user.Country)</p>
+                        <a href="@Url.Action("Details", "Profiles", new { id = user.Id })" class="btn btn-primary">@Localizer["view_profile"]</a>
                     </div>
                 </div>
             </div>
