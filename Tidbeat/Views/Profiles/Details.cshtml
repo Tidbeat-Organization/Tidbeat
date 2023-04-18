@@ -105,11 +105,20 @@
                                 <input type="hidden" id="user-id" name="userId" value="">
                                 <div class="mb-3">
                                     <label for="user-name" class="form-label" style="color: #6610F2;">Nome:</label>
-                                    <input type="text" class="form-control" id="user-name" name="name">
+                                    <div class="d-flex align-items-center">
+                                        <div id="admin-definitions-edit-full-name-reset-button" class="bi bi-arrow-clockwise text-primary fs-5 btn hover-background-grey px-1 py-0 d-none"></div>
+                                        <div id="admin-definitions-edit-full-name-button" class="bi bi-pencil-fill text-primary me-2 btn hover-background-grey px-1 py-0"></div>
+                                        <input id="admin-definitions-full-name-input" disabled type="text" class="form-control" id="user-name" name="name" />
+                                        <input id="admin-definitions-full-name-hidden-input" type="hidden" />
+                                    </div>
                                 </div>
-                                <div class="mb-3 my-4">
+                                <div class="mb-3 my-4 position-relative">
+                                    <div id="admin-definitions-edit-about-me-reset-button" class="bi bi-arrow-clockwise text-primary fs-5 btn hover-background-grey px-1 py-0 position-absolute start-0 d-none"></div>
+                                    <div id="admin-definitions-edit-about-me-button" class="bi bi-pencil-fill text-primary me-2 btn hover-background-grey position-absolute start-0 px-1 py-0"></div>
                                     <label for="user-about" class="form-label" style="color: #6610F2;">Sobre mim:</label>
-                                    <textarea asp-for="AboutMe" id="postcreate" class="form-control rich-text-index-profile" style="height: 200px; border: 1.5px solid #6610F2; border-radius: 15px;" placeholder="@Localizer["about_me"]..."></textarea>
+                                    <div id="admin-definitions-about-me-div" class="border text-start p-2" style="height: 200px; border-radius: 15px;">@Html.Raw(Model.AboutMe)</div>
+                                    <textarea asp-for="AboutMe" id="postcreate" class="form-control rich-text-index-profile" style="border: 1.5px solid #6610F2; border-radius: 15px;" placeholder="@Localizer["about_me"]..."></textarea>
+                                    <input type="hidden" id="admin-definitions-about-me-hidden-input" />
                                 </div>
                             </form>
                         </div>
@@ -120,13 +129,18 @@
                             <h5 style="color: red; font-weight: normal; text-decoration: underline;">Ações de Moderação</h5>
                             <form style="margin-top: 30px;">
                                 <div class="mb-3">
-                                    <label for="user-role" class="form-label" style="color: red;">Dar Role:</label>
-                                    <select class="form-select" id="user-role" name="role">
-                                        <option disabled>Escolha um papel</option>
-                                        <option value="admin">Administrador</option>
-                                        <option value="moderator">Moderador</option>
-                                        <option value="normal" selected>Utilizador normal</option>
-                                    </select>
+                                    <label for="admin-definitions-give-role-select" class="form-label" style="color: red;">Dar Role:</label>
+                                    <div class="d-flex align-items-center">
+                                        <div id="admin-definitions-edit-give-role-reset-button" class="bi bi-arrow-clockwise text-primary fs-5 btn hover-background-grey px-1 py-0 d-none"></div>
+                                        <div id="admin-definitions-edit-give-role-button" class="bi bi-pencil-fill text-primary me-2 btn hover-background-grey px-1 py-0"></div>
+                                        <select disabled class="form-select" id="admin-definitions-give-role-select" name="role">
+                                            <option disabled>Escolha um papel</option>
+                                            <option value="admin">Administrador</option>
+                                            <option value="moderator">Moderador</option>
+                                            <option value="normal" selected>Utilizador normal</option>
+                                        </select>
+                                        <input id="admin-definitions-give-role-hidden-input" type="hidden" />
+                                    </div>
                                 </div>
                                 <div class="mb-3 form-check my-3 form-check-inline">
                                     <input type="checkbox" class="form-check-input" id="delete-photo" name="deletePhoto" style="float: right; margin-left: 10px;" onchange="updateDeletePhotoLabel()">
@@ -136,7 +150,7 @@
                                     <label for="ban-for" class="form-label" style="color: red;">Banir por:</label>
                                     <div class="input-group">
                                         <input type="number" class="form-control" id="ban-for" name="banFor" min="1" step="1">
-                                        <select class="form-select" id="ban-for-unit" name="banForUnit">
+                                        <select disabled class="form-select" id="ban-for-unit" name="banForUnit">
                                             <option value="minutes">Minutos</option>
                                             <option value="hours">Horas</option>
                                             <option value="days">Dias</option>
@@ -394,25 +408,107 @@
         e.preventDefault();
         var userId = $(this).data('user-id');
         $('#user-id').val(userId);
-        $('#user-name').val('');
-        $('#user-about').val('');
+        $('#admin-definitions-full-name-input').val('@Model.FullName');
+        $('#user-about').val();
         $('#edit-user-modal').modal('show');
     });
 
     //Show reason for ban, after entering number
     $(document).ready(function() {
     // Listen to changes in the "Ban for" input
-    $('#ban-for').on('input', function() {
-    // Check if the "Ban for" input has a value greater than 0
-    if ($(this).val() > 0) {
-      // Show the "Reason for ban" field
-      $('#reason-for-ban').show();
-    } else {
-      // Hide the "Reason for ban" field
-      $('#reason-for-ban').hide();
-    }
-     });
-  });
+        $('#ban-for').on('input', function() {
+            if ($(this).val() > 0) {
+                $('#reason-for-ban').show();
+            } else {
+                $('#reason-for-ban').hide();
+            }
+        });
+
+        function toggleEditMode(fieldName) {
+            let editButton = document.getElementById('admin-definitions-edit-' + fieldName + '-button');
+            let resetButton = document.getElementById('admin-definitions-edit-' + fieldName + '-reset-button');
+            if (editButton.classList.contains('d-none')) {
+                editButton.classList.remove('d-none');
+                resetButton.classList.add('d-none');
+            } else {
+                editButton.classList.add('d-none');
+                resetButton.classList.remove('d-none');
+            }
+        }
+
+        let toxDiv = document.querySelector('.tox');
+        toxDiv.classList.add('d-none');
+
+        $('#admin-definitions-edit-full-name-button').on('click', function (e) {
+            e.preventDefault();
+            let fullNameInput = document.getElementById('admin-definitions-full-name-input');
+
+            let fullNameHiddenInput = document.getElementById('admin-definitions-full-name-hidden-input');
+            fullNameHiddenInput.value = fullNameInput.value;
+            fullNameInput.disabled = false;
+            fullNameInput.focus();
+
+            toggleEditMode('full-name');
+        });
+
+        $('#admin-definitions-edit-full-name-reset-button').on('click', function (e) {
+            e.preventDefault();
+            let fullNameInput = document.getElementById('admin-definitions-full-name-input');
+
+            let fullNameHiddenInput = document.getElementById('admin-definitions-full-name-hidden-input');
+            fullNameInput.value = fullNameHiddenInput.value;
+            fullNameInput.disabled = true;
+
+            toggleEditMode('full-name');
+        });
+
+        $('#admin-definitions-edit-about-me-button').on('click', function (e) {
+            e.preventDefault();
+            let aboutMeDiv = document.getElementById('admin-definitions-about-me-div');
+            aboutMeDiv.classList.add('d-none');
+            toxDiv.classList.remove('d-none');
+
+            let aboutMeHiddenInput = document.getElementById('admin-definitions-about-me-hidden-input');
+            aboutMeHiddenInput.value = aboutMeDiv.innerHTML;
+
+            toggleEditMode('about-me');
+        });
+
+        $('#admin-definitions-edit-about-me-reset-button').on('click', function (e) {
+            e.preventDefault();
+            let aboutMeDiv = document.getElementById('admin-definitions-about-me-div');
+            aboutMeDiv.classList.remove('d-none');
+            toxDiv.classList.add('d-none');
+
+            let aboutMeHiddenInput = document.getElementById('admin-definitions-about-me-hidden-input');
+            let editor = tinymce.get('postcreate');
+            editor.setContent(aboutMeHiddenInput.value);
+            aboutMeHiddenInput.value = '';
+
+            toggleEditMode('about-me');
+        });
+
+        $('#admin-definitions-edit-give-role-button') .on('click', function (e) {
+            e.preventDefault();
+            let giveRoleInput = document.getElementById('admin-definitions-give-role-select');
+            giveRoleInput.disabled = false;
+            let hiddenGiveRoleInput = document.getElementById('admin-definitions-give-role-hidden-input');
+            hiddenGiveRoleInput.value = giveRoleInput.value;
+
+            toggleEditMode('give-role');
+        });
+
+        $('#admin-definitions-edit-give-role-reset-button').on('click', function (e) {
+            e.preventDefault();
+            let giveRoleInput = document.getElementById('admin-definitions-give-role-select');
+            giveRoleInput.disabled = true;
+            let hiddenGiveRoleInput = document.getElementById('admin-definitions-give-role-hidden-input');
+            gileRoleInput.value = hiddenGiveRoleInput;
+            hiddenGiveRoleInput.value = '';
+
+            toggleEditMode('give-role');
+        });
+    });
 
     //Checkbox, "Yes" or "No" info on the right side
     function updateDeletePhotoLabel() {
@@ -429,7 +525,7 @@
     $('#edit-user-submit').on('click', function (e) {
         e.preventDefault();
         var userId = $('#user-id').val();
-        var name = $('#user-name').val();
+        var name = $('#admin-definitions-full-name-input').val();
         var about = $('#user-about').val();
         $.ajax({
             url: '/Role/EditAsync',
