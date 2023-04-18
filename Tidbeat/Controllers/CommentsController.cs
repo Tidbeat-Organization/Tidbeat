@@ -121,7 +121,7 @@ namespace Tidbeat.Controllers
                         var user = await _userManager.GetUserAsync(User);
                         var commentStored = await _context.Comment.Include(c => c.post).Include(c => c.User).FirstOrDefaultAsync(c => c.CommentId == comment.CommentId);
                         if (commentStored != null) {
-                            if (user.Id == commentStored.User.Id || _userManager.IsInRoleAsync(user, "Administrator").Result || _userManager.IsInRoleAsync(user, "Moderator").Result) //Add for Roles
+                            if (user.Id == commentStored.User.Id || _userManager.IsInRoleAsync(user, "Admin").Result || _userManager.IsInRoleAsync(user, "Moderator").Result) //Add for Roles
                             {
                                 commentStored.Content = comment.Content;
                                 commentStored.IsEdited = true;
@@ -169,7 +169,7 @@ namespace Tidbeat.Controllers
 
             var comment = await _context.Comment.Include(c => c.post).Include(v => v.User).FirstOrDefaultAsync(c => c.CommentId == id);
             var user = await _userManager.GetUserAsync(User);
-            if (user.Id == comment.User.Id || _userManager.IsInRoleAsync(user, "Moderator").Result || _userManager.IsInRoleAsync(user, "Administrator").Result) //Add for Roles
+            if (user.Id == comment.User.Id || _userManager.IsInRoleAsync(user, "Moderator").Result || _userManager.IsInRoleAsync(user, "Admin").Result) //Add for Roles
             {
                 var ratings = await _context.CommentRatings.Where(cr => cr.Comment.CommentId == id).ToListAsync();
 

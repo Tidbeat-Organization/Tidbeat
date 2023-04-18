@@ -34,7 +34,7 @@ namespace Tidbeat {
             BirthdayDate = DateTime.Now,
             Gender = "male",
             IsBanned = false,
-            Role = Enums.RoleType.Administrator,
+            Role = Enums.RoleType.Admin,
             EmailConfirmed = true,
         };
 

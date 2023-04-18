@@ -14,7 +14,7 @@
                 </div>
             }
             else {
-                    @if (comment.User.Role.Equals(Tidbeat.Enums.RoleType.Administrator)) {
+                    @if (comment.User.Role.Equals(Tidbeat.Enums.RoleType.Admin)) {
                         <div class="bi bi-diamond-fill fs-6 me-1 py-0 text-primary" data-toggle="tooltip" data-placement="top" title="@Localizer["admin"]"></div>
                     }
                     else if (comment.User.Role.Equals(Tidbeat.Enums.RoleType.Moderator)) {
@@ -40,7 +40,7 @@
     </div>
     <div class="border-left border-secondary ml-2 w-75 text-start ms-2">@comment.Content</div>
 
-        @if (ViewData["currentUser"] != null && comment.User.Id == ((ApplicationUser) ViewData["currentUser"]).Id || User.IsInRole("Moderator") || User.IsInRole("Administrator")) {
+        @if (ViewData["currentUser"] != null && comment.User.Id == ((ApplicationUser) ViewData["currentUser"]).Id || User.IsInRole("Moderator") || User.IsInRole("Admin")) {
             <div class="align-content-end flex-column justify-content-end">
                 <a formmethod="get" class="text-primary hover-background-grey rounded text-decoration-none px-2 pt-1 pb-1 bi bi-pencil-fill" asp-controller="Comments" asp-action="Edit" asp-route-id="@comment.CommentId"></a>
                 <form class="mt-2" style="outline: none;" method="post">

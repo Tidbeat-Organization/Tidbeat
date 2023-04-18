@@ -5,7 +5,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using System.Drawing;
 using System.Text.Encodings.Web;
+using Tidbeat.Areas.Identity.Pages.Account.Manage;
 using Tidbeat.Data;
+using Tidbeat.DTOs.Role;
 using Tidbeat.Enums;
 using Tidbeat.Models;
 
@@ -19,23 +21,28 @@ namespace Tidbeat.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IEmailSender _emailSender;
         private readonly IStringLocalizer<PostsController> _localizer;
+        private readonly SignInManager<ApplicationUser> _signInManager;
 
-        public RoleController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, IEmailSender emailSender, IStringLocalizer<PostsController> localizer)
+        public RoleController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, IEmailSender emailSender, IStringLocalizer<PostsController> localizer, SignInManager<ApplicationUser> signInManager)
         {
             _context = context;
             //_serviceProvider = serviceProvider;
             _userManager = userManager;
             _emailSender = emailSender;
             _localizer = localizer;
+            _signInManager = signInManager;
         }
 
-        [Authorize(Roles = "Moderator,Administrator")]
+        [Authorize(Roles = "Moderator,Admin")]
         [HttpPost]
-        public async Task<ActionResult> EditAsync(string userId,string name, string about )
+        public async Task<ActionResult> EditAsync([FromBody] EditAsyncDto editAsyncDto )
         {
-            var dbUser = await _context.Users.FindAsync(userId);
-            var user = await _userManager.GetUserIdAsync(dbUser);
-            if (user == null)
+            var userId = editAsyncDto.UserId;
+            var name = editAsyncDto.Name;
+            var about = editAsyncDto.About;
+
+            var dbUser = await _userManager.FindByIdAsync(userId);
+            if (dbUser == null)
             {
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
@@ -52,63 +59,73 @@ namespace Tidbeat.Controllers
             {
                 dbUser.AboutMe = about;
             }
+
+            if (editAsyncDto.ShouldDeletePhoto != null && (bool) editAsyncDto.ShouldDeletePhoto) {
+                dbUser.ImagePath = "";
+            }
+            
+
+            BanTime banTime;
+            if (editAsyncDto.BanTime == BanTime.Days.ToString()) {
+                banTime = BanTime.Days;
+            }
+            else if (editAsyncDto.BanTime == BanTime.Weeks.ToString()) {
+                banTime = BanTime.Weeks;
+            }
+            else if (editAsyncDto.BanTime == BanTime.Months.ToString()) {
+                banTime = BanTime.Months;
+            }
+            else if (editAsyncDto.BanTime == BanTime.Years.ToString()) {
+                banTime = BanTime.Years;
+            }
+            else if (editAsyncDto.BanTime == BanTime.Minutes.ToString()) {
+                banTime = BanTime.Minutes;
+            }
+            else {
+                banTime = BanTime.Hours;
+            }
+            if (editAsyncDto.BanNumber != null) {
+                _ = await BanAsync(userId, editAsyncDto.BanReason, (double)editAsyncDto.BanNumber, banTime);
+            }
+
+            RoleType roleType;
+            if (editAsyncDto.RoleType == RoleType.Admin.ToString()) {
+                roleType = RoleType.Admin;
+            }
+            else if (editAsyncDto.RoleType == RoleType.Moderator.ToString()) {
+                roleType = RoleType.Moderator;
+            }
+            else {
+                roleType = RoleType.NormalUser;
+            }
+
+            _ = await GivePermisson(userId, roleType);
+
             var result = await _userManager.UpdateAsync(dbUser);
-            if (result.Succeeded)
-            {
+            if (result.Succeeded) {
                 _context.SaveChanges();
                 await _emailSender.SendEmailAsync(dbUser.Email, "TIDBEAT - " + _localizer["account_updated"],
-                     _localizer["email_body_edit"]); 
-                return Json(_localizer["user_update"]);
+                     _localizer["email_body_edit"]);
+                //return Json(_localizer["user_update"]);
             }
+
             return Json(_localizer["operation_fail"]);
         }
 
-        [Authorize(Roles = "Moderator,Administrator")]
+        [Authorize(Roles = "Moderator,Admin")]
         [HttpPost]
-        public async Task<ActionResult> DeleteAsync(string userId, string reason)
+        public async Task<ActionResult> DeleteAsync([FromBody] DeleteAsyncDto deleteAsyncDto)
         {
+            var userId = deleteAsyncDto.UserId;
+            var reason = deleteAsyncDto.Reason;
             var dbUser = await _context.Users.FindAsync(userId);
             var user = await _userManager.GetUserIdAsync(dbUser);
             if (user == null)
             {
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
-
-            if (!ModelState.IsValid)
-            {
-                return NotFound();
-            }
-            dbUser.IsBanned = true;
-            dbUser.reason = reason;
-            var result = await _userManager.UpdateAsync(dbUser);
-            //Falta adicionar o [Deleted] aos posts e comments
-            var invalidUser = await _userManager.FindByEmailAsync(Configurations.InvalidUser.Email);
-
-            var postsFromUser = _context.Posts.Where(post => post.User.Email == dbUser.Email);
-            foreach (var post in postsFromUser)
-            {
-                post.User = invalidUser;
-            }
-
-            var commentsFromUser = _context.Comment.Where(comment => comment.User.Email == dbUser.Email);
-            foreach (var comment in commentsFromUser)
-            {
-                comment.User = invalidUser;
-            }
-
-            var postRatings = _context.PostRatings.Where(postRating => postRating.User.Email == dbUser.Email);
-            foreach (var postRating in postRatings)
-            {
-                postRating.User = invalidUser;
-            }
-
-            var commentRatings = _context.CommentRatings.Where(commentRating => commentRating.User.Email == dbUser.Email);
-            foreach (var commentRating in commentRatings)
-            {
-                commentRating.User = invalidUser;
-            }
-
-            _context.SaveChanges();
+            var result = await DeletePersonalDataModel.DeleteUser(userId, _context, _userManager);
+            
             if (result.Succeeded)
             {
                 await _emailSender.SendEmailAsync(dbUser.Email, "TIDBEAT - " + _localizer["account_deleted"],
@@ -118,9 +135,9 @@ namespace Tidbeat.Controllers
             return Json(_localizer["operation_fail"]);
         }
 
-        [Authorize(Roles = "Moderator,Administrator")]
+        [Authorize(Roles = "Moderator,Admin")]
         [HttpPost]
-        public async Task<ActionResult> BanAsync(string userId, string reason, int time, string date) // date, passes month, day, years, weeks
+        public async Task<ActionResult> BanAsync(string userId, string reason, double time, BanTime date) // date, passes month, day, years, weeks
         {
             var dbUser = await _context.Users.FindAsync(userId);
             var user = await _userManager.GetUserIdAsync(dbUser);
@@ -136,20 +153,24 @@ namespace Tidbeat.Controllers
             var BanDateEnd = DateTime.Now;
             switch (date) 
             {
-                case "month":
-                    BanDateEnd = BanDateEnd.AddMonths(time);
+                case BanTime.Months:
+                    BanDateEnd = BanDateEnd.AddMonths((int) Math.Floor(time));
                     break;
-                case "year":
-                    BanDateEnd = BanDateEnd.AddYears(time);
+                case BanTime.Years:
+                    BanDateEnd = BanDateEnd.AddYears((int) Math.Floor(time));
                     break;
-                case "day":
+                case BanTime.Days:
                     BanDateEnd = BanDateEnd.AddDays(time);
                     break;
-                case "weeks":
+                case BanTime.Weeks:
                     BanDateEnd = BanDateEnd.AddDays(time * 7);
                     break;
             }
-            var BanUser = new BanUser() { EndsAt = BanDateEnd,User = dbUser};
+            var BanUser = new BanUser() {
+                EndsAt = BanDateEnd,
+                User = dbUser,
+                Reason = reason,
+            };
             if (dbUser.Bans == null)
             {
                 dbUser.Bans = new List<BanUser>();
@@ -166,7 +187,7 @@ namespace Tidbeat.Controllers
             return Json(_localizer["operation_fail"]);
         }
 
-        [Authorize(Roles = "Administrator")]
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<ActionResult> RevokePermisson(string userId)
         {
@@ -186,19 +207,23 @@ namespace Tidbeat.Controllers
             return Json("Error");
         }
 
-        [Authorize(Roles = "Administrator")]
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<ActionResult> GivePermisson(string userId, RoleType newRole)
         {
             var dbUser = await _context.Users.FindAsync(userId);
-            var result = _userManager.RemoveFromRoleAsync(dbUser, dbUser.Role.ToString());
-            if (result.IsCompletedSuccessfully)
+            if (dbUser.Role == newRole) {
+                return Json("Both roles are the same.");
+            }
+            var result = await _userManager.RemoveFromRoleAsync(dbUser, dbUser.Role.ToString());
+            if (result.Succeeded)
             {
-                var newPermission = _userManager.AddToRoleAsync(dbUser, newRole.ToString());
-                if (newPermission.IsCompletedSuccessfully)
+                var newPermission = await _userManager.AddToRoleAsync(dbUser, newRole.ToString());
+                if (newPermission.Succeeded)
                 {
-                    dbUser.Role = newRole;
+                    var actualUser = await _userManager.FindByIdAsync(userId);
 
+                    actualUser.Role = newRole;
                     _context.SaveChanges();
                 }
             }
