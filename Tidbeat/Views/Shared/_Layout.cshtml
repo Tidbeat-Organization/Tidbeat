@@ -87,9 +87,9 @@
                                     @Localizer["other_contents"]
                                 </button>
                                 <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="#">@Localizer["users"]</a></li>
                                     <li><a class="dropdown-item" href="/Songs">@Localizer["songs"]</a></li>
                                     <li><a class="dropdown-item" href="/Bands">@Localizer["bands"]</a></li>
+                                     <li><a class="dropdown-item" href="/Users">@Localizer["users"]</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -104,7 +104,8 @@
                                     </div>
                                     <ul class="dropdown-menu" style="min-width: 60px">
                                         <li><a class="dropdown-item d-flex" href="#" id="search-songs"><div class="bi bi-music-note me-1"></div><div>@Localizer["songs"]</div></a></li>
-                                        <li><a class="dropdown-item d-flex" href="#" id="search-bands"><div class="bi bi-person-fill me-1"></div><div>@Localizer["bands"]</div></a></li>
+                                        <li><a class="dropdown-item d-flex" href="#" id="search-bands"><div class="bi bi-mic-fill me-1"></div><div>@Localizer["bands"]</div></a></li>
+                                        <li><a class="dropdown-item d-flex" href="#" id="search-users"><div class="bi bi-person-fill me-1"></div><div>@Localizer["users"]</div></a></li>
                                     </ul>
                                 </div>
                                 <div class="form-outline">
@@ -149,13 +150,14 @@
                                 </div>
                                 <ul class="dropdown-menu" style="min-width: 60px">
                                     <li><a class="dropdown-item d-flex" href="#" id="search-songs2"><div class="bi bi-music-note me-1"></div><div>@Localizer["songs"]</div></a></li>
-                                    <li><a class="dropdown-item d-flex" href="#" id="search-bands2"><div class="bi bi-person-fill me-1"></div><div>@Localizer["bands"]</div></a></li>
+                                    <li><a class="dropdown-item d-flex" href="#" id="search-bands2"><div class="bi bi-mic-fill me-1"></div><div>@Localizer["bands"]</div></a></li>
+                                    <li><a class="dropdown-item d-flex" href="#" id="search-users2"><div class="bi bi-person-fill me-1"></div><div>@Localizer["users"]</div></a></li>
                                 </ul>
                             </div>
                             <div class="form-outline">
-                                <input type="search" id="searchInput" class="form-control" placeholder="@Localizer["search"]" />
+                                <input type="search" id="searchInput2" class="form-control" placeholder="@Localizer["search"]" />
                             </div>
-                            <button type="button" id="searchButton" class="btn btn-primary">
+                            <button type="button" id="searchButton2" class="btn btn-primary">
                                 <img class="no-padding" src="~/images/SearchIcon.png" height="26" width="30" />
                             </button>
                         </div>
@@ -373,7 +375,9 @@
     <!-- This scripts implements all the searchbar dropdown menu logic-->
     <script>
         var searchButton = document.getElementById('searchButton');
+        var searchButton2 = document.getElementById('searchButton2');
         var searchInput = document.getElementById('searchInput');
+        var searchInput2 = document.getElementById('searchInput2');
         var searchType = 'songs'; // Default to searching for songs
         var searchTypeText = document.getElementById('searchTypeText'); // Get the search type text element
 
@@ -395,10 +399,22 @@
             var changeFilterIcon1 = changeFilterIcons[0];
             var changeFilterIcon2 = changeFilterIcons[1];
             changeFilterIcon1.classList.remove('bi-music-note');
+            changeFilterIcon1.classList.add('bi-mic-fill');
+            changeFilterIcon2.classList.remove('bi-music-note');
+            changeFilterIcon2.classList.add('bi-mic-fill');
+            searchType = 'bands';
+        }
+
+        function changeUser(e) {
+            e.preventDefault();
+            var changeFilterIcons = document.getElementsByClassName('change-filter-icon');
+            var changeFilterIcon1 = changeFilterIcons[0];
+            var changeFilterIcon2 = changeFilterIcons[1];
+            changeFilterIcon1.classList.remove('bi-music-note');
             changeFilterIcon1.classList.add('bi-person-fill');
             changeFilterIcon2.classList.remove('bi-music-note');
             changeFilterIcon2.classList.add('bi-person-fill');
-            searchType = 'bands';
+            searchType = 'users';
         }
 
         document.getElementById('search-songs').addEventListener('click', changeSong);
@@ -407,13 +423,26 @@
         document.getElementById('search-bands').addEventListener('click', changeBand);
         document.getElementById('search-bands2').addEventListener('click', changeBand);
 
-        searchButton.addEventListener('click', function () {
-            var searchQuery = searchInput.value.trim();
+        document.getElementById('search-users').addEventListener('click', changeUser);
+        document.getElementById('search-users2').addEventListener('click', changeUser);
+
+        function onClickSearch(theSearchInput) {
+            var searchQuery = theSearchInput.value.trim();
+            console.log("search clicked.");
             if (searchQuery !== '') {
-                var newUrl = '/' + searchType + '?searchKey=' + encodeURIComponent(searchQuery) + '&gener=&band=&album=&yearStart=&yearEnd=';
+                var newUrl = "";
+                if (searchType === 'users') {
+                    console.log("users");
+                    var newUrl = '/' + searchType + '?name=' + encodeURIComponent(searchQuery) + '&country=';
+                } else {
+                    newUrl = '/' + searchType + '?searchKey=' + encodeURIComponent(searchQuery) + '&gener=&band=&album=&yearStart=&yearEnd=';
+                }
                 window.location.href = newUrl;
             }
-        });
+        }
+
+        searchButton.addEventListener('click', () => onClickSearch(searchInput));
+        searchButton2.addEventListener('click', () => onClickSearch(searchInput2));
 
         searchInput.addEventListener("keypress", function (event) {
             // If the user presses the "Enter" key on the keyboard
@@ -422,6 +451,16 @@
                 event.preventDefault();
                 // Trigger the button element with a click
                 document.getElementById('searchButton').click();
+            }
+        });
+        
+        searchInput2.addEventListener("keypress", function (event) {
+            // If the user presses the "Enter" key on the keyboard
+            if (event.key === "Enter") {
+                // Cancel the default action, if needed
+                event.preventDefault();
+                // Trigger the button element with a click
+                document.getElementById('searchButton2').click();
             }
         });
     </script>

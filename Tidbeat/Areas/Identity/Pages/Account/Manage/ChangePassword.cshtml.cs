@@ -21,7 +21,7 @@ namespace Tidbeat.Areas.Identity.Pages.Account.Manage
     /// </summary>
     public class ChangePasswordModel : PageModel
     {
-        public static string Pattern = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&_-])[A-Za-z\\d@$!%*?&_-]{6,}$";
+        public static string Pattern = RegisterModel.Pattern;
 
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
@@ -143,6 +143,8 @@ namespace Tidbeat.Areas.Identity.Pages.Account.Manage
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
 
+            _userManager.PasswordValidators.Clear();
+            _userManager.PasswordValidators.Add(new CustomPasswordValidator<ApplicationUser>());
             var changePasswordResult = await _userManager.ChangePasswordAsync(user, Input.OldPassword, Input.NewPassword);
             if (!changePasswordResult.Succeeded)
             {

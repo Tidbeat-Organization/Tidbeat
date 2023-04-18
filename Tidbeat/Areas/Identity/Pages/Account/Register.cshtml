@@ -25,7 +25,7 @@
 </style>
 <div class="text-center d-flex flex-column temporary-margin">
     <div class="display-4 text-primary">@Localizer["register_in_tidbeat"]</div>
-    <form class="mt-3 mx-auto " id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+    <form class="mt-3 mx-auto w-lg-30" id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="text-danger" id="Danger">
             @if (ModelState.ContainsKey("Danger"))
@@ -96,21 +96,21 @@
             <a id="registerSubmit" class="second-phase btn btn-primary mr-5 text-nowrap mb-1" onclick="RegisterFunction()">@Localizer["register"]</a>
             <a id="registerFinalSubmit" type="submit" class="hidden" onclick=""></a>
         </div>
-        
-        @foreach (var provider in Model.ExternalLogins!) {
-            if (provider.Name == "Google") {
-                <button type="submit" class="btn border hover-background-grey mt-4" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">
-                    <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google logo" width="50" height="50">
+    </form>
+    <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
+    @foreach (var provider in Model.ExternalLogins!) {
+        if (provider.Name == "Google") {
+            <button type="submit" class="btn border hover-background-grey mt-4" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">
+                <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google logo" width="50" height="50">
 
-                </button>
-            }
-            else {
-                <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">
-                    @provider.DisplayName
-                </button>
-            }
+            </button>
         }
-
+        else {
+            <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">
+                @provider.DisplayName
+            </button>
+        }
+    }
     </form>
 </div>
 <script>
@@ -121,7 +121,7 @@
     //    TempData["Gender"];
     //}
     function showPhase(isPhaseOne) {
-        let pattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@@$!%*?&_-])[A-Za-z\d@@$!%*?&_-]{6,}$/;
+        let pattern = /^(?!_)(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?!.*[<>\'\"])[^\x3C\x3E\x27\x22]{6,}$/;
         let email = document.getElementById('registerEmailField').value;
         let password = document.getElementById('registerPasswordField').value;
         let confirmPassword = document.getElementById('registerConfirmPasswordField').value;
@@ -241,6 +241,13 @@
         if (!username || username.value === "") {
             ResetDanger();
             document.getElementById('nameDanger').innerHTML = "@Localizer["invalid_name"].Value";
+            event.preventDefault();
+            console.log(username);
+            return false
+        }
+        if (username.value.includes("<") || username.value.includes(">") || username.value.includes("'") || username.value.includes('"') || username.value[0] === "_") {
+            ResetDanger();
+            document.getElementById('nameDanger').innerHTML = "@Localizer["name_may_not_contain"].Value";
             event.preventDefault();
             console.log(username);
             return false

@@ -204,6 +204,9 @@ namespace Tidbeat.Migrations
                     b.Property<string>("ImagePath")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool?>("IsBanned")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
 
@@ -227,6 +230,9 @@ namespace Tidbeat.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<int>("Role")
+                        .HasColumnType("int");
+
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
@@ -236,6 +242,9 @@ namespace Tidbeat.Migrations
                     b.Property<string>("UserName")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("reason")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -265,6 +274,31 @@ namespace Tidbeat.Migrations
                     b.HasKey("BandId");
 
                     b.ToTable("Band", (string)null);
+                });
+
+            modelBuilder.Entity("Tidbeat.Models.BanUser", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("EndsAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Reason")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("BanUser");
                 });
 
             modelBuilder.Entity("Tidbeat.Models.Comment", b =>
@@ -347,6 +381,29 @@ namespace Tidbeat.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Conversations");
+                });
+
+            modelBuilder.Entity("Tidbeat.Models.Follow", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("UserAskerId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("UserFollowedId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserAskerId");
+
+                    b.HasIndex("UserFollowedId");
+
+                    b.ToTable("Follow");
                 });
 
             modelBuilder.Entity("Tidbeat.Models.Message", b =>
@@ -497,6 +554,52 @@ namespace Tidbeat.Migrations
                     b.ToTable("Profile");
                 });
 
+            modelBuilder.Entity("Tidbeat.Models.Report", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DetailedReason")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ModAssignedId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("Reason")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ReportItemId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("ReportItemType")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserReportedId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("UserReporterId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ModAssignedId");
+
+                    b.HasIndex("UserReportedId");
+
+                    b.HasIndex("UserReporterId");
+
+                    b.ToTable("Report");
+                });
+
             modelBuilder.Entity("Tidbeat.Models.Song", b =>
                 {
                     b.Property<string>("SongId")
@@ -568,6 +671,17 @@ namespace Tidbeat.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Tidbeat.Models.BanUser", b =>
+                {
+                    b.HasOne("Tidbeat.Models.ApplicationUser", "User")
+                        .WithMany("Bans")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Tidbeat.Models.Comment", b =>
                 {
                     b.HasOne("Tidbeat.Models.Post", "post")
@@ -598,6 +712,21 @@ namespace Tidbeat.Migrations
                     b.Navigation("Comment");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Tidbeat.Models.Follow", b =>
+                {
+                    b.HasOne("Tidbeat.Models.ApplicationUser", "UserAsker")
+                        .WithMany()
+                        .HasForeignKey("UserAskerId");
+
+                    b.HasOne("Tidbeat.Models.ApplicationUser", "UserFollowed")
+                        .WithMany()
+                        .HasForeignKey("UserFollowedId");
+
+                    b.Navigation("UserAsker");
+
+                    b.Navigation("UserFollowed");
                 });
 
             modelBuilder.Entity("Tidbeat.Models.Message", b =>
@@ -681,6 +810,31 @@ namespace Tidbeat.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("Tidbeat.Models.Report", b =>
+                {
+                    b.HasOne("Tidbeat.Models.ApplicationUser", "ModAssigned")
+                        .WithMany()
+                        .HasForeignKey("ModAssignedId");
+
+                    b.HasOne("Tidbeat.Models.ApplicationUser", "UserReported")
+                        .WithMany()
+                        .HasForeignKey("UserReportedId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Tidbeat.Models.ApplicationUser", "UserReporter")
+                        .WithMany()
+                        .HasForeignKey("UserReporterId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("ModAssigned");
+
+                    b.Navigation("UserReported");
+
+                    b.Navigation("UserReporter");
+                });
+
             modelBuilder.Entity("Tidbeat.Models.Song", b =>
                 {
                     b.HasOne("Tidbeat.Models.Band", "Band")
@@ -690,6 +844,11 @@ namespace Tidbeat.Migrations
                         .IsRequired();
 
                     b.Navigation("Band");
+                });
+
+            modelBuilder.Entity("Tidbeat.Models.ApplicationUser", b =>
+                {
+                    b.Navigation("Bans");
                 });
 #pragma warning restore 612, 618
         }

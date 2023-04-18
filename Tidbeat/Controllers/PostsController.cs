@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Ganss.Xss;
 using Microsoft.AspNetCore.Authorization;
@@ -12,6 +13,8 @@ using Microsoft.DotNet.MSIdentity.Shared;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 using Newtonsoft.Json.Linq;
+using SpotifyAPI.Web;
+using Tidbeat.AuxilliaryClasses;
 using Tidbeat.Data;
 using Tidbeat.Models;
 using Tidbeat.Services;
@@ -42,14 +45,73 @@ namespace Tidbeat.Controllers
             _localizer = localizer;
         }
 
+        private static Expression<Func<Post, bool>> PostPasses(string name, string genre, string order)
+        {
+            name = (name == null) ? "" : name;
+            return p => (p.Song.Name.Contains(name))
+                     || (p.Band.Name.Contains(name))
+                     || (p.Title.Contains(name))
+                     || (string.IsNullOrEmpty(genre))
+                     || (string.IsNullOrEmpty(order));
+        }
+
+
         /// <summary>
         /// Gets all the posts of the application.
         /// </summary>
         /// <returns>All posts of the application.</returns>
         // GET: Posts
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index([FromQuery] string name, [FromQuery] string genre, [FromQuery] string order)
         {
-              return View(await _context.Posts.ToListAsync());
+            order = (order == "") ? "newest" : order;
+            TempData["genre"] = genre;
+            //var songs = await _context.Songs.ToListAsync();
+             /*foreach (var song in songs)
+             {
+                 var genres = await _spotifyService.GetGenresOfSong(song.SongId);
+                 Console.WriteLine("Genres of " + song.Name + ":\n");
+                 foreach (var _genre in genres)
+                 {
+                     Console.WriteLine($"\t{_genre}");
+                 }
+             }*/
+
+            var results = await _context
+                .Posts
+                .Where(PostPasses(name, genre, order))
+                .ToListAsync();
+
+            /* Console.WriteLine("[ Before Ordering ]");
+             foreach (var result in results)
+             {
+                 Console.WriteLine($"Initial Result: Name({result.Title}), Date({result.CreationDate})");
+             }*/
+            if (!string.IsNullOrEmpty(genre)) {
+            results = results.Where(p => (p.Band?.Gener?.Contains(genre) ?? false) || (p.Song?.Gener?.Contains(genre) ?? false)).ToList(); 
+            }
+            switch (order)
+            {
+                case "a-z":
+                    results = results.OrderBy(p => p.Title).ToList();
+                    break;
+                case "oldest":
+                    results = results.OrderBy(p => p.CreationDate).ToList();
+                    break;
+                case "z-a":
+                    results = results.OrderByDescending(p => p.Title).ToList();
+                    break;
+                case "newest":
+                    results = results.OrderByDescending(p => p.CreationDate).ToList();
+                    break;
+            }
+            /*
+            Console.WriteLine("[ After Ordering ]");
+            foreach (var result in results)
+            {
+                Console.WriteLine($"Posterior Result: Name({result.Title}), Date({result.CreationDate})");
+            }*/
+
+            return View(results);
         }
 
         /// <summary>
@@ -76,9 +138,17 @@ namespace Tidbeat.Controllers
             {
                 ViewBag.urlSong = _spotifyService.GetSongAsync(post.Song.SongId).Result.PreviewUrl;
             }
+            ViewBag.fetchCommentsCount = 15;
             ViewBag.currentUser = await _userManager.GetUserAsync(User);
-            ViewBag.commentsPosts = _context.Comment.Include(user => user.User).Where(s => s.post.PostId == post.PostId).ToList();
+            ViewBag.commentsPosts = _context.Comment.Include(user => user.User).Where(s => s.post.PostId == post.PostId).Take((int) ViewBag.fetchCommentsCount).ToList();
+            ViewBag.totalCommentCount = _context.Comment.Include(user => user.User).Where(s => s.post.PostId == post.PostId).Count();
             return View(post);
+        }
+
+        public async Task<IActionResult> FetchMoreComments(int postId, int commentCount, int skipCount) {
+            var comments = await _context.Comment.Include(user => user.User).Where(s => s.post.PostId == postId).Skip(skipCount).Take(commentCount).ToListAsync();
+            ViewData["currentUser"] = await _userManager.GetUserAsync(User);
+            return PartialView("_CommentListPartial", comments);
         }
 
         
@@ -152,6 +222,7 @@ namespace Tidbeat.Controllers
                                 newBand.BandId = Request.Form["BandId"];
                                 newBand.Name = SpotifyBand.Name;
                                 newBand.Image = SpotifyBand.Images[0].Url;
+                                newBand.Gener = string.Join(',', SpotifyBand.Genres.Where(s => s.Length > 1));
                                 band = newBand;
                                 post.Band = band;
                                 _context.Bands.Add(band);
@@ -167,6 +238,7 @@ namespace Tidbeat.Controllers
                                 Song newSong = new Song();
                                 var SpotifySong = await _spotifyService.GetSongAsync(Request.Form["SongId"]);
                                 var SongBand = await _spotifyService.GetBandAsync(SpotifySong.Artists[0].Id);
+                                var songGener = await _spotifyService.GetGenresOfSong(Request.Form["SongId"]);
                                 var checkBand = _context.Bands.Find(SongBand.Id);
                                 if (checkBand == null)
                                 {
@@ -182,6 +254,7 @@ namespace Tidbeat.Controllers
                                 }
                                 newSong.SongId = Request.Form["SongId"];
                                 newSong.Name = SpotifySong.Name;
+                                newSong.Gener = string.Join(',', songGener.Where(s => s.Length > 1));
                                 song = newSong;
                                 post.Song = song;
                                 post.Band = song.Band;
@@ -265,7 +338,7 @@ namespace Tidbeat.Controllers
             {
                 return NotFound();
             }
-            if (post.User.Id != (await _userManager.GetUserAsync(User)).Id) {
+            if (post.User.Id != (await _userManager.GetUserAsync(User)).Id && !(User.IsInRole("Moderator") || User.IsInRole("Administrator")) ) {
                 return Redirect("/");
             }
             return View(post);
@@ -289,7 +362,7 @@ namespace Tidbeat.Controllers
                 try
                 {
                     var user = await _userManager.GetUserAsync(User);
-                    var ogPost = _context.Posts.Find(id);
+                    var ogPost = await _context.Posts.Include(p => p.User).FirstOrDefaultAsync(p => p.PostId == id);
                     if (ogPost == null) {
                         return NotFound();
                     }
@@ -387,6 +460,14 @@ namespace Tidbeat.Controllers
                     }
 
                     _context.Posts.Remove(post);
+
+                    var nonNullReports = await _context.Report.Where(r => r.ReportItemId != null).ToListAsync();
+                    var reports = nonNullReports.Where(r => r.ReportItemId.ToString() == post.PostId.ToString()).ToList();
+                    //var reports = await _context.Report.Where(r => r.ReportItemId != null && r.ReportItemId.ToString() == post.PostId.ToString()).ToListAsync();
+                    foreach (Report report in reports) {
+                        report.ReportItemType = null;
+                        report.ReportItemId = null;
+                    }
                     await _context.SaveChangesAsync();
 
                     TempData["Message"] = _localizer["post_deleted_sucessfully"].Value;

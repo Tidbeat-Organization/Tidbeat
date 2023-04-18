@@ -34,7 +34,7 @@ namespace Tidbeat.Areas.Identity.Pages.Account
         private readonly ILogger<LoginModel> _logger;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IEmailSender _emailSender;
-        private static string Pattern = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&_-])[A-Za-z\\d@$!%*?&_-]{6,}$";
+        private static string Pattern = RegisterModel.Pattern;
         private readonly IStringLocalizer<LoginModel> _localizer;
 
         /// <summary>

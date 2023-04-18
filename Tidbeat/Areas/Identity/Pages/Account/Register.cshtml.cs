@@ -33,7 +33,7 @@ namespace Tidbeat.Areas.Identity.Pages.Account
     /// </summary>
     public class RegisterModel : PageModel
     {
-        public static string Pattern = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&_-])[A-Za-z\\d@$!%*?&_-]{6,}$";
+        public static string Pattern = "^(?!_)(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?!.*[<>\\'\\\"])[^\\x3C\\x3E\\x27\\x22]{6,}$";
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IUserStore<ApplicationUser> _userStore;
@@ -94,6 +94,7 @@ namespace Tidbeat.Areas.Identity.Pages.Account
             /// </summary>
             [Required]
             [DataType(DataType.Text)]
+            [MaxLength(30, ErrorMessage = "name_too_long")]
             [Display(Name = "Nome apresentado")]
             public string FullName { get; set; }
             /// <summary>
@@ -177,7 +178,10 @@ namespace Tidbeat.Areas.Identity.Pages.Account
                 if (String.IsNullOrEmpty(Input.FullName))
                 {
                     ModelState.AddModelError("NameRed", _localizer["invalid_name"]);
-                } else
+                } else if (Input.FullName.Contains('<') || Input.FullName.Contains('>') || Input.FullName.StartsWith('_') || Input.FullName.Contains('"') || Input.FullName.Contains("'")) {
+                    ModelState.AddModelError("NameRed", _localizer["name_may_not_contain"]);
+                }
+                else
                 if (Input.Gender != "male" && Input.Gender != "female" && Input.Gender != "non_binary")
                 {
                     ModelState.AddModelError("GenderRed", _localizer["invalid_gender"]);
@@ -195,11 +199,15 @@ namespace Tidbeat.Areas.Identity.Pages.Account
 
                     await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                     await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
+
+                    _userManager.PasswordValidators.Clear();
+                    _userManager.PasswordValidators.Add(new CustomPasswordValidator<ApplicationUser>());
                     var result = await _userManager.CreateAsync(user, Input.Password);
-                    await _userManager.AddToRoleAsync(user, "NormalUser");
+                    
 
                     if (result.Succeeded)
                     {
+                        await _userManager.AddToRoleAsync(user, "NormalUser");
                         _logger.LogInformation("User created a new account with password.");
 
                         var userId = await _userManager.GetUserIdAsync(user);

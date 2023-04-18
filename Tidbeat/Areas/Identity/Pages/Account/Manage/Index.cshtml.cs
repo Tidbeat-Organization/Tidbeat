@@ -62,6 +62,8 @@ namespace Tidbeat.Areas.Identity.Pages.Account.Manage
             /// </summary>
             [Required(ErrorMessage = "please_enter_a_valid_name")]
             [DataType(DataType.Text)]
+            [MaxLength(30, ErrorMessage = "name_too_long")]
+            [RegularExpression(@"^(?!_)[^<>""']*$", ErrorMessage = "name_may_not_contain")]
             [Display(Name = "Full name")]
             public string FullName { get; set; }
 

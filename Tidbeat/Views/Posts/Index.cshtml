@@ -5,6 +5,7 @@
 
 @{
     ViewData["Title"] = "Index";
+    var genre = TempData["genre"]?.ToString();
 }
 
 <div style="margin-top: 100px;">
@@ -20,6 +21,50 @@
 
     <h3 style="color: #6610F2;">@Localizer["recommended_posts"]</h3>
     <hr />
+    <div id="filter" class="w-100 border border-2 border-dark" style="border-radius: 6pt; border-width: 0.75pt !important;">
+        <!-- Left-aligned text saying Filtros -->
+        <h5 class="text-primary fw-semibold text-start mt-1 ms-2">Filtros</h5>
+        <div class="text-dark fw-semibold mt-3 mb-1 d-flex flex-row">
+            <div class="filter-height-rectifier mb-2 ms-2">Nome:</div>
+            <div class="filter-height-rectifier mb-2 ms-2">
+                <input id="filter-name-input" class="form-control filter-field" placeholder="Escreva termo de pesquisa..." style="border: 1.5px solid #6610F2; border-radius: 15px;" />
+            </div>
+            <div class="filter-height-rectifier mb-2 ms-5">Género:</div>
+            <div class="filter-height-rectifier mb-2 ms-2">
+                <select class="form-control w-100" id="filter-genre-input" name="filter-genre-input">
+                            <!option selected value="">@Localizer["pick_gender"]</!option>
+                            <!option value="rock" @(genre == "rock" ? "selected" : "")>@Localizer["rock"]</!option>
+                    <!option value="pop" @(genre == "pop" ? "selected" : "")>@Localizer["pop"]</!option>
+                    <!option value="kids" @(genre == "kids" ? "selected" : "")>@Localizer["children"]</!option>
+                    <!option value="funk" @(genre == "funk" ? "selected" : "")>@Localizer["funk"]</!option>
+                    <!option value="classical" @(genre == "classical" ? "selected" : "")>@Localizer["classical"]</!option>
+                    <!option value="country" @(genre == "country" ? "selected" : "")>@Localizer["country"]</!option>
+                            <!option value="dance" @(genre == "dance" ? "selected" : "")>@Localizer["dance"]</!option>
+                            <!option value="metal" @(genre == "metal" ? "selected" : "")>@Localizer["metal"]</!option>
+                    <!option value="disco" @(genre == "disco" ? "selected" : "")>@Localizer["disco"]</!option>
+                            <!option value="folk" @(genre == "folk" ? "selected" : "")>@Localizer["folk"]</!option>
+                    <!option value="hip-hop" @(genre == "hip-hop" ? "selected" : "")>@Localizer["hip_hop"]</!option>
+                    <!option value="indian" @(genre == "indian" ? "selected" : "")>@Localizer["indian"]</!option>
+                    <!option value="k-pop" @(genre == "k-pop" ? "selected" : "")>@Localizer["k_pop"]</!option>
+                    <!option value="punk" @(genre == "punk" ? "selected" : "")>@Localizer["punk"]</!option>
+                    <!option value="piano" @(genre == "piano" ? "selected" : "")>@Localizer["piano"]</!option>
+                    <!option value="reggae" @(genre == "reggae" ? "selected" : "")>@Localizer["reggae"]</!option>
+                    <!option value="techno" @(genre == "techno" ? "selected" : "")>@Localizer["techno"]</!option>
+                        </select>
+            </div>
+            <div class="filter-height-rectifier mb-2 ms-5">Ordenar por:</div>
+            <div class="filter-height-rectifier mb-2 ms-2">
+                <select id="filter-order-input" class="form-control filter-field" placeholder="" style="border: 1.5px solid #6610F2; border-radius: 15px;">
+                    <!option selected value="">Selecione a ordem</!option>
+                    <!option value="a-z">A - Z</!option>
+                    <!option value="z-a">Z - A</!option>
+					<!option value="newest">Mais recente</!option>
+					<!option value="oldest">Mais antigo</!option>
+                </select>
+            </div>
+            <div class="bi bi-search search-btn ms-5" onclick="actualEvent()"></div>
+        </div>
+    </div>
     @if (User.Identity.IsAuthenticated)
     {
         <p>
@@ -55,4 +100,51 @@
             $("#success-alert, #error-alert").alert("close");
         });
     });
+
+    function actualEvent() {
+        let inputName = document.getElementById("filter-name-input");
+        let inputGenre = document.getElementById("filter-genre-input");
+        let inputOrder = document.getElementById("filter-order-input");
+
+        let path = window.location.href.split("?")[0];
+        if (inputName.value || inputGenre.value || inputOrder.value) {
+            path+="?";
+
+            let params = new URLSearchParams({
+                name: inputName.value,
+                genre: inputGenre.value,
+                order: inputOrder.value
+            }).toString();
+
+            path += params;
+            window.location.href = path;
+        }
+
+        event.preventDefault();
+    }
+
+    document.getElementById("filter").addEventListener("keypress", function (event) {
+        if (event.key === "Enter") {
+            let focusElement = document.activeElement;
+            let inputName = document.getElementById("filter-name-input");
+            let inputGenre = document.getElementById("filter-genre-input");
+            let inputOrder = document.getElementById("filter-order-input");
+            if (inputName === focusElement || inputGenre === focusElement || inputOrder === focusElement) {
+                //only if one of the elements is higthligthed
+                event.preventDefault();
+                actualEvent();
+            }
+        }
+    }
+    );
 </script>
+<style>
+    .filter-height-rectifier {
+        height: 24pt;
+        line-height: 26pt;
+    }
+
+    .filter-field {
+        width: 20vw;
+    }
+</style>

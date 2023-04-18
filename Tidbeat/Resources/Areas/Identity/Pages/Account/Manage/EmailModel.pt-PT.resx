@@ -133,7 +133,7 @@
     <value>O teu email não foi alterado.</value>
   </data>
   <data name="password_must_contain_at_least" xml:space="preserve">
-    <value>A Palavra-passe tem de conter pelo menos uma letra maiuscula, uma minuscula, um numero e um caracter especial.</value>
+    <value>Senha invalida. Minimo de 6 caracteres, com pelo menos 1 numero, 1 letra maiuscula e 1 letra minuscula.</value>
   </data>
   <data name="please_confirm_link" xml:space="preserve">
     <value>Por favor, confirme a sua conta</value>

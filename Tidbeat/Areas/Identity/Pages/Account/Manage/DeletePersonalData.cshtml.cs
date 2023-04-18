@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using Tidbeat.Data;
@@ -133,6 +134,43 @@ namespace Tidbeat.Areas.Identity.Pages.Account.Manage
             foreach (var commentRating in commentRatings) {
                 commentRating.User = invalidUser;
             }
+
+            var userReporters = _context.Report.Where(report => report.UserReporter.Email == user.Email);
+            foreach (var report in userReporters) {
+                report.UserReporter = invalidUser;
+            }
+
+            var userReported = _context.Report.Where(report => report.UserReported.Email == user.Email);
+            foreach (var report in userReported) {
+                if (report.ReportItemId.Equals(report.UserReported.Id)) {
+                    _context.Report.Remove(report);
+                    continue;
+                }
+                report.UserReported = invalidUser;
+            }
+
+            var userMessages = _context.Messages.Where(message => message.User.Email == user.Email);
+            foreach (var message in userMessages) {
+                _context.Messages.Remove(message);
+            }
+
+            var userParticipants = _context.Participants.Where(participant => participant.User.Email == user.Email).Include(p => p.Conversation);
+            foreach (var participant in userParticipants) {
+                var conversation = _context.Conversations.Find(participant.Conversation.Id);
+                _context.Participants.Remove(participant);
+                _context.Conversations.Remove(conversation);
+            }
+
+            var followedUsers = _context.Follow.Where(follow => follow.UserFollowed.Email == user.Email);
+            foreach (var follow in followedUsers) {
+                _context.Follow.Remove(follow);
+            }
+
+            var followingUsers = _context.Follow.Where(follow => follow.UserAsker.Email == user.Email);
+            foreach (var follow in followingUsers) {
+                _context.Follow.Remove(follow);
+            }
+
 
             _context.SaveChanges();
 

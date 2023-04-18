@@ -72,10 +72,17 @@ namespace Tidbeat.Data {
             builder.Entity<Post>().ToTable(nameof(Post));
             builder.Entity<PostRating>().ToTable(nameof(PostRating));
             builder.Entity<CommentRating>().ToTable(nameof(CommentRating));
+
+            builder.Entity<Report>()
+            .HasOne(r => r.UserReporter)
+            .WithMany()
+            .OnDelete(DeleteBehavior.Restrict);
         }
 
         public DbSet<Tidbeat.Models.Profile>? Profile { get; set; }
 
         public DbSet<Tidbeat.Models.Follow>? Follow { get; set; }
+
+        public DbSet<Tidbeat.Models.Report>? Report { get; set; }
     }
 }

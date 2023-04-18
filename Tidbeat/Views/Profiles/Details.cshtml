@@ -167,6 +167,13 @@
 </div>
 
 
+<!-- SideBar -->
+<div>
+    @{
+        await Html.RenderPartialAsync("_Sidebar");
+    }
+</div>
+
 <!--All music info goes here-->
 <div class="container-fluid row w-100 d-flex flex-column flex-lg-row mx-0">
     <div class="d-flex flex-column col-lg-6 col-md-12 vh-100-minus-navbar border-lg-end pe-1 mt-4 pt-5">
@@ -181,17 +188,25 @@
                 <div class="d-flex">
                     @if (user.Role.Equals(Tidbeat.Enums.RoleType.Administrator))
                     {
-                        <div class="bi bi-diamond-fill fs-3 py-0 text-primary"></div>
-                    }else if(user.Role.Equals(Tidbeat.Enums.RoleType.Moderator))
+                        <div class="bi bi-diamond-fill fs-3 py-0 text-primary" data-toggle="tooltip" data-placement="top" title="@Localizer["admin"]"></div>
+                    }
+                    else if (user.Role.Equals(Tidbeat.Enums.RoleType.Moderator))
                     {
-                        <div class="bi bi-diamond-fill fs-3 py-0 text-danger"></div>
-                    }else
+                        <div class="bi bi-diamond-fill fs-3 py-0 text-danger" data-toggle="tooltip" data-placement="top" title="@Localizer["moderator"]"></div>
+                    }
+                    else
                     {
-                        <div class="bi bi-music-note fs-3 py-0 text-black"></div>
+                        <div class="bi bi-music-note fs-3 py-0 text-black" data-toggle="tooltip" data-placement="top" title="@Localizer["normal_user"]"></div>
                     }
                     @if (tempval != null)
                     {
                         <a formmethod="get" asp-area="Identity" asp-page="/Account/Manage/Index" class="align-self-center mr-auto text-primary hover-background-grey rounded text-decoration-none px-2 pt-1 pb-1 bi bi-pencil-fill"></a>
+                    } else {
+                        if (User.Identity.IsAuthenticated) {
+                            <div>
+                                <button class="bi bi-exclamation-triangle-fill text-danger fs-4 hover-background-grey py-0 px-1 btn" data-bs-toggle="modal" data-bs-target="#report-modal" data-id="@Model.Id" data-type="User"></button>
+                            </div>
+                        }
                     }
                     <button type="button" class="btn-edit-user ms-auto" data-user-id="123">
                         <div class="bi bi-pencil-square fs-3 py-0 text-black"></div>
@@ -213,10 +228,10 @@
         </div>
         <hr style="height: 1px" />
         <div class="d-flex w-100 justify-content-around">
-            <a class="text-decoration-none text-dark border-right-1 p-1" id="optionAboutMe">@Localizer["about_me"]</a>
-            <a class="text-decoration-none text-dark border-right-1 p-1" id="optionMusicsFav">@Localizer["favorite_songs"]</a>
-            <a class="text-decoration-none text-dark border-right-1 p-1" id="optionFollowers">@Localizer["followers"]</a>
-            <a class="text-decoration-none text-dark p-1" id="optionFollowersReverse">@Localizer["followies"]</a>
+            <a class="text-decoration-none text-dark border-right-1 p-1 hover-background-grey pointer-active rounded" id="optionAboutMe">@Localizer["about_me"]</a>
+            <a class="text-decoration-none text-dark border-right-1 p-1 hover-background-grey pointer-active rounded" id="optionMusicsFav">@Localizer["favorite_songs"]</a>
+            <a class="text-decoration-none text-dark border-right-1 p-1 hover-background-grey pointer-active rounded" id="optionFollowers">@Localizer["followers"]</a>
+            <a class="text-decoration-none text-dark p-1 hover-background-grey pointer-active rounded" id="optionFollowersReverse">@Localizer["followies"]</a>
         </div>
         <hr style="height: 1px" />
         <div id="favouriteSongsContent">
@@ -353,8 +368,16 @@
             <a class="text-decoration-none text-black" href="@Url.Action("Details", "Posts", new { id = post.PostId })">
                 <div class="d-flex align-items-center border border-2 border-primary p-1 rounded mb-2 hover-background-grey">
                     <div class="border-end border-2 border-primary pe-2">
-                        <div>@post.User.FullName</div>
-                        <div class="fs-7">@Localizer["created_in"]: @post.CreationDate.Date.ToShortDateString()</div>
+                        <div>@{
+                                string personName = post.User.FirstAndLastName();
+                                if (personName.Length > 15) {
+                                    personName = personName.Substring(0, 15);
+                                    personName += "...";
+                                }
+                              }
+                            @personName
+                        </div>
+                        <div class="fs-7">@Localizer["created_in"]: @post.CreationDate.Date.ToString("dd/MM/yyyy")</div>
                     </div>
                     <div class="ms-2">@post.Title</div>
                 </div>
@@ -362,7 +385,9 @@
         }
     </div>
 </div>
-
+<div class="w-75">
+    @Html.Partial("_ReportModalPartial")
+</div>
 <script>
     // Open modal box when edit button is clicked
     $('.btn-edit-user').on('click', function (e) {
@@ -589,4 +614,10 @@
         var text = "let domChange = document.getElementById('FollowUpButton');domChange.onmouseover = function() {domChange.classList.replace('bi-person-check', 'bi-person-dash');};domChange.onmouseout = function() {domChange.classList.replace('bi-person-dash', 'bi-person-check');};";
         @text
     }".replaceAll('&#x27;', "'"));
+</script>
+
+<script>
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
 </script>

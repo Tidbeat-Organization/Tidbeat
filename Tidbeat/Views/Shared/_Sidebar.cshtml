@@ -1,0 +1,146 @@
+﻿<!--Sidebar styling -->
+<style>
+    .sidebar {
+        position: fixed;
+        top: 70px;
+        right: -300px;
+        width: 300px;
+        height: 75%;
+        background-color: #fff;
+        border: 2px solid #6610F2;
+        border-radius: 4px;
+        z-index: 1;
+        padding: 20px;
+        transition: right 0.3s ease-in-out;
+        overflow: hidden; /* Add this line */
+    }
+
+
+        .sidebar.active {
+            right: 0; /* move the sidebar onto the screen */
+        }
+
+    #sidebarToggle {
+        position: fixed;
+        top: 300px;
+        right: 0;
+        z-index: 1;
+    }
+
+    /* Open button*/
+    .btn-secondary {
+        background-color: white;
+        color: #6610F2;
+        border-color: #6610F2;
+    }
+
+        .btn-secondary:hover {
+            background-color: white;
+            color: #6610F2;
+            border-color: #6610F2;
+        }
+
+        .btn-secondary:active,
+        .btn-secondary:focus {
+            background-color: white;
+            color: #6610F2;
+            border-color: #6610F2;
+        }
+
+    /* Close button*/
+    #close-btn {
+        position: absolute;
+        top: 0;
+        left: 0;
+        font-size: 2rem;
+        cursor: pointer;
+    }
+
+    .scrollable-posts {
+        height: calc(100% - 30px);
+        overflow-y: auto;
+    }
+
+</style>
+
+
+@{
+    List<ApplicationUser>? Followies = new List<ApplicationUser>();
+
+    @if (TempData.ContainsKey("Friends"))
+    {
+        Followies = (List<ApplicationUser>?)TempData["Friends"];
+    }
+}
+
+
+@if (User.Identity.IsAuthenticated)
+{
+    <!-- Button that opens SideBar -->
+    <button type="button" class="btn btn-secondary" id="sidebarToggle" style="border-width: 2px">
+        <span class="bi bi-caret-left-fill" id="triangle"></span>
+    </button>
+}
+
+<!-- SideBar -->
+<div class="sidebar" id="sidebar">
+
+    <div id="close-btn">&times;</div>
+
+    <div class="text-primary">Os teus seguidores</div>
+    <div class="scrollable-posts h-100">
+        @if (TempData.ContainsKey("Friends"))
+        {
+            if (Followies?.Count > 0)
+            {
+                foreach (var item in Followies)
+                {
+                    <a class="w-100 mt-1 hover-background-grey pointer-active" asp-Controller="Profiles" asp-Action="Details" asp-route-id="@item.Id">
+                        <div class="hover-background-grey pointer-active mt-1 border border-primary rounded d-flex w-100">
+                            @if (!string.IsNullOrEmpty(item.ImagePath))
+                            {
+                                <img src="@item.ImagePath" height="75" class="border border-dark rounded" />
+                            }
+                            else
+                            {
+                                <img src="~/images/UnknownUser.jpg" height="75" class="border border-dark rounded" />
+                            }
+                            <div class="align-self-center">@item.FullName</div>
+                        </div>
+                    </a>
+                }
+
+            }
+            else
+            {
+                <p>Não há pessoas que segues</p>
+                ;
+            }
+
+        }
+        else
+        {
+            <p>Não há pessoas que segues</p>
+            ;
+        }
+    </div>
+</div>
+
+
+<!-- Sidebar Logic -->
+<script>
+    $(function () {
+        const sidebar = $('#sidebar');
+        const closeBtn = $('#close-btn');
+        const triangle = $('#triangle');
+
+        $('#sidebarToggle').on('click', function () {
+            sidebar.toggleClass('active');
+            triangle.toggleClass('rotate-180');
+        });
+
+        closeBtn.on('click', function () {
+            sidebar.removeClass('active');
+        });
+    });
+</script>
