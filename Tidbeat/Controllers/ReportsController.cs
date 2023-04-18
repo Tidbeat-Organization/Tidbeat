@@ -222,7 +222,7 @@ namespace Tidbeat.Controllers
                 ViewData["SortFilter"] = sort;
                 ViewData["offset"] = offset;
 
-            return PartialView("_PostListPartial", result.Skip(offset).Take(20));
+            return PartialView("_ReportListPartial", result.Skip(offset).Take(20));
         }
 
 
