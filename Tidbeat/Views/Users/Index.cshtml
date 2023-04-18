@@ -94,7 +94,8 @@
         // Listen for scroll events on the window
         $(window).scroll(function () {
             // Check if we've reached the bottom of the page
-            if (Math.round($(window).scrollTop()) == Math.round($(document).height() - $(window).height()) && !loading) {
+            console.log("here")
+            if (Math.ceil($(window).scrollTop()) == Math.round($(document).height() - $(window).height()) && !loading) {
                 loading = true;
                 console.log("here")
                 // Load more data
