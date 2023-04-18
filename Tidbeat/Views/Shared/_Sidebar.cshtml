@@ -80,7 +80,7 @@
 @if (User.Identity.IsAuthenticated)
 {
     <!-- Button that opens SideBar -->
-    <button type="button" class="btn btn-secondary" id="sidebarToggle" style="border-width: 2px">
+    <button type="button" class="btn btn-secondary" id="sidebarToggle" style="border-width: 2px;">
         <span class="bi bi-caret-left-fill" id="triangle"></span>
     </button>
 }
@@ -88,7 +88,10 @@
 <!-- SideBar -->
 <div class="sidebar" id="sidebar">
 
-    <div id="close-btn">&times;</div>
+    <div id="close-btn" class="btn btn-secondary fs-6" style="border-width: 2px">
+        <span class="bi bi-caret-right-fill" id="triangle"></span>
+    </div>
+
 
     <div class="text-primary fs-5">@Localizer["people_that_you_follow"]</div>
     <div class="border border-1 border-light-grey my-2"></div>
@@ -113,7 +116,7 @@
 
                             @if (ViewBag.CurrentUser != null)
                             {
-                                <a class="align-self-center btn bi bi-chat-right-text fs-4 py-0" href="@Url.Action("StartTwoPersonConversation", "Conversations", new { currentUserId = ViewBag.CurrentUser.Id, otherUserId = item.Id })" title="@Localizer["send_message"]"></a>
+                                <a class="align-self-center btn bi bi-chat-left-text fs-4 py-0" href="@Url.Action("StartTwoPersonConversation", "Conversations", new { currentUserId = ViewBag.CurrentUser.Id, otherUserId = item.Id })" title="@Localizer["send_message"]"></a>
                             }
 
                         </div>
