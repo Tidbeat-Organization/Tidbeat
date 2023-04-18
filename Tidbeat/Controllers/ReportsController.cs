@@ -32,7 +32,7 @@ namespace Tidbeat.Controllers
         }
 
         // GET: Reports
-       
+        [Authorize(Roles = "Moderator,Administrator,Admin")]
         public async Task<IActionResult> Index([FromQuery] string name, [FromQuery] string reason, [FromQuery] string type, [FromQuery] string state, [FromQuery] string sort)
         {
             if (_context.Report != null)
@@ -129,7 +129,7 @@ namespace Tidbeat.Controllers
         }
 
         // GET: Reports/Details/5
-        
+        [Authorize(Roles = "Moderator,Administrator")]
         public async Task<IActionResult> Details(Guid? id)
         {
             if (id == null || _context.Report == null)
