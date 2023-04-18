@@ -503,7 +503,7 @@
             let giveRoleInput = document.getElementById('admin-definitions-give-role-select');
             giveRoleInput.disabled = true;
             let hiddenGiveRoleInput = document.getElementById('admin-definitions-give-role-hidden-input');
-            gileRoleInput.value = hiddenGiveRoleInput;
+            giveRoleInput.value = hiddenGiveRoleInput.value;
             hiddenGiveRoleInput.value = '';
 
             toggleEditMode('give-role');
