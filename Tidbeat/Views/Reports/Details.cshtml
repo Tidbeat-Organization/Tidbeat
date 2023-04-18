@@ -131,7 +131,7 @@
                         }
                         else
                         {
-                            <a asp-controller="Posts" asp-action="Delete" asp-route-id="@ViewBag.Comment.Id" class="btn bg-danger text-white bi bi-trash-fill"></a>
+                            <a asp-controller="Posts" asp-action="Delete" asp-route-id="@ViewBag.Post.PostId" class="btn bg-danger text-white bi bi-trash-fill"></a>
                         }
                         <button type="button" class="btn bg-danger text-white ms-1" data-bs-dismiss="modal">@Localizer["to_close"]</button>
                     </div>
