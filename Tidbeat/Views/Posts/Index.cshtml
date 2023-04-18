@@ -85,22 +85,8 @@
     }
 </div>
 
-<div class="row">
-    @foreach (var item in Model)
-    {
-        <div class="col-md-4">
-            <div class="card mb-4 shadow-sm">
-                <div class="card-body text-center">
-                    <h5 class="card-title">@Html.DisplayFor(modelItem => item.Title)</h5>
-                    <div class="d-flex justify-content-center align-items-center">
-                        <div class="btn-group">
-                            <a asp-action="Details" asp-route-id="@item.PostId" style="background-color:#6610F2;color:#fff;" class="btn btn-sm btn-outline-secondary">@Localizer["details"]</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    }
+<div class="row" id="mainUserList">
+        <partial name="_PostListPartial" />
 </div>
 <script>
     $(document).ready(function () {
@@ -149,6 +135,38 @@
         }
     }
     );
+
+    var loading = false;
+    var offset = 0;
+    $(function () {
+        // Listen for scroll events on the window
+        $(window).scroll(function () {
+            // Check if we've reached the bottom of the page
+            console.log("here")
+            if (Math.ceil($(window).scrollTop()) == Math.round($(document).height() - $(window).height()) && !loading) {
+                loading = true;
+                console.log("here")
+                // Load more data
+                $.ajax({
+                    url: "@Url.Action("getData")",
+                    data: { offset: offset, name: "@name", genre: "@genre", order: "@order"},
+                    dataType: "html",
+                    success: function (data) {
+                        if (data.length > 0) {
+                            // Append the data to the table
+                            $("#mainUserList").append(data);
+                            // Increment the offset for the next load
+                            offset += 20;
+                        }
+                        loading = false;
+                    },
+                    error: function (xhr, status, error) {
+                        loading = false;
+                    }
+                });
+            }
+        });
+    });
 </script>
 <style>
     .filter-height-rectifier {

@@ -1,0 +1,32 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@using Tidbeat.Enums
+@using Microsoft.AspNetCore.Mvc.Localization;
+@inject IViewLocalizer Localizer;
+@model IEnumerable<Tidbeat.Models.Post>
+
+@{
+    ViewData["Title"] = "Index";
+    var genre = TempData["genre"]?.ToString();
+    var name = TempData["name"]?.ToString();
+    var order = TempData["order"]?.ToString();
+}
+
+@foreach (var item in Model)
+{
+    <div class="col-md-4">
+        <div class="card mb-4 shadow-sm">
+            <div class="card-body text-center">
+                <h5 class="card-title">@Html.DisplayFor(modelItem => item.Title)</h5>
+                <div class="d-flex justify-content-center align-items-center">
+                    <div class="btn-group">
+                        <a asp-action="Details" asp-route-id="@item.PostId" style="background-color:#6610F2;color:#fff;" class="btn btn-sm btn-outline-secondary">@Localizer["details"]</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}

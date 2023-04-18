@@ -119,7 +119,56 @@ namespace Tidbeat.Controllers
                 var currentUrl = string.Format("{0}://{1}", request.Scheme, request.Host);
                 TempData["Friends"] = await UtilityClass.SideBarAsync(user.Id, currentUrl);
             }
-            return View(results);
+            return View(results.Take(20));
+        }
+
+        public async Task<IActionResult> getData(string name, string genre, string order, int offset = 0)
+        {
+            order = (order == "") ? "newest" : order;
+            TempData["genre"] = genre;
+            TempData["name"] = name;
+            TempData["order"] = order;
+            //var songs = await _context.Songs.ToListAsync();
+            /*foreach (var song in songs)
+            {
+                var genres = await _spotifyService.GetGenresOfSong(song.SongId);
+                Console.WriteLine("Genres of " + song.Name + ":\n");
+                foreach (var _genre in genres)
+                {
+                    Console.WriteLine($"\t{_genre}");
+                }
+            }*/
+
+            var results = await _context
+                .Posts
+                .Where(PostPasses(name, genre, order))
+                .ToListAsync();
+
+            /* Console.WriteLine("[ Before Ordering ]");
+             foreach (var result in results)
+             {
+                 Console.WriteLine($"Initial Result: Name({result.Title}), Date({result.CreationDate})");
+             }*/
+            if (!string.IsNullOrEmpty(genre))
+            {
+                results = results.Where(p => (p.Band?.Gener?.Contains(genre) ?? false) || (p.Song?.Gener?.Contains(genre) ?? false)).ToList();
+            }
+            switch (order)
+            {
+                case "a-z":
+                    results = results.OrderBy(p => p.Title).ToList();
+                    break;
+                case "oldest":
+                    results = results.OrderBy(p => p.CreationDate).ToList();
+                    break;
+                case "z-a":
+                    results = results.OrderByDescending(p => p.Title).ToList();
+                    break;
+                case "newest":
+                    results = results.OrderByDescending(p => p.CreationDate).ToList();
+                    break;
+            }
+            return PartialView("_PostListPartial", results.Skip(offset).Take(20));
         }
 
         /// <summary>
