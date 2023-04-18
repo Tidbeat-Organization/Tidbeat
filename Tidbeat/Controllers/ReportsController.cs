@@ -115,6 +115,10 @@ namespace Tidbeat.Controllers
                     }
                 }
                 ViewData["NameFilter"] = name;
+                ViewData["ReasonFilter"] = reason;
+                ViewData["TypeFilter"] = type;
+                ViewData["StateFilter"] = state;
+                ViewData["SortFilter"] = sort;
 
                 if (User.Identity.IsAuthenticated)
                 {
