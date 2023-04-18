@@ -327,7 +327,7 @@
             </div>
         </div>
         <div id="FollowersContent" class="h-100">
-            <div class="text-primary">@Localizer["followers"]</div>
+            <div class="text-primary">@Localizer["followies"]</div>
             <div class="scrollable-posts h-100">
                 @if (TempData.ContainsKey("Followers"))
                 {
@@ -351,16 +351,16 @@
                     }
                     else
                     { 
-                        @Localizer["no_followers"];
+                        @Localizer["no_followies"];
                     }
                 }else
                 {
-                    @Localizer["no_followers"];
+                    @Localizer["no_followies"];
                 }
             </div>
         </div>
         <div id="FollowersReverseContent" class="h-100">
-            <div class="text-primary">@Localizer["followies"]</div>
+            <div class="text-primary">@Localizer["followers"]</div>
             <div class="scrollable-posts h-100">
                 @if (TempData.ContainsKey("Followies"))
                 {
@@ -385,12 +385,12 @@
 
                     } else 
                     {
-                        @Localizer["no_followies"];
+                        @Localizer["no_followers"];
                     }
 
                 }else
                 {
-                    @Localizer["no_followies"];
+                    @Localizer["no_followers"];
                 }
             </div>
         </div>
