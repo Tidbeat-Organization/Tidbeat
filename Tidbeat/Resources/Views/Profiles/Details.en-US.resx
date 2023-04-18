@@ -163,10 +163,10 @@
     <value>Folk</value>
   </data>
   <data name="followers" xml:space="preserve">
-    <value>Your Followers</value>
+    <value>Persons You Follow</value>
   </data>
   <data name="followies" xml:space="preserve">
-    <value>Persons You Follow</value>
+    <value>Persons That Follow You</value>
   </data>
   <data name="from" xml:space="preserve">
     <value>from</value>
@@ -242,5 +242,11 @@
   </data>
   <data name="techno" xml:space="preserve">
     <value>Techno</value>
+  </data>
+  <data name="textc" xml:space="preserve">
+    <value>Persons That Follow You</value>
+  </data>
+  <data name="textp" xml:space="preserve">
+    <value>Persons That You Follow</value>
   </data>
 </root>
