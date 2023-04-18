@@ -148,6 +148,15 @@ namespace Tidbeat.Controllers
             ViewBag.currentUser = await _userManager.GetUserAsync(User);
             ViewBag.commentsPosts = _context.Comment.Include(user => user.User).Where(s => s.post.PostId == post.PostId).Take((int) ViewBag.fetchCommentsCount).ToList();
             ViewBag.totalCommentCount = _context.Comment.Include(user => user.User).Where(s => s.post.PostId == post.PostId).Count();
+
+            if (User.Identity.IsAuthenticated)
+            {
+                var user = await _userManager.GetUserAsync(User);
+                var request = HttpContext.Request;
+                var currentUrl = string.Format("{0}://{1}", request.Scheme, request.Host);
+                TempData["Friends"] = await UtilityClass.SideBarAsync(user.Id, currentUrl);
+            }
+
             return View(post);
         }
 
@@ -184,6 +193,15 @@ namespace Tidbeat.Controllers
             }
             ViewBag.songs = _spotifyService.GetMultipleSongsAsync("a").Result.Tracks.Items;
             ViewBag.bands = _spotifyService.GetMultipleBandsAsync("a").Result.Artists.Items;
+
+            if (User.Identity.IsAuthenticated)
+            {
+                var user = await _userManager.GetUserAsync(User);
+                var request = HttpContext.Request;
+                var currentUrl = string.Format("{0}://{1}", request.Scheme, request.Host);
+                TempData["Friends"] = await UtilityClass.SideBarAsync(user.Id, currentUrl);
+            }
+
             return View();
         }
 
@@ -347,6 +365,15 @@ namespace Tidbeat.Controllers
             if (post.User.Id != (await _userManager.GetUserAsync(User)).Id && !(User.IsInRole("Moderator") || User.IsInRole("Administrator")) ) {
                 return Redirect("/");
             }
+
+            if (User.Identity.IsAuthenticated)
+            {
+                var user = await _userManager.GetUserAsync(User);
+                var request = HttpContext.Request;
+                var currentUrl = string.Format("{0}://{1}", request.Scheme, request.Host);
+                TempData["Friends"] = await UtilityClass.SideBarAsync(user.Id, currentUrl);
+            }
+
             return View(post);
         }
 
@@ -423,6 +450,14 @@ namespace Tidbeat.Controllers
             if (post == null)
             {
                 return NotFound();
+            }
+
+            if (User.Identity.IsAuthenticated)
+            {
+                var user = await _userManager.GetUserAsync(User);
+                var request = HttpContext.Request;
+                var currentUrl = string.Format("{0}://{1}", request.Scheme, request.Host);
+                TempData["Friends"] = await UtilityClass.SideBarAsync(user.Id, currentUrl);
             }
 
             return View(post);

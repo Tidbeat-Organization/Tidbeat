@@ -12,6 +12,12 @@
     }
 }
 
+<div>
+    @{
+        await Html.RenderPartialAsync("_Sidebar");
+    }
+</div>
+
 <div class="mt-4 pt-5 row">
     @if (TempData.ContainsKey("Sucess")) {
         <div id="success-alert" class="alert alert-success mt-2 alert-dismissible fade show position-relative d-flex justify-content-center align-items-center" role="alert">
