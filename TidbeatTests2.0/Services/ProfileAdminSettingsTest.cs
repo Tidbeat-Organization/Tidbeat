@@ -33,6 +33,7 @@ namespace TidbeatTests2._0.Services
                 Email = "josemaria@gmail.com",
                 BirthdayDate = DateTime.Now,
                 Gender = "Masculino",
+                AboutMe = "Sou um utilizador normal, pá!!",
                 FavoriteSongIds = null,
                 PasswordHash = null,
                 EmailConfirmed = false,
@@ -51,6 +52,7 @@ namespace TidbeatTests2._0.Services
                 Email = "josemaria@gmail.com",
                 BirthdayDate = DateTime.Now,
                 Gender = "Feminino",
+                AboutMe = "Sou uma moderadora",
                 FavoriteSongIds = null,
                 PasswordHash = null,
                 EmailConfirmed = false,
@@ -69,6 +71,7 @@ namespace TidbeatTests2._0.Services
                 Email = "samfaial@gmail.com",
                 BirthdayDate = DateTime.Now,
                 Gender = "Não-Binário",
+                AboutMe = "Sou da administração",
                 FavoriteSongIds = null,
                 PasswordHash = null,
                 EmailConfirmed = false,
@@ -94,7 +97,7 @@ namespace TidbeatTests2._0.Services
 
             // Arrange
             var oldRoleNormalUser = _context.Users.First(u => u.Id == "1").Role;
-            
+
 
             await roleController.GivePermisson("1", RoleType.Moderator);
 
@@ -103,17 +106,32 @@ namespace TidbeatTests2._0.Services
             Assert.True(oldRoleNormalUser == RoleType.NormalUser && newRoleNormalUser == RoleType.Moderator);
 
         }
-        
+
         [Fact]
         public async Task RemoveUserTestAsync()
         {
             var roleController = new RoleController(_context, _userManagerMock.Object, null, null, null);
 
-            await roleController.DeleteAsync(new DeleteAsyncDto() { UserId="1" });
+            await roleController.DeleteAsync(new DeleteAsyncDto() { UserId = "1" });
 
             Assert.False(_context.Users.Any(u => u.Id == "1"));
         }
 
-        
+        [Fact]
+        public async Task EditProfileTestAsync()
+        {
+            var roleController = new RoleController(_context, _userManagerMock.Object, null, null, null);
+
+            await roleController.EditAsync(
+                new EditAsyncDto()
+                {
+                    UserId = "1",
+                    About = "Sou um utilizador normal."
+                }
+            );
+
+            Assert.Equal("Sou um utilizador normal.", _context.Users.First(u => u.Id == "1").AboutMe);
+
+        }
     }
 }
