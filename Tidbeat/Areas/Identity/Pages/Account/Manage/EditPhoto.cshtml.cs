@@ -37,7 +37,7 @@ namespace Tidbeat.Areas.Identity.Pages.Account.Manage {
 
             ApplicationUser = user;
 
-            if (User.Identity.IsAuthenticated)
+            if (User != null && User.Identity.IsAuthenticated)
             {
                 var userr = await _userManager.GetUserAsync(User);
                 var request = HttpContext.Request;

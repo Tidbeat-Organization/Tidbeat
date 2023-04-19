@@ -109,13 +109,14 @@ namespace Tidbeat.Areas.Identity.Pages.Account.Manage
                 return RedirectToPage("./SetPassword");
             }
 
-            if (User.Identity.IsAuthenticated)
+            if (User != null && User.Identity.IsAuthenticated)
             {
                 var userr = await _userManager.GetUserAsync(User);
                 var request = HttpContext.Request;
                 var currentUrl = string.Format("{0}://{1}", request.Scheme, request.Host);
                 TempData["Friends"] = await UtilityClass.SideBarAsync(userr.Id, currentUrl);
             }
+
 
             return Page();
         }

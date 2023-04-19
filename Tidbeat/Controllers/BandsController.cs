@@ -69,13 +69,14 @@ namespace Tidbeat.Controllers
             var currentuser = await _userManager.GetUserAsync(User);
             ViewBag.CurrentUser = currentuser;
 
-            if (User.Identity.IsAuthenticated)
+            if (User != null && User.Identity.IsAuthenticated)
             {
                 var user = await _userManager.GetUserAsync(User);
                 var request = HttpContext.Request;
                 var currentUrl = string.Format("{0}://{1}", request.Scheme, request.Host);
                 TempData["Friends"] = await UtilityClass.SideBarAsync(user.Id, currentUrl);
             }
+
             return View();
 
         }
@@ -119,13 +120,14 @@ namespace Tidbeat.Controllers
             var currentuser = await _userManager.GetUserAsync(User);
             ViewBag.CurrentUser = currentuser;
 
-            if (User.Identity.IsAuthenticated)
+            if (User != null && User.Identity.IsAuthenticated)
             {
                 var user = await _userManager.GetUserAsync(User);
                 var request = HttpContext.Request;
                 var currentUrl = string.Format("{0}://{1}", request.Scheme, request.Host);
                 TempData["Friends"] = await UtilityClass.SideBarAsync(user.Id, currentUrl);
             }
+
             return View(band);
         }
     }
