@@ -117,16 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="access_profile" xml:space="preserve">
-    <value>Access profile</value>
+  <data name="details" xml:space="preserve">
+    <value>Details</value>
   </data>
-  <data name="no_users_you_are_following" xml:space="preserve">
-    <value>You dont' follow any persons</value>
-  </data>
-  <data name="people_that_you_follow" xml:space="preserve">
-    <value>Persons that you follow</value>
-  </data>
-  <data name="send_message" xml:space="preserve">
-    <value>Send message</value>
+  <data name="not_found" xml:space="preserve">
+    <value>No reports were found based on these criteria.</value>
   </data>
 </root>
