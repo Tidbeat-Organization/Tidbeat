@@ -262,7 +262,15 @@
                     <h1 class="text-primary">@user.FullName</h1>
                     @if (!ViewBag.IsCurrentUser && User.Identity?.IsAuthenticated) {
                         <a class="align-self-center btn bi bi-chat-right-text fs-4 py-0" href="@Url.Action("StartTwoPersonConversation", "Conversations", new { currentUserId = ViewBag.CurrentUser.Id, otherUserId = Model.Id })"></a>
-                        <div id="FollowUpButton" class="align-self-center btn bi @if (TempData.ContainsKey("Follow")){var text="bi-person-check";@text;}else{var text="bi-person-plus";@text;} fs-4 py-0" onclick="@if (TempData.ContainsKey("Follow")){var text = "unfollow()";@text;}else{var text = "follow()";@text;}"></div>
+                        <div id="FollowUpButton" class="align-self-center btn bi @if (ViewBag.Follow != null && ViewBag.Follow){var text="bi-person-check";
+                    @text
+;}else{var text="bi-person-plus";
+                    @text
+;} fs-4 py-0" onclick="@if (ViewBag.Follow != null && ViewBag.Follow){var text = "unfollow()";
+                    @text
+;}else{var text = "follow()";
+                    @text
+;}"></div>
                     }
                 </div>
                 <div> <span class="text-primary">@Localizer["gender"]:</span> @Localizer[user.Gender]</div>
