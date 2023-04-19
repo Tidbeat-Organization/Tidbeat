@@ -82,7 +82,7 @@
                                     <a class="nav-link text-black text-nowrap" href="@Url.Action("Index", "Posts")">@Localizer["recommended_posts"]</a>
                                 </li>
                             </ul>
-                            <div class="dropdown me-3" style="background-color: white; color: black;">
+                            <div class="dropdown me-sm-3" style="background-color: white; color: black;">
                                 <button class="btn dropdown-toggle py-2 border-0" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="background-color: white; color: black;">
                                     @Localizer["other_contents"]
                                 </button>
@@ -116,23 +116,25 @@
                                 </button>
                             </div>
                         </div>
-                        <div class="d-flex flex-row ms-lg-auto align-items-center">
+                        <div class="d-flex flex-column flex-sm-row ms-lg-auto align-items-end align-items-sm-center">
                             @if(User.Identity.IsAuthenticated) {
                                 <a class="btn bi bi-chat-right-text fs-4 py-0" asp-controller="Conversations" asp-action="Index"></a>
                             }
-                            <partial name="_LoginPartial" />
-                            <form asp-controller="Language" asp-action="SetLanguage" method="post" id="languageForm" class="d-flex align-self-center ms-auto">
-                                <div class="dropdown">
-                                    <div class="btn border-end-0 dropdown-toggle d-flex align-items-center p-1 me-3" data-bs-toggle="dropdown" aria-expanded="false">
-                                        <img id="changeLanguageImage" src="~/images/pt.svg" />
+                            <div class="d-flex justify-content-center">
+                                <partial name="_LoginPartial" />
+                                <form asp-controller="Language" asp-action="SetLanguage" method="post" id="languageForm" class="d-flex align-self-center ms-auto">
+                                    <div class="dropdown">
+                                        <div class="btn border-end-0 dropdown-toggle d-flex align-items-center p-1 me-3" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <img id="changeLanguageImage" src="~/images/pt.svg" />
+                                        </div>
+                                        <ul class="dropdown-menu me-2" style="min-width: 50px">
+                                            <li><a class="dropdown-item pe-0 ps-1 d-flex" href="#" id="language-pt-button"><img src="~/images/pt.svg" width="20px" class="me-1" />PT</a></li>
+                                            <li><a class="dropdown-item pe-0 ps-1 d-flex" href="#" id="language-us-button"><img src="~/images/us.svg" width="20px" class="me-1" />US</a></li>
+                                        </ul>
+                                        <input id="languageCodeInput" name="language" hidden />
                                     </div>
-                                    <ul class="dropdown-menu me-2" style="min-width: 50px">
-                                        <li><a class="dropdown-item pe-0 ps-1 d-flex" href="#" id="language-pt-button"><img src="~/images/pt.svg" width="20px" class="me-1" />PT</a></li>
-                                        <li><a class="dropdown-item pe-0 ps-1 d-flex" href="#" id="language-us-button"><img src="~/images/us.svg" width="20px" class="me-1" />US</a></li>
-                                    </ul>
-                                    <input id="languageCodeInput" name="language" hidden />
-                                </div>
-                            </form>
+                                </form>
+                            </div>
                         </div>
                     </div>
                     <div class="d-flex flex-row d-block d-lg-none">

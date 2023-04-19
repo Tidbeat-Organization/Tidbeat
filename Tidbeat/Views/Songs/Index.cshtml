@@ -17,7 +17,7 @@
 </div>
 
 <div class="mt-4 pt-5">
-    <div class="mx-3 mt-10">
+    <div class="mx-sm-3 mx-0 mt-10">
         <div id="filter" class="pb-2 mt-10">
             <div class="display-6 text-primary text-left d-flex w-2">@Localizer["filters"]</div>
             <div class="d-flex flex-xl-row flex-column w-md-100 justify-content-center">
@@ -92,9 +92,27 @@
                         } else {
                             <img class="align-self-center" src="../../images/Empty_Song_Image.png" alt="@item.Album.Name" width="70" height="70">
                         }
-                        <div class="d-flex text-start justify-content-start align-content-start align-self-center font-weight-bold w-25 ms-3">@item.Name</div>
+                        <div class="d-flex text-start justify-content-start align-content-start align-self-center font-weight-bold w-25 ms-1 ms-sm-3">
+                            @{
+                                string songName = item.Name;
+                                if (songName.Length > 20) {
+                                    songName = songName.Substring(0, 20);
+                                    songName += "...";
+                                }
+                            }
+                            @songName
+                        </div>
                         <div class="d-flex text-start justify-content-start align-content-start align-self-center w-25">
-                            <div class="mr-5 text-start justify-content-start align-content-start"> @Localizer["from"]: @item.Artists[0].Name</div>
+                            <div class="mr-5 text-start justify-content-start align-content-start"> @Localizer["from"]:
+                                @{
+                                    string artistName = item.Artists[0].Name;
+                                    if (artistName.Length > 20) {
+                                        artistName = artistName.Substring(0, 20);
+                                        artistName += "...";
+                                    }
+                                }
+                                @artistName
+                            </div>
                         </div>
                         <div class="btn btn-primary align-self-center ms-auto me-3">@Localizer["details"]</div>
                     </a>
