@@ -22,21 +22,24 @@ namespace TidbeatTests2._0.Services
     {
         private ApplicationDbContext _context;
         private ISpotifyService _spotify;
-        private UserManager<ApplicationUser> _userManager;
+        private Mock<UserManager<ApplicationUser>> _userManager;
 
         public SongControllerTest()
         {
             var fixture = new ApplicationDbContextFixture();
             _context = fixture.ApplicationDbContext;
-            _userManager = fixture.UserManager;
+            _userManager = new Mock<UserManager<ApplicationUser>>(
+                Mock.Of<IUserStore<ApplicationUser>>(),
+                null, null, null, null, null, null, null, null
+            );
             _spotify = new MockSpotifyService();
         }
 
         [Fact]
-        public async Task IndexBandsControllerTestAsync()
+        public async Task IndexSongsControllerTestAsync()
         {
             // Arrange
-            var controller = new SongsController(_context, _spotify, _userManager);
+            var controller = new SongsController(_context, _spotify, _userManager.Object);
             var httpContext = new DefaultHttpContext();
             var tempData = new TempDataDictionary(httpContext, Mock.Of<ITempDataProvider>());
 
@@ -44,7 +47,7 @@ namespace TidbeatTests2._0.Services
 
 
             // Act
-            var result = await controller.Index("","","","","","");
+            var result = await controller.Index("name","name","name","name","name","name");
 
             // Assert
             var viewResult = Assert.IsAssignableFrom<IActionResult>(result);
@@ -52,27 +55,10 @@ namespace TidbeatTests2._0.Services
         }
 
         [Fact]
-        public async Task DetailsBandsControllerTest()
+        public async Task DetailsSongsControllerTest()
         {
             // Arrange
-            var claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.NameIdentifier, "user-id"),
-                new Claim(ClaimTypes.Name, "user-name"),
-                // Add other claims as necessary
-            };
-            var identity = new ClaimsIdentity(claims, "TestAuthType");
-            var principal = new ClaimsPrincipal(identity);
-            var controller = new SongsController(_context, _spotify, _userManager);
-            var httpContext = new DefaultHttpContext();
-            httpContext.User = principal;
-            var controllerContext = new ControllerContext
-            {
-                HttpContext = httpContext
-            };
-            controller.ControllerContext = controllerContext;
-            var tempData = new TempDataDictionary(httpContext, Mock.Of<ITempDataProvider>());
-            controller.TempData = tempData;
+            var controller = new BandsController(_context, _spotify, _userManager.Object);
 
             // Act
             var result = await controller.Details("6ocbgoVGwYJhOv1GgI9NsF");
