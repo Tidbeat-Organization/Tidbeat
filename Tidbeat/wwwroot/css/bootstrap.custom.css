@@ -10647,6 +10647,20 @@ textarea.form-control-lg {
     left: 83.8% !important;
   }
 }
+.rec-posts-filter-label {
+  width: 48pt !important;
+  min-width: 48pt !important;
+  max-width: 48pt !important;
+  text-align: right;
+}
+
+.rec-posts-filter-box {
+  width: 128pt !important;
+  min-width: 128pt !important;
+  max-width: 128pt !important;
+  text-align: left;
+}
+
 .vh-100-minus-navbar {
   height: auto;
 }

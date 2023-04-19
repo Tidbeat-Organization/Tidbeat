@@ -29,14 +29,13 @@
 
     <h3 style="color: #6610F2;">@Localizer["recommended_posts"]</h3>
     <div id="filter" class="w-100" style="border-radius: 6pt; border-width: 0.75pt !important;">
-        <!-- Left-aligned text saying Filtros -->
         <h5 class="text-primary fw-semibold text-start mt-1 ms-2">@Localizer["filters"]</h5>
         <div class="text-dark fw-semibold mt-3 mb-1 d-flex flex-row">
-            <div class="filter-height-rectifier mb-2 ms-2">@Localizer["name"]:</div>
+            <div class="filter-height-rectifier mb-2 rec-posts-filter-label">@Localizer["name"]:</div>
             <div class="filter-height-rectifier mb-2 ms-2">
                 <input id="filter-name-input" class="form-control filter-field" placeholder="Escreva termo de pesquisa..." style="border: 1.5px solid #6610F2; border-radius: 15px;" value="@name"/>
             </div>
-            <div class="filter-height-rectifier mb-2 ms-5">@Localizer["gender"]:</div>
+            <div class="filter-height-rectifier mb-2 ms-5 rec-posts-filter-label">@Localizer["gender"]:</div>
             <div class="filter-height-rectifier mb-2 ms-2">
                 <select class="form-control w-100 border-primary" id="filter-genre-input" name="filter-genre-input">
                             <!option selected value="">@Localizer["pick_gender"]</!option>
@@ -59,7 +58,7 @@
                     <!option value="techno" @(genre == "techno" ? "selected" : "")>@Localizer["techno"]</!option>
                         </select>
             </div>
-            <div class="filter-height-rectifier mb-2 ms-5">@Localizer["order"]:</div>
+            <div class="filter-height-rectifier mb-2 ms-5 rec-posts-filter-label">@Localizer["order"]:</div>
             <div class="filter-height-rectifier mb-2 ms-2">
                 <select id="filter-order-input" class="form-control filter-field" placeholder="" style="border: 1.5px solid #6610F2; border-radius: 15px;">
                     <!option value="">@Localizer["order"]</!option>
