@@ -21,7 +21,7 @@ steps:
     publishWebProjects: true
 - script: dotnet tool install --global dotnet-ef
   displayName: 'Install Entity Framework tooling'
-- script: dotnet ef database update --configuration $(buildConfiguration)
+- script: dotnet ef database update --project "$(Build.SourcesDirectory)/Tidbeat/Tidbeat.csproj"
   displayName: 'Update database'
 - task: AzureWebApp@1
   inputs:
