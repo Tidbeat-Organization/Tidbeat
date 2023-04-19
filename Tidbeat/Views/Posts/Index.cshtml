@@ -30,14 +30,14 @@
     <h3 style="color: #6610F2;">@Localizer["recommended_posts"]</h3>
     <div id="filter" class="w-100" style="border-radius: 6pt; border-width: 0.75pt !important;">
         <h5 class="text-primary fw-semibold text-start mt-1 ms-2">@Localizer["filters"]</h5>
-        <div class="text-dark fw-semibold mt-3 mb-1 d-flex flex-row">
+        <div class="text-dark fw-semibold mt-3 mb-1 d-flex flex-column flex-md-row align-items-center justify-content-center">
             <div class="filter-height-rectifier mb-2 rec-posts-filter-label">@Localizer["name"]:</div>
-            <div class="filter-height-rectifier mb-2 ms-2">
-                <input id="filter-name-input" class="form-control filter-field" placeholder="Escreva termo de pesquisa..." style="border: 1.5px solid #6610F2; border-radius: 15px;" value="@name"/>
+            <div class="filter-height-rectifier mb-2 ms-2 w-100">
+                <input id="filter-name-input" class="form-control filter-field w-100" placeholder="Escreva termo de pesquisa..." style="border: 1.5px solid #6610F2; border-radius: 15px;" value="@name"/>
             </div>
-            <div class="filter-height-rectifier mb-2 ms-5 rec-posts-filter-label">@Localizer["gender"]:</div>
-            <div class="filter-height-rectifier mb-2 ms-2">
-                <select class="form-control w-100 border-primary" id="filter-genre-input" name="filter-genre-input">
+            <div class="filter-height-rectifier mb-2 ms-2 ms-md-5 rec-posts-filter-label">@Localizer["gender"]:</div>
+            <div class="filter-height-rectifier mb-2 ms-2 w-100">
+                <select class="form-control w-100 border-primary" id="filter-genre-input" name="filter-genre-input" style="border: 1.5px solid #6610F2; border-radius: 15px;">
                             <!option selected value="">@Localizer["pick_gender"]</!option>
                             <!option value="rock" @(genre == "rock" ? "selected" : "")>@Localizer["rock"]</!option>
                     <!option value="pop" @(genre == "pop" ? "selected" : "")>@Localizer["pop"]</!option>
@@ -58,9 +58,9 @@
                     <!option value="techno" @(genre == "techno" ? "selected" : "")>@Localizer["techno"]</!option>
                         </select>
             </div>
-            <div class="filter-height-rectifier mb-2 ms-5 rec-posts-filter-label">@Localizer["order"]:</div>
-            <div class="filter-height-rectifier mb-2 ms-2">
-                <select id="filter-order-input" class="form-control filter-field" placeholder="" style="border: 1.5px solid #6610F2; border-radius: 15px;">
+            <div class="filter-height-rectifier mb-2 ms-2 ms-md-5 rec-posts-filter-label me-2">@Localizer["order"]:</div>
+            <div class="filter-height-rectifier mb-2 ms-2 w-100">
+                <select id="filter-order-input" class="form-control filter-field w-100" placeholder="" style="border: 1.5px solid #6610F2; border-radius: 15px;">
                     <!option value="">@Localizer["order"]</!option>
                     <!option value="a-z" @(order == "a-z" ? "selected" : "")>@Localizer["alfabetically_a_to_z"]</!option>
                     <!option value="z-a" @(order == "z-a" ? "selected" : "")>@Localizer["alfabetically_z_to_a"]</!option>
@@ -69,8 +69,8 @@
                 </select>
             </div>
             <div class="align-self-center px-3">
-                <button class="btn btn-primary">
-                    <img id="imgBand" class="no-padding align-self-center px-3" src="~/images/SearchIcon.png" height="37" width="45" onclick="actualEvent()" />
+                <button class="btn btn-primary" style="padding: 3px 5px 1px 5px;">
+                    <img id="imgBand" class="no-padding align-self-center" src="~/images/SearchIcon.png" height="35" onclick="actualEvent()" />
                 </button>
             </div>
         </div>

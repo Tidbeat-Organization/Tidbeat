@@ -87,7 +87,7 @@
 </style>
 
 <!-- Modal -->
-@if (ViewBag.CurrentUser.Id != Model.Id && (User.IsInRole("Moderator") || User.IsInRole("Admin")))
+@if (User.Identity.IsAuthenticated && ViewBag.CurrentUser.Id != Model.Id && (User.IsInRole("Moderator") || User.IsInRole("Admin")))
 {
     <div class="modal fade" id="edit-user-modal" tabindex="-1" aria-labelledby="edit-user-modal-label" aria-hidden="true">
         <div class="modal-dialog modal-xl">
