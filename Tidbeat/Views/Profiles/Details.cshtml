@@ -316,9 +316,9 @@
                                         songNameString = song.Name.Substring(0, songNameLimit) + " (...)";
                                     }
                                 }
-                                <span class="text-primary fw-semibold">@songNameString</span>
+                                <a href="/Songs/Details/@song.SongId" class="text-primary fw-semibold text-black-hover">@songNameString</a>
                                 , @Localizer["from"]
-                                <span class="text-primary fw-semibold">@song.Band.Name</span>
+                                <a href="/Bands/Details/@song.Band.BandId" class="text-primary fw-semibold text-black-hover">@song.Band.Name</a>
                             </span>
                         </div>
                     }
