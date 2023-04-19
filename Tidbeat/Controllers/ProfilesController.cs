@@ -22,17 +22,19 @@ namespace Tidbeat.Controllers
         private readonly ApplicationDbContext _context;
         //private readonly IServiceProvider _serviceProvider;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IWebHostEnvironment _env;
 
         /// <summary>
         /// Initializes needed services for the controller.
         /// </summary>
         /// <param name="context">The context of the application.</param>
         /// <param name="userManager">The language localizer.</param>
-        public ProfilesController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        public ProfilesController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, IWebHostEnvironment env)
         {
             _context = context;
             //_serviceProvider = serviceProvider;
             _userManager = userManager;
+            _env = env;
         }
 
         /// <summary>
@@ -158,22 +160,22 @@ namespace Tidbeat.Controllers
             ViewBag.FavoriteSongs = await GetFavoriteSongsAsync(profile);
             ViewBag.BandsOfSongs = await GetBandsOfSongs(ViewBag.FavoriteSongs);
             ViewBag.IsCurrentUser = profile.Id == currentuser?.Id;
-            using (var httpClient = new HttpClient())
-            {
-                string currentUrl = Request.Host.Value.ToString();
-                var responseFollowers = httpClient.GetAsync(Request.Scheme.ToString() + "://"+ currentUrl + "/Follows/Followers?userId=" + id).Result;
-                if (responseFollowers.IsSuccessStatusCode)
-                {
-                    var jsonString = responseFollowers.Content.ReadAsStringAsync().Result;
-                    var jsonObject = JsonConvert.DeserializeObject<List<ApplicationUser>>(jsonString);
-                    TempData["Followers"] = jsonObject;
-                }
-                var responseFollowies = httpClient.GetAsync(Request.Scheme.ToString() + "://" + currentUrl + "/Follows/Followies?userId=" + id).Result;
-                if (responseFollowies.IsSuccessStatusCode)
-                {
-                    var jsonString2 = responseFollowies.Content.ReadAsStringAsync().Result;
-                    var jsonObject2 = JsonConvert.DeserializeObject<List<ApplicationUser>>(jsonString2);
-                    TempData["Followies"] = jsonObject2;
+
+            if (_env.EnvironmentName != "Test") {
+                using (var httpClient = new HttpClient()) {
+                    string currentUrl = Request.Host.Value.ToString();
+                    var responseFollowers = httpClient.GetAsync(Request.Scheme.ToString() + "://" + currentUrl + "/Follows/Followers?userId=" + id).Result;
+                    if (responseFollowers.IsSuccessStatusCode) {
+                        var jsonString = responseFollowers.Content.ReadAsStringAsync().Result;
+                        var jsonObject = JsonConvert.DeserializeObject<List<ApplicationUser>>(jsonString);
+                        TempData["Followers"] = jsonObject;
+                    }
+                    var responseFollowies = httpClient.GetAsync(Request.Scheme.ToString() + "://" + currentUrl + "/Follows/Followies?userId=" + id).Result;
+                    if (responseFollowies.IsSuccessStatusCode) {
+                        var jsonString2 = responseFollowies.Content.ReadAsStringAsync().Result;
+                        var jsonObject2 = JsonConvert.DeserializeObject<List<ApplicationUser>>(jsonString2);
+                        TempData["Followies"] = jsonObject2;
+                    }
                 }
             }
             // Print bands of songs.
@@ -195,7 +197,7 @@ namespace Tidbeat.Controllers
             {
                 Console.WriteLine($"-- {song.Name} by {song.Band.Name}");
             }
-            if (User.Identity.IsAuthenticated)
+            if (User != null && User.Identity.IsAuthenticated)
             {
                 var user = await _userManager.GetUserAsync(User);
                 var request = HttpContext.Request;
