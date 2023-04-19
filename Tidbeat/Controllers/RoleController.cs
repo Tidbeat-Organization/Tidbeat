@@ -102,7 +102,7 @@ namespace Tidbeat.Controllers
             _ = await GivePermisson(userId, roleType);
 
             var result = await _userManager.UpdateAsync(dbUser);
-            if (result.Succeeded) {
+            if (result.Succeeded && _emailSender != null) {
                 _context.SaveChanges();
                 await _emailSender.SendEmailAsync(dbUser.Email, "TIDBEAT - " + _localizer["account_updated"],
                      _localizer["email_body_edit"]);
@@ -126,7 +126,7 @@ namespace Tidbeat.Controllers
             }
             var result = await DeletePersonalDataModel.DeleteUser(userId, _context, _userManager);
             
-            if (result.Succeeded)
+            if (result.Succeeded && _emailSender != null)
             {
                 await _emailSender.SendEmailAsync(dbUser.Email, "TIDBEAT - " + _localizer["account_deleted"],
                     _localizer["email_body_delete"] + reason);
