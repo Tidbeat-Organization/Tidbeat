@@ -25,7 +25,7 @@
 
     #sidebarToggle {
         position: fixed;
-        top: 100px;
+        top: 140px;
         right: 0;
         z-index: 1;
     }
@@ -125,7 +125,7 @@
 
                             @if (ViewBag.CurrentUser != null)
                             {
-                                <a class="align-self-center btn bi bi-chat-left-text fs-4 py-0" href="@Url.Action("StartTwoPersonConversation", "Conversations", new { currentUserId = ViewBag.CurrentUser.Id, otherUserId = item.Id })" title="@Localizer["send_message"]"></a>
+                                <a class="align-self-center btn bi bi-chat-left-text fs-4 py-0 text-black-hover" href="@Url.Action("StartTwoPersonConversation", "Conversations", new { currentUserId = ViewBag.CurrentUser.Id, otherUserId = item.Id })" title="@Localizer["send_message"]"></a>
                             }
 
                         </div>

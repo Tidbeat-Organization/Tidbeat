@@ -275,8 +275,8 @@
         <div class="d-flex w-100 justify-content-around">
             <a class="text-decoration-none text-dark border-right-1 p-1 hover-background-grey pointer-active rounded" id="optionAboutMe">@Localizer["about_me"]</a>
             <a class="text-decoration-none text-dark border-right-1 p-1 hover-background-grey pointer-active rounded" id="optionMusicsFav">@Localizer["favorite_songs"]</a>
-            <a class="text-decoration-none text-dark border-right-1 p-1 hover-background-grey pointer-active rounded" id="optionFollowers">@Localizer["followers"]</a>
-            <a class="text-decoration-none text-dark p-1 hover-background-grey pointer-active rounded" id="optionFollowersReverse">@Localizer["followies"]</a>
+            <a class="text-decoration-none text-dark border-right-1 p-1 hover-background-grey pointer-active rounded" id="optionFollowers">@(ViewBag.CurrentUser.Id == Model.Id ? Localizer["textp-currentuser"] : Localizer["textp-otheruser"])</a>
+            <a class="text-decoration-none text-dark p-1 hover-background-grey pointer-active rounded" id="optionFollowersReverse">@(ViewBag.CurrentUser.Id == Model.Id ? Localizer["textc-currentuser"] : Localizer["textc-otheruser"])</a>
         </div>
         <hr style="height: 1px" />
         <div id="favouriteSongsContent">
@@ -327,15 +327,15 @@
             </div>
         </div>
         <div id="FollowersContent" class="h-100">
-            <div class="text-primary">@Localizer["textp"]</div>
-            <div class="scrollable-posts h-100">
+            <div class="text-primary">@(ViewBag.CurrentUser.Id == Model.Id ? Localizer["textp-currentuser"] : Localizer["textp-otheruser"])</div>
+            <div class="scrollable-posts h-100 px-sm-5">
                 @if (TempData.ContainsKey("Followers"))
                 {
                     if (Followers?.Count > 0)
                     {
                         foreach (var item in Followers)
                         {
-                            <a class="w-100 mt-1 hover-background-grey pointer-active" asp-Controller="Profiles" asp-Action="Details" asp-route-id="@item.Id">
+                            <a class="w-100 mt-1 hover-background-grey pointer-active text-decoration-none" asp-Controller="Profiles" asp-Action="Details" asp-route-id="@item.Id">
                                 <div class="hover-background-grey pointer-active mt-1 border border-primary rounded d-flex w-100">
                                     @if (!string.IsNullOrEmpty(item.ImagePath))
                                     {
@@ -344,7 +344,7 @@
                                     {
                                         <img src="~/images/UnknownUser.jpg" height="75" class="border border-dark rounded" />
                                     }
-                                    <div class="align-self-center">@item.FullName</div>
+                                    <div class="ms-2 text-black-hover align-self-center">@item.FullName</div>
                                 </div>
                             </a>
                         }
@@ -360,15 +360,15 @@
             </div>
         </div>
         <div id="FollowersReverseContent" class="h-100">
-            <div class="text-primary">@Localizer["textc"]</div>
-            <div class="scrollable-posts h-100">
+            <div class="text-primary">@(ViewBag.CurrentUser.Id == Model.Id ? Localizer["textc-currentuser"] : Localizer["textc-otheruser"])</div>
+            <div class="scrollable-posts h-100 px-sm-5">
                 @if (TempData.ContainsKey("Followies"))
                 {
                     if (Followies?.Count > 0)
                     {
                         foreach (var item in Followies)
                         {
-                            <a class="w-100 mt-1 hover-background-grey pointer-active" asp-Controller="Profiles" asp-Action="Details" asp-route-id="@item.Id">
+                            <a class="w-100 mt-1 hover-background-grey pointer-active text-decoration-none" asp-Controller="Profiles" asp-Action="Details" asp-route-id="@item.Id">
                                 <div class="hover-background-grey pointer-active mt-1 border border-primary rounded d-flex w-100">
                                     @if (!string.IsNullOrEmpty(item.ImagePath))
                                     {
@@ -378,7 +378,7 @@
                                     {
                                         <img src="~/images/UnknownUser.jpg" height="75" class="border border-dark rounded" />
                                     }
-                                    <div class="align-self-center">@item.FullName</div>
+                                    <div class="ms-2 align-self-center text-black-hover">@item.FullName</div>
                                 </div>
                             </a>
                         }
