@@ -123,11 +123,29 @@
   <data name="admin" xml:space="preserve">
     <value>Administrator</value>
   </data>
+  <data name="adm_action" xml:space="preserve">
+    <value>Administration Settings</value>
+  </data>
+  <data name="apply" xml:space="preserve">
+    <value>Apply</value>
+  </data>
+  <data name="are_you_sure" xml:space="preserve">
+    <value>Are you sure</value>
+  </data>
+  <data name="banned_for" xml:space="preserve">
+    <value>Banned For</value>
+  </data>
+  <data name="ban_reason" xml:space="preserve">
+    <value>Ban reason</value>
+  </data>
   <data name="birth_date" xml:space="preserve">
     <value>Birth Date</value>
   </data>
   <data name="children" xml:space="preserve">
     <value>Children</value>
+  </data>
+  <data name="choose_a_role" xml:space="preserve">
+    <value>Choose a Role</value>
   </data>
   <data name="classical" xml:space="preserve">
     <value>Classical</value>
@@ -143,6 +161,15 @@
   </data>
   <data name="dance" xml:space="preserve">
     <value>Dance</value>
+  </data>
+  <data name="days" xml:space="preserve">
+    <value>Days</value>
+  </data>
+  <data name="delete_photo" xml:space="preserve">
+    <value>Delete Photo</value>
+  </data>
+  <data name="delete_user" xml:space="preserve">
+    <value>Delete user</value>
   </data>
   <data name="disco" xml:space="preserve">
     <value>Disco</value>
@@ -177,8 +204,14 @@
   <data name="gender" xml:space="preserve">
     <value>Gender</value>
   </data>
+  <data name="give_role" xml:space="preserve">
+    <value>Give a Role</value>
+  </data>
   <data name="hip-hop" xml:space="preserve">
     <value>Hip Hop</value>
+  </data>
+  <data name="hours" xml:space="preserve">
+    <value>Hours</value>
   </data>
   <data name="indian" xml:space="preserve">
     <value>Indian</value>
@@ -186,17 +219,32 @@
   <data name="k-pop" xml:space="preserve">
     <value>K-Pop</value>
   </data>
+  <data name="leave" xml:space="preserve">
+    <value>Leave</value>
+  </data>
   <data name="male" xml:space="preserve">
     <value>Male</value>
   </data>
   <data name="metal" xml:space="preserve">
     <value>Metal</value>
   </data>
+  <data name="minutes" xml:space="preserve">
+    <value>Minutes</value>
+  </data>
   <data name="moderator" xml:space="preserve">
     <value>Moderator</value>
   </data>
+  <data name="mod_action" xml:space="preserve">
+    <value>Moderation Actions</value>
+  </data>
+  <data name="months" xml:space="preserve">
+    <value>Months</value>
+  </data>
   <data name="my_posts" xml:space="preserve">
     <value>My posts</value>
+  </data>
+  <data name="name" xml:space="preserve">
+    <value>Name</value>
   </data>
   <data name="nation" xml:space="preserve">
     <value>Country</value>
@@ -254,5 +302,17 @@
   </data>
   <data name="textp-otheruser" xml:space="preserve">
     <value>People They Follow</value>
+  </data>
+  <data name="user_data" xml:space="preserve">
+    <value>User data</value>
+  </data>
+  <data name="weeks" xml:space="preserve">
+    <value>Weeks</value>
+  </data>
+  <data name="why_are_you_deleting_this_user" xml:space="preserve">
+    <value>Why are you deleting this user</value>
+  </data>
+  <data name="years" xml:space="preserve">
+    <value>Years</value>
   </data>
 </root>

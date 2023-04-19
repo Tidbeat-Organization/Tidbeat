@@ -93,7 +93,7 @@
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="edit-user-modal-label" style="color: #6610F2; font-weight: bold;">Definições de administrador</h5>
+                    <h5 class="modal-title" id="edit-user-modal-label" style="color: #6610F2; font-weight: bold;">@Localizer["adm_action"]</h5>
                     <button type="button" class="close custom-close rounded btn btn-primary" data-bs-dismiss="modal" aria-label="Close" id="close-modal">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -103,11 +103,11 @@
 
                         <div class="col-md-6" style="border: none; border-right: 1px solid gainsboro;">
                             <div class="left-section">
-                                <h5 style="color: #6610F2; font-weight: normal; text-decoration: underline;">Dados do Utilizador</h5>
+                                <h5 style="color: #6610F2; font-weight: normal; text-decoration: underline;">@Localizer["user_data"]</h5>
                                 <form id="edit-user-form" style="margin-top: 30px;">
                                     <input type="hidden" id="user-id" name="userId" value="">
                                     <div class="mb-3">
-                                        <label for="user-name" class="form-label" style="color: #6610F2;">Nome:</label>
+                                        <label for="user-name" class="form-label" style="color: #6610F2;">@Localizer["name"]:</label>
                                         <div class="d-flex align-items-center">
                                             <div id="admin-definitions-edit-full-name-reset-button" class="bi bi-arrow-clockwise text-primary fs-5 btn hover-background-grey px-1 py-0 d-none"></div>
                                             <div id="admin-definitions-edit-full-name-button" class="bi bi-pencil-fill text-primary me-2 btn hover-background-grey px-1 py-0"></div>
@@ -118,7 +118,7 @@
                                     <div class="mb-3 my-4 position-relative">
                                         <div id="admin-definitions-edit-about-me-reset-button" class="bi bi-arrow-clockwise text-primary fs-5 btn hover-background-grey px-1 py-0 position-absolute start-0 d-none"></div>
                                         <div id="admin-definitions-edit-about-me-button" class="bi bi-pencil-fill text-primary me-2 btn hover-background-grey position-absolute start-0 px-1 py-0"></div>
-                                        <label for="user-about" class="form-label" style="color: #6610F2;">Sobre mim:</label>
+                                        <label for="user-about" class="form-label" style="color: #6610F2;">@Localizer["about_me"]:</label>
                                         <div id="admin-definitions-about-me-div" class="border text-start p-2" style="height: 200px; border-radius: 15px;">@Html.Raw(Model.AboutMe)</div>
                                         <textarea asp-for="AboutMe" id="postcreate" class="form-control rich-text-index-profile" style="border: 1.5px solid #6610F2; border-radius: 15px;" placeholder="@Localizer["about_me"]..."></textarea>
                                         <input type="hidden" id="admin-definitions-about-me-hidden-input" />
@@ -129,20 +129,20 @@
 
                         <div class="col-md-6">
                             <div class="right-section">
-                                <h5 style="color: red; font-weight: normal; text-decoration: underline;">Ações de Moderação</h5>
+                                <h5 style="color: red; font-weight: normal; text-decoration: underline;">@Localizer["mod_action"]</h5>
                                 <form style="margin-top: 30px;">
                                     @if (User.IsInRole("Admin"))
                                     {
                                         <div class="mb-3">
-                                            <label for="admin-definitions-give-role-select" class="form-label" style="color: red;">Dar Role:</label>
+                                            <label for="admin-definitions-give-role-select" class="form-label" style="color: red;">@Localizer["give_role"]:</label>
                                             <div class="d-flex align-items-center">
                                                 <div id="admin-definitions-edit-give-role-reset-button" class="bi bi-arrow-clockwise text-primary fs-5 btn hover-background-grey px-1 py-0 d-none"></div>
                                                 <div id="admin-definitions-edit-give-role-button" class="bi bi-pencil-fill text-primary me-2 btn hover-background-grey px-1 py-0"></div>
                                                 <select disabled class="form-select" id="admin-definitions-give-role-select" name="role">
-                                                    <option disabled>Escolha um papel</option>
-                                                    <option value="@RoleType.Admin">Administrador</option>
-                                                    <option value="@RoleType.Moderator">Moderador</option>
-                                                    <option value="@RoleType.NormalUser" selected>Utilizador normal</option>
+                                                    <option disabled>@Localizer["choose_a_role"]</option>
+                                                    <option value="@RoleType.Admin">@Localizer["admin"]</option>
+                                                    <option value="@RoleType.Moderator">@Localizer["moderator"]</option>
+                                                    <option value="@RoleType.NormalUser" selected>@Localizer["normal_user"]</option>
                                                 </select>
                                                 <input id="admin-definitions-give-role-hidden-input" type="hidden" />
                                             </div>
@@ -152,39 +152,39 @@
                                     {
                                         <div class="mb-3 form-check my-3 form-check-inline">
                                             <input type="checkbox" class="form-check-input" id="delete-photo" name="deletePhoto" style="float: right; margin-left: 10px;" onchange="updateDeletePhotoLabel()">
-                                            <label class="form-check-label" for="delete-photo" style="color: red; float: right;">Apagar foto?</label>
+                                            <label class="form-check-label" for="delete-photo" style="color: red; float: right;">@Localizer["delete_photo"]?</label>
                                         </div>
                                     }
                                     <div class="mb-3 my-5">
-                                        <label for="ban-for" class="form-label" style="color: red;">Banir por:</label>
+                                        <label for="ban-for" class="form-label" style="color: red;">@Localizer["banned_for"]:</label>
                                         <div class="input-group">
                                             <input type="number" class="form-control" id="ban-for" name="banFor" min="1" step="1">
                                             <select class="form-select" id="ban-for-unit" name="banForUnit">
-                                                <option value="@BanTime.Minutes">Minutos</option>
-                                                <option value="@BanTime.Hours">Horas</option>
-                                                <option value="@BanTime.Days">Dias</option>
-                                                <option value="@BanTime.Weeks">Semanas</option>
-                                                <option value="@BanTime.Months">Meses</option>
-                                                <option value="@BanTime.Years">Anos</option>
+                                                <option value="@BanTime.Minutes">@Localizer["minutes"]</option>
+                                                <option value="@BanTime.Hours">@Localizer["hours"]</option>
+                                                <option value="@BanTime.Days">@Localizer["days"]</option>
+                                                <option value="@BanTime.Weeks">@Localizer["weeks"]</option>
+                                                <option value="@BanTime.Months">@Localizer["months"]</option>
+                                                <option value="@BanTime.Years">@Localizer["years"]</option>
                                             </select>
                                         </div>
                                     </div>
                                     <div class="mb-3 my-5" id="reason-for-ban" style="display:none;">
-                                        <label for="reason-for-ban-input" class="form-label" style="color: red;">Motivo do banimento:</label>
+                                        <label for="reason-for-ban-input" class="form-label" style="color: red;">@Localizer["ban_reason"]:</label>
                                         <input type="text" class="form-control" id="reason-for-ban-input" name="reasonForBan">
                                     </div>
                                     @if (User.IsInRole("Admin"))
                                     {
                                         <div class="mb-3 my-5">
-                                            <button type="button" class="btn btn-danger" id="delete-user">Apagar utilizador</button>
+                                            <button type="button" class="btn btn-danger" id="delete-user">@Localizer["delete_user"]</button>
                                         </div>
                                         <div id="confirm-user-deletion-div" class="d-none">
                                             <div class="mt-3">
-                                                <div class="text-danger">Why are you deleting this user?</div>
+                                                <div class="text-danger">@Localizer["why_are_you_deleting_this_user"]?</div>
                                                 <input id="why-are-you-deleting-user-input" class="rounded" style="border: 1px red solid" type="text" />
                                             </div>
                                             <div class="mt-3">
-                                                <div class="text-danger">Are you sure?</div>
+                                                <div class="text-danger">@Localizer["are_you_sure"]?</div>
                                                 <div class="d-flex justify-content-center">
                                                     <div id="confirm-user-deletion-button" class="btn bg-danger text-white bi bi-check fs-5 me-1"></div>
                                                     <div id="cancel-user-deletion-button" class="btn bg-danger text-white bi bi-x fs-5"></div>
@@ -198,8 +198,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Sair</button>
-                    <button type="button" class="btn btn-primary" id="edit-user-submit">Aplicar</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">@Localizer["leave"]</button>
+                    <button type="button" class="btn btn-primary" id="edit-user-submit">@Localizer["apply"]</button>
                 </div>
             </div>
         </div>
