@@ -1,0 +1,176 @@
+﻿@using Tidbeat.Enums
+@using Microsoft.AspNetCore.Mvc.Localization;
+@inject IViewLocalizer Localizer;
+@{
+    var reportedItemTypeString = Model;
+}
+
+<div id="report-modal" class="modal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="d-flex align-items-center">
+                    <div class="bi bi-exclamation-triangle-fill text-danger me-2 fs-2"></div>
+                    <h5 id="report-modal-title" class="text-danger modal-title text-center text-decoration-underline">@Localizer["report"]</h5>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form asp-controller="Reports" asp-action="Create" method="post" id="report-modal-form" class="d-flex flex-column text-start">
+                    <div class="text-danger">@Localizer["report_type"]*</div>
+                    <div class="">
+                        <input type="radio" name="option" id="option1" value="@ReportReason.Other" />
+                        <label for="option1">@Localizer["other"]</label>
+                    </div>
+                    <div class="">
+                        <input type="radio" name="option" id="option2" value="@ReportReason.GoreContent" />
+                        <label for="option2">@Localizer["gore_content"]</label>
+                    </div>
+                    <div class="">
+                        <input type="radio" name="option" id="option3" value="@ReportReason.InnappropriateBehaviour" />
+                        <label for="option3">@Localizer["innappropriate_behaviour"]</label>
+                    </div>
+                    <div class="">
+                        <input type="radio" name="option" id="option4" value="@ReportReason.HateSpeech" />
+                        <label for="option4">@Localizer["hate_speech"]</label>
+                    </div>
+                    <div class="">
+                        <input type="radio" name="option" id="option5" value="@ReportReason.SexualContent" />
+                        <label for="option5">@Localizer["sexual_content"]</label>
+                    </div>
+                    <div id="report-modal-validation-reason" class="text-danger"></div>
+
+                    <input name="Reason" id="report-modal-reason-type-input" type="hidden" value="" />
+                    <input name="ReportItemType" id="report-modal-report-item-type-input" type="hidden" value="" />
+                    <input name="ReportItemId" id="report-modal-report-item-id-input" type="hidden" value="" />
+                    <input name="UserReported.Id" id="report-modal-user-reported-id-input" type="hidden" value="" />
+
+                    <div class="text-danger mt-3">@Localizer["explain_why_to_know_more"]</div>
+                    <textarea id="report-modal-detailed-reason-textarea" name="DetailedReason" placeholder="@Localizer["type_here_your_reason"]"></textarea>
+                    <div id="report-modal-validation-detailed-reason" class="text-danger"></div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="report-modal-send-button" class="btn text-danger" style="border: thick solid #DC3545; border-width: 3px">
+                    <span id="report-modal-loading-circle-send-button" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                    @Localizer["send"]
+                </button>
+                <button type="button" data-bs-dismiss="modal" class="btn btn-danger bg-danger text-white">@Localizer["cancel"]</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+  <div id="report-modal-success-toast" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="toast-header">
+      <div class="bi bi-check-lg text-success me-2"></div>
+      <strong class="me-auto text-success">@Localizer["report_sent_sucessfully"]</strong>
+      <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+    <div class="toast-body">
+      @Localizer["an_admin_will_check_this_case_soon"]
+    </div>
+  </div>
+</div>
+
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+    <div id="report-modal-failure-toast" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+            <div class="bi bi-exclamation-triangle-fill text-danger me-2"></div>
+            <strong class="me-auto text-danger">@Localizer["report_submission_failed"]</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+            @Localizer["please_try_again_later"]
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $("#report-modal").on("show.bs.modal", function (e) {
+            var id = $(e.relatedTarget).data("id");
+            var type = $(e.relatedTarget).data("type");
+            console.log(id);
+            console.log(type);
+            $('#report-modal-report-item-type-input').val(type);
+            $('#report-modal-report-item-id-input').val(id);
+            let typeString = type;
+            if (type === "@ReportedItemType.Post.ToString()") {
+                typeString = '@Localizer[ReportedItemType.Post.ToString()]';
+            } else if (type === "@ReportedItemType.Comment.ToString()") {
+                typeString = '@Localizer[ReportedItemType.Comment.ToString()]';
+            } else if (type === "@ReportedItemType.User.ToString()") {
+                typeString = '@Localizer[ReportedItemType.User.ToString()]';
+            }
+            $('#report-modal-title').text("@Localizer["report"] " + typeString);
+            clearForm();
+        });
+
+        function clearForm() {
+            $('input[name="option"]').prop('checked', false);
+            $('#report-modal-detailed-reason-textarea').val("");
+            $('#report-modal-reason-type-input').val("");
+            $("#report-modal-validation-reason").text("");
+            $("#report-modal-validation-detailed-reason").text("");
+            $("#report-modal-loading-circle-send-button").addClass("d-none");
+            $("#report-modal-send-button").prop("disabled", false);
+        }
+
+        $('input[name="option"]').on('change', function () {
+            // Get the selected value
+            var selectedValue = $('input[name="option"]:checked').val();
+            $('#report-modal-reason-type-input').val(selectedValue);
+            $("#report-modal-validation-reason").text("");
+            console.log('Selected value:', selectedValue);
+            // You can use the selected value for further processing
+        });
+
+        $('#report-modal-detailed-reason-textarea').on('input', function () {
+            var inputValue = $(this).val();
+            var characterLimit = 300;
+            // Check if the entered value exceeds the character limit
+            if (inputValue.length > characterLimit) {
+                inputValue = inputValue.slice(0, characterLimit);
+                $(this).val(inputValue);
+                $("#report-modal-validation-detailed-reason").text("@Localizer["max_characters_reached"]: " + characterLimit + " @Localizer["characters"]");
+            } else {
+                $("#report-modal-validation-detailed-reason").text("");
+            }
+        });
+
+        $("#report-modal-send-button").click(function() {
+            $("#report-modal-form").submit();
+        })
+
+        $("#report-modal-form").submit(function (e) {
+            e.preventDefault();
+            var form = $(this);
+            
+            if (form.find('input[name="option"]:checked').length === 0) {
+                $("#report-modal-validation-reason").text("*@Localizer["please_select_a_report_type"]");
+                return;
+            }
+            $("#report-modal-loading-circle-send-button").removeClass("d-none");
+            $("#report-modal-send-button").prop("disabled", true);
+            var url = form.attr("action");
+            var data = form.serialize();
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: data,
+                success: function (data) {
+                    $("#report-modal").modal("hide");
+                    var toast = new bootstrap.Toast($("#report-modal-success-toast"));
+                    toast.show();
+                },
+                error: function (data) {
+                    $("#report-modal").modal("hide");
+                    var toast = new bootstrap.Toast($("#report-modal-failure-toast"));
+                    toast.show();
+                }
+            });
+        });
+    });
+</script>

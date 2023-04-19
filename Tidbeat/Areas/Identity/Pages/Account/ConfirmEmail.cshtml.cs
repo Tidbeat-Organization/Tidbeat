@@ -15,21 +15,34 @@ using Tidbeat.Models;
 
 namespace Tidbeat.Areas.Identity.Pages.Account
 {
+    /// <summary>
+    /// The model class for the register confirmation page.
+    /// </summary>
     public class ConfirmEmailModel : PageModel
     {
         private readonly UserManager<ApplicationUser> _userManager;
 
+        /// <summary>
+        /// The constructor for the register confirmation model.
+        /// </summary>
+        /// <param name="userManager"></param>
         public ConfirmEmailModel(UserManager<ApplicationUser> userManager)
         {
             _userManager = userManager;
         }
 
         /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
+        /// The status message.
         /// </summary>
         [TempData]
         public string StatusMessage { get; set; }
+
+        /// <summary>
+        /// The get method for the register confirmation page.
+        /// </summary>
+        /// <param name="userId">The id of the user.</param>
+        /// <param name="code">The code.</param>
+        /// <returns>Redirects to the page or returns 404. If its ok, returns the page itself.</returns>
         public async Task<IActionResult> OnGetAsync(string userId, string code)
         {
             if (userId == null || code == null)

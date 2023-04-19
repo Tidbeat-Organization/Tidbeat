@@ -162,4 +162,7 @@
   <data name="stats" xml:space="preserve">
     <value>Stats</value>
   </data>
+  <data name="[deleted]" xml:space="preserve">
+    <value>[deleted]</value>
+  </data>
 </root>

@@ -1,0 +1,35 @@
+﻿@model IEnumerable<ApplicationUser>
+@using Tidbeat.Enums
+@using Microsoft.AspNetCore.Mvc.Localization;
+@inject IViewLocalizer Localizer;
+
+@{
+    var resulti = ViewData["offset"] != null ? (int)ViewData["offset"] : 0;
+}
+
+@if (!Model.Any() && resulti == 0)
+{
+    <p class="text-center">@Localizer["not_found_users"]</p>
+}
+else
+{
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3">
+        @foreach (var user in Model)
+        {
+            <div class="col mb-4">
+                <div class="card">
+                    <div class="text-center my-2">
+                        <img src="@(!string.IsNullOrEmpty(user.ImagePath) ? user.ImagePath : "/images/UnknownUser.jpg")" alt="Profile Picture" width="75" height="75" class="profile-pic">
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">@user.FullName</h5>
+                        <div class="border border-1 border-light-grey my-2"></div>
+                        <p class="paragraph mt-3"><strong>@Localizer["favorite_genre"]</strong> @(!string.IsNullOrEmpty(user.FavoriteGenre) ? user.FavoriteGenre.Substring(0, 1).ToUpper() + user.FavoriteGenre.Substring(1) : @Localizer["non_specified"])</p>
+                        <p><strong>@Localizer["country"]</strong> @(string.IsNullOrEmpty(user.Country) ? @Localizer["non_specified"] : user.Country)</p>
+                        <a href="@Url.Action("Details", "Profiles", new { id = user.Id })" class="btn btn-primary">@Localizer["view_profile"]</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}

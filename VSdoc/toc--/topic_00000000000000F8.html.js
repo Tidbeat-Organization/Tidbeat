@@ -1,0 +1,1 @@
+var breadcrumbs=[['-1',"",""],['2',"SOLUTION-WIDE PROPERTIES Reference","topic_000000000000023A.html"],['244',"Tidbeat.Controllers Namespace","topic_00000000000000B6.html"],['317',"RatingPartialController Class","topic_00000000000000F6.html"],['319',"Methods","topic_00000000000000F6_methods--.html"],['320',"GetAverageRatings Method","topic_00000000000000F8.html"]];

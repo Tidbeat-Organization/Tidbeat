@@ -120,6 +120,9 @@
   <data name="about_me" xml:space="preserve">
     <value>Sobre mim</value>
   </data>
+  <data name="admin" xml:space="preserve">
+    <value>Administrador</value>
+  </data>
   <data name="birth_date" xml:space="preserve">
     <value>Data de Nascimento</value>
   </data>
@@ -159,6 +162,12 @@
   <data name="folk" xml:space="preserve">
     <value>Folk</value>
   </data>
+  <data name="followers" xml:space="preserve">
+    <value>Pessoas Que Segues</value>
+  </data>
+  <data name="followies" xml:space="preserve">
+    <value>Os Teus Seguidores</value>
+  </data>
   <data name="from" xml:space="preserve">
     <value>de</value>
   </data>
@@ -183,6 +192,9 @@
   <data name="metal" xml:space="preserve">
     <value>Metal</value>
   </data>
+  <data name="moderator" xml:space="preserve">
+    <value>Moderador</value>
+  </data>
   <data name="my_posts" xml:space="preserve">
     <value>Meus posts</value>
   </data>
@@ -192,8 +204,17 @@
   <data name="non_binary" xml:space="preserve">
     <value>Não Binário</value>
   </data>
+  <data name="normal_user" xml:space="preserve">
+    <value>Utilizador Normal</value>
+  </data>
   <data name="no_favorited_song_yet" xml:space="preserve">
     <value>Não tem qualquer música favoritada ainda.</value>
+  </data>
+  <data name="no_followers" xml:space="preserve">
+    <value>Ninguém te segue</value>
+  </data>
+  <data name="no_followies" xml:space="preserve">
+    <value>Não Segues Ninguém</value>
   </data>
   <data name="no_posts" xml:space="preserve">
     <value>Sem posts</value>
@@ -213,7 +234,19 @@
   <data name="rock" xml:space="preserve">
     <value>Rock</value>
   </data>
+  <data name="song" xml:space="preserve">
+    <value>Música</value>
+  </data>
+  <data name="submit" xml:space="preserve">
+    <value>Submeter</value>
+  </data>
   <data name="techno" xml:space="preserve">
     <value>Techno</value>
+  </data>
+  <data name="textc" xml:space="preserve">
+    <value>Pessoas Que te Seguem</value>
+  </data>
+  <data name="textp" xml:space="preserve">
+    <value>Pessoas Que Segues</value>
   </data>
 </root>

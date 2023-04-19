@@ -8,15 +8,13 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 namespace Tidbeat.Areas.Identity.Pages.Account
 {
     /// <summary>
-    ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-    ///     directly from your code. This API may change or be removed in future releases.
+    /// The model class for the register confirmation page.
     /// </summary>
     [AllowAnonymous]
     public class ForgotPasswordConfirmation : PageModel
     {
         /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
+        /// The get method for the register confirmation page.
         /// </summary>
         public void OnGet()
         {

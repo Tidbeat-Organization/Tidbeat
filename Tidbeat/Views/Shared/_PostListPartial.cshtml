@@ -1,0 +1,78 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@using Tidbeat.AuxilliaryClasses
+@using Tidbeat.Enums
+@using Microsoft.AspNetCore.Mvc.Localization;
+@inject IViewLocalizer Localizer;
+@model IEnumerable<Tidbeat.Models.Post>
+
+@{
+    ViewData["Title"] = "Index";
+    var genre = TempData["genre"]?.ToString();
+    var name = TempData["name"]?.ToString();
+    var order = TempData["order"]?.ToString();
+}
+
+@foreach (var item in Model)
+{
+    <div class="col-md-4">
+        <div class="card mb-4 shadow-sm">
+            <div class="card-body text-center">
+                <h5 class="card-title text-primary fw-semibold">
+                    @{
+                        string postTitle = item.Title;
+                        if (postTitle?.Length > 15) {
+                            postTitle = postTitle.Substring(0, 15);
+                            postTitle += "...";
+                        }
+                    }
+                    @postTitle
+                </h5>
+                @Localizer["from"]
+                @if (item.User?.Email == Configurations.InvalidUser.Email) {
+                    <div class="text-black">@Localizer["[deleted]"]</div>
+                } else {
+                    <a asp-controller="Profiles" asp-action="Details" asp-route-id="@item.User?.Id" class="text-black text-black-hover">
+                         @{
+                            string personName = item.User?.FirstAndLastName();
+                            if (personName?.Length > 15) {
+                                personName = personName.Substring(0, 15);
+                                personName += "...";
+                            }
+                        }
+                        @personName
+                    </a>
+                }
+                <div class="text-dark">@Localizer["created"]: @item.CreationDate.ToString("dd/MM/yyyy HH:mm")</div>
+                @if (item.Song != null) {
+                    string songName = item.Song.Name;
+                    if (songName.Length > 15) {
+                        songName = songName.Substring(0, 15);
+                        songName += "...";
+                    }
+                    <a asp-controller="Songs" asp-action="Details" asp-route-id="@item.Song.SongId" class="text-black-hover">Música: @songName</a>
+                } else if (item.Band != null) {
+                    string bandName = item.Band.Name;
+                    if (bandName.Length > 15) {
+                        bandName = bandName.Substring(0, 15);
+                        bandName += "...";
+                    }
+                    <a asp-controller="Bands" asp-action="Details" asp-route-id="@item.Band.BandId" class="text-black-hover">Banda: @bandName</a>
+                }
+                <div class="d-flex justify-content-center align-items-center">
+                    <div class="btn-group mt-3">
+                        <a asp-action="Details" asp-route-id="@item.PostId" style="background-color:#6610F2;color:#fff;" class="btn btn-sm btn-outline-secondary">
+                            @Localizer["details"]
+                        </a>
+                    </div>
+                </div>
+                @if (item.Song == null && item.Band == null) {
+                    <div>&nbsp;</div>
+                }
+            </div>
+        </div>
+    </div>
+}

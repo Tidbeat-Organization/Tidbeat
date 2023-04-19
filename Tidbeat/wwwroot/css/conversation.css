@@ -1,0 +1,222 @@
+﻿#messages {
+    /* default styles */
+    width: 100%;
+    border: 2px solid black;
+    border-radius: 5px;
+    height: calc(100vh - 310px);
+    max-height: 650px;
+    float: none;
+    margin: 0px auto;
+    padding-left: 0px;
+    overflow-y: scroll;
+}
+
+/* adjust max-height for screens less than 768px wide */
+@media (max-width: 767px) {
+    #messages {
+        max-height: 600px;
+    }
+}
+
+/* adjust max-height for screens between 768px and 991px wide */
+@media (min-width: 768px) and (max-width: 991px) {
+    #messages {
+        max-height: 700px;
+    }
+}
+
+/* adjust max-height for screens greater than or equal to 992px wide */
+@media (min-width: 992px) {
+    #messages {
+        max-height: 850px;
+    }
+}
+
+.system-message {
+    background: #80ed9d;
+    color: black;
+    font-weight: 600;
+    padding: 5px 0 3px 0;
+}
+
+    .system-message::before {
+        content: "";
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        margin-right: 10px;
+        background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-check" viewBox="0 0 16 16"><path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm1.679-4.493-1.335 2.226a.75.75 0 0 1-1.174.144l-.774-.773a.5.5 0 0 1 .708-.708l.547.548 1.17-1.951a.5.5 0 1 1 .858.514ZM11 5a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM8 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z"/><path d="M8.256 14a4.474 4.474 0 0 1-.229-1.004H3c.001-.246.154-.986.832-1.664C4.484 10.68 5.711 10 8 10c.26 0 .507.009.74.025.226-.341.496-.65.804-.918C9.077 9.038 8.564 9 8 9c-5 0-6 3-6 4s1 1 1 1h5.256Z"/></svg>');
+        background-repeat: no-repeat;
+        background-size: contain;
+        transform: translateY(1.5px);
+    }
+
+.broadcast-message {
+    display: inline-block;
+    background: yellow;
+    margin: auto;
+    padding: 5px 10px;
+}
+
+.message-entry {
+    overflow: auto;
+    margin: 8px 0;
+}
+
+.message-avatar {
+    display: inline-block;
+    padding: 10px;
+    max-width: 8em;
+    word-wrap: break-word;
+}
+
+/* Current User message styling*/
+.message-content {
+    display: inline-block;
+    background-color: #6610F2;
+    color: #fff;
+    padding: 10px;
+    margin: 0 0.5em;
+    max-width: calc(60%);
+    word-wrap: break-word;
+    border-radius: 15px;
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+/* Other User message styling*/
+.message-content-otheruser {
+    display: inline-block;
+    background-color: #fff;
+    color: #6610F2;
+    padding: 10px;
+    margin: 0 0.5em;
+    max-width: calc(60%);
+    word-wrap: break-word;
+    border-radius: 15px;
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+.message-content:hover {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+
+.message-content.pull-left:before {
+    width: 0;
+    height: 0;
+    display: inline-block;
+    float: left;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+    border-right: 10px solid #6610F2;
+    margin: 15px 0;
+}
+
+.message-content.pull-right:after {
+    width: 0;
+    height: 0;
+    display: inline-block;
+    float: right;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+    border-left: 10px solid #b2e281;
+    margin: 15px 0;
+}
+
+.pull-left {
+    float: left;
+}
+
+.pull-right {
+    float: right;
+}
+
+/* Buttons */
+
+#sendmessage {
+    background-color: white;
+    border-color: #6610F2;
+    border-radius: 10px;
+    font-size: 25px;
+    padding: 10px 15px 10px 15px;
+}
+
+    #sendmessage i {
+        color: #6610F2;
+    }
+
+#getRecentMessagesButton {
+    background-color: #fff;
+    color: #6610F2;
+    border-radius: 3px;
+}
+
+/* Arrow Icon & User images and their respective names at the top - styling */
+
+.user-info {
+    position: relative;
+    margin-top: 0;
+    padding-top: 30px;
+    padding-bottom: 1px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.arrow-icon {
+    position: absolute;
+    left: 17%; /* Set initial position to center */
+    transform: translateX(-50%); /* Center horizontally */
+    top: 57px;
+}
+
+
+@media (max-width: 767px) {
+    .arrow-icon {
+        left: 2%;
+        transform: none;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+    .arrow-icon {
+        left: 5%;
+        transform: none;
+    }
+}
+
+@media (min-width: 992px) {
+    .arrow-icon {
+        left: 15%;
+        transform: none;
+    }
+}
+
+
+.user-info div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.user-info img {
+    border-radius: 10px;
+    border: 2px solid black;
+}
+
+.user-info p {
+    margin-top: 10px;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.user-info .arrow {
+    margin: 0 40px;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+#message:focus {
+    border: 2px solid #6610F2;
+    outline: none;
+}

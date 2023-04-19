@@ -1,0 +1,1 @@
+var breadcrumbs=[['-1',"",""],['2',"SOLUTION-WIDE PROPERTIES Reference","topic_000000000000023A.html"],['334',"Tidbeat.DTOs.ChatBeat Namespace","topic_0000000000000112.html"],['335',"DeleteMessageDto Class","topic_0000000000000113.html"]];

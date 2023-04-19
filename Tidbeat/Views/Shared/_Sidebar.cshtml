@@ -1,0 +1,176 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization;
+@inject IViewLocalizer Localizer
+
+<!--Sidebar styling -->
+<style>
+    .sidebar {
+        position: fixed;
+        top: 70px;
+        right: -300px;
+        width: 300px;
+        height: 75%;
+        background-color: #fff;
+        border: 2px solid #6610F2;
+        border-radius: 4px;
+        z-index: 1;
+        padding: 20px;
+        transition: right 0.3s ease-in-out;
+        overflow: hidden; /* Add this line */
+    }
+
+
+        .sidebar.active {
+            right: 0; /* move the sidebar onto the screen */
+        }
+
+    #sidebarToggle {
+        position: fixed;
+        top: 100px;
+        right: 0;
+        z-index: 1;
+    }
+
+    /* Open button*/
+    .btn-secondary {
+        background-color: white;
+        color: #6610F2;
+        border-color: #6610F2;
+    }
+
+        .btn-secondary:hover {
+            background-color: #6610F2;
+            color: white;
+            border-color: black;
+        }
+
+        .btn-secondary:active,
+        .btn-secondary:focus {
+            background-color: white;
+            color: #6610F2;
+            border-color: #6610F2;
+        }
+
+    /* Close button*/
+    #close-btn {
+        position: absolute;
+        top: 3px;
+        right: 3px;
+        font-size: 2rem;
+        cursor: pointer;
+    }
+
+    .scrollable-posts {
+        height: calc(100% - 30px);
+        overflow-y: auto;
+    }
+
+</style>
+
+
+@{
+    List<ApplicationUser>? Followies = new List<ApplicationUser>();
+
+    @if (TempData.ContainsKey("Friends"))
+    {
+        Followies = (List<ApplicationUser>?)TempData["Friends"];
+    }
+}
+
+
+@if (User.Identity.IsAuthenticated)
+{
+    <!-- Button that opens SideBar -->
+    <button type="button" class="btn btn-secondary" id="sidebarToggle" style="border-width: 2px;">
+        <span class="bi bi-caret-left-fill" id="triangle"></span>
+    </button>
+}
+
+<!-- SideBar -->
+<div class="sidebar" id="sidebar">
+
+    <div id="close-btn" class="btn btn-primary fs-5 p-0 px-1" style="border-width: 2px">
+        <span class="bi bi-x" id="triangle"></span>
+    </div>
+
+
+    <div class="text-primary fs-5">@Localizer["people_that_you_follow"]</div>
+    <div class="border border-1 border-light-grey my-2"></div>
+    <div class="scrollable-posts h-100 my-2">
+        @if (TempData.ContainsKey("Friends"))
+        {
+            if (Followies?.Count > 0)
+            {
+                foreach (var item in Followies)
+                {
+                    <a class="w-100 mt-1 hover-background-grey pointer-active" asp-Controller="Profiles" asp-Action="Details" asp-route-id="@item.Id">
+                        <div class="hover-background-grey pointer-active mt-1 border border-primary rounded d-flex w-100">
+                            @if (!string.IsNullOrEmpty(item.ImagePath))
+                            {
+                                <img src="@item.ImagePath" height="65" class="border border-dark rounded" />
+                            }
+                            else
+                            {
+                                <img src="~/images/UnknownUser.jpg" height="65" class="border border-dark rounded" />
+                            }
+                            <div class="align-self-center" title="@Localizer["access_profile"]">
+                                @{
+                                    string personName = item.FirstAndLastName();
+                                    if (personName?.Length > 15) {
+                                        personName = personName.Substring(0, 15);
+                                        personName += "...";
+                                    }
+                                }
+                                @personName
+                            </div>
+
+                            @if (ViewBag.CurrentUser != null)
+                            {
+                                <a class="align-self-center btn bi bi-chat-left-text fs-4 py-0" href="@Url.Action("StartTwoPersonConversation", "Conversations", new { currentUserId = ViewBag.CurrentUser.Id, otherUserId = item.Id })" title="@Localizer["send_message"]"></a>
+                            }
+
+                        </div>
+                    </a>
+                }
+
+            }
+            else
+            {
+                <p>@Localizer["no_users_you_are_following"]</p>
+                ;
+            }
+
+        }
+        else
+        {
+            <p>@Localizer["no_users_you_are_following"]</p>
+            ;
+        }
+    </div>
+</div>
+
+
+<!-- Sidebar Logic -->
+<script>
+    $(function () {
+        const sidebar = $('#sidebar');
+        const closeBtn = $('#close-btn');
+        const triangle = $('#triangle');
+
+        $('#sidebarToggle').on('click', function () {
+            sidebar.toggleClass('active');
+            triangle.toggleClass('rotate-180');
+        });
+
+        closeBtn.on('click', function () {
+            sidebar.removeClass('active');
+        });
+
+        $('.bi-chat-right-text').tooltip({
+            placement: 'bottom'
+        });
+
+        $('.align-self-center').tooltip({
+            placement: 'bottom'
+        });
+    });
+</script>

@@ -1,0 +1,1 @@
+search_result['461']=["topic_00000000000000FA.html","RatingPartialController.GetUserRate Method","Gets the value of the current user\u0027s rating of a post or comment."];

@@ -5,7 +5,16 @@
 
 @{
     ViewData["Title"] = "Index";
+    var genre = TempData["genre"]?.ToString();
+    var name = TempData["name"]?.ToString();
+    var order = TempData["order"]?.ToString();
 }
+
+<div>
+    @{
+        await Html.RenderPartialAsync("_Sidebar");
+    }
+</div>
 
 <div style="margin-top: 100px;">
     @if (TempData["Message"] != null)
@@ -19,31 +28,64 @@
     }
 
     <h3 style="color: #6610F2;">@Localizer["recommended_posts"]</h3>
-    <hr />
+    <div id="filter" class="w-100" style="border-radius: 6pt; border-width: 0.75pt !important;">
+        <h5 class="text-primary fw-semibold text-start mt-1 ms-2">@Localizer["filters"]</h5>
+        <div class="text-dark fw-semibold mt-3 mb-1 d-flex flex-column flex-md-row align-items-center justify-content-center">
+            <div class="filter-height-rectifier mb-2 rec-posts-filter-label">@Localizer["name"]:</div>
+            <div class="filter-height-rectifier mb-2 ms-2 w-100">
+                <input id="filter-name-input" class="form-control filter-field w-100" placeholder="Escreva termo de pesquisa..." style="border: 1.5px solid #6610F2; border-radius: 15px;" value="@name"/>
+            </div>
+            <div class="filter-height-rectifier mb-2 ms-2 ms-md-5 rec-posts-filter-label">@Localizer["gender"]:</div>
+            <div class="filter-height-rectifier mb-2 ms-2 w-100">
+                <select class="form-control w-100 border-primary" id="filter-genre-input" name="filter-genre-input" style="border: 1.5px solid #6610F2; border-radius: 15px;">
+                            <!option selected value="">@Localizer["pick_gender"]</!option>
+                            <!option value="rock" @(genre == "rock" ? "selected" : "")>@Localizer["rock"]</!option>
+                    <!option value="pop" @(genre == "pop" ? "selected" : "")>@Localizer["pop"]</!option>
+                    <!option value="kids" @(genre == "kids" ? "selected" : "")>@Localizer["children"]</!option>
+                    <!option value="funk" @(genre == "funk" ? "selected" : "")>@Localizer["funk"]</!option>
+                    <!option value="classical" @(genre == "classical" ? "selected" : "")>@Localizer["classical"]</!option>
+                    <!option value="country" @(genre == "country" ? "selected" : "")>@Localizer["country"]</!option>
+                            <!option value="dance" @(genre == "dance" ? "selected" : "")>@Localizer["dance"]</!option>
+                            <!option value="metal" @(genre == "metal" ? "selected" : "")>@Localizer["metal"]</!option>
+                    <!option value="disco" @(genre == "disco" ? "selected" : "")>@Localizer["disco"]</!option>
+                            <!option value="folk" @(genre == "folk" ? "selected" : "")>@Localizer["folk"]</!option>
+                    <!option value="hip-hop" @(genre == "hip-hop" ? "selected" : "")>@Localizer["hip_hop"]</!option>
+                    <!option value="indian" @(genre == "indian" ? "selected" : "")>@Localizer["indian"]</!option>
+                    <!option value="k-pop" @(genre == "k-pop" ? "selected" : "")>@Localizer["k_pop"]</!option>
+                    <!option value="punk" @(genre == "punk" ? "selected" : "")>@Localizer["punk"]</!option>
+                    <!option value="piano" @(genre == "piano" ? "selected" : "")>@Localizer["piano"]</!option>
+                    <!option value="reggae" @(genre == "reggae" ? "selected" : "")>@Localizer["reggae"]</!option>
+                    <!option value="techno" @(genre == "techno" ? "selected" : "")>@Localizer["techno"]</!option>
+                        </select>
+            </div>
+            <div class="filter-height-rectifier mb-2 ms-2 ms-md-5 rec-posts-filter-label me-2">@Localizer["order"]:</div>
+            <div class="filter-height-rectifier mb-2 ms-2 w-100">
+                <select id="filter-order-input" class="form-control filter-field w-100" placeholder="" style="border: 1.5px solid #6610F2; border-radius: 15px;">
+                    <!option value="">@Localizer["order"]</!option>
+                    <!option value="a-z" @(order == "a-z" ? "selected" : "")>@Localizer["alfabetically_a_to_z"]</!option>
+                    <!option value="z-a" @(order == "z-a" ? "selected" : "")>@Localizer["alfabetically_z_to_a"]</!option>
+                    <!option value="newest" @(order == "newest" ? "selected" : "")>@Localizer["recent"]</!option>
+                    <!option value="oldest" @(order == "oldest" ? "selected" : "")>@Localizer["oldest"]</!option>
+                </select>
+            </div>
+            <div class="align-self-center px-3">
+                <button class="btn btn-primary" style="padding: 3px 5px 1px 5px;">
+                    <img id="imgBand" class="no-padding align-self-center" src="~/images/SearchIcon.png" height="35" onclick="actualEvent()" />
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="border border-1 border-light-grey my-4"></div>
     @if (User.Identity.IsAuthenticated)
     {
         <p>
-            <a asp-action="Create" class="bottom-0 end-0 mt-3 me-4 mb-4 btn btn-primary post-btn-center-lg">@Localizer["create_new_post"]</a>
+            <a asp-action="Create" class="bottom-0 end-0 mt-3 me-4 mb-4 btn btn-primary post-btn-center-lg" style="min-width: 140pt;">@Localizer["create_new_post"]</a>
         </p>
     }
 </div>
 
-<div class="row">
-    @foreach (var item in Model)
-    {
-        <div class="col-md-4">
-            <div class="card mb-4 shadow-sm">
-                <div class="card-body text-center">
-                    <h5 class="card-title">@Html.DisplayFor(modelItem => item.Title)</h5>
-                    <div class="d-flex justify-content-center align-items-center">
-                        <div class="btn-group">
-                            <a asp-action="Details" asp-route-id="@item.PostId" style="background-color:#6610F2;color:#fff;" class="btn btn-sm btn-outline-secondary">@Localizer["details"]</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    }
+<div class="row" id="mainUserList">
+        <partial name="_PostListPartial" />
 </div>
 <script>
     $(document).ready(function () {
@@ -55,4 +97,83 @@
             $("#success-alert, #error-alert").alert("close");
         });
     });
+
+    function actualEvent() {
+        let inputName = document.getElementById("filter-name-input");
+        let inputGenre = document.getElementById("filter-genre-input");
+        let inputOrder = document.getElementById("filter-order-input");
+
+        let path = window.location.href.split("?")[0];
+        if (inputName.value || inputGenre.value || inputOrder.value) {
+            path+="?";
+
+            let params = new URLSearchParams({
+                name: inputName.value,
+                genre: inputGenre.value,
+                order: inputOrder.value
+            }).toString();
+
+            path += params;
+            window.location.href = path;
+        }
+
+        event.preventDefault();
+    }
+
+    document.getElementById("filter").addEventListener("keypress", function (event) {
+        if (event.key === "Enter") {
+            let focusElement = document.activeElement;
+            let inputName = document.getElementById("filter-name-input");
+            let inputGenre = document.getElementById("filter-genre-input");
+            let inputOrder = document.getElementById("filter-order-input");
+            if (inputName === focusElement || inputGenre === focusElement || inputOrder === focusElement) {
+                //only if one of the elements is higthligthed
+                event.preventDefault();
+                actualEvent();
+            }
+        }
+    }
+    );
+
+    var loading = false;
+    var offset = @ViewBag.Offset;
+    $(function () {
+        // Listen for scroll events on the window
+        $(window).scroll(function () {
+            // Check if we've reached the bottom of the page
+            console.log("here")
+            if (Math.ceil($(window).scrollTop()) == Math.round($(document).height() - $(window).height()) && !loading) {
+                loading = true;
+                console.log("here")
+                // Load more data
+                $.ajax({
+                    url: "@Url.Action("getData")",
+                    data: { offset: offset, name: "@name", genre: "@genre", order: "@order"},
+                    dataType: "html",
+                    success: function (data) {
+                        if (data.length > 0) {
+                            // Append the data to the table
+                            $("#mainUserList").append(data);
+                            // Increment the offset for the next load
+                            offset += 20;
+                        }
+                        loading = false;
+                    },
+                    error: function (xhr, status, error) {
+                        loading = false;
+                    }
+                });
+            }
+        });
+    });
 </script>
+<style>
+    .filter-height-rectifier {
+        height: 24pt;
+        line-height: 26pt;
+    }
+
+    .filter-field {
+        width: 20vw;
+    }
+</style>

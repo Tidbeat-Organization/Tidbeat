@@ -117,13 +117,118 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="alfabetically_a_to_z" xml:space="preserve">
+    <value>Alfabeticamente (a-z)</value>
+  </data>
+  <data name="alfabetically_z_to_a" xml:space="preserve">
+    <value>Alfabeticamente (z-a)</value>
+  </data>
+  <data name="band_artist" xml:space="preserve">
+    <value>Bandas e Artistas</value>
+  </data>
+  <data name="children" xml:space="preserve">
+    <value>Crianças</value>
+  </data>
+  <data name="classical" xml:space="preserve">
+    <value>Clássica</value>
+  </data>
+  <data name="country" xml:space="preserve">
+    <value>Country</value>
+  </data>
   <data name="create_new_post" xml:space="preserve">
     <value>Criar novo post</value>
+  </data>
+  <data name="dance" xml:space="preserve">
+    <value>Dança</value>
   </data>
   <data name="details" xml:space="preserve">
     <value>Detalhes</value>
   </data>
+  <data name="disco" xml:space="preserve">
+    <value>Disco</value>
+  </data>
+  <data name="filters" xml:space="preserve">
+    <value>Filtros</value>
+  </data>
+  <data name="folk" xml:space="preserve">
+    <value>Folk</value>
+  </data>
+  <data name="from" xml:space="preserve">
+    <value>de</value>
+  </data>
+  <data name="funk" xml:space="preserve">
+    <value>Funk</value>
+  </data>
+  <data name="gender" xml:space="preserve">
+    <value>Género</value>
+  </data>
+  <data name="genders" xml:space="preserve">
+    <value>Géneros</value>
+  </data>
+  <data name="hip_hop" xml:space="preserve">
+    <value>Hip-Hop</value>
+  </data>
+  <data name="indian" xml:space="preserve">
+    <value>Indiana</value>
+  </data>
+  <data name="k_pop" xml:space="preserve">
+    <value>K-Pop</value>
+  </data>
+  <data name="less_popular" xml:space="preserve">
+    <value>Menos popular</value>
+  </data>
+  <data name="metal" xml:space="preserve">
+    <value>Metal</value>
+  </data>
+  <data name="more_popular" xml:space="preserve">
+    <value>Mais popular</value>
+  </data>
+  <data name="name" xml:space="preserve">
+    <value>Nome</value>
+  </data>
+  <data name="no_band" xml:space="preserve">
+    <value>Não foi encontrada nenhuma banda com esses filtros</value>
+  </data>
+  <data name="oldest" xml:space="preserve">
+    <value>Antigo</value>
+  </data>
+  <data name="order" xml:space="preserve">
+    <value>Ordenar</value>
+  </data>
+  <data name="piano" xml:space="preserve">
+    <value>Piano</value>
+  </data>
+  <data name="pick_gender" xml:space="preserve">
+    <value>Escolha um Género</value>
+  </data>
+  <data name="pop" xml:space="preserve">
+    <value>Pop</value>
+  </data>
+  <data name="punk" xml:space="preserve">
+    <value>Punk</value>
+  </data>
+  <data name="recent" xml:space="preserve">
+    <value>Recente</value>
+  </data>
   <data name="recommended_posts" xml:space="preserve">
     <value>Posts Recomendados</value>
+  </data>
+  <data name="reggae" xml:space="preserve">
+    <value>Reggae</value>
+  </data>
+  <data name="rock" xml:space="preserve">
+    <value>Rock</value>
+  </data>
+  <data name="search" xml:space="preserve">
+    <value>Procurar</value>
+  </data>
+  <data name="songs" xml:space="preserve">
+    <value>Músicas</value>
+  </data>
+  <data name="techno" xml:space="preserve">
+    <value>Techno</value>
+  </data>
+  <data name="to" xml:space="preserve">
+    <value>a</value>
   </data>
 </root>

@@ -1,0 +1,1 @@
+search_result['445']=["topic_00000000000000EF.html","ProfilesController Constructor","Initializes needed services for the controller."];

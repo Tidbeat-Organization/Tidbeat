@@ -1,0 +1,1 @@
+c['528']=[['529',"SpotifyService Constructor","topic_00000000000001CE.html",0],['530',"Methods","topic_00000000000001CB_methods--.html",1],['539',"Fields","topic_00000000000001CB_vars--.html",1]];

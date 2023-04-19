@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="admin" xml:space="preserve">
+    <value>Administrador</value>
+  </data>
   <data name="are_you_sure_delete_comment" xml:space="preserve">
     <value>Tem a certeza que deseja apagar o comentário?</value>
   </data>
@@ -141,16 +144,37 @@
   <data name="edited_in" xml:space="preserve">
     <value>Editado em</value>
   </data>
+  <data name="followers" xml:space="preserve">
+    <value>Seguidores</value>
+  </data>
+  <data name="followies" xml:space="preserve">
+    <value>Seguidos</value>
+  </data>
   <data name="from" xml:space="preserve">
     <value>de</value>
   </data>
+  <data name="moderator" xml:space="preserve">
+    <value>Moderador</value>
+  </data>
+  <data name="normal_user" xml:space="preserve">
+    <value>Utilizador Normal</value>
+  </data>
   <data name="no_comments" xml:space="preserve">
     <value>Não há comentários... Seja o primeiro a comentar!</value>
+  </data>
+  <data name="no_followers" xml:space="preserve">
+    <value>Segues Ninguém</value>
+  </data>
+  <data name="no_followies" xml:space="preserve">
+    <value>Ninguém Segue-te</value>
   </data>
   <data name="song" xml:space="preserve">
     <value>Música</value>
   </data>
   <data name="submit" xml:space="preserve">
     <value>Submeter</value>
+  </data>
+  <data name="[deleted]" xml:space="preserve">
+    <value>[apagado]</value>
   </data>
 </root>

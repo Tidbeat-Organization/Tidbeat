@@ -1,0 +1,240 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization;
+@using Tidbeat.Enums
+@inject IViewLocalizer Localizer;
+@model Report
+@{
+    var isReportOpen = Model.Status == Tidbeat.Enums.ReportStatus.Open;
+    var itemController = Model.ReportItemType == ReportedItemType.Comment ? "Comments" : (Model.ReportItemType == ReportedItemType.Post ? "Posts" : "Users");
+    var isComment = Model.ReportItemType == ReportedItemType.Comment;
+    var reportRefersAnything = Model.ReportItemType != null;
+    var goToLink = isComment ? Url.Action("Details", "Posts", new { id = ViewBag.Comment.post.PostId }) : Url.Action("Details", "Posts", new { id = Model.ReportItemId });
+}
+
+<div>
+    @{
+        await Html.RenderPartialAsync("_Sidebar");
+    }
+</div>
+
+<div class="container-fluid mt-5 pt-5">
+    <div class="d-flex justify-content-center">
+        <div class="d-flex flex-column text-start position-relative ms-5 ms-md-0">
+            <a href="/Reports" class="bi bi-arrow-left-circle fs-1 text-primary position-absolute" style="left: -70px"></a>
+            <div class="d-flex">
+                <div>@Localizer["report_details_to"]</div>
+                <div>&nbsp;</div>
+                @if (Model.UserReported.Email == Configurations.InvalidUser.Email) {
+                     <div class="text-primary">@Localizer["[deleted]"]&nbsp;</div>
+                } else {
+                    <a href="/Profiles/Details/@Model.UserReported.Id" class="text-primary">@Model.UserReported.FirstName()</a>
+                }
+                <div>&nbsp;@Localizer["by"]&nbsp;</div>
+                @if (Model.UserReporter.Email == Configurations.InvalidUser.Email) {
+                    <div class="text-primary">@Localizer["[deleted]"]</div>
+                } else {
+                    <a href="/Profiles/Details/@Model.UserReporter.Id" class="text-primary">@Model.UserReporter.FirstName()</a>
+                }
+            </div>
+
+            <div class="d-flex">
+                <div style="color: lightgrey">@Localizer["date"]: @Model.Date.ToString("dd/MM/yyyy")</div>
+                <div style="color: lightgrey">&nbsp;|&nbsp;</div>
+                <div style="color: lightgrey">@Localizer["report_id"]: @Model.Id</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-5 row">
+        <div class="col-sm-2 col-md-3 col-lg-4"></div>
+        <div class="report-options col-sm-8 col-md-6 col-lg-4">
+            
+            <div class="d-flex flex-row ms-2 align-items-center">
+                <div class="me-2">@Localizer["type_of_item"]:</div>
+                <div class="border border-2 rounded border-primary ms-2 text-start ps-2 py-1" style="width: 300px">
+                    @if (reportRefersAnything) {
+                        @Localizer[Model.ReportItemType.ToString()]
+                    } else {
+                        @Localizer["deleted"]
+                    }
+                </div>
+            </div>
+            
+            <div class="d-flex flex-row mt-2 align-items-center">
+                <div>@Localizer["report_reason"]:</div>
+                <div class="border border-2 rounded border-primary ms-2 text-start ps-2 py-1" style="width: 300px">@Localizer[Model.Reason.ToString()]</div>
+            </div>
+            <div class="d-flex flex-row mt-2 align-items-center">
+                <div class="me-1">@Localizer["report_state"]:</div>
+                <div class="mt-1 d-flex flex-row">
+                    <label class="switch me-2">
+                        <input type="checkbox" id="report-state-checkbox" @(isReportOpen ? "" : "checked")>
+                        <label id="report-state-label" for="report-state-checkbox" class="switch"></label>
+                    </label>
+                    <div class="d-flex flex-row">
+                        <div id="report_state_open" class="@(isReportOpen ? "fw-bold" : "text-light-grey")">@Localizer["open"]</div>
+                        <div class="text-light-grey">&nbsp;/&nbsp;</div>
+                        <div id="report_state_closed" class="@(isReportOpen ? "text-light-grey" : "fw-bold")">@Localizer["closed"]</div>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex flex-column align-items-start pt-3">
+                <div class="">@Localizer["more_details"]:</div>
+                <div class="border border-2 border-primary rounded text-start p-2 w-100" style="height: 200px">@Model.DetailedReason</div>
+            </div>
+        </div>
+        <div class="col-sm-2 col-md-3 col-lg-4"></div>
+    </div>
+    <div class="mt-5">
+        @if (Model.UserReported.Email != Configurations.InvalidUser.Email) {
+            <a asp-controller="Profiles" asp-action="Details" asp-route-id="@Model.UserReported.Id" class="btn btn-primary">@Localizer["open_user_profile"]</a>
+        }
+        @if (isReportOpen) {
+            @if (reportRefersAnything && Model.ReportItemType != ReportedItemType.User) {
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">@Localizer["to_open"] @(isComment ? Localizer["Comment"] : Localizer["Post"])</button>
+            }
+            <button id="close-report-button" class="btn bg-danger text-white">@Localizer["close_report"]</button>
+        } else {
+            <button id="open-report-button" class="btn bg-danger text-white">@Localizer["open_report"]</button>
+        }
+    </div>
+</div>
+
+@if (reportRefersAnything && Model.ReportItemType != ReportedItemType.User) {
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">@Localizer["content_of_the"] @(
+                    isComment ? Localizer["Comment"] : Localizer["Post"]
+                    ):</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    @if (!isComment) {
+                        <div class="text-start fw-bold fs-5">@ViewBag.Post.Title</div>
+                    }
+                    <div class="text-start">
+                        @if (isComment) {
+                            @ViewBag.Comment.Content
+                        }
+                        else if (Model.ReportItemType == ReportedItemType.Post) {
+                            @Html.Raw(ViewBag.Post.Content)
+                        }
+                    </div>
+                </div>
+                <div class="modal-footer d-flex justify-content-between">
+                    <a class="mr-auto" href="@goToLink">@Localizer["go_to"] @Localizer["Post"]</a>
+                    <div class="d-flex flex-row">
+                        <a asp-controller="@itemController" asp-action="Edit" asp-route-id="@Model.ReportItemId" class="btn btn-primary bi bi-pencil-fill me-1"></a>
+                        @if (isComment)
+                        {
+                                <div class="d-flex flex-row">
+                                    <button id="delete-comment-button" class="btn bg-danger text-white bi bi-trash-fill"></button>
+                                    <button id="confirm-delete-comment-button" class="bi btn bg-danger text-white bi-check ms-2 me-1 d-none"></button>
+                                    <button id="cancel-delete-comment-button" class="bi btn bg-danger text-white bi-x me-2 d-none"></button>
+                                </div>
+                        }
+                        else
+                        {
+                            <a asp-controller="Posts" asp-action="Delete" asp-route-id="@ViewBag.Post.PostId" class="btn bg-danger text-white bi bi-trash-fill"></a>
+                        }
+                        <button type="button" class="btn bg-danger text-white ms-1" data-bs-dismiss="modal">@Localizer["to_close"]</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        let label = document.getElementById('report-state-label');
+        let checkbox = document.getElementById('report-state-checkbox');
+        let reportStateOpen = document.getElementById('report_state_open');
+        let reportStateClosed = document.getElementById('report_state_closed');
+        let deleteCommentButton = document.getElementById('delete-comment-button');
+        
+        checkbox.onchange = function () {
+            if (checkbox.checked) {
+                reportStateOpen.classList.add('fw-bold');
+                reportStateClosed.classList.remove('fw-bold');
+                reportStateOpen.classList.add('text-light-grey');
+                reportStateClosed.classList.remove('text-light-grey');
+            } else {
+                reportStateOpen.classList.remove('fw-bold');
+                reportStateClosed.classList.add('fw-bold');
+                reportStateOpen.classList.remove('text-light-grey');
+                reportStateClosed.classList.add('text-light-grey');
+            }
+        }
+
+        let confirmDeleteCommentButton = document.getElementById('confirm-delete-comment-button');
+        let cancelDeleteCommentButton = document.getElementById('cancel-delete-comment-button');
+        if (deleteCommentButton) {
+            deleteCommentButton.onclick = function () {
+                deleteCommentButton.classList.add('d-none');
+                confirmDeleteCommentButton.classList.remove('d-none');
+                cancelDeleteCommentButton.classList.remove('d-none');
+            }
+        }
+
+        if (confirmDeleteCommentButton) {
+            confirmDeleteCommentButton.onclick = function () {
+                deleteCommentInDb();
+                setReportStatusInDb(@(Convert.ToInt32(ReportStatus.Closed)));
+            }
+        }
+
+        if (cancelDeleteCommentButton) {
+            cancelDeleteCommentButton.onclick = function () {
+                deleteCommentButton.classList.remove('d-none');
+                confirmDeleteCommentButton.classList.add('d-none');
+                cancelDeleteCommentButton.classList.add('d-none');
+            }
+        }
+
+        let openReportButton = document.getElementById("open-report-button");
+        if (openReportButton) {
+            openReportButton.onclick = function() {
+                setReportStatusInDb(@(Convert.ToInt32(ReportStatus.Open)))
+                    .then(() => location.reload());
+            }
+        }
+
+        let closeReportButton = document.getElementById("close-report-button");
+        if (closeReportButton) {
+            closeReportButton.onclick = function () {
+                setReportStatusInDb(@(Convert.ToInt32(ReportStatus.Closed)))
+                    .then(() => location.reload());
+            }
+        }
+
+        function setReportStatusInDb(reportStatus) {
+            return fetch('/Reports/SetReportStatus', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    reportId: '@Model.Id',
+                    status: reportStatus
+                })
+            });
+        }
+    });
+</script>
+
+@if (isComment) {
+    <script>
+        function deleteCommentInDb() {
+            let token = document.getElementsByName("__RequestVerificationToken")[0].value;
+            fetch('/Comments/Delete/@ViewBag.Comment.CommentId', {
+                method: 'POST',
+                headers: {
+                    'RequestVerificationToken': token
+                }
+            }).then(() => location.reload());
+        }
+    </script>
+}

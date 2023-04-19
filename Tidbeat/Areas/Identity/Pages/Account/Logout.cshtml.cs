@@ -13,17 +13,30 @@ using Tidbeat.Models;
 
 namespace Tidbeat.Areas.Identity.Pages.Account
 {
+    /// <summary>
+    /// The model class for the logout page.
+    /// </summary>
     public class LogoutModel : PageModel
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ILogger<LogoutModel> _logger;
 
+        /// <summary>
+        /// The constructor for the logout model.
+        /// </summary>
+        /// <param name="signInManager"></param>
+        /// <param name="logger"></param>
         public LogoutModel(SignInManager<ApplicationUser> signInManager, ILogger<LogoutModel> logger)
         {
             _signInManager = signInManager;
             _logger = logger;
         }
 
+        /// <summary>
+        /// The method that is called when the logout button is clicked.
+        /// </summary>
+        /// <param name="returnUrl"></param>
+        /// <returns></returns>
         public async Task<IActionResult> OnPost(string returnUrl = null)
         {
             await _signInManager.SignOutAsync();

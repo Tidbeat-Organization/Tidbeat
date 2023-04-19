@@ -12,6 +12,12 @@
     }
 }
 
+<div>
+    @{
+        await Html.RenderPartialAsync("_Sidebar");
+    }
+</div>
+
 <div class="mt-4 pt-5 row">
     @if (TempData.ContainsKey("Sucess")) {
         <div id="success-alert" class="alert alert-success mt-2 alert-dismissible fade show position-relative d-flex justify-content-center align-items-center" role="alert">
@@ -33,34 +39,65 @@
     <div class="d-flex flex-column flex-md-row flex-sm-column">
         <div class="col-md-6 col-sm-12 border-md-end vh-100-minus-navbar pe-0">
             <div class="d-flex justify-content-between">
-                <div class="w-100">
-                    <div class="d-flex flex-column ms-2 align-items-start mt-3">
+                <div class="w-100 d-flex">
+                    @if (!string.IsNullOrEmpty(Model.User.ImagePath)) {
+                        <img class="rounded" src="@Model.User.ImagePath" width="80" />
+                    } else {
+                        <img src="/images/UnknownUser.jpg" width="80" />
+                    }
+                    <div class="d-flex flex-column ms-3 align-items-start mt-3">
                         <div class="d-flex flex-row">
-                            <div class="post-label-right-aligned fs-6">@fromUpper: </div>
-                            <div><a class="fw-light text-decoration-none ms-2" asp-Controller="Profiles" asp-Action="Details" asp-route-id="@Model.User.Id">@Model.User.FullName</a></div>
+                            <div class="fw-bold fs-6">@fromUpper: </div>
+                            <div class="d-flex align-content-center">
+                                @if (Model.User.Email == Configurations.InvalidUser.Email) {
+                                    <div class="ms-2">
+                                        @Localizer["[deleted]"]
+                                    </div>
+                                } else {
+                                    <a class="fw-light text-decoration-none ms-2" asp-Controller="Profiles" asp-Action="Details" asp-route-id="@Model.User.Id">
+                                        @Model.User.FullName
+                                    </a>
+                                    @if (Model.User.Role.Equals(Tidbeat.Enums.RoleType.Admin)) {
+                                        <div class="bi bi-diamond-fill fs-6 ms-1 py-0 text-primary" data-toggle="tooltip" data-placement="top" title="@Localizer["admin"]"></div>
+                                    }
+                                    else if (Model.User.Role.Equals(Tidbeat.Enums.RoleType.Moderator)) {
+                                        <div class="bi bi-diamond-fill fs-6 ms-1 py-0 text-danger" data-toggle="tooltip" data-placement="top" title="@Localizer["moderator"]"></div>
+                                    }
+                                    else {
+                                        <div class="bi bi-music-note fs-6 ms-1 py-0 text-black" data-toggle="tooltip" data-placement="top" title="@Localizer["normal_user"]"></div>
+                                    }
+                                }
+                            </div>
                         </div>
                         <div class="d-flex flex-row">
-                            <div class="post-label-right-aligned fs-6">
+                            <div class="fw-bold fs-6">
                                 @Localizer["created_in"]:
                             </div>
-                            <span class="text-dark fw-light ms-2">@Model.CreationDate.Date.ToShortDateString()</span>
+                            <span class="text-dark fw-light ms-2">@Model.CreationDate.Date.ToString("dd/MM/yyyy")</span>
 
                         </div>
 
                         @if (Model.IsEdited)
                         {
-                            <span class="fs-6 ">&nbsp;(@Localizer["edited_in"] - @Model.EditDate.Date.ToShortDateString())</span>
+                            <span class="fs-6 ">&nbsp;(@Localizer["edited_in"] - @Model.EditDate.Date.ToString("dd/MM/yyyy"))</span>
                         }
                     </div>
 
 
                 </div>
-                @if (Model.User.Id == ViewBag.currentUser?.Id)
+                @if (Model.User.Id == ViewBag.currentUser?.Id || User.IsInRole("Moderator") || User.IsInRole("Admin"))
                 {
                     <div class="d-flex flex-column border  border-top-0 border-primary me-2">
                         <a class="text-primary rounded text-decoration-none bi bi-pencil-fill fs-6 px-2 py-1 mb-1 hover-background-grey" asp-action="Edit" asp-route-id="@Model.PostId"></a>
                         <a class="text-danger rounded text-decoration-none bi bi-trash-fill fs-6 px-2 py-1 hover-background-grey" asp-action="Delete" asp-route-id="@Model.PostId"></a>
                     </div>
+                } else {
+                    if (User.Identity.IsAuthenticated)
+                    {
+                        <div>
+                            <button class="bi bi-exclamation-triangle-fill text-danger fs-4 hover-background-grey py-0 px-1 btn" data-bs-toggle="modal" data-bs-target="#report-modal" data-id="@Model.PostId" data-type="Post"></button>
+                        </div>
+                    }
                 }
             </div>
             <hr />
@@ -134,63 +171,45 @@
                 </form>
             }
 
-            <div class="scrollable-comments me-2 me-md-2 me-sm-0">
-                @foreach (var item in ViewBag.commentsPosts)
-                {
-                    <div class="form-control d-flex flex-row">
-                        <div class="align-content-end flex-column w-25 border-end">
-                            <div class="fs-7">@Localizer["created_in"]: @item.CreationDate.Date.ToShortDateString()</div>
-                            <div class="font-weigth-bold"><a class="text-decoration-none" asp-Controller="Profiles" asp-Action="Details" asp-route-id="@item.User.Id">@item.User.FullName</a></div>
-                            <div class="text-primary">Role</div>
-                            <div>@Html.Partial("_RatingPartial", Tuple.Create((int) item.CommentId , RatingType.Comment))</div>
-                        </div>
-                        <div class="border-left border-secondary ml-2 w-75 text-start ms-2">@item.Content</div>
-
-                        @if (ViewBag.currentUser != null && item.User.Id == ViewBag.currentUser.Id)
-                        {
-                            <div class="align-content-end flex-column justify-content-end">
-                                <a formmethod="get" class="text-primary hover-background-grey rounded text-decoration-none px-2 pt-1 pb-1 bi bi-pencil-fill" asp-controller="Comments" asp-action="Edit" asp-route-id="@item.CommentId"></a>
-                                <form class="mt-2" style="outline: none;" method="post">
-                                    @Html.AntiForgeryToken()
-                                    <div class="hover-background-grey rounded">
-                                        <button type="button" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick="(() => selectComment(@item.CommentId))()" style="border: none;" class="bg-transparent text-danger text-decoration-none px-2 py-1 bg-info bi-trash-fill"></button>
-                                    </div>
-                                </form>
-                            </div>
-                        }
-                    </div>
-                }
+            <div id="comments-list" class="scrollable-comments me-2 me-md-2 me-sm-0">
+                <div>@Html.Partial("_CommentListPartial", (List<Comment>) ViewBag.commentsPosts)</div>
                 @if (ViewBag.commentsPosts.Count == 0)
                 {
                     <div>@Localizer["no_comments"]</div>
                 }
-                <input id="selectedCommentId" hidden />
-                <form id="delete-comment-modal" style="outline: none;" method="post">
-                    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="deleteModalLabel">@Localizer["delete_comment"]</h5>
-                                    <button type="button" class="close custom-close rounded btn btn-primary" data-bs-dismiss="modal" aria-label="Close">
-                                        <i class="bi bi-x font-white" style="font-size: 1.1rem;" aria-hidden="true"></i>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    @Localizer["are_you_sure_delete_comment"]
-                                </div>
-                                <div class="modal-footer">
-                                    <button id="deleteButtonModal" name="deleteButtonModal" type="submit" class="btn btn-danger text-danger" style="outline: thick solid #DC3545; outline-width: 3px">@Localizer["delete"]</button>
-                                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">@Localizer["cancel"]</button>
-                                </div>
+                @if (ViewBag.commentsPosts.Count < ViewBag.totalCommentCount) {
+                    <button id="load-more-comments-button" class="btn btn-primary mt-2 mb-1">Carregar mais comentários</button>
+                }
+            </div>
+            
+            <input id="selectedCommentId" hidden />
+            <form id="delete-comment-modal" style="outline: none;" method="post">
+                <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="deleteModalLabel">@Localizer["delete_comment"]</h5>
+                                <button type="button" class="close custom-close rounded btn btn-primary" data-bs-dismiss="modal" aria-label="Close">
+                                    <i class="bi bi-x font-white" style="font-size: 1.1rem;" aria-hidden="true"></i>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                @Localizer["are_you_sure_delete_comment"]
+                            </div>
+                            <div class="modal-footer">
+                                <button id="deleteButtonModal" name="deleteButtonModal" type="submit" class="btn btn-danger text-danger" style="outline: thick solid #DC3545; outline-width: 3px">@Localizer["delete"]</button>
+                                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">@Localizer["cancel"]</button>
                             </div>
                         </div>
                     </div>
-                </form>
-            </div>
+                </div>
+            </form>
         </div>
 
     </div>
-
+    <div class="w-75">
+        @Html.Partial("_ReportModalPartial")
+    </div>
     <!--<a class="text-primary" asp-action="Index">Voltar</a>-->
 </div>
 <script>
@@ -258,6 +277,9 @@
 </script>
 <script>
     $(document).ready(function () {
+        
+        $('[data-toggle="tooltip"]').tooltip();
+        
         // Hide the success and error messages after 5 seconds
         $("#success-alert, #error-alert").delay(5000).fadeOut(500);
 
@@ -265,8 +287,40 @@
         $(".close").click(function () {
             $("#success-alert, #error-alert").alert("close");
         });
+
+        // AJAX request to fetch more comments
+        var postId = @Model.PostId; // replace with the actual post ID
+        var commentCount = @ViewBag.fetchCommentsCount; // number of comments to fetch
+        var skipCount = @ViewBag.fetchCommentsCount; // number of comments to skip
+
+        $("#load-more-comments-button").click(function () {
+            $.ajax({
+                type: "GET",
+                url: "@Url.Action("FetchMoreComments", "Posts")",
+                data: {
+                    postId: postId,
+                    commentCount: commentCount,
+                    skipCount: skipCount
+                },
+                success: function (result) {
+                    $("#load-more-comments-button").before(result);
+                    $("#load-more-comments-button").blur();
+                    console.log(result);
+                    // update the skip count for the next AJAX request
+                    skipCount += commentCount;
+                    if (skipCount >= @ViewBag.totalCommentCount) {
+                        $("#load-more-comments-button").hide();
+                    }
+                },
+                error: function (xhr, status, error) {
+                    // handle the error
+                    console.log(error);
+                }
+            });
+        });
     });
 </script>
+
 <!--
 <h3 style="color: #6610F2; margin-top: 100px;" >Detalhes do Post</h3>
 

@@ -1,0 +1,1 @@
+var breadcrumbs=[['-1',"",""],['2',"SOLUTION-WIDE PROPERTIES Reference","topic_000000000000023A.html"],['399',"Tidbeat.Models Namespace","topic_0000000000000142.html"],['413',"Band Class","topic_000000000000014E.html"],['414',"Properties","topic_000000000000014E_props--.html"],['417',"Name Property","topic_0000000000000150.html"]];

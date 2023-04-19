@@ -144,4 +144,7 @@
   <data name="top_3" xml:space="preserve">
     <value>Top 3 Songs</value>
   </data>
+  <data name="[deleted]" xml:space="preserve">
+    <value>[deleted]</value>
+  </data>
 </root>

@@ -12,18 +12,30 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.FileSystemGlobbing.Internal;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
+using Tidbeat.Controllers;
 using Tidbeat.Models;
 
 namespace Tidbeat.Areas.Identity.Pages.Account.Manage
 {
+    /// <summary>
+    ///    The model class for the change password page.
+    /// </summary>
     public class ChangePasswordModel : PageModel
     {
-        public static string Pattern = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&_-])[A-Za-z\\d@$!%*?&_-]{6,}$";
+        public static string Pattern = RegisterModel.Pattern;
 
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ILogger<ChangePasswordModel> _logger;
         private readonly IStringLocalizer<ChangePasswordModel> _localizer;
+
+        /// <summary>
+        /// The constructor for the change password model.
+        /// </summary>
+        /// <param name="userManager">The user manager.</param>
+        /// <param name="signInManager">The sign in manager.</param>
+        /// <param name="logger">The logger.</param>
+        /// <param name="localizer">The localizer.</param>
         public ChangePasswordModel(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
@@ -37,28 +49,24 @@ namespace Tidbeat.Areas.Identity.Pages.Account.Manage
         }
 
         /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
+        /// The input model for the change password page.
         /// </summary>
         [BindProperty]
         public InputModel Input { get; set; }
 
         /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
+        /// The status message.
         /// </summary>
         [TempData]
         public string StatusMessage { get; set; }
 
         /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
+        /// The input model.
         /// </summary>
         public class InputModel
         {
             /// <summary>
-            ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-            ///     directly from your code. This API may change or be removed in future releases.
+            /// The old password.
             /// </summary>
             [Required(ErrorMessage = "please_enter_your_password")]
             [DataType(DataType.Password)]
@@ -66,8 +74,7 @@ namespace Tidbeat.Areas.Identity.Pages.Account.Manage
             public string OldPassword { get; set; }
 
             /// <summary>
-            ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-            ///     directly from your code. This API may change or be removed in future releases.
+            /// The new password.
             /// </summary>
             [Required(ErrorMessage = "please_enter_a_password")]
             [StringLength(100, ErrorMessage = "the_0_must_be_at_least_2_at_max_1_characters", MinimumLength = 6)]
@@ -76,8 +83,7 @@ namespace Tidbeat.Areas.Identity.Pages.Account.Manage
             public string NewPassword { get; set; }
 
             /// <summary>
-            ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-            ///     directly from your code. This API may change or be removed in future releases.
+            /// The confirm new password.
             /// </summary>
             [DataType(DataType.Password)]
             [Display(Name = "confirm_new_password")]
@@ -85,6 +91,10 @@ namespace Tidbeat.Areas.Identity.Pages.Account.Manage
             public string ConfirmPassword { get; set; }
         }
 
+        /// <summary>
+        /// The get method for the change password page.
+        /// </summary>
+        /// <returns>The page itself in case he has a password. If he doesn't have a password, redirects to SetPassword.</returns>
         public async Task<IActionResult> OnGetAsync()
         {
             var user = await _userManager.GetUserAsync(User);
@@ -99,9 +109,21 @@ namespace Tidbeat.Areas.Identity.Pages.Account.Manage
                 return RedirectToPage("./SetPassword");
             }
 
+            if (User.Identity.IsAuthenticated)
+            {
+                var userr = await _userManager.GetUserAsync(User);
+                var request = HttpContext.Request;
+                var currentUrl = string.Format("{0}://{1}", request.Scheme, request.Host);
+                TempData["Friends"] = await UtilityClass.SideBarAsync(userr.Id, currentUrl);
+            }
+
             return Page();
         }
 
+        /// <summary>
+        /// The post method for the change password page.
+        /// </summary>
+        /// <returns>The page itself in case of an error. If the password is changed, redirects to the page itself.</returns>
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
@@ -130,6 +152,8 @@ namespace Tidbeat.Areas.Identity.Pages.Account.Manage
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
 
+            _userManager.PasswordValidators.Clear();
+            _userManager.PasswordValidators.Add(new CustomPasswordValidator<ApplicationUser>());
             var changePasswordResult = await _userManager.ChangePasswordAsync(user, Input.OldPassword, Input.NewPassword);
             if (!changePasswordResult.Succeeded)
             {

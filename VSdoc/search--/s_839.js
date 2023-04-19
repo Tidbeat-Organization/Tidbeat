@@ -1,0 +1,1 @@
+search_result['839']=["topic_00000000000001D1.html","SpotifyService.GetAmountBandAlbumAsync Method","Gets the amount of albums a band has."];

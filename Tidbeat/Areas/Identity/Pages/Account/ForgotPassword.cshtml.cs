@@ -18,12 +18,21 @@ using Tidbeat.Models;
 
 namespace Tidbeat.Areas.Identity.Pages.Account
 {
+    /// <summary>
+    /// The model class for the forgot password page.
+    /// </summary>
     public class ForgotPasswordModel : PageModel
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IEmailSender _emailSender;
         private readonly IStringLocalizer<ForgotPasswordModel> _localizer;
 
+        /// <summary>
+        /// The constructor for the forgot password model.
+        /// </summary>
+        /// <param name="userManager">The user manager.</param>
+        /// <param name="emailSender">The email sender.</param>
+        /// <param name="localizer">The localizer.</param>
         public ForgotPasswordModel(UserManager<ApplicationUser> userManager, IEmailSender emailSender, IStringLocalizer<ForgotPasswordModel> localizer)
         {
             _userManager = userManager;
@@ -32,26 +41,27 @@ namespace Tidbeat.Areas.Identity.Pages.Account
         }
 
         /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
+        /// The input model for the forgot password page.
         /// </summary>
         [BindProperty]
         public InputModel Input { get; set; }
 
         /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
+        /// The input model for the forgot password page.
         /// </summary>
         public class InputModel
         {
             /// <summary>
-            ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-            ///     directly from your code. This API may change or be removed in future releases.
+            /// The email address.
             /// </summary>
             [EmailAddress]
             public string Email { get; set; }
         }
 
+        /// <summary>
+        /// The method that's called when the forgot password is submitted.
+        /// </summary>
+        /// <returns>If the model is invalid, returns the page. If its valid, sends an email and redirects to the forgot password confirmation.</returns>
         public async Task<IActionResult> OnPostAsync()
         {
             if (string.IsNullOrEmpty(Input.Email)) {

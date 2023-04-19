@@ -1,5 +1,6 @@
 ﻿@model ApplicationUser
 @using Microsoft.AspNetCore.Mvc.Localization;
+@using Tidbeat.Enums
 @inject IViewLocalizer Localizer;
 @{
     ViewData["Title"] = "Details";
@@ -11,7 +12,206 @@
 
     string songDivId = "";
     string removeFavoriteSpanId = "";
+    List<ApplicationUser>? Followies = new List<ApplicationUser>();
+
+    List<ApplicationUser>? Followers = new List<ApplicationUser>();
+    @if (TempData.ContainsKey("Followies"))
+    {
+            Followies = (List<ApplicationUser>?)TempData["Followies"];
+    }
+    @if (TempData.ContainsKey("Followers"))
+    {
+            Followers = (List<ApplicationUser>?)TempData["Followers"];
+    }
 }
+
+<style>
+    .btn-secondary {
+        background-color: white;
+        color: #6610F2;
+        border-color: #6610F2;
+    }
+
+    .btn-secondary:hover {
+         background-color: white;
+         color: #6610F2;
+         border-color: #6610F2;
+    }
+
+    .btn-secondary:active,
+    .btn-secondary:focus {
+         background-color: white;
+         color: #6610F2;
+         border-color: #6610F2;
+    }
+
+    .btn-danger {
+        background-color: #e62517;
+        color: white;
+        border-color: #e62517;
+    }
+
+    .btn-danger:hover {
+         background-color: #e62517;
+         color_: white;
+         border-color: #e62517;
+    }
+
+    .btn-danger:active,
+    .btn-danger:focus {
+         background-color: #e62517;
+         color: white;
+         border-color: #e62517;
+    }
+
+    .btn-close {
+        background-color: #6610F2;
+        color: white;
+    }
+
+    .modal-footer button {
+        margin-right: 15px;
+    }
+
+    .btn-edit-user {
+        display: inline-block;
+        padding: 0;
+        border: none;
+        background-color: transparent;
+        line-height: 1;
+  }
+
+  .btn-edit-user .bi-pencil-square {
+        margin: 0;
+  }
+</style>
+
+<!-- Modal -->
+@if (User.Identity.IsAuthenticated && ViewBag.CurrentUser.Id != Model.Id && (User.IsInRole("Moderator") || User.IsInRole("Admin")))
+{
+    <div class="modal fade" id="edit-user-modal" tabindex="-1" aria-labelledby="edit-user-modal-label" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="edit-user-modal-label" style="color: #6610F2; font-weight: bold;">Definições de administrador</h5>
+                    <button type="button" class="close custom-close rounded btn btn-primary" data-bs-dismiss="modal" aria-label="Close" id="close-modal">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+
+                        <div class="col-md-6" style="border: none; border-right: 1px solid gainsboro;">
+                            <div class="left-section">
+                                <h5 style="color: #6610F2; font-weight: normal; text-decoration: underline;">Dados do Utilizador</h5>
+                                <form id="edit-user-form" style="margin-top: 30px;">
+                                    <input type="hidden" id="user-id" name="userId" value="">
+                                    <div class="mb-3">
+                                        <label for="user-name" class="form-label" style="color: #6610F2;">Nome:</label>
+                                        <div class="d-flex align-items-center">
+                                            <div id="admin-definitions-edit-full-name-reset-button" class="bi bi-arrow-clockwise text-primary fs-5 btn hover-background-grey px-1 py-0 d-none"></div>
+                                            <div id="admin-definitions-edit-full-name-button" class="bi bi-pencil-fill text-primary me-2 btn hover-background-grey px-1 py-0"></div>
+                                            <input id="admin-definitions-full-name-input" disabled type="text" class="form-control" id="user-name" name="name" value="@Model.FullName" />
+                                            <input id="admin-definitions-full-name-hidden-input" type="hidden" />
+                                        </div>
+                                    </div>
+                                    <div class="mb-3 my-4 position-relative">
+                                        <div id="admin-definitions-edit-about-me-reset-button" class="bi bi-arrow-clockwise text-primary fs-5 btn hover-background-grey px-1 py-0 position-absolute start-0 d-none"></div>
+                                        <div id="admin-definitions-edit-about-me-button" class="bi bi-pencil-fill text-primary me-2 btn hover-background-grey position-absolute start-0 px-1 py-0"></div>
+                                        <label for="user-about" class="form-label" style="color: #6610F2;">Sobre mim:</label>
+                                        <div id="admin-definitions-about-me-div" class="border text-start p-2" style="height: 200px; border-radius: 15px;">@Html.Raw(Model.AboutMe)</div>
+                                        <textarea asp-for="AboutMe" id="postcreate" class="form-control rich-text-index-profile" style="border: 1.5px solid #6610F2; border-radius: 15px;" placeholder="@Localizer["about_me"]..."></textarea>
+                                        <input type="hidden" id="admin-definitions-about-me-hidden-input" />
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="right-section">
+                                <h5 style="color: red; font-weight: normal; text-decoration: underline;">Ações de Moderação</h5>
+                                <form style="margin-top: 30px;">
+                                    @if (User.IsInRole("Admin"))
+                                    {
+                                        <div class="mb-3">
+                                            <label for="admin-definitions-give-role-select" class="form-label" style="color: red;">Dar Role:</label>
+                                            <div class="d-flex align-items-center">
+                                                <div id="admin-definitions-edit-give-role-reset-button" class="bi bi-arrow-clockwise text-primary fs-5 btn hover-background-grey px-1 py-0 d-none"></div>
+                                                <div id="admin-definitions-edit-give-role-button" class="bi bi-pencil-fill text-primary me-2 btn hover-background-grey px-1 py-0"></div>
+                                                <select disabled class="form-select" id="admin-definitions-give-role-select" name="role">
+                                                    <option disabled>Escolha um papel</option>
+                                                    <option value="@RoleType.Admin">Administrador</option>
+                                                    <option value="@RoleType.Moderator">Moderador</option>
+                                                    <option value="@RoleType.NormalUser" selected>Utilizador normal</option>
+                                                </select>
+                                                <input id="admin-definitions-give-role-hidden-input" type="hidden" />
+                                            </div>
+                                        </div>
+                                    }
+                                    @if (!String.IsNullOrEmpty(Model.ImagePath))
+                                    {
+                                        <div class="mb-3 form-check my-3 form-check-inline">
+                                            <input type="checkbox" class="form-check-input" id="delete-photo" name="deletePhoto" style="float: right; margin-left: 10px;" onchange="updateDeletePhotoLabel()">
+                                            <label class="form-check-label" for="delete-photo" style="color: red; float: right;">Apagar foto?</label>
+                                        </div>
+                                    }
+                                    <div class="mb-3 my-5">
+                                        <label for="ban-for" class="form-label" style="color: red;">Banir por:</label>
+                                        <div class="input-group">
+                                            <input type="number" class="form-control" id="ban-for" name="banFor" min="1" step="1">
+                                            <select class="form-select" id="ban-for-unit" name="banForUnit">
+                                                <option value="@BanTime.Minutes">Minutos</option>
+                                                <option value="@BanTime.Hours">Horas</option>
+                                                <option value="@BanTime.Days">Dias</option>
+                                                <option value="@BanTime.Weeks">Semanas</option>
+                                                <option value="@BanTime.Months">Meses</option>
+                                                <option value="@BanTime.Years">Anos</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3 my-5" id="reason-for-ban" style="display:none;">
+                                        <label for="reason-for-ban-input" class="form-label" style="color: red;">Motivo do banimento:</label>
+                                        <input type="text" class="form-control" id="reason-for-ban-input" name="reasonForBan">
+                                    </div>
+                                    @if (User.IsInRole("Admin"))
+                                    {
+                                        <div class="mb-3 my-5">
+                                            <button type="button" class="btn btn-danger" id="delete-user">Apagar utilizador</button>
+                                        </div>
+                                        <div id="confirm-user-deletion-div" class="d-none">
+                                            <div class="mt-3">
+                                                <div class="text-danger">Why are you deleting this user?</div>
+                                                <input id="why-are-you-deleting-user-input" class="rounded" style="border: 1px red solid" type="text" />
+                                            </div>
+                                            <div class="mt-3">
+                                                <div class="text-danger">Are you sure?</div>
+                                                <div class="d-flex justify-content-center">
+                                                    <div id="confirm-user-deletion-button" class="btn bg-danger text-white bi bi-check fs-5 me-1"></div>
+                                                    <div id="cancel-user-deletion-button" class="btn bg-danger text-white bi bi-x fs-5"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Sair</button>
+                    <button type="button" class="btn btn-primary" id="edit-user-submit">Aplicar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<!-- SideBar -->
+<div>
+    @{
+        await Html.RenderPartialAsync("_Sidebar");
+    }
+</div>
 
 <!--All music info goes here-->
 <div class="container-fluid row w-100 d-flex flex-column flex-lg-row mx-0">
@@ -24,14 +224,47 @@
                 <img src="~/images/UnknownUser.jpg" height="200" class="border border-dark rounded" />
             }
             <div class="ms-2 text-start w-100">
-                <div>
-                    <img src="~/images/StarImage.png" class="ml-auto" height="20" />
-                @if (tempval != null)
+                <div class="d-flex">
+                    @if (user.Role.Equals(Tidbeat.Enums.RoleType.Admin))
                     {
-                            <a formmethod="get" asp-area="Identity" asp-page="/Account/Manage/Index" class=" mr-auto text-primary hover-background-grey rounded text-decoration-none px-2 pt-1 pb-1 bi bi-pencil-fill"></a>
+                        <div class="bi bi-diamond-fill fs-3 py-0 text-primary" data-toggle="tooltip" data-placement="top" title="@Localizer["admin"]"></div>
+                    }
+                    else if (user.Role.Equals(Tidbeat.Enums.RoleType.Moderator))
+                    {
+                        <div class="bi bi-diamond-fill fs-3 py-0 text-danger" data-toggle="tooltip" data-placement="top" title="@Localizer["moderator"]"></div>
+                    }
+                    else
+                    {
+                        <div class="bi bi-music-note fs-3 py-0 text-black" data-toggle="tooltip" data-placement="top" title="@Localizer["normal_user"]"></div>
+                    }
+                    @if (tempval != null)
+                    {
+                        <a formmethod="get" asp-area="Identity" asp-page="/Account/Manage/Index" class="align-self-center mr-auto text-primary hover-background-grey rounded text-decoration-none px-2 pt-1 pb-1 bi bi-pencil-fill"></a>
+                    } else {
+                        if (User.Identity.IsAuthenticated) {
+                            <div>
+                                <button class="bi bi-exclamation-triangle-fill text-danger fs-4 hover-background-grey py-0 px-1 btn" data-bs-toggle="modal" data-bs-target="#report-modal" data-id="@Model.Id" data-type="User"></button>
+                            </div>
+                        }
+                    }
+                    @if (((User.IsInRole("Moderator") && ViewBag.CurrentUser.Id == Model.Id) || (User.IsInRole("Admin")) && ViewBag.CurrentUser.Id == Model.Id))
+                    {
+                        <a class="btn bi bi-archive-fill text-primary fs-3 py-0 hover-background-grey px-1 py-0" href="@Url.Action("Index", "Reports")"></a>
+                    }
+                    <button type="button" class="btn-edit-user ms-auto" data-user-id="@Model.Id">
+                        @if ((User.IsInRole("Moderator") || User.IsInRole("Admin")) && ViewBag.CurrentUser.Id != Model.Id) {
+                            <div class="btn bi bi-pencil-square text-danger fs-3 py-0 hover-background-grey px-1 py-0"></div>
+                        }
+                        <span class="visually-hidden">Edit User</span>
+                    </button>
+                </div>
+                <div class="d-flex">
+                    <h1 class="text-primary">@user.FullName</h1>
+                    @if (!ViewBag.IsCurrentUser && User.Identity?.IsAuthenticated) {
+                        <a class="align-self-center btn bi bi-chat-right-text fs-4 py-0" href="@Url.Action("StartTwoPersonConversation", "Conversations", new { currentUserId = ViewBag.CurrentUser.Id, otherUserId = Model.Id })"></a>
+                        <div id="FollowUpButton" class="align-self-center btn bi @if (TempData.ContainsKey("Follow")){var text="bi-person-check";@text;}else{var text="bi-person-plus";@text;} fs-4 py-0" onclick="@if (TempData.ContainsKey("Follow")){var text = "unfollow()";@text;}else{var text = "follow()";@text;}"></div>
                     }
                 </div>
-                <h1 class="text-primary">@user.FullName</h1>
                 <div> <span class="text-primary">@Localizer["gender"]:</span> @Localizer[user.Gender]</div>
                 <div> <span class="text-primary">@Localizer["birth_date"]:</span> @user.BirthdayDate.Date.ToShortDateString()</div>
                 <div><span class="text-primary">@Localizer["favorite_genre"]:</span> @Localizer[user.FavoriteGenre ?? ""]</div>
@@ -39,50 +272,126 @@
             </div>
         </div>
         <hr style="height: 1px" />
-        <div class="text-primary">@Localizer["favorite_songs"]</div>
-        <div class="scrollable-posts h-25">
-            @if (ViewBag.FavoriteSongs.Count != 0) {
-                @foreach (Song song in ViewBag.FavoriteSongs)
-                {
-                        
-					songDivId = "song-div--" + song.SongId;
-					removeFavoriteSpanId = "remove-favorite-span--" + song.SongId;
-                    
-                    <div
-                        id=@songDivId
-                        class="border-0 border-2 border-start border-dark mb-2 d-flex flex-row">
-                        @if (ViewBag.IsCurrentUser) {
-                            <span id=@removeFavoriteSpanId
-                      class="bi bi-x-lg text-primary ms-1 border profile-remove-song pointer-active"></span>
-                        }
-                        
-                        <span class="w-auto ms-1 fs-6">
-                            @{
-                                if (song.Name.Length < songNameLimit)
-                                {
-                                    songNameString = "" + song.Name;
-                                }
-                                else
-                                {
-                                    songNameString = song.Name.Substring(0, songNameLimit) + " (...)";
-                                }
-                            }
-                            <span class="text-primary fw-semibold">@songNameString</span>
-                            , @Localizer["from"]
-                            <span class="text-primary fw-semibold">@song.Band.Name</span>
-                        </span>
-                    </div>
-                }
-            } else {
-                <div class="border border-top-0 border-bottom-0 border-end-0">@Localizer["no_favorited_song_yet"]</div>
-            }
-            
+        <div class="d-flex w-100 justify-content-around">
+            <a class="text-decoration-none text-dark border-right-1 p-1 hover-background-grey pointer-active rounded" id="optionAboutMe">@Localizer["about_me"]</a>
+            <a class="text-decoration-none text-dark border-right-1 p-1 hover-background-grey pointer-active rounded" id="optionMusicsFav">@Localizer["favorite_songs"]</a>
+            <a class="text-decoration-none text-dark border-right-1 p-1 hover-background-grey pointer-active rounded" id="optionFollowers">@Localizer["followers"]</a>
+            <a class="text-decoration-none text-dark p-1 hover-background-grey pointer-active rounded" id="optionFollowersReverse">@Localizer["followies"]</a>
         </div>
         <hr style="height: 1px" />
-        <div>
-            <h1 class="text-left text-primary">@Localizer["about_me"]:</h1>
+        <div id="favouriteSongsContent">
+            <div class="text-primary">@Localizer["favorite_songs"]</div>
+            <div class="scrollable-posts h-75">
+                @if (ViewBag.FavoriteSongs.Count != 0) {
+                    @foreach (Song song in ViewBag.FavoriteSongs)
+                    {
+                        
+					    songDivId = "song-div--" + song.SongId;
+					    removeFavoriteSpanId = "remove-favorite-span--" + song.SongId;
+                    
+                        <div
+                            id=@songDivId
+                            class="border-0 border-2 border-start border-dark mb-2 d-flex flex-row">
+                            @if (ViewBag.IsCurrentUser) {
+                                <span id=@removeFavoriteSpanId
+                          class="bi bi-x-lg text-primary ms-1 border profile-remove-song pointer-active"></span>
+                            }
+                        
+                            <span class="w-auto ms-1 fs-6">
+                                @{
+                                    if (song.Name.Length < songNameLimit)
+                                    {
+                                        songNameString = "" + song.Name;
+                                    }
+                                    else
+                                    {
+                                        songNameString = song.Name.Substring(0, songNameLimit) + " (...)";
+                                    }
+                                }
+                                <span class="text-primary fw-semibold">@songNameString</span>
+                                , @Localizer["from"]
+                                <span class="text-primary fw-semibold">@song.Band.Name</span>
+                            </span>
+                        </div>
+                    }
+                } else {
+                    <div class="border border-top-0 border-bottom-0 border-end-0">@Localizer["no_favorited_song_yet"]</div>
+                }
+            
+            </div>
+        </div>
+        <div id="AboutMeContent">
+            <div class="text-primary">@Localizer["about_me"]</div>
             <div>
                 @Html.Raw(user.AboutMe)
+            </div>
+        </div>
+        <div id="FollowersContent" class="h-100">
+            <div class="text-primary">@Localizer["textp"]</div>
+            <div class="scrollable-posts h-100">
+                @if (TempData.ContainsKey("Followers"))
+                {
+                    if (Followers?.Count > 0)
+                    {
+                        foreach (var item in Followers)
+                        {
+                            <a class="w-100 mt-1 hover-background-grey pointer-active" asp-Controller="Profiles" asp-Action="Details" asp-route-id="@item.Id">
+                                <div class="hover-background-grey pointer-active mt-1 border border-primary rounded d-flex w-100">
+                                    @if (!string.IsNullOrEmpty(item.ImagePath))
+                                    {
+                                        <img src="@item.ImagePath" height="75" class="border border-dark rounded" />
+                                    }else
+                                    {
+                                        <img src="~/images/UnknownUser.jpg" height="75" class="border border-dark rounded" />
+                                    }
+                                    <div class="align-self-center">@item.FullName</div>
+                                </div>
+                            </a>
+                        }
+                    }
+                    else
+                    { 
+                        @Localizer["no_followies"];
+                    }
+                }else
+                {
+                    @Localizer["no_followies"];
+                }
+            </div>
+        </div>
+        <div id="FollowersReverseContent" class="h-100">
+            <div class="text-primary">@Localizer["textc"]</div>
+            <div class="scrollable-posts h-100">
+                @if (TempData.ContainsKey("Followies"))
+                {
+                    if (Followies?.Count > 0)
+                    {
+                        foreach (var item in Followies)
+                        {
+                            <a class="w-100 mt-1 hover-background-grey pointer-active" asp-Controller="Profiles" asp-Action="Details" asp-route-id="@item.Id">
+                                <div class="hover-background-grey pointer-active mt-1 border border-primary rounded d-flex w-100">
+                                    @if (!string.IsNullOrEmpty(item.ImagePath))
+                                    {
+                                        <img src="@item.ImagePath" height="75" class="border border-dark rounded" />
+                                    }
+                                    else
+                                    {
+                                        <img src="~/images/UnknownUser.jpg" height="75" class="border border-dark rounded" />
+                                    }
+                                    <div class="align-self-center">@item.FullName</div>
+                                </div>
+                            </a>
+                        }
+
+                    } else 
+                    {
+                        @Localizer["no_followers"];
+                    }
+
+                }else
+                {
+                    @Localizer["no_followers"];
+                }
             </div>
         </div>
     </div>
@@ -104,8 +413,16 @@
             <a class="text-decoration-none text-black" href="@Url.Action("Details", "Posts", new { id = post.PostId })">
                 <div class="d-flex align-items-center border border-2 border-primary p-1 rounded mb-2 hover-background-grey">
                     <div class="border-end border-2 border-primary pe-2">
-                        <div>@post.User.FullName</div>
-                        <div class="fs-7">@Localizer["created_in"]: @post.CreationDate.Date.ToShortDateString()</div>
+                        <div>@{
+                                string personName = post.User.FirstAndLastName();
+                                if (personName.Length > 15) {
+                                    personName = personName.Substring(0, 15);
+                                    personName += "...";
+                                }
+                              }
+                            @personName
+                        </div>
+                        <div class="fs-7">@Localizer["created_in"]: @post.CreationDate.Date.ToString("dd/MM/yyyy")</div>
                     </div>
                     <div class="ms-2">@post.Title</div>
                 </div>
@@ -113,8 +430,229 @@
         }
     </div>
 </div>
-
+<div class="w-75">
+    @Html.Partial("_ReportModalPartial")
+</div>
 <script>
+    // Open modal box when edit button is clicked
+    $('.btn-edit-user').on('click', function (e) {
+        e.preventDefault();
+        var userId = $(this).data('user-id');
+        $('#user-id').val(userId);
+        //$('#admin-definitions-full-name-input').val('@Model.FullName');
+        $('#user-about').val();
+        $('#edit-user-modal').modal('show');
+        let toxDiv = document.querySelector('.tox');
+        if (toxDiv) {
+            toxDiv.classList.add('d-none');
+        }
+        //$('#admin-definitions-edit-about-me-button').click();
+        //$('#admin-definitions-edit-about-me-reset-button').click();
+    });
+
+    //Show reason for ban, after entering number
+    $(document).ready(function() {
+    // Listen to changes in the "Ban for" input
+        $('#ban-for').on('input', function() {
+            if ($(this).val() > 0) {
+                $('#reason-for-ban').show();
+            } else {
+                $('#reason-for-ban').hide();
+            }
+        });
+
+        function toggleEditMode(fieldName) {
+            let editButton = document.getElementById('admin-definitions-edit-' + fieldName + '-button');
+            let resetButton = document.getElementById('admin-definitions-edit-' + fieldName + '-reset-button');
+            if (editButton.classList.contains('d-none')) {
+                editButton.classList.remove('d-none');
+                resetButton.classList.add('d-none');
+            } else {
+                editButton.classList.add('d-none');
+                resetButton.classList.remove('d-none');
+            }
+        }
+        
+
+        $('#admin-definitions-edit-full-name-button').on('click', function (e) {
+            e.preventDefault();
+            let fullNameInput = document.getElementById('admin-definitions-full-name-input');
+
+            let fullNameHiddenInput = document.getElementById('admin-definitions-full-name-hidden-input');
+            fullNameHiddenInput.value = fullNameInput.value;
+            fullNameInput.disabled = false;
+            fullNameInput.focus();
+
+            toggleEditMode('full-name');
+        });
+
+        $('#admin-definitions-edit-full-name-reset-button').on('click', function (e) {
+            e.preventDefault();
+            let fullNameInput = document.getElementById('admin-definitions-full-name-input');
+
+            let fullNameHiddenInput = document.getElementById('admin-definitions-full-name-hidden-input');
+            fullNameInput.value = fullNameHiddenInput.value;
+            fullNameInput.disabled = true;
+
+            toggleEditMode('full-name');
+        });
+
+        $('#admin-definitions-edit-about-me-button').on('click', function (e) {
+            e.preventDefault();
+            let aboutMeDiv = document.getElementById('admin-definitions-about-me-div');
+            aboutMeDiv.classList.add('d-none');
+            let toxDiv1 = document.querySelector('.tox');
+            toxDiv1.classList.remove('d-none');
+
+            let aboutMeHiddenInput = document.getElementById('admin-definitions-about-me-hidden-input');
+            aboutMeHiddenInput.value = aboutMeDiv.innerHTML;
+
+            toggleEditMode('about-me');
+        });
+
+        $('#admin-definitions-edit-about-me-reset-button').on('click', function (e) {
+            e.preventDefault();
+            let aboutMeDiv = document.getElementById('admin-definitions-about-me-div');
+            aboutMeDiv.classList.remove('d-none');
+            let toxDiv1 = document.querySelector('.tox');
+            toxDiv1.classList.add('d-none');
+
+            let aboutMeHiddenInput = document.getElementById('admin-definitions-about-me-hidden-input');
+            let editor = tinymce.get('postcreate');
+            editor.setContent(aboutMeHiddenInput.value);
+            aboutMeHiddenInput.value = '';
+
+            toggleEditMode('about-me');
+        });
+
+        $('#admin-definitions-edit-give-role-button') .on('click', function (e) {
+            e.preventDefault();
+            let giveRoleInput = document.getElementById('admin-definitions-give-role-select');
+            giveRoleInput.disabled = false;
+            let hiddenGiveRoleInput = document.getElementById('admin-definitions-give-role-hidden-input');
+            hiddenGiveRoleInput.value = giveRoleInput.value;
+
+            toggleEditMode('give-role');
+        });
+
+        $('#admin-definitions-edit-give-role-reset-button').on('click', function (e) {
+            e.preventDefault();
+            let giveRoleInput = document.getElementById('admin-definitions-give-role-select');
+            giveRoleInput.disabled = true;
+            let hiddenGiveRoleInput = document.getElementById('admin-definitions-give-role-hidden-input');
+            giveRoleInput.value = hiddenGiveRoleInput.value;
+            hiddenGiveRoleInput.value = '';
+
+            toggleEditMode('give-role');
+        });
+    });
+
+    //Checkbox, "Yes" or "No" info on the right side
+    function updateDeletePhotoLabel() {
+        var checkbox = document.getElementById("delete-photo");
+        var label = document.querySelector('label[for="delete-photo"]');
+        if (checkbox.checked) {
+            label.innerHTML = 'Apagar foto? Sim';
+        } else {
+            label.innerHTML = 'Apagar foto? Não';
+    }
+    }
+
+    // Submit form data to server when submit button is clicked
+    $('#edit-user-submit').on('click', function (e) {
+        e.preventDefault();
+        var userId = $('#user-id').val();
+        var name = $('#admin-definitions-full-name-input').val();
+        let editor = tinymce.get('postcreate');
+        var about = editor.getContent();
+
+        var shouldDeletePhoto = $('#delete-photo').is(':checked');
+        let roleTypeDiv = document.getElementById('admin-definitions-give-role-select').value;
+        let roleType = '';
+        if (roleTypeDiv) {
+            roleType = roleTypeDiv.value;
+        }
+        let banValue = document.getElementById('ban-for').value;
+        let banUnits = document.getElementById('ban-for-unit').value;
+        let banReason = document.getElementById('reason-for-ban-input').value;
+
+        fetch('/Role/Edit', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                UserId: userId,
+                Name: name,
+                About: about,
+                RoleType: roleType,
+                ShouldDeletePhoto: shouldDeletePhoto,
+                BanNumber: parseFloat(banValue),
+                BanReason: banReason,
+                BanTime: banUnits,
+            })
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response;
+            })
+            .then(result => {
+                $('#edit-user-modal').modal('hide');
+                location.reload();
+            })
+            .catch(error => {
+                console.error('There was a problem with the fetch request:', error);
+            });
+
+    });
+
+    $("#delete-user").on('click', function() {
+        let confirmUserDeletionDiv = document.getElementById("confirm-user-deletion-div");
+        confirmUserDeletionDiv.classList.remove('d-none');
+        let deleteUserButton = document.getElementById("delete-user");
+        deleteUserButton.classList.add('d-none');
+    });
+
+    $("#cancel-user-deletion-button").on('click', function() {
+        let confirmUserDeletionDiv = document.getElementById("confirm-user-deletion-div");
+        confirmUserDeletionDiv.classList.add('d-none');
+        let deleteUserButton = document.getElementById("delete-user");
+        deleteUserButton.classList.remove('d-none');
+        var whyAreYouDeletingThisUser = document.getElementById('why-are-you-deleting-user-input');
+        whyAreYouDeletingThisUser.value = '';
+    });
+
+    $("#confirm-user-deletion-button").on('click', function () {
+        var userId = $('#user-id').val();
+        var whyAreYouDeletingThisUser = document.getElementById('why-are-you-deleting-user-input');
+        const reason = whyAreYouDeletingThisUser.value;
+        fetch('/Role/Delete', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                UserId: userId,
+                Reason: reason,
+            })
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response;
+        })
+        .then(result => {
+            //$('#edit-user-modal').modal('hide');
+            location.href = "/";
+        })
+        .catch(error => {
+            console.error('There was a problem with the fetch request:', error);
+        });
+    });
+
     /*
     $(document).ready(function () {
 		$(".profile-remove-song").click(function () {
@@ -134,8 +672,127 @@
 			});
 		});
 	});
-    */
-   
+        */
+    /*eval(})*/
+    const protocol = window.location.protocol; // "http:" or "https:"
+    const hostname = window.location.hostname; // e.g. "example.com"
+    const homeUrl = window.location.origin;
+    function follow() {
+        fetch(`${homeUrl}/Follows/Follow?userId=@user.Id.Split(':')[0]`, {
+
+            method: 'POST'
+        })
+            .then(response => response.json())
+            .then(data => {
+                // Update the contents of the result container with the new data
+               let domChange = document.getElementById("FollowUpButton");
+               domChange.classList.remove("bi-person-plus");
+               domChange.classList.add("bi-person-check");
+                domChange.onmouseover = function () {
+                    domChange.classList.replace('bi-person-check', 'bi-person-dash');
+                };
+
+                domChange.onmouseout = function () {
+                    domChange.classList.replace('bi-person-dash', 'bi-person-check');
+                };
+               domChange.removeAttribute("onclick");
+               domChange.onclick = unfollow;
+            })
+            .catch(error => {
+                // Handle errors here
+                console.error(error);
+            });
+    }
+    function unfollow() {
+        fetch(`${homeUrl}/Follows/UnFollow?userId=@user.Id.Split(':')[0]`, {
+            method: 'POST'
+        })
+            .then(response => response.json())
+            .then(data => {
+                // Update the contents of the result container with the new data
+                let domChange = document.getElementById("FollowUpButton");
+                domChange.classList.remove("bi-person-check");
+                domChange.classList.remove("bi-person-dash");
+                domChange.classList.add("bi-person-plus");
+                domChange.onmouseover = null;
+                domChange.onmouseout = null;
+                domChange.removeAttribute("onclick");
+                domChange.onclick = follow;
+            })
+            .catch(error => {
+                // Handle errors here
+                console.error(error);
+            });
+    }
+    document.getElementById("optionAboutMe").classList.add('bg-primary')
+    document.getElementById("optionMusicsFav").classList.remove('bg-primary')
+    document.getElementById("optionFollowers").classList.remove('bg-primary')
+    document.getElementById("optionFollowersReverse").classList.remove('bg-primary')
+    document.getElementById("optionAboutMe").classList.add('text-white')
+    document.getElementById("optionMusicsFav").classList.remove('text-white')
+    document.getElementById("optionFollowers").classList.remove('text-white')
+    document.getElementById("optionFollowersReverse").classList.remove('text-white')
+    document.getElementById("favouriteSongsContent").style.display = "none"
+    document.getElementById("AboutMeContent").style.display = "inline"
+    document.getElementById("FollowersContent").style.display = "none"
+    document.getElementById("FollowersReverseContent").style.display = "none"
+    document.getElementById("optionAboutMe").onclick = function () 
+    {
+        document.getElementById("optionAboutMe").classList.add('bg-primary')
+        document.getElementById("optionMusicsFav").classList.remove('bg-primary')
+        document.getElementById("optionFollowers").classList.remove('bg-primary')
+        document.getElementById("optionFollowersReverse").classList.remove('bg-primary')
+        document.getElementById("optionAboutMe").classList.add('text-white')
+        document.getElementById("optionMusicsFav").classList.remove('text-white')
+        document.getElementById("optionFollowers").classList.remove('text-white')
+        document.getElementById("optionFollowersReverse").classList.remove('text-white')
+        document.getElementById("favouriteSongsContent").style.display = "none"
+        document.getElementById("AboutMeContent").style.display = "inline"
+        document.getElementById("FollowersContent").style.display = "none"
+        document.getElementById("FollowersReverseContent").style.display = "none"
+    };
+    document.getElementById("optionMusicsFav").onclick = function () {
+        document.getElementById("optionAboutMe").classList.remove('bg-primary')
+        document.getElementById("optionMusicsFav").classList.add('bg-primary')
+        document.getElementById("optionFollowers").classList.remove('bg-primary')
+        document.getElementById("optionFollowersReverse").classList.remove('bg-primary')
+        document.getElementById("optionAboutMe").classList.remove('text-white')
+        document.getElementById("optionMusicsFav").classList.add('text-white')
+        document.getElementById("optionFollowers").classList.remove('text-white')
+        document.getElementById("optionFollowersReverse").classList.remove('text-white')
+        document.getElementById("favouriteSongsContent").style.display = "inline"
+        document.getElementById("AboutMeContent").style.display = "none"
+        document.getElementById("FollowersContent").style.display = "none"
+        document.getElementById("FollowersReverseContent").style.display = "none"
+    };
+    document.getElementById("optionFollowers").onclick = function () {
+        document.getElementById("optionAboutMe").classList.remove('bg-primary')
+        document.getElementById("optionMusicsFav").classList.remove('bg-primary')
+        document.getElementById("optionFollowers").classList.add('bg-primary')
+        document.getElementById("optionFollowersReverse").classList.remove('bg-primary')
+        document.getElementById("optionAboutMe").classList.remove('text-white')
+        document.getElementById("optionMusicsFav").classList.remove('text-white')
+        document.getElementById("optionFollowers").classList.add('text-white')
+        document.getElementById("optionFollowersReverse").classList.remove('text-white')
+        document.getElementById("favouriteSongsContent").style.display = "none"
+        document.getElementById("AboutMeContent").style.display = "none"
+        document.getElementById("FollowersContent").style.display = "inline"
+        document.getElementById("FollowersReverseContent").style.display = "none"
+    };
+    document.getElementById("optionFollowersReverse").onclick = function () {
+        document.getElementById("optionAboutMe").classList.remove('bg-primary')
+        document.getElementById("optionMusicsFav").classList.remove('bg-primary')
+        document.getElementById("optionFollowers").classList.remove('bg-primary')
+        document.getElementById("optionFollowersReverse").classList.add('bg-primary')
+        document.getElementById("optionAboutMe").classList.remove('text-white')
+        document.getElementById("optionMusicsFav").classList.remove('text-white')
+        document.getElementById("optionFollowers").classList.remove('text-white')
+        document.getElementById("optionFollowersReverse").classList.add('text-white')
+        document.getElementById("favouriteSongsContent").style.display = "none"
+        document.getElementById("AboutMeContent").style.display = "none"
+        document.getElementById("FollowersContent").style.display = "none"
+        document.getElementById("FollowersReverseContent").style.display = "inline"
+    };
     // Do this without JQuery
     let removeFavoriteSpans = document.getElementsByClassName("profile-remove-song");
 	for (let i = 0; i < removeFavoriteSpans.length; i++) {
@@ -159,4 +816,16 @@
 		});
 	}
     
+    
+    eval("@if ((TempData.ContainsKey("Follow")))
+    {
+        var text = "let domChange = document.getElementById('FollowUpButton');domChange.onmouseover = function() {domChange.classList.replace('bi-person-check', 'bi-person-dash');};domChange.onmouseout = function() {domChange.classList.replace('bi-person-dash', 'bi-person-check');};";
+        @text
+    }".replaceAll('&#x27;', "'"));
+</script>
+
+<script>
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
 </script>

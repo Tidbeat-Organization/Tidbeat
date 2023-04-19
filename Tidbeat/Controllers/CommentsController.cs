@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization.Formatters;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -14,12 +15,20 @@ using Tidbeat.Models;
 
 namespace Tidbeat.Controllers
 {
+    /// <summary>
+    /// Controls all comments in posts.
+    /// </summary>
     public class CommentsController : Controller
     {
         private readonly ApplicationDbContext _context;
         private readonly IServiceProvider _serviceProvider;
         private readonly UserManager<ApplicationUser> _userManager;
 
+        /// <summary>
+        /// Initializes needed services for the controller.
+        /// </summary>
+        /// <param name="context">The context of the application.</param>
+        /// <param name="serviceProvider">The service provider.</param>
         public CommentsController(ApplicationDbContext context, IServiceProvider serviceProvider)
         {
             _context = context;
@@ -27,11 +36,15 @@ namespace Tidbeat.Controllers
             _userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
         }
 
-
+        /// <summary>
+        /// Creates a comment.
+        /// </summary>
+        /// <param name="comment">The comment to create.</param>
+        /// <remarks>POST: Comments/Create</remarks>
+        /// <returns>Redirect to the view of the post.</returns>
         // POST: Comments/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [Authorize]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("CommentId,Content")] Comment comment)
         {
@@ -58,7 +71,14 @@ namespace Tidbeat.Controllers
             return Redirect("/Posts/Details/" + Request.Form["PostId"]);
         }
 
+        /// <summary>
+        /// Deletes a comment.
+        /// </summary>
+        /// <param name="id">The id of the comment to delete.</param>
+        /// <remarks>POST: Comments/Delete/{id}</remarks>
+        /// <returns>The Edit view of the post.</returns>
         // GET: Posts/Edit/5
+        [Authorize]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Comment == null)
@@ -74,11 +94,17 @@ namespace Tidbeat.Controllers
             return View(comment);
         }
 
+        /// <summary>
+        /// Edits a comment.
+        /// </summary>
+        /// <param name="id">The id of the comment to edit.</param>
+        /// <param name="comment">The comment to edit.</param>
+        /// <remarks>POST: Comments/Edit/{id}</remarks>
+        /// <returns>A redirect to the Details view of the post.</returns>
         // POST: Comments/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> Edit(int id, [Bind("CommentId,Content")] Comment comment)
         {
             if (id != comment.CommentId)
@@ -93,9 +119,9 @@ namespace Tidbeat.Controllers
                     if (User?.Identity.IsAuthenticated == true)
                     {
                         var user = await _userManager.GetUserAsync(User);
-                        var commentStored = await _context.Comment.Include(c => c.post).FirstOrDefaultAsync(c => c.CommentId == comment.CommentId);
+                        var commentStored = await _context.Comment.Include(c => c.post).Include(c => c.User).FirstOrDefaultAsync(c => c.CommentId == comment.CommentId);
                         if (commentStored != null) {
-                            if (user.Id == commentStored.User.Id) //Add for Roles
+                            if (user.Id == commentStored.User.Id || _userManager.IsInRoleAsync(user, "Admin").Result || _userManager.IsInRoleAsync(user, "Moderator").Result) //Add for Roles
                             {
                                 commentStored.Content = comment.Content;
                                 commentStored.IsEdited = true;
@@ -123,9 +149,16 @@ namespace Tidbeat.Controllers
             return RedirectToAction("Index", "Posts");
         }
 
-
+        /// <summary>
+        /// Deletes a comment.
+        /// </summary>
+        /// <param name="id">The id of the comment to delete.</param>
+        /// <remarks>POST: Comments/Delete/{id}</remarks>
+        /// <returns>The view of the post.</returns>
         // POST: Comments/Delete/5
+        // Check user
         [HttpPost, ActionName("Delete")]
+        [Authorize]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
@@ -133,19 +166,33 @@ namespace Tidbeat.Controllers
             {
                 return Problem("Entity set 'ApplicationDbContext.Comment'  is null.");
             }
-            var ratings = await _context.CommentRatings.Where(cr => cr.Comment.CommentId == id).ToListAsync();
 
-            foreach(var rating in ratings) {
-                _context.CommentRatings.Remove(rating);
-            }
-            var comment = await _context.Comment.Include(c => c.post).FirstOrDefaultAsync(c => c.CommentId == id);
-            if (comment != null)
+            var comment = await _context.Comment.Include(c => c.post).Include(v => v.User).FirstOrDefaultAsync(c => c.CommentId == id);
+            var user = await _userManager.GetUserAsync(User);
+            if (user.Id == comment.User.Id || _userManager.IsInRoleAsync(user, "Moderator").Result || _userManager.IsInRoleAsync(user, "Admin").Result) //Add for Roles
             {
-                _context.Comment.Remove(comment);
+                var ratings = await _context.CommentRatings.Where(cr => cr.Comment.CommentId == id).ToListAsync();
+
+                foreach (var rating in ratings)
+                {
+                    _context.CommentRatings.Remove(rating);
+                }
+
+                var nonNullReports = await _context.Report.Where(r => r.ReportItemId != null).ToListAsync();
+                var reports = nonNullReports.Where(r => r.ReportItemId.ToString() == id.ToString()).ToList();
+                foreach (Report report in reports) {
+                    report.ReportItemType = null;
+                    report.ReportItemId = null;
+                }
+                if (comment != null)
+                {
+                    _context.Comment.Remove(comment);
+                }
+
+                await _context.SaveChangesAsync();
+                return Redirect("/Posts/Details/" + comment.post.PostId.ToString());
             }
-            
-            await _context.SaveChangesAsync();
-            return Redirect("/Posts/Details/" + comment.post.PostId.ToString());
+            return NotFound();
         }
 
         private bool CommentExists(int id)

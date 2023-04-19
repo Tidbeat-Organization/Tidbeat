@@ -25,15 +25,26 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace Tidbeat.Areas.Identity.Pages.Account
 {
+    /// <summary>
+    /// The model class for the login page.
+    /// </summary>
     public class LoginModel : PageModel
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IEmailSender _emailSender;
-        private static string Pattern = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&_-])[A-Za-z\\d@$!%*?&_-]{6,}$";
+        private static string Pattern = RegisterModel.Pattern;
         private readonly IStringLocalizer<LoginModel> _localizer;
 
+        /// <summary>
+        /// The constructor for the login model.
+        /// </summary>
+        /// <param name="signInManager">The sign in manager.</param>
+        /// <param name="logger">The logger.</param>
+        /// <param name="userManager">The user manager.</param>
+        /// <param name="emailSender">The email sender.</param>
+        /// <param name="localizer">The localizer.</param>
         public LoginModel(SignInManager<ApplicationUser> signInManager, ILogger<LoginModel> logger, UserManager<ApplicationUser> userManager, IEmailSender emailSender, IStringLocalizer<LoginModel> localizer)
         {
             _signInManager = signInManager;
@@ -44,61 +55,58 @@ namespace Tidbeat.Areas.Identity.Pages.Account
         }
 
         /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
+        /// The input model for the login page.
         /// </summary>
         [BindProperty]
         public InputModel Input { get; set; }
 
         /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
+        /// The list of possible external logins. Only has Google.
         /// </summary>
         public IList<AuthenticationScheme> ExternalLogins { get; set; }
 
         /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
+        /// The return URL.
         /// </summary>
         public string ReturnUrl { get; set; }
 
         /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
+        /// The error message.
         /// </summary>
         [TempData]
         public string ErrorMessage { get; set; }
 
         /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
+        /// The input model for the login page.
         /// </summary>
         public class InputModel
         {
             /// <summary>
-            ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-            ///     directly from your code. This API may change or be removed in future releases.
+            /// The email.
             /// </summary>
             [Required]
             [EmailAddress]
             public string Email { get; set; }
 
             /// <summary>
-            ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-            ///     directly from your code. This API may change or be removed in future releases.
+            /// The password.
             /// </summary>
             [Required]
             [DataType(DataType.Password)]
             public string Password { get; set; }
 
             /// <summary>
-            ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-            ///     directly from your code. This API may change or be removed in future releases.
+            /// The remember me option.
             /// </summary>
             [Display(Name = "Lembrar a minha palavra-passe")]
             public bool RememberMe { get; set; }
         }
 
+        /// <summary>
+        /// The get method for the login page.
+        /// </summary>
+        /// <param name="returnUrl">The return URL.</param>
+        /// <returns></returns>
         public async Task OnGetAsync(string returnUrl = null)
         {
             if (!string.IsNullOrEmpty(ErrorMessage))
@@ -116,6 +124,11 @@ namespace Tidbeat.Areas.Identity.Pages.Account
             ReturnUrl = returnUrl;
         }
 
+        /// <summary>
+        /// The method that's executed when the login is submitted.
+        /// </summary>
+        /// <param name="returnUrl">The return URL.</param>
+        /// <returns>If the model is invalid, it returns the page itself with errors. If its valid, redirects to the return url.</returns>
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             returnUrl ??= Url.Content("~/");

@@ -9,7 +9,7 @@
 
 <div class="text-center d-flex flex-column temporary-margin">
     <h3 class="display-4 text-primary">@Localizer["login_in_tidbeat"]</h3>
-    <form class="mx-auto d-flex flex-column" id="account" method="post">
+    <form class="mx-auto d-flex flex-column w-lg-25 w-sm-60" id="account" method="post">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="text-danger" id="Danger">
             @if (ModelState.ContainsKey("Danger"))
@@ -121,7 +121,7 @@
     });
 
     function LoginFunction() {
-        let pattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@@$!%*?&_-])[A-Za-z\d@@$!%*?&_-]{6,}$/;
+        let pattern = /^(?!_)(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?!.*[<>\'\"])[^\x3C\x3E\x27\x22]{6,}$/;
         let email = document.getElementById('InputEmail1').value;
         let password = document.getElementById('InputPassword1').value;
         if (!email.includes("@@")) {

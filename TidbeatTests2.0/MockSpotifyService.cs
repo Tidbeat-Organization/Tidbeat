@@ -18,6 +18,11 @@ namespace TidbeatTests2._0
             _mock = new Mock<ISpotifyService>();
         }
 
+        public Task<bool> BandHasGenre(string id, string genre)
+        {
+            throw new NotImplementedException();
+        }
+
         public Task<int?> GetAmountBandAlbumAsync(string id)
         {
             return Task.FromResult((int?)0);
@@ -26,6 +31,16 @@ namespace TidbeatTests2._0
         public Task<FullArtist> GetBandAsync(string id)
         {
             return Task.FromResult(new FullArtist { Id = id, Name = "Test Artist" , Uri="hello"});
+        }
+
+        public Task<List<string>> GetGenresOfBand(string id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<string>> GetGenresOfSong(string id)
+        {
+            throw new NotImplementedException();
         }
 
         public Task<SearchResponse> GetMultipleBandsAsync(string searchKey)
@@ -171,5 +186,9 @@ namespace TidbeatTests2._0
             return Task.FromResult(result);
         }
 
+        public Task<bool> SongHasGenre(string id, string genre)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

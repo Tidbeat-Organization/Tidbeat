@@ -18,12 +18,20 @@ using Tidbeat.Models;
 
 namespace Tidbeat.Areas.Identity.Pages.Account
 {
+    /// <summary>
+    /// The model class for the reset password page.
+    /// </summary>
     public class ResetPasswordModel : PageModel
     {
         private static string Pattern = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&_-])[A-Za-z\\d@$!%*?&_-]{6,}$";
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IStringLocalizer<ResetPasswordModel> _localizer;
 
+        /// <summary>
+        /// The constructor for the reset password model.
+        /// </summary>
+        /// <param name="userManager">The user manager.</param>
+        /// <param name="localizer">The localizer.</param>
         public ResetPasswordModel(UserManager<ApplicationUser> userManager, IStringLocalizer<ResetPasswordModel> localizer)
         {
             _userManager = userManager;
@@ -31,29 +39,25 @@ namespace Tidbeat.Areas.Identity.Pages.Account
         }
 
         /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
+        /// The input model for the reset password page.
         /// </summary>
         [BindProperty]
         public InputModel Input { get; set; }
 
         /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
+        /// The input model class.
         /// </summary>
         public class InputModel
         {
             /// <summary>
-            ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-            ///     directly from your code. This API may change or be removed in future releases.
+            /// The email address.
             /// </summary>
             [Required]
             [EmailAddress]
             public string Email { get; set; }
 
             /// <summary>
-            ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-            ///     directly from your code. This API may change or be removed in future releases.
+            /// The password.
             /// </summary>
             [Required]
             [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
@@ -61,8 +65,7 @@ namespace Tidbeat.Areas.Identity.Pages.Account
             public string Password { get; set; }
 
             /// <summary>
-            ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-            ///     directly from your code. This API may change or be removed in future releases.
+            /// The confirmation password.
             /// </summary>
             [DataType(DataType.Password)]
             [Display(Name = "Confirm password")]
@@ -70,14 +73,18 @@ namespace Tidbeat.Areas.Identity.Pages.Account
             public string ConfirmPassword { get; set; }
 
             /// <summary>
-            ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-            ///     directly from your code. This API may change or be removed in future releases.
+            /// The code.
             /// </summary>
             [Required]
             public string Code { get; set; }
 
         }
 
+        /// <summary>
+        /// The get method for the reset password page.
+        /// </summary>
+        /// <param name="code">The code.</param>
+        /// <returns>A bad request in case its null or a page.</returns>
         public IActionResult OnGet(string code = null)
         {
             if (code == null)
@@ -94,6 +101,10 @@ namespace Tidbeat.Areas.Identity.Pages.Account
             }
         }
 
+        /// <summary>
+        /// The post method for the reset password page.
+        /// </summary>
+        /// <returns>Returns the page itself with errors in case anything isn't correct. If its correct, redirects to the reset password confirmation.</returns>
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)

@@ -5,6 +5,12 @@
     ViewData["Title"] = "Create";
 }
 
+<div>
+    @{
+        await Html.RenderPartialAsync("_Sidebar");
+    }
+</div>
+
 <h3 style="color: #6610F2; margin-top: 100px;">@Localizer["create_post"]</h3>
 <hr />
 
@@ -86,11 +92,11 @@
                     <span style="color: #6610F2; font-weight: bold;">Link:&nbsp;</span><a id="SongLink" target="_blank" href="@{
                             if (ViewBag.chooseSong != null) {
                                 string url = $"https://open.spotify.com/track/{ViewBag.chooseSong.Id}";
-                                                                        @url
+                                                                                    @url
                             }
                             else if (ViewBag.chooseBand != null) {
                                 string url = $"https://open.spotify.com/artist/{ViewBag.chooseBand.Id}";
-                                                                        @url
+                                                                                    @url
                             }
                         }">
                         @if (ViewBag.chooseSong != null)
@@ -138,7 +144,8 @@
     }
     }
 <script>
-
+        // Select the body element
+        const body = document.querySelector('body');
         function onInputSong() {
             var val = document.getElementById("SongIdInput");
             var opts = document.getElementById('SongOptions').childNodes;
@@ -146,6 +153,7 @@
             var songLink = document.getElementById("SongLink");
             var bandInput = document.getElementById("Bandsinput");
             var boolCheck = true;
+            var oneSecond = true;
             //hiddenInput.value = val.value;
             hiddenInput.value = "";
             songLink.textContent="";
@@ -162,6 +170,16 @@
                 }
             }
             if (boolCheck) {
+                if(!oneSecond)
+                {
+                    setTimeout(function() {
+                        
+                      // code to execute after one second
+                    }, 1000); // 1000 milliseconds = 1 second
+                }
+                // Set the cursor to "wait" before starting the long-running operation
+                body.style.cursor = 'wait';
+                oneSecond = false;
                 fetch(window.location.origin + '/Posts/SongInfo/?searchKey=' + val.value)
                     .then(response => response.json())
                     .then(data => {
@@ -192,7 +210,9 @@
                             // Your code here
                             console.log(item.name);
                         });
+                        body.style.cursor = 'auto';
                     })
+                    oneSecond = false;
             }
         }
         
@@ -200,9 +220,10 @@
             var val = document.getElementById("Bandsinput");
             var opts = document.getElementById('BandOptions').childNodes;
             var hiddenInput = document.getElementById("answerInputband");
-            var boolCheck = true;
             var songInput = document.getElementById("SongIdInput");
             var songLink = document.getElementById("SongLink");
+            var boolCheck = true;
+            var oneSecond = true;
             //hiddenInput.value = val.value;
             hiddenInput.value = "";
             for (var i = 0; i < opts.length; i++) {
@@ -217,6 +238,15 @@
                 }
             }
             if (boolCheck) {
+                if (!oneSecond) {
+                    setTimeout(function () {
+
+                        // code to execute after one second
+                    }, 1000); // 1000 milliseconds = 1 second
+                }
+                // Set the cursor to "wait" before starting the long-running operation
+                body.style.cursor = 'wait';
+                oneSecond = false;
                 //RedirectToLink
                 fetch(window.location.origin + '/Posts/BandsInfo?searchKey=' + val.value)
                 .then(response => response.json())
@@ -243,13 +273,16 @@
                         // Your code here
                         console.log(item.name);
                     });
+                     body.style.cursor = 'auto';
                 })
+                var oneSecond = true;
             }
         }
 
         document.getElementById("formfromsong").addEventListener("focusout", (event) => {
             if (document.getElementById("answerInputSong").value === ""){
                 document.getElementById("SongIdInput").value = "";
+                document.getElementById("Bandsinput").value = "";
             }
         });
         document.getElementById("formfromband").addEventListener("focusout", (event) => {

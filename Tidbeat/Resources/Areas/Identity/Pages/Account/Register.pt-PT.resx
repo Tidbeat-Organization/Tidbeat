@@ -157,10 +157,13 @@
     <value>O nome é inválido.</value>
   </data>
   <data name="invalid_password" xml:space="preserve">
-    <value>A palavra-passe deve conter, pelo menos 6 caracteres, dos quais têm que ter um número [0-9], uma letra minuscula [a-z], uma letra maiuscula [A-Z] e um caracter especial [@&amp;?_%]</value>
+    <value>Senha inválida. Mínimo de 6 caracteres, com pelo menos 1 número, 1 letra maiúscula e 1 letra minúscula. Proibidos: &lt;&gt;' "_</value>
   </data>
   <data name="male" xml:space="preserve">
     <value>Masculino</value>
+  </data>
+  <data name="name_may_not_contain" xml:space="preserve">
+    <value>O seu nome não pode conter &lt;&gt;' " nem iniciar com _</value>
   </data>
   <data name="non_binary" xml:space="preserve">
     <value>Não-Binário</value>

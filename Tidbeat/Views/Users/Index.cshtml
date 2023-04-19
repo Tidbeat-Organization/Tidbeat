@@ -1,0 +1,124 @@
+﻿@model IEnumerable<ApplicationUser>
+@using Microsoft.AspNetCore.Mvc.Localization;
+@using Tidbeat.Services;
+@inject IViewLocalizer Localizer
+
+@{
+    ViewData["Title"] = "Lista de utilizadores";
+    var countrySaved = ViewData["CountryFilter"];
+}
+
+<style>
+    .profile-pic {
+        border-radius: 10px;
+        border: 2px solid black;
+    }
+</style>
+
+<!-- SideBar -->
+<div>
+    @{
+        await Html.RenderPartialAsync("_Sidebar");
+    }
+</div>
+
+<h1 class="text-start ms-3" style="margin-top: 72px; color: #6610F2;">@Localizer["filters"]</h1>
+
+<form method="get" action="@Url.Action("Index", "Users")">
+    <div class="row justify-content-center">
+        <div class="col-md-4">
+            <div class="form-group ms-4">
+                <label for="inputName" class="row justify-content-left ms-1">@Localizer["name"]</label>
+                <input type="text" class="form-control" id="inputName" name="name" placeholder="@Localizer["search"]" value="@ViewData["NameFilter"]">
+            </div>
+        </div>
+        <div class="col-md-4 mb-3">
+            <div class="form-group">
+                <label for="inputCountry" class="row justify-content-left ms-4">@Localizer["country"]</label>
+                <select class="form-control ms-4" id="inputCountry" name="country">
+                    <option value="">@Localizer["select_country"]</option>
+                    @foreach (var country in ViewBag.Countries)
+                    {
+                        <option value="@country" selected="@((string)ViewData["CountryFilter"] == country)">@country</option>
+                    }
+                </select>
+            </div>
+        </div>
+        <div class="col-md-1 ms-2 mt-3">
+            <button type="submit" class="btn btn-primary btn-block">
+                <img src="/images/SearchIcon.png" alt="Procurar" height="37" width="45" />
+            </button>
+        </div>
+    </div>
+</form>
+
+<div class="border border-1 border-light-grey my-2"></div>
+
+<h2 class="text-start ms-3 my-4">@Localizer["users"]</h2>
+
+<div class="container"  id="mainUserList">
+   <!--@if (!Model.Any())
+    {
+            <p class="text-center">@Localizer["not_found_users"]</p>
+    }
+    else
+    {
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3">
+            @foreach (var user in Model)
+            {
+                        <div class="col mb-4">
+                            <div class="card">
+                                <div class="text-center my-2">
+                                    <img src="@(!string.IsNullOrEmpty(user.ImagePath) ? user.ImagePath : "/images/UnknownUser.jpg")" alt="Profile Picture" width="75" height="75" class="profile-pic">
+                                </div>
+                                <div class="card-body">
+                                    <h5 class="card-title">@user.FullName</h5>
+                                    <div class="border border-1 border-light-grey my-2"></div>
+                                    <p class="paragraph mt-3"><strong>@Localizer["favorite_genre"]</strong> @(!string.IsNullOrEmpty(user.FavoriteGenre) ? user.FavoriteGenre.Substring(0, 1).ToUpper() + user.FavoriteGenre.Substring(1) : @Localizer["non_specified"])</p>
+                                    <p><strong>@Localizer["country"]</strong> @(string.IsNullOrEmpty(user.Country) ? @Localizer["non_specified"] : user.Country)</p>
+                                    <a href="@Url.Action("Details", "Profiles", new { id = user.Id })" class="btn btn-primary">@Localizer["view_profile"]</a>
+                                </div>
+                            </div>
+                        </div>
+            }
+            </div>
+    }-->
+    <partial name="_UserListPartial" />
+
+</div>
+
+<script>
+    var loading = false;
+    var offset = 0;
+
+    $(function () {
+        // Listen for scroll events on the window
+        $(window).scroll(function () {
+            // Check if we've reached the bottom of the page
+            console.log("here")
+            if (Math.ceil($(window).scrollTop()) == Math.round($(document).height() - $(window).height()) && !loading) {
+                loading = true;
+                console.log("here")
+                // Load more data
+                $.ajax({
+                    url: "@Url.Action("getData")",
+                    data: { offset: offset, name: "@ViewData["NameFilter"]", country: "@countrySaved" },
+                    dataType: "html",
+                    success: function (data) {
+                        if (data.length > 0) {
+                            // Append the data to the table
+                            $("#mainUserList").append(data);
+                            // Increment the offset for the next load
+                            offset += 9;
+                        }
+                        loading = false;
+                    },
+                    error: function (xhr, status, error) {
+                        loading = false;
+                    }
+                });
+            }
+        });
+    });
+
+</script>

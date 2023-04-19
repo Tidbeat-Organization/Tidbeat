@@ -9,6 +9,7 @@ using Microsoft.Extensions.Localization;
 using System.Globalization;
 using Tidbeat;
 using Tidbeat.Data;
+using Tidbeat.Hub;
 using Tidbeat.Middlewares;
 using Tidbeat.Models;
 using Tidbeat.Services;
@@ -41,7 +42,7 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 // N�o necessita de conta confirmada: ALTERAR DEPOIS PARA true
 builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<ApplicationDbContext>();
+    .AddRoles<IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews().AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix);
 
 builder.Services.AddTransient<IEmailSender, EmailSender>();
@@ -53,6 +54,7 @@ builder.Services.Configure<AuthMessageSenderOptions>(options => {
 builder.Services.AddScoped<IMusicService, MusicService>();
 builder.Services.AddScoped<ISpotifyService, SpotifyService>();
 builder.Services.AddScoped<IRatingService, RatingService>();
+builder.Services.AddScoped<IChatBeatService, ChatBeatService>();
 
 builder.Services.Configure<IdentityOptions>(opts => {
     opts.Lockout.AllowedForNewUsers = true;
@@ -70,6 +72,8 @@ builder.Services.Configure<RequestLocalizationOptions>(options => {
     options.DefaultRequestCulture = new RequestCulture("en-US");
     options.SupportedUICultures = supportedCultures;
 });
+
+services.AddSignalR().AddAzureSignalR();
 
 var app = builder.Build();
 app.UseRequestLocalization();
@@ -108,12 +112,18 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.UseEndpoints(endpoints => {
+    endpoints.MapHub<ChatHub>("/chat");
+});
+
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 app.MapRazorPages();
 
 using var scope = app.Services.CreateScope();
+
+await Configurations.CreateStartingRoles(scope.ServiceProvider);
 await Configurations.CreateStartingUsers(scope.ServiceProvider);
 //await Configurations.CreateStartingPosts(scope.ServiceProvider);
 

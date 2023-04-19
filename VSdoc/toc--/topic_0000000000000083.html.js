@@ -1,0 +1,1 @@
+var breadcrumbs=[['-1',"",""],['2',"SOLUTION-WIDE PROPERTIES Reference","topic_000000000000023A.html"],['12',"Tidbeat.Areas.Identity.Pages.Account Namespace","topic_0000000000000068.html"],['37',"ForgotPasswordConfirmation Class","topic_0000000000000082.html"],['38',"Methods","topic_0000000000000082_methods--.html"],['39',"OnGet Method","topic_0000000000000083.html"]];

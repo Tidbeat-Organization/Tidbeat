@@ -1,0 +1,1 @@
+search_result['634']=["topic_0000000000000163.html","Conversation.IsGroupConversation Property","Checks if its a group conversation. IMPORTANT: UNIMPLEMENTED FUNCTIONALITY, SO ITS ALWAYS FALSE. IT WAS ONLY ADDED HERE IN CASE ITS NEEDED TO IMPLEMENT GROUP CONVERSATIONS."];
