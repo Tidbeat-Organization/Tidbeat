@@ -10835,6 +10835,9 @@ input[type=file] {
   .w-sm-50 {
     width: 50% !important;
   }
+  .w-sm-60 {
+    width: 60% !important;
+  }
 }
 /* MD breakpoint*/
 @media (min-width: 768px) {
