@@ -407,8 +407,9 @@
        }
 
         function validateDescription() {
-            var descriptionContent = tinymce.get('postcreate').getContent();
-            if (descriptionContent.length === 0 || !descriptionContent.trim()) {
+            var editor = tinymce.get('postcreate');
+            var descriptionContent = editor.getBody().textContent.trim();
+            if (descriptionContent.length === 0) {
                 var warningMsg = "@Localizer["type_content"]";
                 tinymce.get('postcreate').notificationManager.open({
                     text: warningMsg,

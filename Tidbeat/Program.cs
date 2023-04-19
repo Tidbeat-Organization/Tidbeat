@@ -29,6 +29,11 @@ services.AddAuthentication().AddGoogle(
     }
 );
 
+builder.Configuration.AddEnvironmentVariables();
+builder.Configuration.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+
+var sendGridKey = builder.Configuration["SendGridKey"];
+
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -41,7 +46,10 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.R
 builder.Services.AddControllersWithViews().AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix);
 
 builder.Services.AddTransient<IEmailSender, EmailSender>();
-builder.Services.Configure<AuthMessageSenderOptions>(builder.Configuration);
+builder.Services.Configure<AuthMessageSenderOptions>(options => {
+    options.SendGridKey = sendGridKey;
+});
+//builder.Services.Configure<AuthMessageSenderOptions>(builder.Configuration);
 
 builder.Services.AddScoped<IMusicService, MusicService>();
 builder.Services.AddScoped<ISpotifyService, SpotifyService>();

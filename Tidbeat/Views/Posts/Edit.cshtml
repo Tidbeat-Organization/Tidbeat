@@ -85,7 +85,8 @@
     }
 
     function validateDescription() {
-        var descriptionContent = tinymce.get('postedit').getContent();
+        var editor = tinymce.get('postedit');
+        var descriptionContent = editor.getBody().textContent.trim();
         if (descriptionContent.length === 0 || !descriptionContent.trim()) {
             var warningMsg = "@Localizer["type_content"]";
             tinymce.get('postedit').notificationManager.open({

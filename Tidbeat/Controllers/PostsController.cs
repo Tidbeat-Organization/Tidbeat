@@ -598,6 +598,8 @@ namespace Tidbeat.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+
+
         private bool PostExists(int id)
         {
           return _context.Posts.Any(e => e.PostId == id);
