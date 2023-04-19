@@ -69,6 +69,9 @@ namespace Tidbeat.Models {
 
         public string LastName() {
             var allNames = FullName.Split(' ');
+            if (allNames.Length == 1) {
+                return "";
+            }
             return allNames[allNames.Length - 1];
         }
 
