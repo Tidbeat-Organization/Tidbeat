@@ -19,6 +19,8 @@ steps:
   inputs:
     command: 'publish'
     publishWebProjects: true
+- script: dotnet ef database update --configuration $(buildConfiguration)
+  displayName: 'Update database'
 - task: AzureWebApp@1
   inputs:
     azureSubscription: 'Azure for Students(de444514-4044-4ec2-be34-817d4be2042a)'
