@@ -77,6 +77,8 @@ namespace Tidbeat.Controllers
                     Console.WriteLine($"\t{_genre}");
                 }
             }*/
+            var offset = 20;
+            ViewBag.Offset = offset;
 
             var results = await _context
                 .Posts
@@ -84,6 +86,7 @@ namespace Tidbeat.Controllers
                 .Include(p => p.Song)
                 .Include(p => p.Band)
                 .Where(PostPasses(name, genre, order))
+                .Take(offset)
                 .ToListAsync();
 
             /* Console.WriteLine("[ Before Ordering ]");

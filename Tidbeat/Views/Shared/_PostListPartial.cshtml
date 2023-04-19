@@ -21,7 +21,16 @@
     <div class="col-md-4">
         <div class="card mb-4 shadow-sm">
             <div class="card-body text-center">
-                <h5 class="card-title text-primary fw-semibold">@Html.DisplayFor(modelItem => item.Title)</h5>
+                <h5 class="card-title text-primary fw-semibold">
+                    @{
+                        string postTitle = item.Title;
+                        if (postTitle?.Length > 15) {
+                            postTitle = postTitle.Substring(0, 15);
+                            postTitle += "...";
+                        }
+                    }
+                    @postTitle
+                </h5>
                 @Localizer["from"]
                 @if (item.User?.Email == Configurations.InvalidUser.Email) {
                     <div class="text-black">@Localizer["[deleted]"]</div>
