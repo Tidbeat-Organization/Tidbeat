@@ -79,7 +79,7 @@ namespace Tidbeat.Controllers
             }*/
 
             var results = await _context
-                .Posts
+                .Posts.Include(p => p.User)
                 .Where(PostPasses(name, genre, order))
                 .ToListAsync();
 
