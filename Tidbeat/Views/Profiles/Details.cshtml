@@ -344,7 +344,7 @@
                         foreach (var item in Followers)
                         {
                             <a class="w-100 mt-1 hover-background-grey pointer-active text-decoration-none" asp-Controller="Profiles" asp-Action="Details" asp-route-id="@item.Id">
-                                <div class="hover-background-grey pointer-active mt-1 border border-primary rounded d-flex w-100">
+                                <div class="hover-background-grey pointer-active mt-1 border-primary rounded d-flex w-100" style="box-shadow: 0 8px 15px -8px rgba(0, 0, 0, 0.4);">
                                     @if (!string.IsNullOrEmpty(item.ImagePath))
                                     {
                                         <img src="@item.ImagePath" height="75" class="border border-dark rounded" />
@@ -377,7 +377,7 @@
                         foreach (var item in Followies)
                         {
                             <a class="w-100 mt-1 hover-background-grey pointer-active text-decoration-none" asp-Controller="Profiles" asp-Action="Details" asp-route-id="@item.Id">
-                                <div class="hover-background-grey pointer-active mt-1 border border-primary rounded d-flex w-100">
+                                <div class="hover-background-grey pointer-active mt-1 border-primary rounded d-flex w-100" style="box-shadow: 0 8px 15px -8px rgba(0, 0, 0, 0.4);">
                                     @if (!string.IsNullOrEmpty(item.ImagePath))
                                     {
                                         <img src="@item.ImagePath" height="75" class="border border-dark rounded" />

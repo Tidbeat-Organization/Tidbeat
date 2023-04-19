@@ -74,7 +74,7 @@
                 <h2 class="d-flex">Bandas e Artistas</h2>
                 @foreach (var item in ViewBag.Result.Artists.Items)
                 {
-                        <a href="@Url.Action("Details", "Bands", new { id = item.Id })" id="@item.Uri" class="hover-background-grey text-decoration-none text-black border border-3 border-primary rounded mt-2 d-inline-flex flex-wrap align-content-center mx-2 mx-md-5 w-50 w-sm-25 flex-lg-row flex-column">
+                    <a href="@Url.Action("Details", "Bands", new { id = item.Id })" id="@item.Uri" class="hover-background-grey text-decoration-none text-black border-3 border-primary rounded mt-2 d-inline-flex flex-wrap align-content-center mx-2 mx-md-5 w-50 w-sm-25 flex-lg-row flex-column" style="box-shadow: 0 8px 15px -8px rgba(0, 0, 0, 0.4);">
                             @if (item.Images.Count != 0) {
                                 <img src="@item.Images[0].Url" alt="@item.Name" width="100" height="100">
                             } else {
