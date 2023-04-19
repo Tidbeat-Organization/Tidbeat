@@ -53,8 +53,8 @@
     /* Close button*/
     #close-btn {
         position: absolute;
-        top: 0;
-        left: 0;
+        top: 3px;
+        right: 3px;
         font-size: 2rem;
         cursor: pointer;
     }
@@ -88,8 +88,8 @@
 <!-- SideBar -->
 <div class="sidebar" id="sidebar">
 
-    <div id="close-btn" class="btn btn-secondary fs-6" style="border-width: 2px">
-        <span class="bi bi-caret-right-fill" id="triangle"></span>
+    <div id="close-btn" class="btn btn-primary fs-5 p-0 px-1" style="border-width: 2px">
+        <span class="bi bi-x" id="triangle"></span>
     </div>
 
 
@@ -112,7 +112,16 @@
                             {
                                 <img src="~/images/UnknownUser.jpg" height="65" class="border border-dark rounded" />
                             }
-                            <div class="align-self-center" title="@Localizer["access_profile"]">@item.FullName</div>
+                            <div class="align-self-center" title="@Localizer["access_profile"]">
+                                @{
+                                    string personName = item.FirstAndLastName();
+                                    if (personName?.Length > 15) {
+                                        personName = personName.Substring(0, 15);
+                                        personName += "...";
+                                    }
+                                }
+                                @personName
+                            </div>
 
                             @if (ViewBag.CurrentUser != null)
                             {
