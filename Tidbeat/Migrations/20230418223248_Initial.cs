@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Tidbeat.Migrations
 {
-    public partial class Init : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -65,7 +65,8 @@ namespace Tidbeat.Migrations
                 {
                     BandId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Image = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Image = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Gener = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -264,8 +265,8 @@ namespace Tidbeat.Migrations
                     DetailedReason = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserReporterId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     UserReportedId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ReportItemId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ReportItemType = table.Column<int>(type: "int", nullable: false),
+                    ReportItemId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ReportItemType = table.Column<int>(type: "int", nullable: true),
                     Status = table.Column<int>(type: "int", nullable: false),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModAssignedId = table.Column<string>(type: "nvarchar(450)", nullable: true)
@@ -298,7 +299,8 @@ namespace Tidbeat.Migrations
                 {
                     SongId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    BandId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    BandId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Gener = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {

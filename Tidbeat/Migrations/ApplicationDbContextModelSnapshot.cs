@@ -264,6 +264,9 @@ namespace Tidbeat.Migrations
                     b.Property<string>("BandId")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<string>("Gener")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Image")
                         .HasColumnType("nvarchar(max)");
 
@@ -608,6 +611,9 @@ namespace Tidbeat.Migrations
                     b.Property<string>("BandId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Gener")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()

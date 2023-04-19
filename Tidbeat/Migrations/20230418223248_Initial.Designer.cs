@@ -12,8 +12,8 @@ using Tidbeat.Data;
 namespace Tidbeat.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230417164236_MadeNullableFields")]
-    partial class MadeNullableFields
+    [Migration("20230418223248_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -265,6 +265,9 @@ namespace Tidbeat.Migrations
                 {
                     b.Property<string>("BandId")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Gener")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Image")
                         .HasColumnType("nvarchar(max)");
@@ -610,6 +613,9 @@ namespace Tidbeat.Migrations
                     b.Property<string>("BandId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Gener")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()
