@@ -39,5 +39,6 @@ steps:
       !**\obj\**
       !**\xunit.runner.visualstudio.testadapter.dll
       !**\xunit.runner.visualstudio.dotnetcore.testadapter.dll
+	!**\TidbeatTests2.0.dll
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
