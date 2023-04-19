@@ -138,7 +138,7 @@ namespace Tidbeat.Areas.Identity.Pages.Account.Manage
 
             await LoadAsync(user);
 
-            if (User.Identity.IsAuthenticated)
+            if (User != null && User.Identity.IsAuthenticated)
             {
                 var userr = await _userManager.GetUserAsync(User);
                 var request = HttpContext.Request;

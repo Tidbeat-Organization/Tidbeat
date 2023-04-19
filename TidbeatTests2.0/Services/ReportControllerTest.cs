@@ -119,7 +119,7 @@ namespace TidbeatTests2._0.Services
             var user = await _context.Users.FirstOrDefaultAsync();
             var report = new Report()
             {
-                Id = new Guid(),
+                Id = Guid.NewGuid(),
                 DetailedReason = "yes",
                 Date = DateTime.Now,
                 ModAssigned = user,
@@ -140,5 +140,39 @@ namespace TidbeatTests2._0.Services
 
         }
 
+        [Fact]
+        public async Task IndexAction_ReportsController() {
+            var user1 = new ApplicationUser() {
+                Id = Guid.NewGuid().ToString(),
+                FullName = "John Smith",
+                BirthdayDate = DateTime.Now,
+                Gender = "male"
+            };
+            var user2 = new ApplicationUser() {
+                Id = Guid.NewGuid().ToString(),
+                FullName = "Jane Doe",
+                BirthdayDate = DateTime.Now,
+                Gender = "female"
+            };
+            var reports = new List<Report>
+            {
+                new Report { UserReported = user1, UserReporter = user2, Status = Tidbeat.Enums.ReportStatus.Created, Date = DateTime.Now, Reason = Tidbeat.Enums.ReportReason.Other },
+                new Report { UserReported = user2, UserReporter = user1, Status = Tidbeat.Enums.ReportStatus.Created, Date = DateTime.Now, Reason = Tidbeat.Enums.ReportReason.HateSpeech },
+            };
+            foreach (var report in reports) {
+                _context.Report.Add(report);
+            }
+            _context.SaveChanges();
+            
+            var _reportsController = new ReportsController(_context, _mockUserManager.Object);
+
+            // Act
+            var result = await _reportsController.Index("", "", "", "", "");
+            var result1 = await _reportsController.Index("John", "", "", "", "");
+
+            // Assert
+            Assert.IsType<ViewResult>(result);
+            Assert.IsType<ViewResult>(result1);
+        }
     }
 }

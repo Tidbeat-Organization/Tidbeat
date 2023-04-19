@@ -243,10 +243,16 @@
   <data name="techno" xml:space="preserve">
     <value>Techno</value>
   </data>
-  <data name="textc" xml:space="preserve">
-    <value>Persons That Follow You</value>
+  <data name="textc-currentuser" xml:space="preserve">
+    <value>People That Follow You</value>
   </data>
-  <data name="textp" xml:space="preserve">
-    <value>Persons That You Follow</value>
+  <data name="textc-otheruser" xml:space="preserve">
+    <value>Their Followers</value>
+  </data>
+  <data name="textp-currentuser" xml:space="preserve">
+    <value>People That You Follow</value>
+  </data>
+  <data name="textp-otheruser" xml:space="preserve">
+    <value>People They Follow</value>
   </data>
 </root>

@@ -146,10 +146,10 @@ namespace Tidbeat.Controllers
                     TempData["user"] = true;
                 }
 
-                var possibleFollow = _context.Follow.Include(p => p.UserFollowed).Include(p => p.UserAsker).Where(p => p.UserAsker.Id.Equals(currentuser.Id)).Where(p => p.UserFollowed.Id.Equals(id)).ToListAsync();
-                if (possibleFollow.Result.Count > 0)
+                var possibleFollow = await _context.Follow.Include(p => p.UserFollowed).Include(p => p.UserAsker).Where(p => p.UserAsker.Id.Equals(currentuser.Id)).Where(p => p.UserFollowed.Id.Equals(id)).ToListAsync();
+                if (possibleFollow.Count > 0)
                 {
-                    TempData["Follow"] = true;
+                    ViewBag.Follow = true;
                 }
             }
             

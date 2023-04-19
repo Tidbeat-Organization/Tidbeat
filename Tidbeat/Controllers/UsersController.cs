@@ -17,9 +17,9 @@ namespace Tidbeat.Controllers
 
         public async Task<IActionResult> Index(string name, string country)
         {
-            var users = await _userManager.Users
+            var users = _userManager.Users
                 .Where(u => u.FullName != "[deleted]")
-                .ToListAsync();
+                .ToList();
 
             // filter by name
             if (!string.IsNullOrEmpty(name))
@@ -44,7 +44,7 @@ namespace Tidbeat.Controllers
             var currentuser = await _userManager.GetUserAsync(User);
             ViewBag.CurrentUser = currentuser;
 
-            if (User.Identity.IsAuthenticated)
+            if (User != null && User.Identity.IsAuthenticated)
             {
                 var user = await _userManager.GetUserAsync(User);
                 var request = HttpContext.Request;

@@ -57,7 +57,7 @@ namespace Tidbeat.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (User.Identity.IsAuthenticated)
+                if (User != null && User.Identity.IsAuthenticated)
                 {
                     var user = await _userManager.GetUserAsync(User);
                     var possibleFollower = await _context.Users
@@ -88,7 +88,7 @@ namespace Tidbeat.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (User.Identity.IsAuthenticated)
+                if (User != null && User.Identity.IsAuthenticated)
                 {
                     var user = await _userManager.GetUserAsync(User);
                     var possibleFollower = await _context.Users

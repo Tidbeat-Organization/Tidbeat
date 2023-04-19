@@ -69,7 +69,7 @@ namespace Tidbeat.Controllers
             var currentuser = await _userManager.GetUserAsync(User);
             ViewBag.CurrentUser = currentuser;
 
-            if (User.Identity.IsAuthenticated)
+            if (User != null && User.Identity.IsAuthenticated)
             {
                 var user = await _userManager.GetUserAsync(User);
                 var request = HttpContext.Request;
@@ -119,7 +119,7 @@ namespace Tidbeat.Controllers
             var currentuser = await _userManager.GetUserAsync(User);
             ViewBag.CurrentUser = currentuser;
 
-            if (User.Identity.IsAuthenticated)
+            if (User != null && User.Identity.IsAuthenticated)
             {
                 var user = await _userManager.GetUserAsync(User);
                 var request = HttpContext.Request;
