@@ -73,7 +73,7 @@
         }
         @foreach (Post post in allPosts) {
             <a class="text-decoration-none text-black" href="@Url.Action("Details", "Posts", new { id = post.PostId })">
-                <div class="d-flex align-items-center border border-2 border-primary p-1 rounded mb-2 hover-background-grey">
+                <div class="d-flex align-items-center border-2 border-primary p-1 rounded mb-2 hover-background-grey" style="box-shadow: 0 8px 15px -8px rgba(0, 0, 0, 0.4);">
                     <div class="border-end border-2 border-primary pe-2">
                         <div>
                         @if (post.User.Email == Configurations.InvalidUser.Email) {
