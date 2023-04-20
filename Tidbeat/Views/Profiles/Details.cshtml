@@ -87,7 +87,7 @@
 </style>
 
 <!-- Modal -->
-@if (User.Identity.IsAuthenticated && ViewBag.CurrentUser.Id != Model.Id && (User.IsInRole("Moderator") || User.IsInRole("Admin")))
+@if (User.Identity.IsAuthenticated && ViewBag.CurrentUser.Id != Model.Id && ((User.IsInRole("Moderator") && Model.Role != RoleType.Admin)|| User.IsInRole("Admin")))
 {
     <div class="modal fade" id="edit-user-modal" tabindex="-1" aria-labelledby="edit-user-modal-label" aria-hidden="true">
         <div class="modal-dialog modal-xl">
@@ -255,7 +255,7 @@
                         <a class="btn bi bi-archive-fill text-primary fs-3 py-0 hover-background-grey px-1 py-0" href="@Url.Action("Index", "Reports")"></a>
                     }
                     <button type="button" class="btn-edit-user ms-auto" data-user-id="@Model.Id">
-                        @if ((User.IsInRole("Moderator") || User.IsInRole("Admin")) && ViewBag.CurrentUser.Id != Model.Id) {
+                        @if (((User.IsInRole("Moderator") && Model.Role != RoleType.Admin) || User.IsInRole("Admin")) && ViewBag.CurrentUser.Id != Model.Id) {
                             <div class="btn bi bi-pencil-square text-danger fs-3 py-0 hover-background-grey px-1 py-0"></div>
                         }
                         <span class="visually-hidden">Edit User</span>
