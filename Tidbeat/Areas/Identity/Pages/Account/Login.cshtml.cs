@@ -161,8 +161,8 @@ namespace Tidbeat.Areas.Identity.Pages.Account
                             List<BanUser> sortedList = foundUser.Bans.OrderByDescending(u => u.EndsAt).ToList();
                             if (sortedList.Count >= 1 && sortedList[0].EndsAt.CompareTo(DateTime.Now) > 0) {
                                 await _signInManager.SignOutAsync();
-								return RedirectToAction("/Home/BanInfoWarning", new { banUser = sortedList[0] });
-                            }
+								return RedirectToAction("BanInfoWarning", "Home", new { date = sortedList[0].EndsAt, reason = sortedList[0].Reason });
+							}
                         }
                         _logger.LogInformation("User logged in.");
                         return LocalRedirect(returnUrl);
