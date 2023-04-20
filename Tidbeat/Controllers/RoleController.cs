@@ -153,6 +153,12 @@ namespace Tidbeat.Controllers
             var BanDateEnd = DateTime.Now;
             switch (date) 
             {
+                case BanTime.Minutes:
+                    BanDateEnd = BanDateEnd.AddMinutes((int)Math.Floor(time));
+                    break;
+                case BanTime.Hours:
+                    BanDateEnd = BanDateEnd.AddHours((int)Math.Floor(time));
+                    break;
                 case BanTime.Months:
                     BanDateEnd = BanDateEnd.AddMonths((int) Math.Floor(time));
                     break;
@@ -176,6 +182,7 @@ namespace Tidbeat.Controllers
                 dbUser.Bans = new List<BanUser>();
             }
             dbUser.Bans.Add(BanUser);
+            dbUser.IsBanned = true;
             var result = await _userManager.UpdateAsync(dbUser);
             if (result.Succeeded)
             {

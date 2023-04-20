@@ -1,5 +1,33 @@
-﻿@{
-	ViewData["Title"] = "Proibido - Banido";
+﻿@model Tuple<DateTime, string>
+@using Microsoft.AspNetCore.Mvc.Localization;
+@inject IViewLocalizer Localizer
+@{
+	ViewData["Title"] = Localizer["forbidden_banned"];
+	DateTime startDate = DateTime.Now;
+	DateTime endDate = Model.Item1;
+
+	TimeSpan timeSpan = endDate - startDate;
+
+	int years = (int)(timeSpan.Days / 365.25);
+	int months = (int)((timeSpan.Days % 365.25) / 30.44);
+	int weeks = (int)((timeSpan.Days % 365.25 % 30.44) / 7);
+	int days = (int)(timeSpan.Days % 365.25 % 30.44 % 7);
+	int hours = (int)(timeSpan.TotalHours % 24);
+	int minutes = (int)(timeSpan.TotalMinutes % 60);
+
+	string yearsString = years != 0 ? years + " " + Localizer["years"].Value + "," : "";
+	string monthsString = months != 0 ? months + " " + Localizer["months"].Value + "," : "";
+	string weeksString = weeks != 0 ? weeks + " " + Localizer["weeks"].Value + "," : "";
+	string daysString = days != 0 ? days + " " + Localizer["days"].Value + "," : "";
+	string hoursString = hours != 0 ? hours + " " + Localizer["hours"].Value + "," : "";
+	string minutesString = minutes != 0 ? minutes + " " + Localizer["minutes"].Value : "";
+
+
+	var howMuchLeftString = $"{yearsString} {monthsString} {weeksString} {daysString} {hoursString} {minutesString}";
+
+	if (minutes == 0) {
+		howMuchLeftString = howMuchLeftString.Substring(0, howMuchLeftString.Length - 1);
+	}
 }
 
 
@@ -11,11 +39,14 @@
 			<img src="https://i.imgur.com/cSSEWnn.png" alt="Warning Sign">
 		</div>
 	</div>
-	<div class="row justify-content-center mt-3">
+	<div class="row d-flex justify-content-center mt-3">
 		<p style="font-weight: bold;">
-			Não podes fazer login com a tua conta porque foste banido. <br>
-			Tempo restante: 2 meses, 1 semana e 3 dias. <br>
-			Razão: Ataques verbais a outro utilizador.
+			@Localizer["you_cant_login_because"] <br>
+			@Localizer["remaining_time"]: @howMuchLeftString. <br>
+			<div class="w-100 w-lg-50 d-flex justify-content-center">
+				<div class="fw-bold">@Localizer["reason"]:</div> 
+				<div>@(String.IsNullOrEmpty(Model.Item2) ? @Localizer["no_reason_was_specified"] : @Model.Item2)</div>
+			</div>
 		</p>
 	</div>
 </div>

@@ -23,6 +23,8 @@ using Microsoft.Extensions.FileSystemGlobbing.Internal;
 using System.Text.RegularExpressions;
 using Microsoft.Extensions.Localization;
 using Tidbeat.Data;
+using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 
 namespace Tidbeat.Areas.Identity.Pages.Account
 {
@@ -170,21 +172,15 @@ namespace Tidbeat.Areas.Identity.Pages.Account
             if (result.Succeeded)
             {
                 var userResult = await _userManager.FindByLoginAsync(info.LoginProvider, info.ProviderKey);
-                var userCheck = await _context.Users.FindAsync(userResult.Id);
-                if (userCheck.IsBanned == true)
+                var userCheck = await _context.Users.Include(u => u.Bans).FirstOrDefaultAsync(u => userResult.Id == u.Id);
+                if (userCheck.Bans != null)
                 {
-                    //Add the page the user is banned 100%
-                    await _signInManager.SignOutAsync();
-                    return LocalRedirect(returnUrl); //Change for the view, when it's done
-                }
-                else if (userCheck.Bans != null)
-                {
-                    List<BanUser> sortedList = userCheck.Bans.OrderBy(u => u.EndsAt).ToList();
-                    if (sortedList.Count > 1 && sortedList[0].EndsAt.CompareTo(DateTime.Now) > 0)
+                    List<BanUser> sortedList = userCheck.Bans.OrderByDescending(u => u.EndsAt).ToList();
+                    if (sortedList.Count >= 1 && sortedList[0].EndsAt.CompareTo(DateTime.Now) > 0)
                     {
                         //Page for tempBan
                         await _signInManager.SignOutAsync();
-                        return LocalRedirect(returnUrl); //Change the view when its done
+                        return RedirectToAction("BanInfoWarning", "Home", new { date = sortedList[0].EndsAt, reason = sortedList[0].Reason }); //Change the view when its done
                     }
                 }
                 _logger.LogInformation("{Name} logged in with {LoginProvider} provider.", info.Principal.Identity.Name, info.LoginProvider);
