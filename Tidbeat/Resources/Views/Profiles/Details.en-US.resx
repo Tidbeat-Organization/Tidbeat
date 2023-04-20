@@ -243,6 +243,9 @@
   <data name="my_posts" xml:space="preserve">
     <value>My posts</value>
   </data>
+  <data name="my_posts_otheruser" xml:space="preserve">
+    <value>Posts from</value>
+  </data>
   <data name="name" xml:space="preserve">
     <value>Name</value>
   </data>
@@ -261,8 +264,14 @@
   <data name="no_followers" xml:space="preserve">
     <value>No Followers</value>
   </data>
+  <data name="no_followers_otheruser" xml:space="preserve">
+    <value>No one follows them</value>
+  </data>
   <data name="no_followies" xml:space="preserve">
     <value>You Don't Follow Anyone</value>
+  </data>
+  <data name="no_followies_otheruser" xml:space="preserve">
+    <value>They don't follow anyone</value>
   </data>
   <data name="no_posts" xml:space="preserve">
     <value>No posts</value>

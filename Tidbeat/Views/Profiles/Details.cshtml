@@ -87,7 +87,7 @@
 </style>
 
 <!-- Modal -->
-@if (User.Identity.IsAuthenticated && ViewBag.CurrentUser.Id != Model.Id && (User.IsInRole("Moderator") || User.IsInRole("Admin")))
+@if (User.Identity.IsAuthenticated && ViewBag.CurrentUser.Id != Model.Id && ((User.IsInRole("Moderator") && Model.Role != RoleType.Admin)|| User.IsInRole("Admin")))
 {
     <div class="modal fade" id="edit-user-modal" tabindex="-1" aria-labelledby="edit-user-modal-label" aria-hidden="true">
         <div class="modal-dialog modal-xl">
@@ -112,16 +112,16 @@
                                             <div id="admin-definitions-edit-full-name-reset-button" class="bi bi-arrow-clockwise text-primary fs-5 btn hover-background-grey px-1 py-0 d-none"></div>
                                             <div id="admin-definitions-edit-full-name-button" class="bi bi-pencil-fill text-primary me-2 btn hover-background-grey px-1 py-0"></div>
                                             <input id="admin-definitions-full-name-input" disabled type="text" class="form-control" id="user-name" name="name" value="@Model.FullName" />
-                                            <input id="admin-definitions-full-name-hidden-input" type="hidden" />
+                                            <input id="admin-definitions-full-name-hidden-input" type="hidden" value="@Model.FullName"/>
                                         </div>
                                     </div>
                                     <div class="mb-3 my-4 position-relative">
                                         <div id="admin-definitions-edit-about-me-reset-button" class="bi bi-arrow-clockwise text-primary fs-5 btn hover-background-grey px-1 py-0 position-absolute start-0 d-none"></div>
                                         <div id="admin-definitions-edit-about-me-button" class="bi bi-pencil-fill text-primary me-2 btn hover-background-grey position-absolute start-0 px-1 py-0"></div>
                                         <label for="user-about" class="form-label" style="color: #6610F2;">@Localizer["about_me"]:</label>
-                                        <div id="admin-definitions-about-me-div" class="border text-start p-2" style="height: 200px; border-radius: 15px;">@Html.Raw(Model.AboutMe)</div>
+                                        <div id="admin-definitions-about-me-div" class="border text-start p-2" style="height: 200px; border-radius: 15px; background-color: rgb(233, 236, 239)">@Html.Raw(Model.AboutMe)</div>
                                         <textarea asp-for="AboutMe" id="postcreate" class="form-control rich-text-index-profile" style="border: 1.5px solid #6610F2; border-radius: 15px;" placeholder="@Localizer["about_me"]..."></textarea>
-                                        <input type="hidden" id="admin-definitions-about-me-hidden-input" />
+                                        <input type="hidden" id="admin-definitions-about-me-hidden-input" value="@Model.AboutMe" />
                                     </div>
                                 </form>
                             </div>
@@ -198,6 +198,9 @@
                     </div>
                 </div>
                 <div class="modal-footer">
+                    <div id="admin-definitions-spinner" class="spinner-border text-primary d-none" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">@Localizer["leave"]</button>
                     <button type="button" class="btn btn-primary" id="edit-user-submit">@Localizer["apply"]</button>
                 </div>
@@ -252,7 +255,7 @@
                         <a class="btn bi bi-archive-fill text-primary fs-3 py-0 hover-background-grey px-1 py-0" href="@Url.Action("Index", "Reports")"></a>
                     }
                     <button type="button" class="btn-edit-user ms-auto" data-user-id="@Model.Id">
-                        @if ((User.IsInRole("Moderator") || User.IsInRole("Admin")) && ViewBag.CurrentUser.Id != Model.Id) {
+                        @if (((User.IsInRole("Moderator") && Model.Role != RoleType.Admin) || User.IsInRole("Admin")) && ViewBag.CurrentUser.Id != Model.Id) {
                             <div class="btn bi bi-pencil-square text-danger fs-3 py-0 hover-background-grey px-1 py-0"></div>
                         }
                         <span class="visually-hidden">Edit User</span>
@@ -274,7 +277,7 @@
                     }
                 </div>
                 <div> <span class="text-primary">@Localizer["gender"]:</span> @Localizer[user.Gender]</div>
-                <div> <span class="text-primary">@Localizer["birth_date"]:</span> @user.BirthdayDate.Date.ToShortDateString()</div>
+                <div> <span class="text-primary">@Localizer["birth_date"]:</span> @user.BirthdayDate.Date.ToString("dd/MM/yyyy")</div>
                 <div><span class="text-primary">@Localizer["favorite_genre"]:</span> @Localizer[user.FavoriteGenre ?? ""]</div>
                 <div><span class="text-primary">@Localizer["nation"]:</span> @user.Country</div>
             </div>
@@ -358,12 +361,12 @@
                         }
                     }
                     else
-                    { 
-                        @Localizer["no_followies"];
+                    {
+                        @(ViewBag.CurrentUser != null && ViewBag.CurrentUser.Id == Model.Id ? Localizer["no_followies"] : Localizer["no_followies_otheruser"])
                     }
                 }else
                 {
-                    @Localizer["no_followies"];
+                    @(ViewBag.CurrentUser != null && ViewBag.CurrentUser.Id == Model.Id ? Localizer["no_followies"] : Localizer["no_followies_otheruser"])
                 }
             </div>
         </div>
@@ -393,12 +396,12 @@
 
                     } else 
                     {
-                        @Localizer["no_followers"];
+                        @(ViewBag.CurrentUser != null && ViewBag.CurrentUser.Id == Model.Id ? Localizer["no_followers"] : Localizer["no_followers_otheruser"])
                     }
 
                 }else
                 {
-                    @Localizer["no_followers"];
+                    @(ViewBag.CurrentUser != null && ViewBag.CurrentUser.Id == Model.Id ? Localizer["no_followers"] : Localizer["no_followers_otheruser"])
                 }
             </div>
         </div>
@@ -406,16 +409,22 @@
     <!--All posts goes here-->
     <div class="col-lg-6 col-md-12 mt-5 pt-5 scrollable-posts">
         <div class="d-flex justify-content-center mb-2">
-            <div class="fs-3 me-4">@Localizer["my_posts"]</div>
+            <div class="fs-3 me-4">@(
+                ViewBag.CurrentUser != null && ViewBag.CurrentUser.Id == Model.Id ? 
+                             Localizer["my_posts"] :
+                            (Localizer["my_posts_otheruser"].Value + " " + (Model.FirstName().Length > 10 ? Model.FirstName().Substring(0, 10) + "..." : Model.FirstName())))
+            </div>
         </div>
         @if (allPosts.Count == 0)
         {
             <div>@Localizer["first_post"]</div>
             <img src="~/images/NoPostsImage.png" height="120" class="mt-5" />
         }
+        @if (User.Identity.IsAuthenticated && ViewBag.CurrentUser.Id == Model.Id) {
             <a class="bottom-0 end-0 mt-3 me-4 mb-4 btn btn-primary post-btn-center-lg" asp-controller="Posts" asp-action="Create">
                 @Localizer["create_post"]
             </a>
+        }
         @foreach (Post post in allPosts)
         {
             <a class="text-decoration-none text-black" href="@Url.Action("Details", "Posts", new { id = post.PostId })">
@@ -449,6 +458,22 @@
         $('#user-id').val(userId);
         //$('#admin-definitions-full-name-input').val('@Model.FullName');
         $('#user-about').val();
+        const editFullNameResetButton = document.getElementById('admin-definitions-edit-full-name-reset-button');
+        if (!editFullNameResetButton.classList.contains('d-none')) {
+            $('#admin-definitions-edit-full-name-reset-button').click();
+        }
+        const editAboutMeResetButton = document.getElementById('admin-definitions-edit-about-me-reset-button');
+        if (!editAboutMeResetButton.classList.contains('d-none')) {
+            $('#admin-definitions-edit-about-me-reset-button').click();
+        }
+        const editGiveRoleResetButton = document.getElementById('admin-definitions-edit-give-role-reset-button');
+        if (editGiveRoleResetButton && !editGiveRoleResetButton.classList.contains('d-none')) {
+            $('#admin-definitions-edit-give-role-reset-button').click();
+        }
+        $('#admin-definitions-give-role-select').val('@Model.Role');
+        $('#ban-for').val('');
+        $('#reason-for-ban-input').val('');
+        $('#reason-for-ban').hide();
         $('#edit-user-modal').modal('show');
         let toxDiv = document.querySelector('.tox');
         if (toxDiv) {
@@ -569,6 +594,7 @@
     // Submit form data to server when submit button is clicked
     $('#edit-user-submit').on('click', function (e) {
         e.preventDefault();
+        spinnerStart();
         var userId = $('#user-id').val();
         var name = $('#admin-definitions-full-name-input').val();
         let editor = tinymce.get('postcreate');
@@ -607,14 +633,47 @@
                 return response;
             })
             .then(result => {
+                spinnerSuccess();
                 $('#edit-user-modal').modal('hide');
                 location.reload();
             })
             .catch(error => {
+                spinnerFailed();
                 console.error('There was a problem with the fetch request:', error);
             });
 
     });
+
+    function spinnerStart() {
+        var spinner = document.getElementById("admin-definitions-spinner");
+        spinner.classList.remove('d-none');
+    }
+
+    function spinnerSuccess() {
+        var spinner = document.getElementById("admin-definitions-spinner");
+        spinner.classList.remove('spinner-border');
+        spinner.classList.add('bi');
+        spinner.classList.add('bi-check');
+        spinner.classList.add('fs-4');
+        spinner.classList.add('text-success');
+    }
+
+    function spinnerFailed() {
+        var spinner = document.getElementById("admin-definitions-spinner");
+        spinner.classList.remove('spinner-border');
+        spinner.classList.add('bi');
+        spinner.classList.add('bi-x');
+        spinner.classList.add('fs-4');
+        spinner.classList.add('text-danger');
+        setTimeout(() => {
+            spinner.classList.remove('bi');
+            spinner.classList.remove('bi-x');
+            spinner.classList.remove('fs-4');
+            spinner.classList.remove('text-danger');
+            spinner.classList.add('d-none');
+            spinner.classList.add('spinner-border');
+        }, 3000);
+    }
 
     $("#delete-user").on('click', function() {
         let confirmUserDeletionDiv = document.getElementById("confirm-user-deletion-div");
@@ -633,6 +692,7 @@
     });
 
     $("#confirm-user-deletion-button").on('click', function () {
+        spinnerStart();
         var userId = $('#user-id').val();
         var whyAreYouDeletingThisUser = document.getElementById('why-are-you-deleting-user-input');
         const reason = whyAreYouDeletingThisUser.value;
@@ -654,9 +714,11 @@
         })
         .then(result => {
             //$('#edit-user-modal').modal('hide');
+            spinnerSuccess();
             location.href = "/";
         })
         .catch(error => {
+            spinnerFailed();
             console.error('There was a problem with the fetch request:', error);
         });
     });

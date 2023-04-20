@@ -20,10 +20,10 @@ namespace Tidbeat.Controllers
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IEmailSender _emailSender;
-        private readonly IStringLocalizer<PostsController> _localizer;
+        private readonly IStringLocalizer<RoleController> _localizer;
         private readonly SignInManager<ApplicationUser> _signInManager;
 
-        public RoleController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, IEmailSender emailSender, IStringLocalizer<PostsController> localizer, SignInManager<ApplicationUser> signInManager)
+        public RoleController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, IEmailSender emailSender, IStringLocalizer<RoleController> localizer, SignInManager<ApplicationUser> signInManager)
         {
             _context = context;
             //_serviceProvider = serviceProvider;
@@ -63,8 +63,8 @@ namespace Tidbeat.Controllers
             if (editAsyncDto.ShouldDeletePhoto != null && (bool) editAsyncDto.ShouldDeletePhoto) {
                 dbUser.ImagePath = "";
             }
-            
 
+            bool hasBanned = false;
             BanTime banTime;
             if (editAsyncDto.BanTime == BanTime.Days.ToString()) {
                 banTime = BanTime.Days;
@@ -86,6 +86,7 @@ namespace Tidbeat.Controllers
             }
             if (editAsyncDto.BanNumber != null) {
                 _ = await BanAsync(userId, editAsyncDto.BanReason, (double)editAsyncDto.BanNumber, banTime);
+                hasBanned = true;
             }
 
             RoleType roleType;
@@ -104,8 +105,10 @@ namespace Tidbeat.Controllers
             var result = await _userManager.UpdateAsync(dbUser);
             if (result.Succeeded && _emailSender != null) {
                 _context.SaveChanges();
-                await _emailSender.SendEmailAsync(dbUser.Email, "TIDBEAT - " + _localizer["account_updated"],
-                     _localizer["email_body_edit"]);
+                if (!hasBanned) {
+                    await _emailSender.SendEmailAsync(dbUser.Email, "TIDBEAT - " + _localizer["account_updated"],
+                         _localizer["email_body_edit"]);
+                }
                 //return Json(_localizer["user_update"]);
             }
 
@@ -153,6 +156,12 @@ namespace Tidbeat.Controllers
             var BanDateEnd = DateTime.Now;
             switch (date) 
             {
+                case BanTime.Minutes:
+                    BanDateEnd = BanDateEnd.AddMinutes((int)Math.Floor(time));
+                    break;
+                case BanTime.Hours:
+                    BanDateEnd = BanDateEnd.AddHours((int)Math.Floor(time));
+                    break;
                 case BanTime.Months:
                     BanDateEnd = BanDateEnd.AddMonths((int) Math.Floor(time));
                     break;
@@ -176,12 +185,13 @@ namespace Tidbeat.Controllers
                 dbUser.Bans = new List<BanUser>();
             }
             dbUser.Bans.Add(BanUser);
+            dbUser.IsBanned = true;
             var result = await _userManager.UpdateAsync(dbUser);
             if (result.Succeeded)
             {
                 _context.SaveChanges();
                 await _emailSender.SendEmailAsync(dbUser.Email, "TIDBEAT - " + _localizer["account_ban"],
-                    _localizer["email_body_ban"] + BanDateEnd);
+                    _localizer["email_body_ban"] + BanDateEnd.ToString("dd/MM/yyyy HH:mm:ss"));
                 return Json(_localizer["user_ban"]);
             }
             return Json(_localizer["operation_fail"]);
