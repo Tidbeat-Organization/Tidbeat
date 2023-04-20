@@ -86,7 +86,7 @@
                 <h2 class="d-flex">@Localizer["songs"]</h2>
                 @foreach (var item in ViewBag.Result.Tracks.Items)
                 {
-                    <a href="@Url.Action("Details", "Songs", new { id = item.Id })" id="@item.Uri" class="hover-background-grey text-decoration-none text-black border border-3 border-primary rounded mt-2 d-flex  mx-2 mx-md-5">
+                    <a href="@Url.Action("Details", "Songs", new { id = item.Id })" id="@item.Uri" class="hover-background-grey text-decoration-none text-black border-3 border-primary rounded mt-2 d-flex mx-2 mx-md-5" style="box-shadow: 0 8px 15px -8px rgba(0, 0, 0, 0.4);">
                         @if (item.Album.Images.Count != 0) {
                             <img class="align-self-center"src="@item.Album.Images[0].Url" alt="@item.Album.Name" width="70" height="70">
                         } else {

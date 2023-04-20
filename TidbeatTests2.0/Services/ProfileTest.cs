@@ -12,6 +12,8 @@ using Tidbeat.Data;
 using Tidbeat.Models;
 using Tidbeat.Services;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 
 namespace TidbeatTests2._0.Services
 {
@@ -46,8 +48,10 @@ namespace TidbeatTests2._0.Services
         [Fact]
         public async Task DetailsProfilesControllerTestAsync()
         {
+            var mockEnv = new Mock<IWebHostEnvironment>();
+            mockEnv.Setup(m => m.EnvironmentName).Returns("Test");
             // Arrange
-            var controller = new ProfilesController(_context, _userManagerMock.Object);
+            var controller = new ProfilesController(_context, _userManagerMock.Object, mockEnv.Object);
             var httpContext = new DefaultHttpContext();
             var tempData = new TempDataDictionary(httpContext, Mock.Of<ITempDataProvider>());
             controller.TempData = tempData;
@@ -59,6 +63,8 @@ namespace TidbeatTests2._0.Services
             var viewResult = Assert.IsAssignableFrom<IActionResult>(result);
 
         }
+
+        
     }
 
 }

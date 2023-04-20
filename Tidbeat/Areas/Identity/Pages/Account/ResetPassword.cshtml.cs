@@ -23,7 +23,7 @@ namespace Tidbeat.Areas.Identity.Pages.Account
     /// </summary>
     public class ResetPasswordModel : PageModel
     {
-        private static string Pattern = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&_-])[A-Za-z\\d@$!%*?&_-]{6,}$";
+        private static string Pattern = RegisterModel.Pattern;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IStringLocalizer<ResetPasswordModel> _localizer;
 
@@ -135,7 +135,8 @@ namespace Tidbeat.Areas.Identity.Pages.Account
                     // Don't reveal that the user does not exist
                     return RedirectToPage("./ResetPasswordConfirmation");
                 }
-
+                _userManager.PasswordValidators.Clear();
+                _userManager.PasswordValidators.Add(new CustomPasswordValidator<ApplicationUser>());
                 var result = await _userManager.ResetPasswordAsync(user, Input.Code, Input.Password);
                 if (result.Succeeded)
                 {

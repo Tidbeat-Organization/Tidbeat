@@ -101,8 +101,9 @@
             xhr.onload = function () {
                 if (xhr.status === 200) {
                     var response = xhr.responseText;
-                    averageDiv.innerHTML = response;
-                    console.log(response);
+                    var average = parseFloat(response).toFixed(2);
+                    averageDiv.innerHTML = average;
+                    console.log(average);
                 } else {
                     console.log('Request failed.  Returned status of ' + xhr.status);
                 }

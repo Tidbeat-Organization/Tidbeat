@@ -123,11 +123,29 @@
   <data name="admin" xml:space="preserve">
     <value>Administrador</value>
   </data>
+  <data name="adm_action" xml:space="preserve">
+    <value>Defenições de Administrador</value>
+  </data>
+  <data name="apply" xml:space="preserve">
+    <value>Aplicar</value>
+  </data>
+  <data name="are_you_sure" xml:space="preserve">
+    <value>Têns a certeza</value>
+  </data>
+  <data name="banned_for" xml:space="preserve">
+    <value>Banido por</value>
+  </data>
+  <data name="ban_reason" xml:space="preserve">
+    <value>Motivo do banimento</value>
+  </data>
   <data name="birth_date" xml:space="preserve">
     <value>Data de Nascimento</value>
   </data>
   <data name="children" xml:space="preserve">
     <value>Crianças</value>
+  </data>
+  <data name="choose_a_role" xml:space="preserve">
+    <value>Escolha um papel</value>
   </data>
   <data name="classical" xml:space="preserve">
     <value>Clássica</value>
@@ -143,6 +161,15 @@
   </data>
   <data name="dance" xml:space="preserve">
     <value>Dança</value>
+  </data>
+  <data name="days" xml:space="preserve">
+    <value>Dias</value>
+  </data>
+  <data name="delete_photo" xml:space="preserve">
+    <value>Apagar Foto</value>
+  </data>
+  <data name="delete_user" xml:space="preserve">
+    <value>Apagar utilizador</value>
   </data>
   <data name="disco" xml:space="preserve">
     <value>Disco</value>
@@ -177,8 +204,14 @@
   <data name="gender" xml:space="preserve">
     <value>Género</value>
   </data>
+  <data name="give_role" xml:space="preserve">
+    <value>Dar um papel</value>
+  </data>
   <data name="hip-hop" xml:space="preserve">
     <value>Hip Hop</value>
+  </data>
+  <data name="hours" xml:space="preserve">
+    <value>Horas</value>
   </data>
   <data name="indian" xml:space="preserve">
     <value>Indiana</value>
@@ -186,17 +219,32 @@
   <data name="k-pop" xml:space="preserve">
     <value>K-Pop</value>
   </data>
+  <data name="leave" xml:space="preserve">
+    <value>Sair</value>
+  </data>
   <data name="male" xml:space="preserve">
     <value>Masculino</value>
   </data>
   <data name="metal" xml:space="preserve">
     <value>Metal</value>
   </data>
+  <data name="minutes" xml:space="preserve">
+    <value>Minutos</value>
+  </data>
   <data name="moderator" xml:space="preserve">
     <value>Moderador</value>
   </data>
+  <data name="mod_action" xml:space="preserve">
+    <value>Acções de Moderação</value>
+  </data>
+  <data name="months" xml:space="preserve">
+    <value>Meses</value>
+  </data>
   <data name="my_posts" xml:space="preserve">
     <value>Meus posts</value>
+  </data>
+  <data name="name" xml:space="preserve">
+    <value>Nome</value>
   </data>
   <data name="nation" xml:space="preserve">
     <value>País</value>
@@ -254,5 +302,17 @@
   </data>
   <data name="textp-otheruser" xml:space="preserve">
     <value>Pessoas Que Segue</value>
+  </data>
+  <data name="user_data" xml:space="preserve">
+    <value>Dados de utilizador</value>
+  </data>
+  <data name="weeks" xml:space="preserve">
+    <value>Semanas</value>
+  </data>
+  <data name="why_are_you_deleting_this_user" xml:space="preserve">
+    <value>Porque está a eliminar este utilizador</value>
+  </data>
+  <data name="years" xml:space="preserve">
+    <value>Anos</value>
   </data>
 </root>
