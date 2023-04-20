@@ -12,13 +12,7 @@ using Tidbeat.Data;
 namespace Tidbeat.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-<<<<<<<< HEAD:Tidbeat/Migrations/20230419112610_Sprint4Final.Designer.cs
-    [Migration("20230419112610_Sprint4Final")]
     partial class Sprint4Final
-========
-    [Migration("20230419181327_Initial")]
-    partial class Initial
->>>>>>>> dev:Tidbeat/Migrations/20230419181327_Initial.Designer.cs
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
