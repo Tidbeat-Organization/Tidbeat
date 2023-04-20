@@ -274,7 +274,7 @@
                     }
                 </div>
                 <div> <span class="text-primary">@Localizer["gender"]:</span> @Localizer[user.Gender]</div>
-                <div> <span class="text-primary">@Localizer["birth_date"]:</span> @user.BirthdayDate.Date.ToShortDateString()</div>
+                <div> <span class="text-primary">@Localizer["birth_date"]:</span> @user.BirthdayDate.Date.ToString("dd/MM/yyyy")</div>
                 <div><span class="text-primary">@Localizer["favorite_genre"]:</span> @Localizer[user.FavoriteGenre ?? ""]</div>
                 <div><span class="text-primary">@Localizer["nation"]:</span> @user.Country</div>
             </div>
@@ -358,12 +358,12 @@
                         }
                     }
                     else
-                    { 
-                        @Localizer["no_followies"];
+                    {
+                        @(ViewBag.CurrentUser != null && ViewBag.CurrentUser.Id == Model.Id ? Localizer["no_followies"] : Localizer["no_followies_otheruser"])
                     }
                 }else
                 {
-                    @Localizer["no_followies"];
+                    @(ViewBag.CurrentUser != null && ViewBag.CurrentUser.Id == Model.Id ? Localizer["no_followies"] : Localizer["no_followies_otheruser"])
                 }
             </div>
         </div>
@@ -393,12 +393,12 @@
 
                     } else 
                     {
-                        @Localizer["no_followers"];
+                        @(ViewBag.CurrentUser != null && ViewBag.CurrentUser.Id == Model.Id ? Localizer["no_followers"] : Localizer["no_followers_otheruser"])
                     }
 
                 }else
                 {
-                    @Localizer["no_followers"];
+                    @(ViewBag.CurrentUser != null && ViewBag.CurrentUser.Id == Model.Id ? Localizer["no_followers"] : Localizer["no_followers_otheruser"])
                 }
             </div>
         </div>
@@ -406,16 +406,22 @@
     <!--All posts goes here-->
     <div class="col-lg-6 col-md-12 mt-5 pt-5 scrollable-posts">
         <div class="d-flex justify-content-center mb-2">
-            <div class="fs-3 me-4">@Localizer["my_posts"]</div>
+            <div class="fs-3 me-4">@(
+                ViewBag.CurrentUser != null && ViewBag.CurrentUser.Id == Model.Id ? 
+                             Localizer["my_posts"] :
+                            (Localizer["my_posts_otheruser"].Value + " " + (Model.FirstName().Length > 10 ? Model.FirstName().Substring(0, 10) + "..." : Model.FirstName())))
+            </div>
         </div>
         @if (allPosts.Count == 0)
         {
             <div>@Localizer["first_post"]</div>
             <img src="~/images/NoPostsImage.png" height="120" class="mt-5" />
         }
+        @if (User.Identity.IsAuthenticated && ViewBag.CurrentUser.Id == Model.Id) {
             <a class="bottom-0 end-0 mt-3 me-4 mb-4 btn btn-primary post-btn-center-lg" asp-controller="Posts" asp-action="Create">
                 @Localizer["create_post"]
             </a>
+        }
         @foreach (Post post in allPosts)
         {
             <a class="text-decoration-none text-black" href="@Url.Action("Details", "Posts", new { id = post.PostId })">
