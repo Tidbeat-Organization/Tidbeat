@@ -33,7 +33,7 @@ namespace Tidbeat.Controllers
 
         // GET: Reports
         [Authorize(Roles = "Moderator,Admin,Admin")]
-        public async Task<IActionResult> Index([FromQuery] string name, [FromQuery] string reason, [FromQuery] string type, [FromQuery] string state, [FromQuery] string sort)
+        public async Task<IActionResult> Index([FromQuery] string name, [FromQuery] string reason, [FromQuery] string type, [FromQuery] string state, [FromQuery] string sort = "new")
         {
             if (_context.Report != null)
             {
