@@ -112,16 +112,16 @@
                                             <div id="admin-definitions-edit-full-name-reset-button" class="bi bi-arrow-clockwise text-primary fs-5 btn hover-background-grey px-1 py-0 d-none"></div>
                                             <div id="admin-definitions-edit-full-name-button" class="bi bi-pencil-fill text-primary me-2 btn hover-background-grey px-1 py-0"></div>
                                             <input id="admin-definitions-full-name-input" disabled type="text" class="form-control" id="user-name" name="name" value="@Model.FullName" />
-                                            <input id="admin-definitions-full-name-hidden-input" type="hidden" />
+                                            <input id="admin-definitions-full-name-hidden-input" type="hidden" value="@Model.FullName"/>
                                         </div>
                                     </div>
                                     <div class="mb-3 my-4 position-relative">
                                         <div id="admin-definitions-edit-about-me-reset-button" class="bi bi-arrow-clockwise text-primary fs-5 btn hover-background-grey px-1 py-0 position-absolute start-0 d-none"></div>
                                         <div id="admin-definitions-edit-about-me-button" class="bi bi-pencil-fill text-primary me-2 btn hover-background-grey position-absolute start-0 px-1 py-0"></div>
                                         <label for="user-about" class="form-label" style="color: #6610F2;">@Localizer["about_me"]:</label>
-                                        <div id="admin-definitions-about-me-div" class="border text-start p-2" style="height: 200px; border-radius: 15px;">@Html.Raw(Model.AboutMe)</div>
+                                        <div id="admin-definitions-about-me-div" class="border text-start p-2" style="height: 200px; border-radius: 15px; background-color: rgb(233, 236, 239)">@Html.Raw(Model.AboutMe)</div>
                                         <textarea asp-for="AboutMe" id="postcreate" class="form-control rich-text-index-profile" style="border: 1.5px solid #6610F2; border-radius: 15px;" placeholder="@Localizer["about_me"]..."></textarea>
-                                        <input type="hidden" id="admin-definitions-about-me-hidden-input" />
+                                        <input type="hidden" id="admin-definitions-about-me-hidden-input" value="@Model.AboutMe" />
                                     </div>
                                 </form>
                             </div>
@@ -198,6 +198,9 @@
                     </div>
                 </div>
                 <div class="modal-footer">
+                    <div id="admin-definitions-spinner" class="spinner-border text-primary d-none" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">@Localizer["leave"]</button>
                     <button type="button" class="btn btn-primary" id="edit-user-submit">@Localizer["apply"]</button>
                 </div>
@@ -455,6 +458,22 @@
         $('#user-id').val(userId);
         //$('#admin-definitions-full-name-input').val('@Model.FullName');
         $('#user-about').val();
+        const editFullNameResetButton = document.getElementById('admin-definitions-edit-full-name-reset-button');
+        if (!editFullNameResetButton.classList.contains('d-none')) {
+            $('#admin-definitions-edit-full-name-reset-button').click();
+        }
+        const editAboutMeResetButton = document.getElementById('admin-definitions-edit-about-me-reset-button');
+        if (!editAboutMeResetButton.classList.contains('d-none')) {
+            $('#admin-definitions-edit-about-me-reset-button').click();
+        }
+        const editGiveRoleResetButton = document.getElementById('admin-definitions-edit-give-role-reset-button');
+        if (editGiveRoleResetButton && !editGiveRoleResetButton.classList.contains('d-none')) {
+            $('#admin-definitions-edit-give-role-reset-button').click();
+        }
+        $('#admin-definitions-give-role-select').val('@Model.Role');
+        $('#ban-for').val('');
+        $('#reason-for-ban-input').val('');
+        $('#reason-for-ban').hide();
         $('#edit-user-modal').modal('show');
         let toxDiv = document.querySelector('.tox');
         if (toxDiv) {
@@ -575,6 +594,7 @@
     // Submit form data to server when submit button is clicked
     $('#edit-user-submit').on('click', function (e) {
         e.preventDefault();
+        spinnerStart();
         var userId = $('#user-id').val();
         var name = $('#admin-definitions-full-name-input').val();
         let editor = tinymce.get('postcreate');
@@ -613,14 +633,47 @@
                 return response;
             })
             .then(result => {
+                spinnerSuccess();
                 $('#edit-user-modal').modal('hide');
                 location.reload();
             })
             .catch(error => {
+                spinnerFailed();
                 console.error('There was a problem with the fetch request:', error);
             });
 
     });
+
+    function spinnerStart() {
+        var spinner = document.getElementById("admin-definitions-spinner");
+        spinner.classList.remove('d-none');
+    }
+
+    function spinnerSuccess() {
+        var spinner = document.getElementById("admin-definitions-spinner");
+        spinner.classList.remove('spinner-border');
+        spinner.classList.add('bi');
+        spinner.classList.add('bi-check');
+        spinner.classList.add('fs-4');
+        spinner.classList.add('text-success');
+    }
+
+    function spinnerFailed() {
+        var spinner = document.getElementById("admin-definitions-spinner");
+        spinner.classList.remove('spinner-border');
+        spinner.classList.add('bi');
+        spinner.classList.add('bi-x');
+        spinner.classList.add('fs-4');
+        spinner.classList.add('text-danger');
+        setTimeout(() => {
+            spinner.classList.remove('bi');
+            spinner.classList.remove('bi-x');
+            spinner.classList.remove('fs-4');
+            spinner.classList.remove('text-danger');
+            spinner.classList.add('d-none');
+            spinner.classList.add('spinner-border');
+        }, 3000);
+    }
 
     $("#delete-user").on('click', function() {
         let confirmUserDeletionDiv = document.getElementById("confirm-user-deletion-div");
@@ -639,6 +692,7 @@
     });
 
     $("#confirm-user-deletion-button").on('click', function () {
+        spinnerStart();
         var userId = $('#user-id').val();
         var whyAreYouDeletingThisUser = document.getElementById('why-are-you-deleting-user-input');
         const reason = whyAreYouDeletingThisUser.value;
@@ -660,9 +714,11 @@
         })
         .then(result => {
             //$('#edit-user-modal').modal('hide');
+            spinnerSuccess();
             location.href = "/";
         })
         .catch(error => {
+            spinnerFailed();
             console.error('There was a problem with the fetch request:', error);
         });
     });
