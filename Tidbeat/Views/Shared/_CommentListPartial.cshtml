@@ -4,7 +4,7 @@
 @inject IViewLocalizer Localizer;
 
 @foreach (var comment in Model) {
-<div class="form-control d-flex flex-row">
+<div class="form-control d-flex flex-row" style="margin-top: 7px;">
     <div class="align-content-end flex-column w-25 border-end">
             <div class="fs-7">@Localizer["created_in"]: @comment.CreationDate.Date.ToString("dd/MM/yyyy")</div>
         <div class="font-weigth-bold d-flex justify-content-center">
