@@ -45,15 +45,13 @@ namespace Tidbeat.Controllers
             _localizer = localizer;
         }
 
-        private static Expression<Func<Post, bool>> PostPasses(string name, string genre, string order)
-        {
+        private static Expression<Func<Post, bool>> PostPasses(string name, string genre, string order) {
             name = (name == null) ? "" : name;
-            return p => (p.Song.Name.Contains(name))
-                     || (p.Band.Name.Contains(name))
-                     || (p.Title.Contains(name))
-                     || (string.IsNullOrEmpty(genre))
-                     || (string.IsNullOrEmpty(order));
+
+            return p => ((string.IsNullOrEmpty(name) || p.Title.Contains(name) || p.Band.Name.Contains(name) || p.Song.Name.Contains(name))
+                        && (string.IsNullOrEmpty(genre) || p.Song.Gener.Contains(genre) || p.Band.Gener.Contains(genre)));
         }
+
 
 
         /// <summary>
@@ -86,7 +84,6 @@ namespace Tidbeat.Controllers
                 .Include(p => p.Song)
                 .Include(p => p.Band)
                 .Where(PostPasses(name, genre, order))
-                .Take(offset)
                 .ToListAsync();
 
             /* Console.WriteLine("[ Before Ordering ]");
@@ -95,7 +92,7 @@ namespace Tidbeat.Controllers
                  Console.WriteLine($"Initial Result: Name({result.Title}), Date({result.CreationDate})");
              }*/
             if (!string.IsNullOrEmpty(genre)) {
-            results = results.Where(p => (p.Band?.Gener?.Contains(genre) ?? false) || (p.Song?.Gener?.Contains(genre) ?? false)).ToList(); 
+                results = results.Where(p => (p.Band?.Gener?.Contains(genre) ?? false) || (p.Song?.Gener?.Contains(genre) ?? false)).ToList(); 
             }
             switch (order)
             {
@@ -128,7 +125,7 @@ namespace Tidbeat.Controllers
                 var currentUrl = string.Format("{0}://{1}", request.Scheme, request.Host);
                 TempData["Friends"] = await UtilityClass.SideBarAsync(user.Id, currentUrl);
             }
-            return View(results.Take(20));
+            return View(results.Take(offset));
         }
 
         public async Task<IActionResult> getData(string name, string genre, string order, int offset = 0)
