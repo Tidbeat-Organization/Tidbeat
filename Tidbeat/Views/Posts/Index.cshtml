@@ -38,17 +38,17 @@
             <div class="filter-height-rectifier mb-2 ms-2 ms-md-5 rec-posts-filter-label">@Localizer["gender"]:</div>
             <div class="filter-height-rectifier mb-2 ms-2 w-100">
                 <select class="form-control w-100 border-primary" id="filter-genre-input" name="filter-genre-input" style="border: 1.5px solid #6610F2; border-radius: 15px;">
-                            <!option selected value="">@Localizer["pick_gender"]</!option>
-                            <!option value="rock" @(genre == "rock" ? "selected" : "")>@Localizer["rock"]</!option>
+                    <!option selected value="">@Localizer["pick_gender"]</!option>
+                    <!option value="rock" @(genre == "rock" ? "selected" : "")>@Localizer["rock"]</!option>
                     <!option value="pop" @(genre == "pop" ? "selected" : "")>@Localizer["pop"]</!option>
                     <!option value="kids" @(genre == "kids" ? "selected" : "")>@Localizer["children"]</!option>
                     <!option value="funk" @(genre == "funk" ? "selected" : "")>@Localizer["funk"]</!option>
                     <!option value="classical" @(genre == "classical" ? "selected" : "")>@Localizer["classical"]</!option>
                     <!option value="country" @(genre == "country" ? "selected" : "")>@Localizer["country"]</!option>
-                            <!option value="dance" @(genre == "dance" ? "selected" : "")>@Localizer["dance"]</!option>
-                            <!option value="metal" @(genre == "metal" ? "selected" : "")>@Localizer["metal"]</!option>
+                    <!option value="dance" @(genre == "dance" ? "selected" : "")>@Localizer["dance"]</!option>
+                    <!option value="metal" @(genre == "metal" ? "selected" : "")>@Localizer["metal"]</!option>
                     <!option value="disco" @(genre == "disco" ? "selected" : "")>@Localizer["disco"]</!option>
-                            <!option value="folk" @(genre == "folk" ? "selected" : "")>@Localizer["folk"]</!option>
+                    <!option value="folk" @(genre == "folk" ? "selected" : "")>@Localizer["folk"]</!option>
                     <!option value="hip-hop" @(genre == "hip-hop" ? "selected" : "")>@Localizer["hip_hop"]</!option>
                     <!option value="indian" @(genre == "indian" ? "selected" : "")>@Localizer["indian"]</!option>
                     <!option value="k-pop" @(genre == "k-pop" ? "selected" : "")>@Localizer["k_pop"]</!option>
@@ -56,7 +56,7 @@
                     <!option value="piano" @(genre == "piano" ? "selected" : "")>@Localizer["piano"]</!option>
                     <!option value="reggae" @(genre == "reggae" ? "selected" : "")>@Localizer["reggae"]</!option>
                     <!option value="techno" @(genre == "techno" ? "selected" : "")>@Localizer["techno"]</!option>
-                        </select>
+                </select>
             </div>
             <div class="filter-height-rectifier mb-2 ms-2 ms-md-5 rec-posts-filter-label me-2">@Localizer["order"]:</div>
             <div class="filter-height-rectifier mb-2 ms-2 w-100">
@@ -104,18 +104,18 @@
         let inputOrder = document.getElementById("filter-order-input");
 
         let path = window.location.href.split("?")[0];
-        if (inputName.value || inputGenre.value || inputOrder.value) {
-            path+="?";
+        
+        path+="?";
 
-            let params = new URLSearchParams({
-                name: inputName.value,
-                genre: inputGenre.value,
-                order: inputOrder.value
-            }).toString();
+        let params = new URLSearchParams({
+            name: inputName.value,
+            genre: inputGenre.value,
+            order: inputOrder.value
+        }).toString();
 
-            path += params;
-            window.location.href = path;
-        }
+        path += params;
+        window.location.href = path;
+        
 
         event.preventDefault();
     }
