@@ -117,10 +117,133 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="all_reasons" xml:space="preserve">
+    <value>Todas as razões</value>
+  </data>
+  <data name="all_states" xml:space="preserve">
+    <value>Todos os estados</value>
+  </data>
+  <data name="all_types" xml:space="preserve">
+    <value>Todos os tipos</value>
+  </data>
+  <data name="Closed" xml:space="preserve">
+    <value>Fechada</value>
+  </data>
+  <data name="closedf" xml:space="preserve">
+    <value>Fechada</value>
+  </data>
+  <data name="Comment" xml:space="preserve">
+    <value>Comentário</value>
+  </data>
+  <data name="commentf" xml:space="preserve">
+    <value>Comentário</value>
+  </data>
+  <data name="Created" xml:space="preserve">
+    <value>Criada</value>
+  </data>
+  <data name="createdf" xml:space="preserve">
+    <value>Criada</value>
+  </data>
   <data name="details" xml:space="preserve">
     <value>Detalhes</value>
   </data>
+  <data name="filters" xml:space="preserve">
+    <value>Filtros</value>
+  </data>
+  <data name="GoreContent" xml:space="preserve">
+    <value>Conteúdo Gore</value>
+  </data>
+  <data name="goref" xml:space="preserve">
+    <value>Gore</value>
+  </data>
+  <data name="hatef" xml:space="preserve">
+    <value>Discurso de ódio</value>
+  </data>
+  <data name="HateSpeech" xml:space="preserve">
+    <value>Discurso de Ódio</value>
+  </data>
+  <data name="id" xml:space="preserve">
+    <value>ID</value>
+  </data>
+  <data name="InnappropriateBehaviour" xml:space="preserve">
+    <value>Comportamento Inapropriado</value>
+  </data>
+  <data name="innappropriatef" xml:space="preserve">
+    <value>Comportamento inapropriado</value>
+  </data>
+  <data name="newf" xml:space="preserve">
+    <value>Mais recentes primeiro</value>
+  </data>
   <data name="not_found" xml:space="preserve">
     <value>Não foram encontradas denúncias com base nesses critérios.</value>
+  </data>
+  <data name="oldf" xml:space="preserve">
+    <value>Mais antigas primeiro</value>
+  </data>
+  <data name="Open" xml:space="preserve">
+    <value>Em Aberto</value>
+  </data>
+  <data name="openf" xml:space="preserve">
+    <value>Em aberto</value>
+  </data>
+  <data name="Other" xml:space="preserve">
+    <value>Outro</value>
+  </data>
+  <data name="otherf" xml:space="preserve">
+    <value>Outro</value>
+  </data>
+  <data name="postf" xml:space="preserve">
+    <value>Post</value>
+  </data>
+  <data name="reason" xml:space="preserve">
+    <value>Razão da denúncia:</value>
+  </data>
+  <data name="reported_user" xml:space="preserve">
+    <value>Utilizador denunciado</value>
+  </data>
+  <data name="reports" xml:space="preserve">
+    <value>Denúncias</value>
+  </data>
+  <data name="report_date" xml:space="preserve">
+    <value>Data da denúncia</value>
+  </data>
+  <data name="report_reason" xml:space="preserve">
+    <value>Razão da denúncia</value>
+  </data>
+  <data name="report_state" xml:space="preserve">
+    <value>Estado da denúncia</value>
+  </data>
+  <data name="report_type" xml:space="preserve">
+    <value>Tipo de denúncia</value>
+  </data>
+  <data name="search" xml:space="preserve">
+    <value>Procurar</value>
+  </data>
+  <data name="see" xml:space="preserve">
+    <value>Ver</value>
+  </data>
+  <data name="SexualContent" xml:space="preserve">
+    <value>Conteúdo Sexual</value>
+  </data>
+  <data name="sexualf" xml:space="preserve">
+    <value>Conteúdo sexual</value>
+  </data>
+  <data name="sort" xml:space="preserve">
+    <value>Ordenar por:</value>
+  </data>
+  <data name="state" xml:space="preserve">
+    <value>Estado da denúncia:</value>
+  </data>
+  <data name="type" xml:space="preserve">
+    <value>Tipo de denúncia:</value>
+  </data>
+  <data name="User" xml:space="preserve">
+    <value>Utilizador</value>
+  </data>
+  <data name="userf" xml:space="preserve">
+    <value>Utilizador</value>
+  </data>
+  <data name="user_name" xml:space="preserve">
+    <value>Nome do utilizador:</value>
   </data>
 </root>
