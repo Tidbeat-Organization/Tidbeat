@@ -758,6 +758,7 @@
                 };
                domChange.removeAttribute("onclick");
                domChange.onclick = unfollow;
+                $("#FollowUpButton").attr('title', "@Localizer["unfollow"]").tooltip('_fixTitle').tooltip('show');
             })
             .catch(error => {
                 // Handle errors here
@@ -779,6 +780,7 @@
                 domChange.onmouseout = null;
                 domChange.removeAttribute("onclick");
                 domChange.onclick = follow;
+                $("#FollowUpButton").attr('title', "@Localizer["follow"]").tooltip('_fixTitle').tooltip('show');
             })
             .catch(error => {
                 // Handle errors here
