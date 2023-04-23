@@ -787,6 +787,20 @@
                 console.error(error);
             });
     }
+
+    const element = document.getElementById('FollowUpButton');
+    if (element) { 
+        if (element.classList.contains('bi') && element.classList.contains('bi-person-check')) {
+        // The element has the Bootstrap icon you are looking for
+            element.onmouseover = function () {
+                element.classList.replace('bi-person-check', 'bi-person-dash');
+            };
+        
+            element.onmouseout = function () {
+                element.classList.replace('bi-person-dash', 'bi-person-check');
+            };
+        }
+    }
     document.getElementById("optionAboutMe").classList.add('bg-primary')
     document.getElementById("optionMusicsFav").classList.remove('bg-primary')
     document.getElementById("optionFollowers").classList.remove('bg-primary')
