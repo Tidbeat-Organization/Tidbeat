@@ -242,21 +242,21 @@
                     }
                     @if (tempval != null)
                     {
-                        <a formmethod="get" asp-area="Identity" asp-page="/Account/Manage/Index" class="align-self-center mr-auto text-primary hover-background-grey rounded text-decoration-none px-2 pt-1 pb-1 bi bi-pencil-fill"></a>
+                        <a formmethod="get" asp-area="Identity" asp-page="/Account/Manage/Index" class="align-self-center mr-auto text-primary hover-background-grey rounded text-decoration-none px-2 pt-1 pb-1 bi bi-pencil-fill" data-toggle="tooltip" data-placement="top" title="@Localizer["edit_profile"]"></a>
                     } else {
                         if (User.Identity.IsAuthenticated) {
                             <div>
-                                <button class="bi bi-exclamation-triangle-fill text-danger fs-4 hover-background-grey py-0 px-1 btn" data-bs-toggle="modal" data-bs-target="#report-modal" data-id="@Model.Id" data-type="User"></button>
+                                <button class="bi bi-exclamation-triangle-fill text-danger fs-4 hover-background-grey py-0 px-1 btn" data-bs-toggle="modal" data-bs-target="#report-modal" data-id="@Model.Id" data-type="User" data-toggle="tooltip" data-placement="top" title="@Localizer["report"]"></button>
                             </div>
                         }
                     }
                     @if (((User.IsInRole("Moderator") && ViewBag.CurrentUser.Id == Model.Id) || (User.IsInRole("Admin")) && ViewBag.CurrentUser.Id == Model.Id))
                     {
-                        <a class="btn bi bi-archive-fill text-primary fs-3 py-0 hover-background-grey px-1 py-0" href="@Url.Action("Index", "Reports")"></a>
+                        <a class="btn bi bi-archive-fill text-primary fs-3 py-0 hover-background-grey px-1 py-0" href="@Url.Action("Index", "Reports")" data-toggle="tooltip" data-placement="top" title="@Localizer["report_list"]"></a>
                     }
                     <button type="button" class="btn-edit-user ms-auto" data-user-id="@Model.Id">
                         @if (((User.IsInRole("Moderator") && Model.Role != RoleType.Admin) || User.IsInRole("Admin")) && ViewBag.CurrentUser.Id != Model.Id) {
-                            <div class="btn bi bi-pencil-square text-danger fs-3 py-0 hover-background-grey px-1 py-0"></div>
+                            <div class="btn bi bi-pencil-square text-danger fs-3 py-0 hover-background-grey px-1 py-0"  data-toggle="tooltip" data-placement="top" title="@Localizer["admin_menu"]"></div>
                         }
                         <span class="visually-hidden">Edit User</span>
                     </button>
@@ -264,17 +264,8 @@
                 <div class="d-flex">
                     <h1 class="text-primary">@user.FullName</h1>
                     @if (!ViewBag.IsCurrentUser && User.Identity?.IsAuthenticated) {
-                        <a class="align-self-center btn bi bi-chat-right-text fs-4 py-0" href="@Url.Action("StartTwoPersonConversation", "Conversations", new { currentUserId = ViewBag.CurrentUser.Id, otherUserId = Model.Id })"></a>
-                        <div id="FollowUpButton" class="align-self-center btn bi @if (ViewBag.Follow != null && ViewBag.Follow){var text="bi-person-check";
-                    @text
-;}else{var text="bi-person-plus";
-                    @text
-;} fs-4 py-0" onclick="@if (ViewBag.Follow != null && ViewBag.Follow){var text = "unfollow()";
-                    @text
-;}else{var text = "follow()";
-                    @text
-;}"></div>
-                    }
+                        <a class="align-self-center btn bi bi-chat-right-text fs-4 py-0" href="@Url.Action("StartTwoPersonConversation", "Conversations", new { currentUserId = ViewBag.CurrentUser.Id, otherUserId = Model.Id })" data-toggle="tooltip" data-placement="top" title="@Localizer["chat"]"></a>
+                        <div id="FollowUpButton" data-toggle="tooltip" data-placement="top" title="@if (ViewBag.Follow != null && ViewBag.Follow){@Localizer["unfollow"]}else{@Localizer["follow"]}" class="align-self-center btn bi @if (ViewBag.Follow != null && ViewBag.Follow){var text="bi-person-check";@text;}else{var text="bi-person-plus";@text;} fs-4 py-0" onclick="@if (ViewBag.Follow != null && ViewBag.Follow){var text = "unfollow()";@text;}else{var text = "follow()";@text;}"></div>}
                 </div>
                 <div> <span class="text-primary">@Localizer["gender"]:</span> @Localizer[user.Gender]</div>
                 <div> <span class="text-primary">@Localizer["birth_date"]:</span> @user.BirthdayDate.Date.ToString("dd/MM/yyyy")</div>

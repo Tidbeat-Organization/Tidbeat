@@ -42,7 +42,7 @@
                         {
                             @foreach (var item in ViewBag.songs)
                             {
-                                <option data-value="@item.Id" song-link="@item.Href" band-value="@item.Artists[0].Name">@item.Name</option>
+                                <option data-value="@item.Id" song-link="@item.Href" name-value="@item.Name" band-value="@item.Artists[0].Name">@item.Name by @item.Artists[0].Name</option>
                             }
 
                         }
@@ -92,11 +92,11 @@
                     <span style="color: #6610F2; font-weight: bold;">Link:&nbsp;</span><a id="SongLink" target="_blank" href="@{
                             if (ViewBag.chooseSong != null) {
                                 string url = $"https://open.spotify.com/track/{ViewBag.chooseSong.Id}";
-                                                                                    @url
+                                                                                            @url
                             }
                             else if (ViewBag.chooseBand != null) {
                                 string url = $"https://open.spotify.com/artist/{ViewBag.chooseBand.Id}";
-                                                                                    @url
+                                                                                            @url
                             }
                         }">
                         @if (ViewBag.chooseSong != null)
@@ -148,7 +148,7 @@
         const body = document.querySelector('body');
         function onInputSong() {
             var val = document.getElementById("SongIdInput");
-            var opts = document.getElementById('SongOptions').childNodes;
+            var opts = document.getElementById('SongOptions').children;
             var hiddenInput = document.getElementById("answerInputSong");
             var songLink = document.getElementById("SongLink");
             var bandInput = document.getElementById("Bandsinput");
@@ -158,11 +158,13 @@
             hiddenInput.value = "";
             songLink.textContent="";
             for (var i = 0; i < opts.length; i++) {
-                if (opts[i].innerText === val.value) {
+                let actualChild = opts[i];
+                let tempValue = actualChild.getAttribute('name-value');
+                if (tempValue === val.value) {
                     // An item was selected from the list!
                     // yourCallbackHere()
                     hiddenInput.value = opts[i].getAttribute('data-value');
-                    songLink.textContent = "Spotify - " + opts[i].innerText;
+                    songLink.textContent = "Spotify - " + opts[i].getAttribute('name-value');
                     songLink.setAttribute("href", "https://open.spotify.com/track/"+opts[i].getAttribute('data-value'));
                     //bandInput.value =opts[i].getAttribute('band-value');
                     boolCheck = false;
@@ -192,13 +194,14 @@
 
                         data.forEach(item => {
                             var option = document.createElement("option");
-                            option.innerText = item.name;
+                            option.innerText = item.name + " by " + item.artists[0].name;
                             option.setAttribute("data-value",item.id);
+                            option.setAttribute("name-value",item.name);
                             option.setAttribute("song-link", item.Href);
                             option.setAttribute("band-value",item.artists[0].name);
                                 option.onclick = function () {
                                     bandInput.disabled= true;
-                                    val.value = option.value;
+                                    val.value = option.getAttribute('name-value');
                                     options.style.display = 'none';
                                     hiddenInput.value = option.getAttribute('data-value');
                                     songLink.textContent = "Spotify - " + option.innerText;
