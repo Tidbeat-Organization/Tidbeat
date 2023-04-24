@@ -1,1 +1,1 @@
-search_result['227']=["topic_000000000000007D.html","ForgotPasswordModel Constructor","The constructor for the forgot password model."];
+search_result['227']=["topic_0000000000000060_props--.html","SetPasswordModel Properties",""];

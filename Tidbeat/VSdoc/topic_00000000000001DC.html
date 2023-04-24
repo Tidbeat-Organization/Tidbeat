@@ -4,7 +4,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="GENERATOR" content="VSdocman - documentation generator; https://www.helixoft.com" />
 	<link rel="icon" href="favicon.ico">
-	<title>Configurations.CreateStartingPosts Method</title>
+	<title>Post.Title Property</title>
 
 	<link rel="stylesheet" type="text/css" href="msdn2019/toc.css" />
 	<script src="msdn2019/toc.js"></script>
@@ -74,11 +74,11 @@ document.write(getCssCustomProperty('--headerTopCustomLineHtml'));
   </div>
 
 <div id="mainBody">
-		<h1 class="title">Configurations.CreateStartingPosts Method</h1>
+		<h1 class="title">Post.Title Property</h1>
         
 		<div class="metadata">
         Namespace:
-<a href="topic_00000000000001D7.html">Tidbeat</a>
+<a href="topic_0000000000000195.html">Tidbeat.Models</a>
 
 
 
@@ -89,7 +89,7 @@ document.write(getCssCustomProperty('--headerTopCustomLineHtml'));
 
        
        
-        <summary-info>This will create the starting posts for the application. Only use this method for testing purposes.</summary-info>
+        <summary-info>The post's title.</summary-info>
 
 
 
@@ -139,7 +139,7 @@ document.write(getCssCustomProperty('--headerTopCustomLineHtml'));
 				</div>
 				
 				<div class="codeSnippetCode codeVB">
-					<pre xml:space="preserve" class="brush: vb">Public Shared Function CreateStartingPosts( _&nbsp;<br />   ByVal <i>serviceProvider</i> As <a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/system.iserviceprovider">IServiceProvider</a> _&nbsp;<br />) As <a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/system.threading.tasks.task">Task</a></pre>			
+					<pre xml:space="preserve" class="brush: vb">&lt;Required(ErrorMessage = &quot;Por favor, adicione um título ao seu post.&quot;)&gt; _&nbsp;<br />&lt;DisplayName(&quot;Título&quot;)&gt; _&nbsp;<br />Public Property Title() As <a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/system.string">String</a></pre>			
 				</div>
 				<div class="codeSnippetCode codeNA">
 					<pre xml:space="preserve">This language is not supported or no code example is available.</pre>			
@@ -178,7 +178,7 @@ document.write(getCssCustomProperty('--headerTopCustomLineHtml'));
 				</div>
 				
 				<div class="codeSnippetCode codeCsharp">
-					<pre xml:space="preserve" class="brush: csharp">public static <a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/system.threading.tasks.task">Task</a> CreateStartingPosts(&nbsp;<br />   <a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/system.iserviceprovider">IServiceProvider</a> <i>serviceProvider</i>&nbsp;<br />)</pre>			
+					<pre xml:space="preserve" class="brush: csharp">[Required(ErrorMessage = &quot;Por favor, adicione um título ao seu post.&quot;)]&nbsp;<br />[DisplayName(&quot;Título&quot;)]&nbsp;<br />public <a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/system.string">string</a> Title {get; set;}</pre>			
 				</div>
 				<div class="codeSnippetCode codeNA">
 					<pre xml:space="preserve">This language is not supported or no code example is available.</pre>			
@@ -218,7 +218,7 @@ document.write(getCssCustomProperty('--headerTopCustomLineHtml'));
 				</div>
 				
 				<div class="codeSnippetCode codeCpp">
-					<pre xml:space="preserve" class="brush: cpp">public: &nbsp;<br />static <a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/system.threading.tasks.task">Task</a>^ CreateStartingPosts(&nbsp;<br />   <a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/system.iserviceprovider">IServiceProvider</a>^ <i>serviceProvider</i>&nbsp;<br />) </pre>			
+					<pre xml:space="preserve" class="brush: cpp">[Required(ErrorMessage = &quot;Por favor, adicione um título ao seu post.&quot;)]&nbsp;<br />[DisplayName(&quot;Título&quot;)]&nbsp;<br />public: &nbsp;<br />property <a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/system.string">String</a>^ Title {&nbsp;<br /> <a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/system.string">String</a>^ get( );&nbsp;<br /> void set(&nbsp;<br />   <a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/system.string">String</a>^ value&nbsp;<br /> );&nbsp;<br />}</pre>			
 				</div>
 				<div class="codeSnippetCode codeNA">
 					<pre xml:space="preserve">This language is not supported or no code example is available.</pre>			
@@ -257,7 +257,7 @@ document.write(getCssCustomProperty('--headerTopCustomLineHtml'));
 				</div>
 				
 				<div class="codeSnippetCode codeJScript">
-					<pre xml:space="preserve" class="brush: js">public static function CreateStartingPosts(&nbsp;<br />    <i>serviceProvider</i> : <a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/system.iserviceprovider">IServiceProvider</a>&nbsp;<br />) : <a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/system.threading.tasks.task">Task</a>;</pre>			
+					<pre xml:space="preserve" class="brush: js">public &nbsp;<br />   Required(ErrorMessage = &quot;Por favor, adicione um título ao seu post.&quot;)&nbsp;<br />   DisplayName(&quot;Título&quot;)&nbsp;<br />function get Title() : <a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/system.string">String</a>;&nbsp;<br />public &nbsp;<br />   Required(ErrorMessage = &quot;Por favor, adicione um título ao seu post.&quot;)&nbsp;<br />   DisplayName(&quot;Título&quot;)&nbsp;<br />function set Title(value : <a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/system.string">String</a>);</pre>			
 				</div>
 				<div class="codeSnippetCode codeNA">
 					<pre xml:space="preserve">This language is not supported or no code example is available.</pre>			
@@ -268,26 +268,10 @@ document.write(getCssCustomProperty('--headerTopCustomLineHtml'));
 	</div>
 
 
-<h4 class="subHeading">
-	Parameters</h4><dl paramName="serviceProvider" class="parameterList">
-	<dt>
-		<span class="parameter">
-			serviceProvider
-		</span>
-	</dt>
-	<dd>
-		<a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/system.iserviceprovider">IServiceProvider</a> 
-	</dd>
-</dl>
-<p>
-	The service provider used for getting a user manager and a database context. 
-</p>
-
-<p />
 
 	<h4 class="subHeading">
-		Return Value</h4>
-	<a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/system.threading.tasks.task">Task</a> 
+		Property Value</h4>
+	<a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/system.string">string</a> 
 	
 
 
@@ -376,11 +360,11 @@ document.write(getCssCustomProperty('--headerTopCustomLineHtml'));
 
 	<div id="seeAlsoSection" class="section">	
 		<div>
-			<a href="topic_00000000000001D8.html">Configurations Class</a><br />
+			<a href="topic_00000000000001DA.html">Post Class</a><br />
 
 
 
-<a href="topic_00000000000001D7.html">Tidbeat Namespace</a><br />
+<a href="topic_0000000000000195.html">Tidbeat.Models Namespace</a><br />
 
 
 			

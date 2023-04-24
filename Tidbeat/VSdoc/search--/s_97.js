@@ -1,1 +1,1 @@
-search_result['97']=["topic_0000000000000032.html","InputModel.Code Property","This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used\r\n    directly from your code. This API may change or be removed in future releases."];
+search_result['97']=["topic_000000000000002A_methods--.html","EnableAuthenticatorModel Methods",""];

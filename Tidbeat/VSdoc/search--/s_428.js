@@ -1,1 +1,1 @@
-search_result['428']=["topic_00000000000000E3.html","PostsController Constructor","Initializes needed services like the ApplicationDbContext, the UserManager, the SpotifyService and the StringLocalizer."];
+search_result['428']=["topic_00000000000000A7_props--.html","RegisterConfirmationModel Properties",""];

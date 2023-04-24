@@ -1,1 +1,1 @@
-search_result['444']=["topic_00000000000000EE_methods--.html","ProfilesController Methods",""];
+search_result['444']=["topic_00000000000000AD_props--.html","ResetPasswordModel Properties",""];

@@ -1,1 +1,1 @@
-var breadcrumbs=[['-1',"",""],['2',"Tidbeat Reference","topic_00000000000001DD.html"],['244',"Tidbeat.Controllers Namespace","topic_00000000000000B6.html"],['250',"CommentsController Class","topic_00000000000000BB.html"],['251',"CommentsController Constructor","topic_00000000000000BC.html"]];
+var breadcrumbs=[['-1',"",""],['2',"Tidbeat Reference","topic_0000000000000259.html"],['250',"Tidbeat.AuxilliaryClasses Namespace","topic_00000000000000B9.html"],['254',"SpotifyAux Class","topic_00000000000000BC.html"]];

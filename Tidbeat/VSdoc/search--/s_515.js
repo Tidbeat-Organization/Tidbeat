@@ -1,1 +1,1 @@
-search_result['515']=["topic_000000000000011A.html","GetRecentMessageDto Class","The DTO for getting recent messages."];
+search_result['515']=["topic_00000000000000C5_props--.html","CommentsController Properties",""];

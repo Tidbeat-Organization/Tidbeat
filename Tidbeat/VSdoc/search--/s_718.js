@@ -1,1 +1,1 @@
-search_result['718']=["topic_000000000000018D.html","AuthMessageSenderOptions Class","The options for the AuthMessageSender class."];
+search_result['718']=["topic_000000000000011D.html","RoleController.GivePermisson Method","The action which concedes a new role to the user."];

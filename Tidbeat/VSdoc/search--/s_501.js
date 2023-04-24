@@ -1,1 +1,1 @@
-search_result['501']=["topic_0000000000000113_methods--.html","DeleteMessageDto Methods",""];
+search_result['501']=["topic_00000000000000C0.html","Tidbeat.Controllers Namespace",""];

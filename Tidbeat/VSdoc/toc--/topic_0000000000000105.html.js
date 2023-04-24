@@ -1,1 +1,1 @@
-var breadcrumbs=[['-1',"",""],['2',"Tidbeat Reference","topic_00000000000001DD.html"],['358',"Tidbeat.Data Namespace","topic_0000000000000104.html"],['359',"ApplicationDbContext Class","topic_0000000000000105.html"]];
+var breadcrumbs=[['-1',"",""],['2',"Tidbeat Reference","topic_0000000000000259.html"],['260',"Tidbeat.Controllers Namespace","topic_00000000000000C0.html"],['335',"ProfilesController Class","topic_0000000000000102.html"],['337',"Methods","topic_0000000000000102_methods--.html"],['339',"GetBandsOfSongs Method","topic_0000000000000105.html"]];

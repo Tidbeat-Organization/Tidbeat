@@ -1,1 +1,1 @@
-search_result['743']=["topic_000000000000019A_events--.html","EmailSender Events",""];
+search_result['743']=["topic_0000000000000127.html","UsersController Constructor","The constructor for the UsersController."];

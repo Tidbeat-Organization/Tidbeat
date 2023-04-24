@@ -1,1 +1,1 @@
-search_result['754']=["topic_000000000000019F_methods--.html","GlobalizationService Methods",""];
+search_result['754']=["topic_000000000000012D.html","ApplicationDbContext Class","The database context for the application."];

@@ -1,1 +1,1 @@
-c['247']=[['248',"Details Method","topic_00000000000000BA.html",0],['249',"Index Method","topic_00000000000000B9.html",0]];
+c['247']=[['248',"OnGetAsync Method","topic_0000000000000067.html",0],['249',"OnPostAsync Method","topic_0000000000000068.html",0]];

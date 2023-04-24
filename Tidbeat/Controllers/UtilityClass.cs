@@ -4,8 +4,17 @@ using Tidbeat.Models;
 
 namespace Tidbeat.Controllers
 {
+    /// <summary>
+    /// A utility class used mainly for the Sidebar.
+    /// </summary>
     public static class UtilityClass
     {
+        /// <summary>
+        /// The method which fetches all the users the logged user follows.
+        /// </summary>
+        /// <param name="id">The id of the logged in user.</param>
+        /// <param name="currentURL">The current main URL.</param>
+        /// <returns>A list of users that the logged in user follows.</returns>
         public static async Task<List<ApplicationUser>> SideBarAsync(string id, string currentURL)
         {
             using (var client = new HttpClient())

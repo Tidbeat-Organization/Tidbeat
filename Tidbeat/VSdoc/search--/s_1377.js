@@ -1,0 +1,1 @@
+search_result['1377']=["topic_0000000000000252.html","Configurations Class","This is a class that contains all the starting configurations for the application."];

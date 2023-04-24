@@ -1,1 +1,1 @@
-search_result['230']=["topic_000000000000007F_attached_props--.html","InputModel Attached Properties",""];
+search_result['230']=["topic_0000000000000062.html","SetPasswordModel.Input Property","The input model for the set password page."];

@@ -1,1 +1,1 @@
-search_result['604']=["topic_0000000000000152.html","Comment Class","The comment model."];
+search_result['604']=["topic_00000000000000EE_vars--.html","ProfilesController Fields",""];

@@ -1,1 +1,1 @@
-search_result['645']=["topic_0000000000000167.html","IRating Interface","An interface in case you need to add a rating system to any kind of entity. If you need to do that, just create a new model and implement this interface.\r\nThen, make sure to turn that model into a DbS..."];
+search_result['645']=["topic_00000000000000FD.html","PostsController.Edit (Int32, Post) Method","Submits the edited post and stores in the database."];

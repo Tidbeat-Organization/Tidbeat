@@ -1,1 +1,1 @@
-search_result['229']=["topic_000000000000007F.html","InputModel Class","The input model for the forgot password page."];
+search_result['229']=["topic_0000000000000061.html","SetPasswordModel Constructor","The constructor for the set password model."];

@@ -1,1 +1,1 @@
-var breadcrumbs=[['-1',"",""],['2',"Tidbeat Reference","topic_00000000000001DD.html"],['399',"Tidbeat.Models Namespace","topic_0000000000000142.html"],['413',"Band Class","topic_000000000000014E.html"],['414',"Properties","topic_000000000000014E_props--.html"],['417',"Name Property","topic_0000000000000150.html"]];
+var breadcrumbs=[['-1',"",""],['2',"Tidbeat Reference","topic_0000000000000259.html"],['409',"Tidbeat.DTOs.Reports Namespace","topic_000000000000014F.html"],['410',"SetReportStatusDTO Class","topic_0000000000000150.html"]];

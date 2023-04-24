@@ -1,1 +1,1 @@
-search_result['186']=["topic_0000000000000068.html","Tidbeat.Areas.Identity.Pages.Account Namespace",""];
+search_result['186']=["topic_0000000000000054.html","ManageNavPages.ExternalLoginsNavClass Method","Gets the nav page class for the ExternalLogins."];

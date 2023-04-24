@@ -1,0 +1,1 @@
+search_result['1261']=["topic_000000000000020B.html","EmailSender Constructor","Initializes the needed services for the service."];

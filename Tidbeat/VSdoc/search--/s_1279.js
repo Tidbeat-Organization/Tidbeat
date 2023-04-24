@@ -1,0 +1,1 @@
+search_result['1279']=["topic_0000000000000213.html","IChatBeatService.GetConversation Method","Adds a new participant to a conversation.\r\nUNIMPLEMENTED: PREPARED FOR GROUP CONVERSATIONS"];

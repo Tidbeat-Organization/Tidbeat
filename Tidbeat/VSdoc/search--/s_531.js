@@ -1,1 +1,1 @@
-search_result['531']=["topic_0000000000000120.html","MessageDto.UserId Property","The id of the user."];
+search_result['531']=["topic_00000000000000CC.html","ConversationsController Constructor","Initializes needed services for the controller."];

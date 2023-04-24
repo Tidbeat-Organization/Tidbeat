@@ -1,0 +1,1 @@
+search_result['1272']=["topic_0000000000000211.html","IChatBeatService Interface","The chat beat service. This service is used to handle all the chat related logic."];

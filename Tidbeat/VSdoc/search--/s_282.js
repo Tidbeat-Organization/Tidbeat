@@ -1,1 +1,1 @@
-search_result['282']=["topic_0000000000000095_attached_props--.html","RegisterModel Attached Properties",""];
+search_result['282']=["topic_0000000000000073.html","ExternalLoginModel.ProviderDisplayName Property","The name of the external login provider: in our case, its Google."];

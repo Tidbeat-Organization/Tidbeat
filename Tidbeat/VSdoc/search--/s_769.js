@@ -1,1 +1,1 @@
-search_result['769']=["topic_00000000000001A7.html","IChatBeatService.EditMessageInDatabase Method","Edits a message in the database."];
+search_result['769']=["topic_0000000000000132.html","ApplicationDbContext.PostRatings Property","The post ratings in the database."];

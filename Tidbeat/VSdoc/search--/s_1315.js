@@ -1,0 +1,1 @@
+search_result['1315']=["topic_0000000000000228.html","ISpotifyService.GetGenresOfBand Method","Gets a band\u0027s genres from the Spotify API."];

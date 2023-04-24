@@ -1,1 +1,1 @@
-search_result['734']=["topic_0000000000000193.html","ChatBeatService.GetConversation Method","Adds a new participant to a conversation.\r\nUNIMPLEMENTED: PREPARED FOR GROUP CONVERSATIONS"];
+search_result['734']=["topic_0000000000000123.html","SongsController.Details Method","The details of a single song."];

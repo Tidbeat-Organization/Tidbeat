@@ -1,1 +1,1 @@
-search_result['827']=["topic_00000000000001C8.html","RatingService.HasUserRated Method","Gets whether the user has rated or not."];
+search_result['827']=["topic_0000000000000149.html","MessageDto.Text Property","The text of the message."];

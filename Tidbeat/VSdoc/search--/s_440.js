@@ -1,1 +1,1 @@
-search_result['440']=["topic_00000000000000ED.html","PostsController.BandsInfo Method","Used for fetching the bands for the Band dropdown list in the Create view."];
+search_result['440']=["topic_00000000000000AD.html","ResetPasswordModel Class","The model class for the reset password page."];

@@ -1,1 +1,1 @@
-search_result['73']=["topic_0000000000000024.html","InputModel.NewEmail Property","The new email address."];
+search_result['73']=["topic_000000000000001F.html","EmailModel Constructor","The constructor for the email model."];

@@ -1,1 +1,1 @@
-search_result['727']=["topic_000000000000018F_events--.html","ChatBeatService Events",""];
+search_result['727']=["topic_0000000000000121.html","SongsController.RemoveAsFavoriteAsync Method","The action for removing the song from the user\u0027s favorite in the database."];

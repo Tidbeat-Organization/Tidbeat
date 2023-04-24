@@ -1,1 +1,1 @@
-search_result['309']=["topic_00000000000000A4_methods--.html","RegisterConfirmationModel Methods",""];
+search_result['309']=["topic_000000000000007F.html","ForgotPasswordModel Class","The model class for the forgot password page."];

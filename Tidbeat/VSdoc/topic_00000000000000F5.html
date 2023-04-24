@@ -4,7 +4,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="GENERATOR" content="VSdocman - documentation generator; https://www.helixoft.com" />
 	<link rel="icon" href="favicon.ico">
-	<title>ProfilesController.RemoveFavoriteSong Method</title>
+	<title>PostsController Constructor</title>
 
 	<link rel="stylesheet" type="text/css" href="msdn2019/toc.css" />
 	<script src="msdn2019/toc.js"></script>
@@ -74,11 +74,11 @@ document.write(getCssCustomProperty('--headerTopCustomLineHtml'));
   </div>
 
 <div id="mainBody">
-		<h1 class="title">ProfilesController.RemoveFavoriteSong Method</h1>
+		<h1 class="title">PostsController Constructor</h1>
         
 		<div class="metadata">
         Namespace:
-<a href="topic_00000000000000B6.html">Tidbeat.Controllers</a>
+<a href="topic_00000000000000C0.html">Tidbeat.Controllers</a>
 
 
 
@@ -89,7 +89,7 @@ document.write(getCssCustomProperty('--headerTopCustomLineHtml'));
 
        
        
-        <summary-info>Returns the edit view of a profile.</summary-info>
+        <summary-info>Initializes needed services like the ApplicationDbContext, the UserManager, the SpotifyService and the StringLocalizer.</summary-info>
 
 
 
@@ -139,7 +139,7 @@ document.write(getCssCustomProperty('--headerTopCustomLineHtml'));
 				</div>
 				
 				<div class="codeSnippetCode codeVB">
-					<pre xml:space="preserve" class="brush: vb">&lt;HttpPut()&gt; _&nbsp;<br />Public Function RemoveFavoriteSong( _&nbsp;<br />   &lt;FromQuery()&gt; _&nbsp;<br />   ByVal <i>songId</i> As <a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/system.string">String</a> _&nbsp;<br />) As <a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/system.threading.tasks.task-1">Task</a>(Of <a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.mvc.iactionresult">IActionResult</a>)</pre>			
+					<pre xml:space="preserve" class="brush: vb">Public Sub New( _&nbsp;<br />   ByVal <i>context</i> As <a target="_top" href="topic_000000000000012D.html" onclick="this.target='';return true;">ApplicationDbContext</a>, _&nbsp;<br />   ByVal <i>userManager</i> As <a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.identity.usermanager-1">UserManager</a>(Of <a target="_top" href="topic_0000000000000196.html" onclick="this.target='';return true;">ApplicationUser</a>), _&nbsp;<br />   ByVal <i>spotifyService</i> As <a target="_top" href="topic_0000000000000225.html" onclick="this.target='';return true;">ISpotifyService</a>, _&nbsp;<br />   ByVal <i>localizer</i> As <a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.extensions.localization.istringlocalizer-1">IStringLocalizer</a>(Of <a target="_top" href="topic_00000000000000F4.html" onclick="this.target='';return true;">PostsController</a>) _&nbsp;<br />)</pre>			
 				</div>
 				<div class="codeSnippetCode codeNA">
 					<pre xml:space="preserve">This language is not supported or no code example is available.</pre>			
@@ -178,7 +178,7 @@ document.write(getCssCustomProperty('--headerTopCustomLineHtml'));
 				</div>
 				
 				<div class="codeSnippetCode codeCsharp">
-					<pre xml:space="preserve" class="brush: csharp">[HttpPut()]&nbsp;<br />public <a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.mvc.iactionresult">IActionResult</a>&gt; RemoveFavoriteSong(&nbsp;<br />   [FromQuery()]&nbsp;<br />   <a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/system.string">string</a> <i>songId</i>&nbsp;<br />)</pre>			
+					<pre xml:space="preserve" class="brush: csharp">public PostsController(&nbsp;<br />   <a target="_top" href="topic_000000000000012D.html" onclick="this.target='';return true;">ApplicationDbContext</a> <i>context</i>,&nbsp;<br />   <a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.identity.usermanager-1">UserManager</a>&lt;<a target="_top" href="topic_0000000000000196.html" onclick="this.target='';return true;">ApplicationUser</a>&gt; <i>userManager</i>,&nbsp;<br />   <a target="_top" href="topic_0000000000000225.html" onclick="this.target='';return true;">ISpotifyService</a> <i>spotifyService</i>,&nbsp;<br />   <a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.extensions.localization.istringlocalizer-1">IStringLocalizer</a>&lt;<a target="_top" href="topic_00000000000000F4.html" onclick="this.target='';return true;">PostsController</a>&gt; <i>localizer</i>&nbsp;<br />)</pre>			
 				</div>
 				<div class="codeSnippetCode codeNA">
 					<pre xml:space="preserve">This language is not supported or no code example is available.</pre>			
@@ -218,7 +218,7 @@ document.write(getCssCustomProperty('--headerTopCustomLineHtml'));
 				</div>
 				
 				<div class="codeSnippetCode codeCpp">
-					<pre xml:space="preserve" class="brush: cpp">[HttpPut()]&nbsp;<br />public: &nbsp;<br /><a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.mvc.iactionresult">IActionResult</a>^&gt;^ RemoveFavoriteSong(&nbsp;<br />   [FromQuery()]&nbsp;<br />   <a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/system.string">String</a>^ <i>songId</i>&nbsp;<br />) </pre>			
+					<pre xml:space="preserve" class="brush: cpp">public: &nbsp;<br />PostsController(&nbsp;<br />   <a target="_top" href="topic_000000000000012D.html" onclick="this.target='';return true;">ApplicationDbContext</a>^ <i>context</i>,&nbsp;<br />   <a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.identity.usermanager-1">UserManager</a>&lt;<a target="_top" href="topic_0000000000000196.html" onclick="this.target='';return true;">ApplicationUser</a>^&gt;^ <i>userManager</i>,&nbsp;<br />   <a target="_top" href="topic_0000000000000225.html" onclick="this.target='';return true;">ISpotifyService</a>^ <i>spotifyService</i>,&nbsp;<br />   <a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.extensions.localization.istringlocalizer-1">IStringLocalizer</a>&lt;<a target="_top" href="topic_00000000000000F4.html" onclick="this.target='';return true;">PostsController</a>^&gt;^ <i>localizer</i>&nbsp;<br />) </pre>			
 				</div>
 				<div class="codeSnippetCode codeNA">
 					<pre xml:space="preserve">This language is not supported or no code example is available.</pre>			
@@ -269,29 +269,61 @@ document.write(getCssCustomProperty('--headerTopCustomLineHtml'));
 
 
 <h4 class="subHeading">
-	Parameters</h4><dl paramName="songId" class="parameterList">
+	Parameters</h4><dl paramName="context" class="parameterList">
 	<dt>
 		<span class="parameter">
-			songId
+			context
 		</span>
 	</dt>
 	<dd>
-		<a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/system.string">string</a> 
+		<a target="_top" href="topic_000000000000012D.html" onclick="this.target='';return true;">ApplicationDbContext</a> 
 	</dd>
 </dl>
 <p>
-	 
+	Context of the website 
+</p>
+<dl paramName="userManager" class="parameterList">
+	<dt>
+		<span class="parameter">
+			userManager
+		</span>
+	</dt>
+	<dd>
+		<a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.identity.usermanager-1">UserManager</a>&lt;<a target="_top" href="topic_0000000000000196.html" onclick="this.target='';return true;">ApplicationUser</a>&gt; 
+	</dd>
+</dl>
+<p>
+	The user manager 
+</p>
+<dl paramName="spotifyService" class="parameterList">
+	<dt>
+		<span class="parameter">
+			spotifyService
+		</span>
+	</dt>
+	<dd>
+		<a target="_top" href="topic_0000000000000225.html" onclick="this.target='';return true;">ISpotifyService</a> 
+	</dd>
+</dl>
+<p>
+	The access to the spotify API 
+</p>
+<dl paramName="localizer" class="parameterList">
+	<dt>
+		<span class="parameter">
+			localizer
+		</span>
+	</dt>
+	<dd>
+		<a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.extensions.localization.istringlocalizer-1">IStringLocalizer</a>&lt;<a target="_top" href="topic_00000000000000F4.html" onclick="this.target='';return true;">PostsController</a>&gt; 
+	</dd>
+</dl>
+<p>
+	The language localizer 
 </p>
 
 <p />
 
-	<h4 class="subHeading">
-		Return Value</h4>
-	<a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.mvc.iactionresult">IActionResult</a>&gt; 
-		<p>
-		The edit view of the profile. 
-	</p>
-	
 
 
 
@@ -313,16 +345,6 @@ document.write(getCssCustomProperty('--headerTopCustomLineHtml'));
 
 
 
-<div class="section_container">
-	<div class="section_heading">
-		<span><a href="javascript:void(0)" title="Collapse" onclick="toggleSection(this);">Remarks</a></span>
-		<div>&nbsp;</div>
-	</div>
-
-	<div id="remarksSection" class="section">	
-			PUT: Profiles/RemoveFavoriteSong
-	</div>					
-</div>
 
 
 
@@ -389,11 +411,11 @@ document.write(getCssCustomProperty('--headerTopCustomLineHtml'));
 
 	<div id="seeAlsoSection" class="section">	
 		<div>
-			<a href="topic_00000000000000EE.html">ProfilesController Class</a><br />
+			<a href="topic_00000000000000F4.html">PostsController Class</a><br />
 
 
 
-<a href="topic_00000000000000B6.html">Tidbeat.Controllers Namespace</a><br />
+<a href="topic_00000000000000C0.html">Tidbeat.Controllers Namespace</a><br />
 
 
 			

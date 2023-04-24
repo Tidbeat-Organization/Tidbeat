@@ -1,1 +1,1 @@
-search_result['677']=["topic_0000000000000176_events--.html","Post Events",""];
+search_result['677']=["topic_000000000000010D.html","RatingPartialController.HasUserRated Method","Gets if the current user has rated a post or comment."];

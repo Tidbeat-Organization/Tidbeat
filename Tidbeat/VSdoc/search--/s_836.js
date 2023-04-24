@@ -1,1 +1,1 @@
-search_result['836']=["topic_00000000000001CC.html","UrlBand Field",""];
+search_result['836']=["topic_000000000000014D.html","SetMessageToSeenDto.UserId Property","The id of the message."];

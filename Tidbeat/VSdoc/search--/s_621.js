@@ -1,1 +1,1 @@
-search_result['621']=["topic_000000000000015A_props--.html","CommentRating Properties",""];
+search_result['621']=["topic_00000000000000F4_attached_props--.html","PostsController Attached Properties",""];

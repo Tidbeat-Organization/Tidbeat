@@ -1,1 +1,1 @@
-var breadcrumbs=[['-1',"",""],['2',"Tidbeat Reference","topic_00000000000001DD.html"],['4',"Tidbeat Namespace","topic_00000000000001D7.html"],['5',"Configurations Class","topic_00000000000001D8.html"],['6',"Methods","topic_00000000000001D8_methods--.html"],['9',"CreateStartingUsers Method","topic_00000000000001DA.html"]];
+var breadcrumbs=[['-1',"",""],['2',"Tidbeat Reference","topic_0000000000000259.html"],['479',"Tidbeat.Models Namespace","topic_0000000000000195.html"],['555',"Post Class","topic_00000000000001DA.html"]];

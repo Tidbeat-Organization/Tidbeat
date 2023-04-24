@@ -1,1 +1,1 @@
-search_result['820']=["topic_00000000000001C5_attached_props--.html","RatingService Attached Properties",""];
+search_result['820']=["topic_0000000000000147.html","GetRecentMessageDto.SkipAmount Property","The amount of messages to skip."];

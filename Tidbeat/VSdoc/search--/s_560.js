@@ -1,1 +1,1 @@
-search_result['560']=["topic_000000000000013A.html","CultureMiddleware Class","The middleware that sets the culture of the application. It gets the culture from the cookies."];
+search_result['560']=["topic_00000000000000DD.html","LanguageController Class","Controls the localization aspect of the website."];

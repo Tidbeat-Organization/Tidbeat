@@ -1,1 +1,1 @@
-search_result['465']=["topic_00000000000000FC.html","SongsController Class","Controls favoriting songs and pages related to songs."];
+search_result['465']=["topic_00000000000000B7.html","ResetPasswordConfirmationModel Class","This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used\r\n    directly from your code. This API may change or be removed in future releases."];

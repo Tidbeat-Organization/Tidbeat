@@ -1,1 +1,1 @@
-search_result['738']=["topic_0000000000000197.html","ChatBeatService.RemoveMessageFromDatabase Method","Removes a message from the database."];
+search_result['738']=["topic_0000000000000126_attached_props--.html","UsersController Attached Properties",""];

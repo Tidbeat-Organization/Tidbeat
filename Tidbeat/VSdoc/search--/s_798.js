@@ -1,1 +1,1 @@
-search_result['798']=["topic_00000000000001B5_vars--.html","ISpotifyService Fields",""];
+search_result['798']=["topic_0000000000000140.html","EditMessageDto Class","The DTO for editing a message."];

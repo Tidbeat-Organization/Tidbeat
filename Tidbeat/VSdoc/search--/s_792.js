@@ -1,1 +1,1 @@
-search_result['792']=["topic_00000000000001B4.html","IRatingService.SetUserRate Method","Sets the user\u0027s rating."];
+search_result['792']=["topic_000000000000013E_attached_props--.html","Initi Attached Properties",""];

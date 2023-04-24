@@ -1,1 +1,1 @@
-search_result['404']=["topic_00000000000000DA.html","HomeController.Register Method",""];
+search_result['404']=["topic_000000000000009D.html","RegisterModel.ExternalLogins Property","The list of external logins for the register page."];

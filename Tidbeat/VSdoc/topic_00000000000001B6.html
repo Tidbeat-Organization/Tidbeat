@@ -4,7 +4,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="GENERATOR" content="VSdocman - documentation generator; https://www.helixoft.com" />
 	<link rel="icon" href="favicon.ico">
-	<title>ISpotifyService.GetSongAsync Method</title>
+	<title>Comment.User Property</title>
 
 	<link rel="stylesheet" type="text/css" href="msdn2019/toc.css" />
 	<script src="msdn2019/toc.js"></script>
@@ -74,11 +74,11 @@ document.write(getCssCustomProperty('--headerTopCustomLineHtml'));
   </div>
 
 <div id="mainBody">
-		<h1 class="title">ISpotifyService.GetSongAsync Method</h1>
+		<h1 class="title">Comment.User Property</h1>
         
 		<div class="metadata">
         Namespace:
-<a href="topic_000000000000018C.html">Tidbeat.Services</a>
+<a href="topic_0000000000000195.html">Tidbeat.Models</a>
 
 
 
@@ -89,7 +89,7 @@ document.write(getCssCustomProperty('--headerTopCustomLineHtml'));
 
        
        
-        <summary-info>Gets a song from the Spotify API.</summary-info>
+        <summary-info>The comment's owner.</summary-info>
 
 
 
@@ -139,7 +139,7 @@ document.write(getCssCustomProperty('--headerTopCustomLineHtml'));
 				</div>
 				
 				<div class="codeSnippetCode codeVB">
-					<pre xml:space="preserve" class="brush: vb">Function GetSongAsync( _&nbsp;<br />   ByVal <i>id</i> As <a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/system.string">String</a> _&nbsp;<br />) As <a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/system.threading.tasks.task-1">Task</a>(Of <a target="_top" href=".html" onclick="this.target='';return true;">FullTrack</a>)</pre>			
+					<pre xml:space="preserve" class="brush: vb">Public Property User() As <a target="_top" href="topic_0000000000000196.html" onclick="this.target='';return true;">ApplicationUser</a></pre>			
 				</div>
 				<div class="codeSnippetCode codeNA">
 					<pre xml:space="preserve">This language is not supported or no code example is available.</pre>			
@@ -178,7 +178,7 @@ document.write(getCssCustomProperty('--headerTopCustomLineHtml'));
 				</div>
 				
 				<div class="codeSnippetCode codeCsharp">
-					<pre xml:space="preserve" class="brush: csharp"><a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a target="_top" href=".html" onclick="this.target='';return true;">FullTrack</a>&gt; GetSongAsync(&nbsp;<br />   <a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/system.string">string</a> <i>id</i>&nbsp;<br />)</pre>			
+					<pre xml:space="preserve" class="brush: csharp">public <a target="_top" href="topic_0000000000000196.html" onclick="this.target='';return true;">ApplicationUser</a> User {get; set;}</pre>			
 				</div>
 				<div class="codeSnippetCode codeNA">
 					<pre xml:space="preserve">This language is not supported or no code example is available.</pre>			
@@ -218,7 +218,7 @@ document.write(getCssCustomProperty('--headerTopCustomLineHtml'));
 				</div>
 				
 				<div class="codeSnippetCode codeCpp">
-					<pre xml:space="preserve" class="brush: cpp">&nbsp;<br /><a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a target="_top" href=".html" onclick="this.target='';return true;">FullTrack</a>^&gt;^ GetSongAsync(&nbsp;<br />   <a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/system.string">String</a>^ <i>id</i>&nbsp;<br />) </pre>			
+					<pre xml:space="preserve" class="brush: cpp">public: &nbsp;<br />property <a target="_top" href="topic_0000000000000196.html" onclick="this.target='';return true;">ApplicationUser</a>^ User {&nbsp;<br /> <a target="_top" href="topic_0000000000000196.html" onclick="this.target='';return true;">ApplicationUser</a>^ get( );&nbsp;<br /> void set(&nbsp;<br />   <a target="_top" href="topic_0000000000000196.html" onclick="this.target='';return true;">ApplicationUser</a>^ value&nbsp;<br /> );&nbsp;<br />}</pre>			
 				</div>
 				<div class="codeSnippetCode codeNA">
 					<pre xml:space="preserve">This language is not supported or no code example is available.</pre>			
@@ -257,7 +257,7 @@ document.write(getCssCustomProperty('--headerTopCustomLineHtml'));
 				</div>
 				
 				<div class="codeSnippetCode codeJScript">
-					<pre xml:space="preserve" class="brush: js">JScript does not support generic types and methods.</pre>			
+					<pre xml:space="preserve" class="brush: js">public function get User() : <a target="_top" href="topic_0000000000000196.html" onclick="this.target='';return true;">ApplicationUser</a>;&nbsp;<br />public function set User(value : <a target="_top" href="topic_0000000000000196.html" onclick="this.target='';return true;">ApplicationUser</a>);</pre>			
 				</div>
 				<div class="codeSnippetCode codeNA">
 					<pre xml:space="preserve">This language is not supported or no code example is available.</pre>			
@@ -268,29 +268,10 @@ document.write(getCssCustomProperty('--headerTopCustomLineHtml'));
 	</div>
 
 
-<h4 class="subHeading">
-	Parameters</h4><dl paramName="id" class="parameterList">
-	<dt>
-		<span class="parameter">
-			id
-		</span>
-	</dt>
-	<dd>
-		<a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/system.string">string</a> 
-	</dd>
-</dl>
-<p>
-	The id of the song. 
-</p>
-
-<p />
 
 	<h4 class="subHeading">
-		Return Value</h4>
-	<a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a target="_top" href=".html" onclick="this.target='';return true;">FullTrack</a>&gt; 
-		<p>
-		The spotify FullTrack object. 
-	</p>
+		Property Value</h4>
+	<a target="_top" href="topic_0000000000000196.html" onclick="this.target='';return true;">ApplicationUser</a> 
 	
 
 
@@ -379,11 +360,11 @@ document.write(getCssCustomProperty('--headerTopCustomLineHtml'));
 
 	<div id="seeAlsoSection" class="section">	
 		<div>
-			<a href="topic_00000000000001B5.html">ISpotifyService Interface</a><br />
+			<a href="topic_00000000000001B2.html">Comment Class</a><br />
 
 
 
-<a href="topic_000000000000018C.html">Tidbeat.Services Namespace</a><br />
+<a href="topic_0000000000000195.html">Tidbeat.Models Namespace</a><br />
 
 
 			

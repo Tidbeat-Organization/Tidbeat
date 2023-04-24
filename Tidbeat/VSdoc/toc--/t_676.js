@@ -1,0 +1,1 @@
+c['676']=[['677',"GetAverageRating Method","topic_0000000000000221.html",0],['678',"GetUserRate Method","topic_0000000000000223.html",0],['679',"HasUserRated Method","topic_0000000000000222.html",0],['680',"SetUserRate Method","topic_0000000000000224.html",0]];

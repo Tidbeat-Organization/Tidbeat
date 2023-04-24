@@ -1,1 +1,1 @@
-search_result['605']=["topic_0000000000000152_attached_props--.html","Comment Attached Properties",""];
+search_result['605']=["topic_00000000000000EF.html","LanguageController Class","Controls the localization aspect of the website."];

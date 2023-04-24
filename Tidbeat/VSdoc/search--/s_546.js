@@ -1,1 +1,1 @@
-search_result['546']=["topic_0000000000000131.html","ChatHub Class","The SignalR hub for the ChatBeat functionality. This class is only for sending messages to a connection."];
+search_result['546']=["topic_00000000000000D5_methods--.html","HomeController Methods",""];

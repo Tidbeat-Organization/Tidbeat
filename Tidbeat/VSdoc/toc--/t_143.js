@@ -1,1 +1,1 @@
-c['143']=[['144',"ApplicationUser Property","topic_0000000000000015.html",0]];
+c['143']=[['144',"DeleteUser Method","topic_0000000000000014.html",0],['145',"OnGet Method","topic_0000000000000012.html",0],['146',"OnPostAsync Method","topic_0000000000000013.html",0]];

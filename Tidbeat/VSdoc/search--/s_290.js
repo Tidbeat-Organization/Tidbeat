@@ -1,1 +1,1 @@
-search_result['290']=["topic_0000000000000099.html","RegisterModel.ReturnUrl Property","The return url for the register page."];
+search_result['290']=["topic_0000000000000076.html","InputModel Class","The input model for the external login page."];

@@ -1,1 +1,1 @@
-search_result['360']=["topic_00000000000000BC.html","CommentsController Constructor","Initializes needed services for the controller."];
+search_result['360']=["topic_000000000000008C_methods--.html","InputModel Methods",""];

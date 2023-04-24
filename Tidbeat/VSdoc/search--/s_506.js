@@ -1,1 +1,1 @@
-search_result['506']=["topic_0000000000000116.html","EditMessageDto Class","The DTO for editing a message."];
+search_result['506']=["topic_00000000000000C1_props--.html","BandsController Properties",""];

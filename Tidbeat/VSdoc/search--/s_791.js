@@ -1,1 +1,1 @@
-search_result['791']=["topic_00000000000001B3.html","IRatingService.GetUserRate Method","Gets the user\u0027s rating. If the user hasn\u0027t rated, it returns 0."];
+search_result['791']=["topic_000000000000013E.html","DeleteMessageDto.MessageId Property","The id of the message."];

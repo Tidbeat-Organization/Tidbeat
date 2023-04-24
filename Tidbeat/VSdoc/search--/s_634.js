@@ -1,1 +1,1 @@
-search_result['634']=["topic_0000000000000161.html","Conversation.Title Property","The conversation\u0027s title."];
+search_result['634']=["topic_00000000000000F8.html","PostsController.Details Method","Gets the details of a post. If the post is not found, it returns a 404 error."];

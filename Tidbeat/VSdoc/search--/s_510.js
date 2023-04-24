@@ -1,1 +1,1 @@
-search_result['510']=["topic_0000000000000116_props--.html","EditMessageDto Properties",""];
+search_result['510']=["topic_00000000000000C4.html","BandsController.Details Method","Gets the details of a band."];

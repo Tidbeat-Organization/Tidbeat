@@ -1,1 +1,1 @@
-search_result['537']=["topic_0000000000000122_props--.html","SetMessageToSeenDto Properties",""];
+search_result['537']=["topic_00000000000000CF.html","ConversationsController.SetUsersMessagesToSeen Method","Changes the message status to seen."];

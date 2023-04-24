@@ -1,1 +1,1 @@
-search_result['830']=["topic_00000000000001CB.html","SpotifyService Class","The Spotify service. Takes care of all the operations related to getting info from the Spotify API."];
+search_result['830']=["topic_000000000000014C.html","SetMessageToSeenDto Class","The DTO for setting all messages of a user in a conversation to seen."];

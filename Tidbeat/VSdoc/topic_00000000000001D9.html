@@ -4,7 +4,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="GENERATOR" content="VSdocman - documentation generator; https://www.helixoft.com" />
 	<link rel="icon" href="favicon.ico">
-	<title>InvalidUser Field</title>
+	<title>Participant.User Property</title>
 
 	<link rel="stylesheet" type="text/css" href="msdn2019/toc.css" />
 	<script src="msdn2019/toc.js"></script>
@@ -74,11 +74,11 @@ document.write(getCssCustomProperty('--headerTopCustomLineHtml'));
   </div>
 
 <div id="mainBody">
-		<h1 class="title">InvalidUser Field</h1>
+		<h1 class="title">Participant.User Property</h1>
         
 		<div class="metadata">
         Namespace:
-<a href="topic_00000000000001D7.html">Tidbeat</a>
+<a href="topic_0000000000000195.html">Tidbeat.Models</a>
 
 
 
@@ -89,8 +89,7 @@ document.write(getCssCustomProperty('--headerTopCustomLineHtml'));
 
        
        
-        <summary-info>This is the starting user that will be created when the application starts. It is used for deleted users.
-You should only use it for fetching the user in the database.</summary-info>
+        <summary-info>The user which is the participant of the conversation.</summary-info>
 
 
 
@@ -140,7 +139,7 @@ You should only use it for fetching the user in the database.</summary-info>
 				</div>
 				
 				<div class="codeSnippetCode codeVB">
-					<pre xml:space="preserve" class="brush: vb">Public Shared Shadows InvalidUser As <a target="_top" href="topic_0000000000000143.html" onclick="this.target='';return true;">ApplicationUser</a></pre>			
+					<pre xml:space="preserve" class="brush: vb">Public Property User() As <a target="_top" href="topic_0000000000000196.html" onclick="this.target='';return true;">ApplicationUser</a></pre>			
 				</div>
 				<div class="codeSnippetCode codeNA">
 					<pre xml:space="preserve">This language is not supported or no code example is available.</pre>			
@@ -179,7 +178,7 @@ You should only use it for fetching the user in the database.</summary-info>
 				</div>
 				
 				<div class="codeSnippetCode codeCsharp">
-					<pre xml:space="preserve" class="brush: csharp">new public static <a target="_top" href="topic_0000000000000143.html" onclick="this.target='';return true;">ApplicationUser</a> InvalidUser</pre>			
+					<pre xml:space="preserve" class="brush: csharp">public <a target="_top" href="topic_0000000000000196.html" onclick="this.target='';return true;">ApplicationUser</a> User {get; set;}</pre>			
 				</div>
 				<div class="codeSnippetCode codeNA">
 					<pre xml:space="preserve">This language is not supported or no code example is available.</pre>			
@@ -219,7 +218,7 @@ You should only use it for fetching the user in the database.</summary-info>
 				</div>
 				
 				<div class="codeSnippetCode codeCpp">
-					<pre xml:space="preserve" class="brush: cpp">public: &nbsp;<br />static <a target="_top" href="topic_0000000000000143.html" onclick="this.target='';return true;">ApplicationUser</a>^ InvalidUser;</pre>			
+					<pre xml:space="preserve" class="brush: cpp">public: &nbsp;<br />property <a target="_top" href="topic_0000000000000196.html" onclick="this.target='';return true;">ApplicationUser</a>^ User {&nbsp;<br /> <a target="_top" href="topic_0000000000000196.html" onclick="this.target='';return true;">ApplicationUser</a>^ get( );&nbsp;<br /> void set(&nbsp;<br />   <a target="_top" href="topic_0000000000000196.html" onclick="this.target='';return true;">ApplicationUser</a>^ value&nbsp;<br /> );&nbsp;<br />}</pre>			
 				</div>
 				<div class="codeSnippetCode codeNA">
 					<pre xml:space="preserve">This language is not supported or no code example is available.</pre>			
@@ -258,7 +257,7 @@ You should only use it for fetching the user in the database.</summary-info>
 				</div>
 				
 				<div class="codeSnippetCode codeJScript">
-					<pre xml:space="preserve" class="brush: js">public static InvalidUser : <a target="_top" href="topic_0000000000000143.html" onclick="this.target='';return true;">ApplicationUser</a></pre>			
+					<pre xml:space="preserve" class="brush: js">public function get User() : <a target="_top" href="topic_0000000000000196.html" onclick="this.target='';return true;">ApplicationUser</a>;&nbsp;<br />public function set User(value : <a target="_top" href="topic_0000000000000196.html" onclick="this.target='';return true;">ApplicationUser</a>);</pre>			
 				</div>
 				<div class="codeSnippetCode codeNA">
 					<pre xml:space="preserve">This language is not supported or no code example is available.</pre>			
@@ -271,8 +270,8 @@ You should only use it for fetching the user in the database.</summary-info>
 
 
 	<h4 class="subHeading">
-		Field Value</h4>
-	<a target="_top" href="topic_0000000000000143.html" onclick="this.target='';return true;">ApplicationUser</a> 
+		Property Value</h4>
+	<a target="_top" href="topic_0000000000000196.html" onclick="this.target='';return true;">ApplicationUser</a> 
 	
 
 
@@ -361,11 +360,11 @@ You should only use it for fetching the user in the database.</summary-info>
 
 	<div id="seeAlsoSection" class="section">	
 		<div>
-			<a href="topic_00000000000001D8.html">Configurations Class</a><br />
+			<a href="topic_00000000000001D6.html">Participant Class</a><br />
 
 
 
-<a href="topic_00000000000001D7.html">Tidbeat Namespace</a><br />
+<a href="topic_0000000000000195.html">Tidbeat.Models Namespace</a><br />
 
 
 			
@@ -391,3 +390,4 @@ You should only use it for fetching the user in the database.</summary-info>
     </div>
   </body>
 </html>
+

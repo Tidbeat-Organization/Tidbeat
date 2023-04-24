@@ -1,1 +1,1 @@
-var breadcrumbs=[['-1',"",""],['2',"Tidbeat Reference","topic_00000000000001DD.html"],['399',"Tidbeat.Models Namespace","topic_0000000000000142.html"],['467',"PostRating Class","topic_0000000000000180.html"],['468',"Properties","topic_0000000000000180_props--.html"],['470',"RatingId Property","topic_0000000000000181.html"]];
+var breadcrumbs=[['-1',"",""],['2',"Tidbeat Reference","topic_0000000000000259.html"],['455',"Tidbeat.Hub Namespace","topic_0000000000000180.html"],['456',"ChatHub Class","topic_0000000000000181.html"]];

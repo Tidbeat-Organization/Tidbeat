@@ -1,1 +1,1 @@
-search_result['140']=["topic_000000000000004E.html","ManageNavPages.IndexNavClass Method","Gets the nav page class for the Index."];
+search_result['140']=["topic_000000000000003A.html","IndexModel.Input Property","The input model for the index page."];

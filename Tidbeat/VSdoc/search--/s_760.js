@@ -1,1 +1,1 @@
-search_result['760']=["topic_00000000000001A1_events--.html","IChatBeatService Events",""];
+search_result['760']=["topic_000000000000012E.html","ApplicationDbContext Constructor","The constructor for the database context."];

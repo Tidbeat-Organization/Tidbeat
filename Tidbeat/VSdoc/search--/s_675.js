@@ -1,1 +1,1 @@
-search_result['675']=["topic_0000000000000176.html","Post Class","The post model."];
+search_result['675']=["topic_000000000000010B.html","RatingPartialController Constructor","Initializes needed services for the controller."];

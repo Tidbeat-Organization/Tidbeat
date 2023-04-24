@@ -1,0 +1,1 @@
+search_result['1278']=["topic_0000000000000212.html","IChatBeatService.GetTwoPersonConversation Method","Gets a two person conversation. If it doesn\u0027t exist, it creates it."];

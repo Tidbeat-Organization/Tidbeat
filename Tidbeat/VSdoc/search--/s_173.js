@@ -1,1 +1,1 @@
-search_result['173']=["topic_0000000000000060.html","SetPasswordModel Constructor","The constructor for the set password model."];
+search_result['173']=["topic_0000000000000047.html","ManageNavPages.Email Property","Defines the Email page."];

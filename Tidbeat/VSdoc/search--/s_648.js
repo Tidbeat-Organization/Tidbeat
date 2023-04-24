@@ -1,1 +1,1 @@
-search_result['648']=["topic_0000000000000167_methods--.html","IRating Methods",""];
+search_result['648']=["topic_00000000000000FF.html","PostsController.DeleteConfirmed Method","The action for deleting the post."];

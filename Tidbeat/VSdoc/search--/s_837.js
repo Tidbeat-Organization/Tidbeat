@@ -1,1 +1,1 @@
-search_result['837']=["topic_00000000000001CD.html","UrlSong Field",""];
+search_result['837']=["topic_000000000000014E.html","SetMessageToSeenDto.ConversationId Property","The id of the conversation."];

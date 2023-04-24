@@ -1,1 +1,1 @@
-search_result['687']=["topic_000000000000017D.html","Post.CreationDate Property","The post\u0027s creation date."];
+search_result['687']=["topic_0000000000000112.html","ReportsController.Index Method","The action for the index page."];

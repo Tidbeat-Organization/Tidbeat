@@ -1,1 +1,1 @@
-search_result['709']=["topic_0000000000000188_attached_props--.html","Song Attached Properties",""];
+search_result['709']=["topic_0000000000000119.html","RoleController Constructor","The controller for the RoleController."];

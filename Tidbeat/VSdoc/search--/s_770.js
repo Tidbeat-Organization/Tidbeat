@@ -1,1 +1,1 @@
-search_result['770']=["topic_00000000000001A8.html","IChatBeatService.RemoveMessageFromDatabase Method","Removes a message from the database."];
+search_result['770']=["topic_0000000000000133.html","ApplicationDbContext.CommentRatings Property","The comment ratings in the database."];

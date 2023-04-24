@@ -1,1 +1,1 @@
-search_result['725']=["topic_000000000000018F.html","ChatBeatService Class","The service that handles all the logic for the chat."];
+search_result['725']=["topic_000000000000011F.html","SongsController Constructor","Initializes needed services for the controller."];

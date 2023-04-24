@@ -1,1 +1,1 @@
-var breadcrumbs=[['-1',"",""],['2',"Tidbeat Reference","topic_00000000000001DD.html"],['388',"Tidbeat.Middlewares Namespace","topic_0000000000000139.html"],['389',"CultureMiddleware Class","topic_000000000000013A.html"],['391',"Methods","topic_000000000000013A_methods--.html"],['392',"InvokeAsync Method","topic_000000000000013C.html"]];
+var breadcrumbs=[['-1',"",""],['2',"Tidbeat Reference","topic_0000000000000259.html"],['385',"Tidbeat.DTOs.ChatBeat Namespace","topic_000000000000013C.html"]];

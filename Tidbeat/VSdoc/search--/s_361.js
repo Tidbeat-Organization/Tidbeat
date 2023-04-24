@@ -1,1 +1,1 @@
-search_result['361']=["topic_00000000000000BD.html","CommentsController.Create Method","Creates a comment."];
+search_result['361']=["topic_000000000000008C_props--.html","InputModel Properties",""];

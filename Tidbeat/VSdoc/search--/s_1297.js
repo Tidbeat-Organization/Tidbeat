@@ -1,0 +1,1 @@
+search_result['1297']=["topic_0000000000000220.html","IRatingService Interface","It takes care of all operations related to ratings."];

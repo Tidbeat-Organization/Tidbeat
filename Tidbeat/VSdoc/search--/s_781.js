@@ -1,1 +1,1 @@
-search_result['781']=["topic_00000000000001AE.html","IMusicService.GetBand Method","Gets a band from the database."];
+search_result['781']=["topic_000000000000013A_props--.html","CultureMiddleware Properties",""];

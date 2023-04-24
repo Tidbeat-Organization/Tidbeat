@@ -1,1 +1,1 @@
-search_result['223']=["topic_000000000000007C_events--.html","ForgotPasswordModel Events",""];
+search_result['223']=["topic_0000000000000060.html","SetPasswordModel Class","The model class for the set password page."];

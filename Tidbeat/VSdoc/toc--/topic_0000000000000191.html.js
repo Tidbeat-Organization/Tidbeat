@@ -1,1 +1,1 @@
-var breadcrumbs=[['-1',"",""],['2',"Tidbeat Reference","topic_00000000000001DD.html"],['487',"Tidbeat.Services Namespace","topic_000000000000018C.html"],['491',"ChatBeatService Class","topic_000000000000018F.html"],['493',"Methods","topic_000000000000018F_methods--.html"],['494',"AddMessageToDatabase Method","topic_0000000000000191.html"]];
+var breadcrumbs=[['-1',"",""],['2',"Tidbeat Reference","topic_0000000000000259.html"],['473',"Tidbeat.Migrations Namespace","topic_0000000000000190.html"],['474',"Initial Class","topic_0000000000000191.html"]];

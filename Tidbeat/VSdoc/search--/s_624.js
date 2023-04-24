@@ -1,1 +1,1 @@
-search_result['624']=["topic_000000000000015C.html","CommentRating.Value Property","The comment rating\u0027s value."];
+search_result['624']=["topic_00000000000000F4_props--.html","PostsController Properties",""];

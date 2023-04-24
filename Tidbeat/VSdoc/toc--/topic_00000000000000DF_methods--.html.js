@@ -1,1 +1,1 @@
-var breadcrumbs=[['-1',"",""],['2',"Tidbeat Reference","topic_00000000000001DD.html"],['244',"Tidbeat.Controllers Namespace","topic_00000000000000B6.html"],['290',"MusicsController Class","topic_00000000000000DF.html"],['292',"Methods","topic_00000000000000DF_methods--.html"]];
+var breadcrumbs=[['-1',"",""],['2',"Tidbeat Reference","topic_0000000000000259.html"],['260',"Tidbeat.Controllers Namespace","topic_00000000000000C0.html"],['294',"FollowsController Class","topic_00000000000000DF.html"],['296',"Methods","topic_00000000000000DF_methods--.html"]];

@@ -1,1 +1,1 @@
-c['473']=[['474',"Properties","topic_0000000000000185_props--.html",1]];
+c['473']=[['474',"Initial Class","topic_0000000000000191.html",1]];

@@ -1,1 +1,1 @@
-c['238']=[['239',"Input Property","topic_0000000000000061.html",0],['240',"StatusMessage Property","topic_0000000000000062.html",0]];
+c['238']=[['239',"InputModel Class","topic_0000000000000064.html",1],['243',"SetPasswordModel Constructor","topic_0000000000000061.html",0],['244',"Properties","topic_0000000000000060_props--.html",1],['247',"Methods","topic_0000000000000060_methods--.html",1]];

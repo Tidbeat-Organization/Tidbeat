@@ -1,1 +1,1 @@
-search_result['850']=["topic_00000000000001D8_events--.html","Configurations Events",""];
+search_result['850']=["topic_0000000000000151.html","SetReportStatusDTO.ReportId Property","The id of the report."];

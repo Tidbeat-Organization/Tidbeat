@@ -1,1 +1,1 @@
-search_result['821']=["topic_00000000000001C5_events--.html","RatingService Events",""];
+search_result['821']=["topic_0000000000000148.html","MessageDto Class","The DTO for sending a message."];

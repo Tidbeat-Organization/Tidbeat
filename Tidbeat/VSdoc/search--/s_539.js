@@ -1,1 +1,1 @@
-search_result['539']=["topic_0000000000000123.html","SetMessageToSeenDto.UserId Property","The id of the message."];
+search_result['539']=["topic_00000000000000D1.html","ConversationsController.SaveMessage Method","Saves a message in the database."];

@@ -1,1 +1,1 @@
-search_result['728']=["topic_000000000000018F_methods--.html","ChatBeatService Methods",""];
+search_result['728']=["topic_0000000000000122.html","SongsController.Index Method","The action for getting all the songs based on filters in the spotify API."];

@@ -1,0 +1,1 @@
+search_result['1265']=["topic_000000000000020F.html","GlobalizationService Class","The globalization service. Takes care of the stuff related to getting countries."];

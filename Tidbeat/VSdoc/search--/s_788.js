@@ -1,1 +1,1 @@
-search_result['788']=["topic_00000000000001B0_vars--.html","IRatingService Fields",""];
+search_result['788']=["topic_000000000000013D_methods--.html","DeleteMessageDto Methods",""];

@@ -1,1 +1,1 @@
-c['294']=[['295',"PostsController Constructor","topic_00000000000000E3.html",0],['296',"Methods","topic_00000000000000E2_methods--.html",1]];
+c['294']=[['295',"FollowsController Constructor","topic_00000000000000E0.html",0],['296',"Methods","topic_00000000000000DF_methods--.html",1]];

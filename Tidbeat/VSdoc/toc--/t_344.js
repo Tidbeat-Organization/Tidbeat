@@ -1,1 +1,1 @@
-c['344']=[['345',"Properties","topic_000000000000011A_props--.html",1]];
+c['344']=[['345',"RatingPartialController Constructor","topic_000000000000010B.html",0],['346',"Methods","topic_000000000000010A_methods--.html",1]];

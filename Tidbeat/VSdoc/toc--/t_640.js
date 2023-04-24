@@ -1,0 +1,1 @@
+c['640']=[['641',"SpotifyService Constructor","topic_0000000000000242.html",0],['642',"Methods","topic_000000000000023F_methods--.html",1],['655',"Fields","topic_000000000000023F_vars--.html",1]];

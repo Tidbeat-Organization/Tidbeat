@@ -1,1 +1,1 @@
-search_result['381']=["topic_00000000000000CA.html","ConversationsController.StartTwoPersonConversation Method","Gets the conversation between two users. If it doesn\u0027t exist, creates it."];
+search_result['381']=["topic_0000000000000095.html","LogoutModel Class","The model class for the logout page."];

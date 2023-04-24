@@ -1,1 +1,1 @@
-search_result['838']=["topic_00000000000001CE.html","SpotifyService Constructor","Initializes the Spotify service."];
+search_result['838']=["topic_000000000000014E_attached_props--.html","Band Attached Properties",""];

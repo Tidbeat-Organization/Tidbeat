@@ -4,7 +4,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="GENERATOR" content="VSdocman - documentation generator; https://www.helixoft.com" />
 	<link rel="icon" href="favicon.ico">
-	<title>Tidbeat.Services Namespace</title>
+	<title>Tidbeat.Middlewares Namespace</title>
 
 	<link rel="stylesheet" type="text/css" href="msdn2019/toc.css" />
 	<script src="msdn2019/toc.js"></script>
@@ -74,7 +74,7 @@ document.write(getCssCustomProperty('--headerTopCustomLineHtml'));
   </div>
 
 <div id="mainBody">
-		<h1 class="title">Tidbeat.Services Namespace</h1>
+		<h1 class="title">Tidbeat.Middlewares Namespace</h1>
         
 		<div class="metadata">
 
@@ -155,125 +155,11 @@ document.write(getCssCustomProperty('--headerTopCustomLineHtml'));
     
 	  </td>
 	  <td>
-	    <a href="topic_000000000000018D.html">AuthMessageSenderOptions</a>
+	    <a href="topic_000000000000018D.html">CultureMiddleware</a>
 	  </td>
 	  <td>
 
-The options for the AuthMessageSender class.
-
-		</td>
-	</tr>
-	<tr class="
-	
-	
-	">
-	  <td>
-    <img alt="Public class" title="Public class" src="msdn2019/pubclass.png"></img>
-
-
-    
-	  </td>
-	  <td>
-	    <a href="topic_000000000000018F.html">ChatBeatService</a>
-	  </td>
-	  <td>
-
-The service that handles all the logic for the chat.
-
-		</td>
-	</tr>
-	<tr class="
-	
-	
-	">
-	  <td>
-    <img alt="Public class" title="Public class" src="msdn2019/pubclass.png"></img>
-
-
-    
-	  </td>
-	  <td>
-	    <a href="topic_000000000000019A.html">EmailSender</a>
-	  </td>
-	  <td>
-
-The email sender. Takes care of sending emails.
-
-		</td>
-	</tr>
-	<tr class="
-	
-	
-	">
-	  <td>
-    <img alt="Public class" title="Public class" src="msdn2019/pubclass.png"></img>
-
-
-    
-	  </td>
-	  <td>
-	    <a href="topic_000000000000019F.html">GlobalizationService</a>
-	  </td>
-	  <td>
-
-The globalization service. Takes care of the stuff related to getting countries.
-
-		</td>
-	</tr>
-	<tr class="
-	
-	
-	">
-	  <td>
-    <img alt="Public class" title="Public class" src="msdn2019/pubclass.png"></img>
-
-
-    
-	  </td>
-	  <td>
-	    <a href="topic_00000000000001BE.html">MusicService</a>
-	  </td>
-	  <td>
-
-The music service. It gets and saves songs and bands in the database.
-
-		</td>
-	</tr>
-	<tr class="
-	
-	
-	">
-	  <td>
-    <img alt="Public class" title="Public class" src="msdn2019/pubclass.png"></img>
-
-
-    
-	  </td>
-	  <td>
-	    <a href="topic_00000000000001C5.html">RatingService</a>
-	  </td>
-	  <td>
-
-It takes care of all operations related to ratings.
-
-		</td>
-	</tr>
-	<tr class="
-	
-	
-	">
-	  <td>
-    <img alt="Public class" title="Public class" src="msdn2019/pubclass.png"></img>
-
-
-    
-	  </td>
-	  <td>
-	    <a href="topic_00000000000001CB.html">SpotifyService</a>
-	  </td>
-	  <td>
-
-The Spotify service. Takes care of all the operations related to getting info from the Spotify API.
+The middleware that sets the culture of the application. It gets the culture from the cookies.
 
 		</td>
 	</tr>
@@ -294,109 +180,6 @@ The Spotify service. Takes care of all the operations related to getting info fr
 </div>
 
 
-<div class="section_container">
-	<div class="section_heading">
-		<span><a href="javascript:void(0)" title="Collapse" onclick="toggleSection(this);">Interfaces</a></span>
-		<div>&nbsp;</div>
-	</div>
-
-	<div id="InterfaceSection" class="section">	
-  <table class="memberListTable">
-    <tr>
-      <th></th>
-      <th>
-        Name
-      </th>
-      <th>
-        Description
-      </th>
-    </tr>
-
-	<tr class="
-	
-	
-	">
-	  <td>
-    <img alt="Public interface" title="Public interface" src="msdn2019/pubinterface.png"></img>
-
-
-    
-	  </td>
-	  <td>
-	    <a href="topic_00000000000001A1.html">IChatBeatService</a>
-	  </td>
-	  <td>
-
-The chat beat service. This service is used to handle all the chat related logic.
-
-		</td>
-	</tr>
-	<tr class="
-	
-	
-	">
-	  <td>
-    <img alt="Public interface" title="Public interface" src="msdn2019/pubinterface.png"></img>
-
-
-    
-	  </td>
-	  <td>
-	    <a href="topic_00000000000001AB.html">IMusicService</a>
-	  </td>
-	  <td>
-
-The music service. It gets and saves songs and bands in the database.
-
-		</td>
-	</tr>
-	<tr class="
-	
-	
-	">
-	  <td>
-    <img alt="Public interface" title="Public interface" src="msdn2019/pubinterface.png"></img>
-
-
-    
-	  </td>
-	  <td>
-	    <a href="topic_00000000000001B0.html">IRatingService</a>
-	  </td>
-	  <td>
-
-It takes care of all operations related to ratings.
-
-		</td>
-	</tr>
-	<tr class="
-	
-	
-	">
-	  <td>
-    <img alt="Public interface" title="Public interface" src="msdn2019/pubinterface.png"></img>
-
-
-    
-	  </td>
-	  <td>
-	    <a href="topic_00000000000001B5.html">ISpotifyService</a>
-	  </td>
-	  <td>
-
-The Spotify service. Takes care of all the operations related to getting info from the Spotify API.
-
-		</td>
-	</tr>
-
-  </table>
-
-  <a href="#mainBody">
-    Top
-  </a>
-
-	</div>					
-</div>
 
 
 

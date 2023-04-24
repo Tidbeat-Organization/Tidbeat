@@ -1,1 +1,1 @@
-search_result['717']=["topic_000000000000018C.html","Tidbeat.Services Namespace",""];
+search_result['717']=["topic_000000000000011C.html","RoleController.BanAsync Method","An action for banning users."];

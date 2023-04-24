@@ -1,1 +1,1 @@
-search_result['330']=["topic_00000000000000AD_vars--.html","InputModel Fields",""];
+search_result['330']=["topic_0000000000000085.html","ForgotPasswordConfirmation Class","The model class for the register confirmation page."];

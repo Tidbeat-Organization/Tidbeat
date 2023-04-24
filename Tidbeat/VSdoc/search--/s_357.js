@@ -1,1 +1,1 @@
-search_result['357']=["topic_00000000000000BB_methods--.html","CommentsController Methods",""];
+search_result['357']=["topic_000000000000008C.html","LoginModel.ExternalLogins Property","The list of possible external logins. Only has Google."];

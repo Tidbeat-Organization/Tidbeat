@@ -1,1 +1,1 @@
-search_result['307']=["topic_00000000000000A4_attached_props--.html","RegisterConfirmationModel Attached Properties",""];
+search_result['307']=["topic_000000000000007D.html","ExternalLoginModel.OnGetCallbackAsync Method","The method that is called when the user finishes the external login in the provider."];

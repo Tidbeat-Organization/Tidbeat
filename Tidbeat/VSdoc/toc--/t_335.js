@@ -1,1 +1,1 @@
-c['335']=[['336',"Properties","topic_0000000000000113_props--.html",1]];
+c['335']=[['336',"ProfilesController Constructor","topic_0000000000000103.html",0],['337',"Methods","topic_0000000000000102_methods--.html",1]];

@@ -1,1 +1,1 @@
-search_result['819']=["topic_00000000000001C5.html","RatingService Class","It takes care of all operations related to ratings."];
+search_result['819']=["topic_0000000000000146.html","GetRecentMessageDto.MessageAmount Property","The amount of messages to get."];

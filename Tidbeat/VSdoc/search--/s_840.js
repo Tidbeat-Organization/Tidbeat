@@ -1,1 +1,1 @@
-search_result['840']=["topic_00000000000001D0.html","SpotifyService.GetBandAsync Method","Gets a band from the Spotify API."];
+search_result['840']=["topic_000000000000014E_methods--.html","Band Methods",""];

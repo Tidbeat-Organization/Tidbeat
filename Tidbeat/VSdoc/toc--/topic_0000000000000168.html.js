@@ -1,1 +1,1 @@
-var breadcrumbs=[['-1',"",""],['2',"Tidbeat Reference","topic_00000000000001DD.html"],['399',"Tidbeat.Models Namespace","topic_0000000000000142.html"],['482',"IRating Interface","topic_0000000000000167.html"],['483',"Properties","topic_0000000000000167_props--.html"],['484',"RatingId Property","topic_0000000000000168.html"]];
+var breadcrumbs=[['-1',"",""],['2',"Tidbeat Reference","topic_0000000000000259.html"],['447',"Tidbeat.Enums Namespace","topic_0000000000000160.html"],['449',"MessageStatus Enumeration","topic_0000000000000168.html"]];

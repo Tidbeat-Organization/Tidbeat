@@ -1,1 +1,1 @@
-search_result['452']=["topic_00000000000000F4.html","ProfilesController.Details Method","Returns the details of a profile."];
+search_result['452']=["topic_00000000000000B0_props--.html","InputModel Properties",""];

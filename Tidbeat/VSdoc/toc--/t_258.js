@@ -1,1 +1,1 @@
-c['258']=[['259',"ConversationsController Constructor","topic_00000000000000C2.html",0],['260',"Methods","topic_00000000000000C1_methods--.html",1]];
+c['258']=[['259',"UppercaseFirstLetter Method","topic_00000000000000BF.html",0]];

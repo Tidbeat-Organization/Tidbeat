@@ -1,1 +1,1 @@
-search_result['627']=["topic_000000000000015F.html","Conversation Class","The conversation model."];
+search_result['627']=["topic_00000000000000F6.html","PostsController.Index Method","Gets all the posts of the application."];

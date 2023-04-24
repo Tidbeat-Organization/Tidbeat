@@ -1,1 +1,1 @@
-search_result['524']=["topic_000000000000011E.html","MessageDto Class","The DTO for sending a message."];
+search_result['524']=["topic_00000000000000CB.html","ConversationsController Class","Controls everything related to the chat system."];

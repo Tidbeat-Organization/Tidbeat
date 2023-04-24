@@ -1,0 +1,1 @@
+search_result['1239']=["topic_00000000000001FF.html","ChatBeatService Class","The service that handles all the logic for the chat."];

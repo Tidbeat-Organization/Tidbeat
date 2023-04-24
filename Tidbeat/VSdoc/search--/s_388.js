@@ -1,1 +1,1 @@
-search_result['388']=["topic_00000000000000CE.html","ConversationsController.Edit (String, Conversation) Method",""];
+search_result['388']=["topic_0000000000000097.html","LogoutModel.OnPost Method","The method that is called when the logout button is clicked."];

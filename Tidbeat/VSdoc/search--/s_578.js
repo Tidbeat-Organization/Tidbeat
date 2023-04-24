@@ -1,1 +1,1 @@
-search_result['578']=["topic_0000000000000142.html","Tidbeat.Models Namespace",""];
+search_result['578']=["topic_00000000000000E2_methods--.html","PostsController Methods",""];

@@ -1,1 +1,1 @@
-search_result['487']=["topic_0000000000000108.html","ApplicationDbContext.Bands Property","The bands in the database."];
+search_result['487']=["topic_00000000000000BC_events--.html","SpotifyAux Events",""];

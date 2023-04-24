@@ -1,1 +1,1 @@
-search_result['351']=["topic_00000000000000B8.html","BandsController Constructor","Initializes needed services for the controller."];
+search_result['351']=["topic_0000000000000089_events--.html","LoginModel Events",""];

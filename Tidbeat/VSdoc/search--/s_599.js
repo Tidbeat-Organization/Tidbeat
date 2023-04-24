@@ -1,1 +1,1 @@
-search_result['599']=["topic_000000000000014E_props--.html","Band Properties",""];
+search_result['599']=["topic_00000000000000EE.html","HomeController.PrivilegesInfoWarning Method","Finds the Banning Info Warning page."];

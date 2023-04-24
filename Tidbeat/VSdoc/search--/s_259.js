@@ -1,1 +1,1 @@
-search_result['259']=["topic_0000000000000089.html","LoginModel.ExternalLogins Property","The list of possible external logins. Only has Google."];
+search_result['259']=["topic_000000000000006B.html","ConfirmEmailModel Constructor","The constructor for the register confirmation model."];

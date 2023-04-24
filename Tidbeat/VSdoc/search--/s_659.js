@@ -1,1 +1,1 @@
-search_result['659']=["topic_000000000000016B_vars--.html","Message Fields",""];
+search_result['659']=["topic_0000000000000105.html","ProfilesController.GetBandsOfSongs Method","Returns a band for each song passed."];

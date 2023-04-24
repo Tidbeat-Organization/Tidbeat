@@ -1,1 +1,1 @@
-search_result['686']=["topic_000000000000017C.html","Post.User Property","The post\u0027s owner."];
+search_result['686']=["topic_0000000000000111.html","ReportsController Constructor","The constructor of the reports controller."];

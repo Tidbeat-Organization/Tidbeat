@@ -1,1 +1,1 @@
-search_result['389']=["topic_00000000000000CE_overloads--.html","ConversationsController.Edit Method",""];
+search_result['389']=["topic_0000000000000098.html","RegisterModel Class","The model class for the register page."];

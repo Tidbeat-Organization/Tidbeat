@@ -1,1 +1,1 @@
-search_result['826']=["topic_00000000000001C7.html","RatingService.GetAverageRating Method","Gets the average rating of a post or comment."];
+search_result['826']=["topic_0000000000000148_vars--.html","MessageDto Fields",""];

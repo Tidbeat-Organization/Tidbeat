@@ -1,1 +1,1 @@
-search_result['764']=["topic_00000000000001A2.html","IChatBeatService.GetTwoPersonConversation Method","Gets a two person conversation. If it doesn\u0027t exist, it creates it."];
+search_result['764']=["topic_0000000000000131_attached_props--.html","ChatHub Attached Properties",""];

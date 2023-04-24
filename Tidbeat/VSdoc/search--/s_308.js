@@ -1,1 +1,1 @@
-search_result['308']=["topic_00000000000000A4_events--.html","RegisterConfirmationModel Events",""];
+search_result['308']=["topic_000000000000007E.html","ExternalLoginModel.OnPostConfirmationAsync Method","The method that is called when the user clicks on the \"Confirm\" button."];

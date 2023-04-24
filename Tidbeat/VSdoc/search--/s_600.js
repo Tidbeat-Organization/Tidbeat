@@ -1,1 +1,1 @@
-search_result['600']=["topic_000000000000014E_vars--.html","Band Fields",""];
+search_result['600']=["topic_00000000000000EE_attached_props--.html","ProfilesController Attached Properties",""];

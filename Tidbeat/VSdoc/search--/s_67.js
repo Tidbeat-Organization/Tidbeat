@@ -1,1 +1,1 @@
-search_result['67']=["topic_0000000000000023.html","InputModel Class","The input model for the email page."];
+search_result['67']=["topic_000000000000001E.html","EmailModel Class","The model class for the email page."];

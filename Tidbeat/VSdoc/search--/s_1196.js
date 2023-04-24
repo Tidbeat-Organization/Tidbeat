@@ -1,0 +1,1 @@
+search_result['1196']=["topic_00000000000001E8.html","PostRating.Post Property","The post id to which the rating is associated."];

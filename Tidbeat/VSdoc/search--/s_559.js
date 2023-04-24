@@ -1,1 +1,1 @@
-search_result['559']=["topic_0000000000000139.html","Tidbeat.Middlewares Namespace",""];
+search_result['559']=["topic_00000000000000DC.html","EnumRegisterPhase Enumeration","An enum for the register phase."];

@@ -1,1 +1,1 @@
-search_result['345']=["topic_00000000000000B7.html","BandsController Class","Controls all bands."];
+search_result['345']=["topic_0000000000000087_methods--.html","LockoutModel Methods",""];

@@ -1,1 +1,1 @@
-search_result['579']=["topic_0000000000000143.html","ApplicationUser Class","The user model."];
+search_result['579']=["topic_00000000000000E2_props--.html","PostsController Properties",""];

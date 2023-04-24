@@ -1,1 +1,1 @@
-search_result['464']=["topic_00000000000000FB.html","RatingPartialController.SetUserRate Method","Sets the current user\u0027s rating of a post or comment."];
+search_result['464']=["topic_00000000000000B6.html","ResetPasswordModel.OnPostAsync Method","The post method for the reset password page."];
