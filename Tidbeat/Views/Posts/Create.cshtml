@@ -359,10 +359,10 @@
             document.getElementById("SongCross").style.display = 'flex';
             document.getElementById("BandCross").style.display = 'none';
             document.getElementById("Bandsinput").disabled= true;
-            document.getElementById("SongIdInput").disabled=false;
+            document.getElementById("SongIdInput").disabled=true;
 
         } else if (optionalChecker.value === "incomplete") {
-            document.getElementById("Bandsinput").disabled= false;
+            document.getElementById("Bandsinput").disabled= true;
             document.getElementById("SongIdInput").disabled=true;
             document.getElementById("CheckerFormMusic").style.display = 'none';
             document.getElementById("CheckerFormBand").style.display = 'flex';
