@@ -42,7 +42,7 @@
                         {
                             @foreach (var item in ViewBag.songs)
                             {
-                                <option data-value="@item.Id" song-link="@item.Href" name-value="@item.Name" band-value="@item.Artists[0].Name">@item.Name by @item.Artists[0].Name</option>
+                                <option data-value="@item.Id" song-link="@item.Href" name-value="@item.Name" band-value="@item.Artists[0].Name">@item.Name <span class="text-light-grey">by @item.Artists[0].Name</span></option>
                             }
 
                         }
@@ -188,6 +188,7 @@
                             option.setAttribute("band-value",item.artists[0].name);
                                 option.onclick = function () {
                                      document.getElementById("SongIdInput").disabled=true;
+                                document.getElementById("SongCross").style.display = 'flex';
                                     bandInput.disabled= true;
                                     val.value = option.getAttribute('name-value');
                                     options.style.display = 'none';
@@ -252,7 +253,8 @@
                         option.text = item.name;
                         option.setAttribute("data-value", item.id);
                             option.onclick = function () {
-                                document.getElementById("Bandsinput").disabled= true;
+                                document.getElementById("Bandsinput").disabled= true;  
+                                document.getElementById("BandCross").style.display = 'flex';
                                 songInput.disabled = true;
                                 val.value = option.value;
                                 options.style.display = 'none';
@@ -313,6 +315,7 @@
                 songLink.textContent = "Spotify - " + option.innerText;
                 songLink.setAttribute("href", "https://open.spotify.com/track/" + option.getAttribute('data-value'));
                 document.getElementById('SongOptions').style.display = 'none';
+                document.getElementById("SongCross").style.display = 'flex';
                 input2.value = option.getAttribute('band-value');
             }
         };
@@ -326,6 +329,7 @@
         for (let option of optionS2.options) {
             option.onclick = function () {
                 document.getElementById("Bandsinput").disabled= true;
+                document.getElementById("BandCross").style.display = 'flex';
                 input.disabled = true;
                 input2.value = option.value;
                 optionS2.style.display = 'none';
@@ -366,7 +370,7 @@
         if (optionalChecker.value === "complete") {document.getElementById("CheckerFormMusic").style.display = 'flex';
             document.getElementById("CheckerFormBand").style.display = 'flex';
             document.getElementById("CheckFormLink").style.display = 'flex';
-            document.getElementById("SongCross").style.display = 'flex';
+            document.getElementById("SongCross").style.display = 'none';
             document.getElementById("BandCross").style.display = 'none';
             document.getElementById("Bandsinput").disabled= true;
             document.getElementById("SongIdInput").disabled=false;
@@ -379,7 +383,7 @@
             document.getElementById("CheckerFormBand").style.display = 'flex';
                 document.getElementById("CheckFormLink").style.display = 'flex';
                 document.getElementById("SongCross").style.display = 'none';
-            document.getElementById("BandCross").style.display = 'flex';
+            document.getElementById("BandCross").style.display = 'none';
                 clean()
         }else
         {
@@ -399,6 +403,8 @@
             document.getElementById("Bandsinput").value = "";
             document.getElementById("answerInputSong").value = "";
             document.getElementById('SongIdInput').value = "";
+            document.getElementById("SongCross").style.display = 'none';
+            document.getElementById("BandCross").style.display = 'none';
        }
 
        function cleanBand()
