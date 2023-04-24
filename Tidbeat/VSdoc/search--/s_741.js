@@ -1,1 +1,0 @@
-search_result['741']=["topic_000000000000019A.html","EmailSender Class","The email sender. Takes care of sending emails."];

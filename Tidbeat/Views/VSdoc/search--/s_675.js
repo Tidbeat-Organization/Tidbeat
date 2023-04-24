@@ -1,0 +1,1 @@
+search_result['675']=["topic_000000000000010B.html","RatingPartialController Constructor","Initializes needed services for the controller."];

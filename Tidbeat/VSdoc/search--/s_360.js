@@ -1,1 +1,0 @@
-search_result['360']=["topic_00000000000000BC.html","CommentsController Constructor","Initializes needed services for the controller."];

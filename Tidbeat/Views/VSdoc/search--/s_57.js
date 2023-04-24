@@ -1,0 +1,1 @@
+search_result['57']=["topic_0000000000000019.html","EditPhotoModel.OnPostSaveImage Method","The post method for the EditPhoto page. Encodes the image and saves it."];

@@ -1,0 +1,1 @@
+search_result['976']=["topic_0000000000000189.html","ChatHub.AddMessageId Method","Sends the id of the just sent message to the users."];

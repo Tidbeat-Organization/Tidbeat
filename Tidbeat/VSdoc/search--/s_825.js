@@ -1,1 +1,0 @@
-search_result['825']=["topic_00000000000001C6.html","RatingService Constructor","Creates a new instance of the RatingService."];

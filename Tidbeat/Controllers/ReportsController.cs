@@ -19,18 +19,35 @@ using Tidbeat.Models;
 
 namespace Tidbeat.Controllers
 {
+    /// <summary>
+    /// The report controller. Controls everything related to reports.
+    /// </summary>
     public class ReportsController : Controller
     {
         private readonly ApplicationDbContext _context;
 
         private readonly UserManager<ApplicationUser> _userManager;
 
+        /// <summary>
+        /// The constructor of the reports controller.
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="userManager"></param>
         public ReportsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
             _userManager = userManager;
         }
 
+        /// <summary>
+        /// The action for the index page.
+        /// </summary>
+        /// <param name="name">The name of report.</param>
+        /// <param name="reason">The reason of the report.</param>
+        /// <param name="type">The type of item the report refers to.</param>
+        /// <param name="state">The status of the report.</param>
+        /// <param name="sort">The sorting parameter.</param>
+        /// <returns>The view.</returns>
         // GET: Reports
         [Authorize(Roles = "Moderator,Admin,Admin")]
         public async Task<IActionResult> Index([FromQuery] string name, [FromQuery] string reason, [FromQuery] string type, [FromQuery] string state, [FromQuery] string sort = "new")
@@ -135,6 +152,16 @@ namespace Tidbeat.Controllers
             return NotFound();
         }
 
+        /// <summary>
+        /// The action used in AJAX calls in the Index view of the Reports for fetching more reports.
+        /// </summary>
+        /// <param name="name">The name of report.</param>
+        /// <param name="reason">The reason of the report.</param>
+        /// <param name="type">The type of item the report refers to.</param>
+        /// <param name="state">The status of the report.</param>
+        /// <param name="sort">The sorting parameter.</param>
+        /// <param name="offset">The offset for fetching more reports.</param>
+        /// <returns></returns>
         [Authorize(Roles = "Moderator,Admin,Admin")]
         public async Task<IActionResult> getData(string name,  string reason,  string type, string state, string sort, int offset = 0)
         {
@@ -225,7 +252,11 @@ namespace Tidbeat.Controllers
             return PartialView("_ReportListPartial", result.Skip(offset).Take(20));
         }
 
-
+        /// <summary>
+        /// The action for the details of a single report.
+        /// </summary>
+        /// <param name="id">The id of the report to be fetched.</param>
+        /// <returns>A view of the details of the report. If it doesn't find, returns a 404.</returns>
         // GET: Reports/Details/5
         [Authorize(Roles = "Moderator,Admin")]
         public async Task<IActionResult> Details(Guid? id)
@@ -301,10 +332,12 @@ namespace Tidbeat.Controllers
             return NotFound();
         }
 
+        /// <summary>
+        /// The action for creating a new report.
+        /// </summary>
+        /// <param name="report">The report parameters passed.</param>
+        /// <returns>A JSON returning the type of error.</returns>
         // POST: Reports/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        // Missing Checks
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
@@ -381,10 +414,13 @@ namespace Tidbeat.Controllers
             return Json("Error");
         }
 
-
+        /// <summary>
+        /// Edits a report details.
+        /// </summary>
+        /// <param name="id">The id of the report to be edited.</param>
+        /// <param name="report">The report contents to change.</param>
+        /// <returns>A JSON about the status of the request.</returns>
         // POST: Reports/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
 
@@ -430,6 +466,11 @@ namespace Tidbeat.Controllers
             return NotFound();
         }
 
+        /// <summary>
+        /// Changes the status of the report. Used for an AJAX call in the details of the report.
+        /// </summary>
+        /// <param name="setReportStatusDTO">A data transfer object for setting the status of the report.</param>
+        /// <returns>A JSON about the status of the request.</returns>
         [HttpPost]
         public async Task<IActionResult> SetReportStatus([FromBody] SetReportStatusDTO setReportStatusDTO) {
              var reportId = setReportStatusDTO.ReportId;

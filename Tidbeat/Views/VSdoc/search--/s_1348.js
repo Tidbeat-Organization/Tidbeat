@@ -1,0 +1,1 @@
+search_result['1348']=["topic_000000000000023F.html","SpotifyService Class","The Spotify service. Takes care of all the operations related to getting info from the Spotify API."];

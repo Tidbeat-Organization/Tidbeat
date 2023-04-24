@@ -1,0 +1,1 @@
+search_result['986']=["topic_000000000000018E.html","CultureMiddleware Constructor","The constructor of the middleware."];

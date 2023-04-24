@@ -1,1 +1,0 @@
-search_result['432']=["topic_00000000000000E7.html","PostsController.Create Method","The create post action. If the post is valid, it saves it in the database."];

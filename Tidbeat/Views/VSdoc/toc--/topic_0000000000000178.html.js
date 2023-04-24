@@ -1,0 +1,1 @@
+var breadcrumbs=[['-1',"",""],['2',"Tidbeat Reference","topic_0000000000000259.html"],['447',"Tidbeat.Enums Namespace","topic_0000000000000160.html"],['452',"ReportStatus Enumeration","topic_0000000000000178.html"]];

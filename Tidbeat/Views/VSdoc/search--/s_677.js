@@ -1,0 +1,1 @@
+search_result['677']=["topic_000000000000010D.html","RatingPartialController.HasUserRated Method","Gets if the current user has rated a post or comment."];

@@ -15,6 +15,9 @@ using Tidbeat.Models;
 
 namespace Tidbeat.Controllers
 {
+    /// <summary>
+    /// A controller used for the behaviour of the administrator's definition page on the user page.
+    /// </summary>
     public class RoleController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -23,6 +26,14 @@ namespace Tidbeat.Controllers
         private readonly IStringLocalizer<RoleController> _localizer;
         private readonly SignInManager<ApplicationUser> _signInManager;
 
+        /// <summary>
+        /// The controller for the RoleController.
+        /// </summary>
+        /// <param name="context">The context of the application.</param>
+        /// <param name="userManager">The user manager object.</param>
+        /// <param name="emailSender">The email sender object.</param>
+        /// <param name="localizer">The language localizer object.</param>
+        /// <param name="signInManager">The sign in manager object.</param>
         public RoleController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, IEmailSender emailSender, IStringLocalizer<RoleController> localizer, SignInManager<ApplicationUser> signInManager)
         {
             _context = context;
@@ -33,6 +44,11 @@ namespace Tidbeat.Controllers
             _signInManager = signInManager;
         }
 
+        /// <summary>
+        /// The method which edits the main user definitions like the full name and the about me, the banning values, if it should delete the photo and the new role.
+        /// </summary>
+        /// <param name="editAsyncDto">A data transfer object for making it easier to convert from the body to parameters.</param>
+        /// <returns></returns>
         [Authorize(Roles = "Moderator,Admin")]
         [HttpPost]
         public async Task<ActionResult> EditAsync([FromBody] EditAsyncDto editAsyncDto )
@@ -115,6 +131,11 @@ namespace Tidbeat.Controllers
             return Json(_localizer["operation_fail"]);
         }
 
+        /// <summary>
+        /// The action for deleting the user in the administrator's definitions page.
+        /// </summary>
+        /// <param name="deleteAsyncDto">The data transfer object for deleting a user.</param>
+        /// <returns>A json about whether the user deletion was successful.</returns>
         [Authorize(Roles = "Moderator,Admin")]
         [HttpPost]
         public async Task<ActionResult> DeleteAsync([FromBody] DeleteAsyncDto deleteAsyncDto)
@@ -138,6 +159,14 @@ namespace Tidbeat.Controllers
             return Json(_localizer["operation_fail"]);
         }
 
+        /// <summary>
+        /// An action for banning users.
+        /// </summary>
+        /// <param name="userId">The id of the user about to be banned.</param>
+        /// <param name="reason">The reason for banning.</param>
+        /// <param name="time">The length of time which a user is supposed to be banned for.</param>
+        /// <param name="date">The type of time: minutes, hours, days, weeks, months, years</param>
+        /// <returns>A JSON of whether the action was successful or not.</returns>
         [Authorize(Roles = "Moderator,Admin")]
         [HttpPost]
         public async Task<ActionResult> BanAsync(string userId, string reason, double time, BanTime date) // date, passes month, day, years, weeks
@@ -197,26 +226,12 @@ namespace Tidbeat.Controllers
             return Json(_localizer["operation_fail"]);
         }
 
-        [Authorize(Roles = "Admin")]
-        [HttpPost]
-        public async Task<ActionResult> RevokePermisson(string userId)
-        {
-            var dbUser = await _context.Users.FindAsync(userId);
-            var result = _userManager.RemoveFromRoleAsync(dbUser,dbUser.Role.ToString());
-            if (result.IsCompletedSuccessfully)
-            {
-                var newPermission = _userManager.AddToRoleAsync(dbUser, Enums.RoleType.NormalUser.ToString());
-                if (newPermission.IsCompletedSuccessfully) 
-                {
-                    dbUser.Role = Enums.RoleType.NormalUser;
-
-                    _context.SaveChanges();
-                }
-            }
-
-            return Json("Error");
-        }
-
+        /// <summary>
+        /// The action which concedes a new role to the user.
+        /// </summary>
+        /// <param name="userId">The id of the user about to get a new role.</param>
+        /// <param name="newRole">The type of the new role about to be conceded.</param>
+        /// <returns>A JSON about the type of error returned.</returns>
         [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<ActionResult> GivePermisson(string userId, RoleType newRole)

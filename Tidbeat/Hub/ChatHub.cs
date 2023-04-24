@@ -80,14 +80,34 @@ namespace Tidbeat.Hub {
             return Clients.Group(conversationId).SendAsync("deleteMessage", messageId);
         }
 
+        /// <summary>
+        /// Sends the id of the just sent message to the users.
+        /// </summary>
+        /// <param name="conversationId">The id of the conversation.</param>
+        /// <param name="messageId">The id of the message.</param>
+        /// <param name="userId">The id of the user.</param>
+        /// <returns>The task.</returns>
         public Task AddMessageId(string conversationId, int messageId, string userId) {
             return Clients.Group(conversationId).SendAsync("addMessageId", messageId, userId);
         }
 
+        /// <summary>
+        /// Sets the online status for all users in the conversation.
+        /// </summary>
+        /// <param name="conversationId">The id of the conversation.</param>
+        /// <param name="currentUserId">The id of the user which just logged in.</param>
+        /// <param name="hasCheckOthersOnlineStatus">A boolean for checking if others have already checked if he was online.</param>
+        /// <returns></returns>
         public Task SetOnlineStatus(string conversationId, string currentUserId, bool hasCheckOthersOnlineStatus) {
             return Clients.Group(conversationId).SendAsync("setOnlineStatus", currentUserId, hasCheckOthersOnlineStatus);
         }
 
+        /// <summary>
+        /// Sets the status to offline for all users in the conversations.
+        /// </summary>
+        /// <param name="conversationId">The id of the conversation.</param>
+        /// <param name="currentUserId">The id of the user which just logged in.</param>
+        /// <returns></returns>
         public Task SetOfflineStatus(string conversationId, string currentUserId) {
             return Clients.Group(conversationId).SendAsync("setOfflineStatus", currentUserId);
         }

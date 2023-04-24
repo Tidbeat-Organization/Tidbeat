@@ -1,0 +1,1 @@
+search_result['1318']=["topic_000000000000022B.html","ISpotifyService.GetBandAsync Method","Gets a band from the Spotify API."];

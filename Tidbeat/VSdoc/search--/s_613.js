@@ -1,1 +1,0 @@
-search_result['613']=["topic_0000000000000156.html","Comment.User Property","The comment\u0027s owner."];

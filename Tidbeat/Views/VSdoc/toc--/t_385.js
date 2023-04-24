@@ -1,0 +1,1 @@
+c['385']=[['386',"DeleteMessageDto Class","topic_000000000000013D.html",1],['390',"EditMessageDto Class","topic_0000000000000140.html",1],['395',"GetRecentMessageDto Class","topic_0000000000000144.html",1],['400',"MessageDto Class","topic_0000000000000148.html",1],['405',"SetMessageToSeenDto Class","topic_000000000000014C.html",1]];

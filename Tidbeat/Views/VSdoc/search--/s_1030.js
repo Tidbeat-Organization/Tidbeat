@@ -1,0 +1,1 @@
+search_result['1030']=["topic_00000000000001A1.html","ApplicationUser.Bans Property","A list of bans a user may have."];

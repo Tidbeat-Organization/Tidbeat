@@ -1,0 +1,1 @@
+var breadcrumbs=[['-1',"",""],['2',"Tidbeat Reference","topic_0000000000000259.html"],['468',"Tidbeat.Middlewares Namespace","topic_000000000000018C.html"],['469',"CultureMiddleware Class","topic_000000000000018D.html"]];

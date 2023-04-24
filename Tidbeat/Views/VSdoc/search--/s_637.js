@@ -1,0 +1,1 @@
+search_result['637']=["topic_00000000000000FB.html","PostsController.Create Method","The create post action. If the post is valid, it saves it in the database."];

@@ -1,0 +1,1 @@
+search_result['1245']=["topic_0000000000000200.html","ChatBeatService Constructor","Initializes the needed services for the service."];

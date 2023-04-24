@@ -1,0 +1,1 @@
+search_result['669']=["topic_000000000000010A.html","RatingPartialController Class","Controls all the rating partials present in posts and comments."];

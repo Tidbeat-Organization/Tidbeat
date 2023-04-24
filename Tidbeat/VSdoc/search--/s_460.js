@@ -1,1 +1,0 @@
-search_result['460']=["topic_00000000000000F7.html","RatingPartialController Constructor","Initializes needed services for the controller."];

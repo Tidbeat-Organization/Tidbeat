@@ -1,0 +1,1 @@
+search_result['1036']=["topic_00000000000001A2.html","ApplicationUser.Role Property","The current role of the user."];

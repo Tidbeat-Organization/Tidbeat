@@ -1,0 +1,1 @@
+search_result['1344']=["topic_000000000000023B.html","RatingService.GetAverageRating Method","Gets the average rating of a post or comment."];

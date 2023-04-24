@@ -1,0 +1,1 @@
+search_result['59']=["topic_000000000000001B.html","EditPhotoModel.OnPostDelete Method","The post method for the EditPhoto page. Deletes the image in the server."];

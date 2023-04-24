@@ -8,15 +8,29 @@ using Tidbeat.Services;
 
 namespace Tidbeat.Controllers
 {
+    /// <summary>
+    /// The users controller used solely for the Index page and fetching/filtering users for a list.
+    /// </summary>
     public class UsersController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
 
+        /// <summary>
+        /// The constructor for the UsersController.
+        /// </summary>
+        /// <param name="userManager">The user manager object for fetching the users from.</param>
         public UsersController(UserManager<ApplicationUser> userManager)
         {
             _userManager = userManager;
         }
 
+        /// <summary>
+        /// The Index method which returns a Page with a filtered list of users.
+        /// </summary>
+        /// <param name="name">The name of the user.</param>
+        /// <param name="country">The country.</param>
+        /// <param name="sort">The type of sorting.</param>
+        /// <returns>The Index page.</returns>
         public async Task<IActionResult> Index(string name, string country, string sort)
         {
             var users = _userManager.Users
@@ -72,6 +86,14 @@ namespace Tidbeat.Controllers
             return View(users.Take(9));
         }
 
+        /// <summary>
+        /// Fetches users based on filters and a offset. Used for a AJAX call in the Index page.
+        /// </summary>
+        /// <param name="name">The name filter of the users.</param>
+        /// <param name="country">The country filter.</param>
+        /// <param name="sort">The sorting parameter.</param>
+        /// <param name="offset">The offset of the users it takes.</param>
+        /// <returns>A partial view which is a list of filtered users.</returns>
         public async Task<IActionResult> getData(string name, string country, string sort, int offset = 0)
         {
             var users = await _userManager.Users

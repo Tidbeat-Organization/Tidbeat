@@ -1,0 +1,1 @@
+search_result['1367']=["topic_000000000000024D.html","SpotifyService.GetMultipleBandsAsync Method","Searches for bands using a search key."];

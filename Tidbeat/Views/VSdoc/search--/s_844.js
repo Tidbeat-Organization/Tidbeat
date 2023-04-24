@@ -1,0 +1,1 @@
+search_result['844']=["topic_0000000000000150.html","SetReportStatusDTO Class","The data transfer object for the SetReportStatus method in the ReportsController."];

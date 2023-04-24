@@ -1,0 +1,1 @@
+search_result['1144']=["topic_00000000000001CD.html","IRating.Value Property","The rating\u0027s value."];

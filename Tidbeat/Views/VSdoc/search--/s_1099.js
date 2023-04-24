@@ -1,0 +1,1 @@
+search_result['1099']=["topic_00000000000001BE.html","CommentRating.Comment Property","The comment which the rating belongs to."];

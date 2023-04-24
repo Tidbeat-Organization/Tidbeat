@@ -1,0 +1,1 @@
+search_result['1346']=["topic_000000000000023D.html","RatingService.GetUserRate Method","Gets the user\u0027s rating. If the user hasn\u0027t rated, it returns 0."];

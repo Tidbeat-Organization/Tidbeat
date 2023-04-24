@@ -1,0 +1,1 @@
+var breadcrumbs=[['-1',"",""],['2',"Tidbeat Reference","topic_0000000000000259.html"],['260',"Tidbeat.Controllers Namespace","topic_00000000000000C0.html"],['301',"HomeController Class","topic_00000000000000E5.html"],['302',"HomeController Constructor","topic_00000000000000E6.html"]];
