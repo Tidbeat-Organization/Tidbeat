@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using EllipticCurve.Utils;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Tidbeat.Models;
@@ -15,7 +17,7 @@ namespace Tidbeat.Controllers
             _userManager = userManager;
         }
 
-        public async Task<IActionResult> Index(string name, string country)
+        public async Task<IActionResult> Index(string name, string country, string sort)
         {
             var users = _userManager.Users
                 .Where(u => u.FullName != "[deleted]")
@@ -32,11 +34,27 @@ namespace Tidbeat.Controllers
             ViewData["NameFilter"] = name;
             ViewData["CountryFilter"] = country;
 
+            ViewData["OrderFilter"] = sort;
+
             // filter by country
             if (!string.IsNullOrEmpty(country))
             {
                 country = country.ToLower();
                 users = users.Where(u => u.Country != null && u.Country.ToLower().Contains(country)).ToList();
+            }
+
+            if (!string.IsNullOrEmpty(sort))
+            {
+                sort = sort.ToLower();
+                switch (sort)
+                {
+                    case "a-z":
+                        users = users.OrderBy(p => p.FullName).ToList();
+                        break;
+                    case "z-a":
+                        users = users.OrderByDescending(p => p.FullName).ToList();
+                        break;
+                }
             }
 
             ViewBag.Countries = GlobalizationService.CountryList().OrderBy(c => c).ToList();
@@ -54,7 +72,7 @@ namespace Tidbeat.Controllers
             return View(users.Take(9));
         }
 
-        public async Task<IActionResult> getData(string name, string country, int offset = 0)
+        public async Task<IActionResult> getData(string name, string country, string sort, int offset = 0)
         {
             var users = await _userManager.Users
                 .Where(u => u.FullName != "[deleted]")
@@ -73,6 +91,21 @@ namespace Tidbeat.Controllers
                 country = country.ToLower();
                 users = users.Where(u => u.Country != null && u.Country.ToLower().Contains(country)).ToList();
             }
+
+            if (!string.IsNullOrEmpty(sort))
+            {
+                sort = sort.ToLower();
+                switch (sort)
+                {
+                    case "a-z":
+                        users = users.OrderBy(p => p.FullName).ToList();
+                        break;
+                    case "z-a":
+                        users = users.OrderByDescending(p => p.FullName).ToList();
+                        break;
+                }
+            }
+
             return PartialView("_UserListPartial", users.Skip(offset).Take(9));
         }
 
