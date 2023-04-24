@@ -220,12 +220,18 @@
 <div class="container-fluid row w-100 d-flex flex-column flex-lg-row mx-0">
     <div class="d-flex flex-column col-lg-6 col-md-12 vh-100-minus-navbar border-lg-end pe-1 mt-4 pt-5">
         <div class="d-flex flex-column flex-xl-row justify-content-lg-start align-items-center">
-            @if (!string.IsNullOrEmpty(user.ImagePath)) {
-                <img src="@user.ImagePath" height="200" class="border border-dark rounded" />
-            }else
-            {
-                <img src="~/images/UnknownUser.jpg" height="200" class="border border-dark rounded" />
-            }
+            <div class="position-relative">
+                @if (!string.IsNullOrEmpty(user.ImagePath)) {
+                    <img id="user-profile-image" src="@user.ImagePath" height="200" class="border border-dark rounded" />
+                }else
+                {
+                    <img id="user-profile-image" src="~/images/UnknownUser.jpg" height="200" class="border border-dark rounded" />
+                }
+                @if (ViewBag.IsCurrentUser && User.Identity?.IsAuthenticated)
+                {
+                    <a href="/Identity/Account/Manage/EditPhoto" id="edit-photo-profile-button" class="d-none bi bi-camera-fill position-absolute fs-4 px-1 me-2 mb-2 text-primary pointer-active bg-white rounded end-0 bottom-0"></a>
+                }
+            </div>
             <div class="ms-2 text-start w-100">
                 <div class="d-flex">
                     @if (user.Role.Equals(Tidbeat.Enums.RoleType.Admin))
@@ -477,6 +483,44 @@
     //Show reason for ban, after entering number
     $(document).ready(function() {
     // Listen to changes in the "Ban for" input
+
+        function showEditPhotoButton() {
+            var editPhotoProfileButton = document.getElementById("edit-photo-profile-button");
+            if (editPhotoProfileButton) {
+                editPhotoProfileButton.classList.remove('d-none');
+            }
+            return editPhotoProfileButton;
+        }
+
+        function hideEditPhotoButton() {
+            var editPhotoProfileButton = document.getElementById("edit-photo-profile-button");
+            if (editPhotoProfileButton) {
+                editPhotoProfileButton.classList.add('d-none');
+            }
+            return editPhotoProfileButton;
+        }
+
+        var userProfileImage = document.getElementById("user-profile-image");
+        var editPhotoProfileButton = document.getElementById("edit-photo-profile-button");
+        if (editPhotoProfileButton) {
+            userProfileImage.addEventListener("mouseenter", function () {
+                showEditPhotoButton();
+            });
+
+            userProfileImage.addEventListener("mouseleave", function () {
+                hideEditPhotoButton();
+            });
+
+            editPhotoProfileButton.addEventListener('mouseenter', function () {
+                showEditPhotoButton();
+            });
+
+            editPhotoProfileButton.addEventListener('mouseleave', function () {
+                hideEditPhotoButton();
+            });
+        }
+
+
         $('#ban-for').on('input', function() {
             if ($(this).val() > 0) {
                 $('#reason-for-ban').show();
