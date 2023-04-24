@@ -49,7 +49,7 @@
                     </datalist>
 
                     <input type="hidden" name="SongId" id="answerInputSong" value="@(ViewBag.chooseSong?.Id ?? "")">
-                    <div id="SongCross" type="hidden" class="bi bi-x fs-3 py-0 text-primary align-self-center" data-toggle="tooltip" data-placement="top" title="@Localizer["delete"]" onclick="cleanSong()"></div>
+                    <div id="SongCross" type="hidden" class="bi bi-x fs-3 py-0 text-primary align-self-center hover-background-grey" data-toggle="tooltip" data-placement="top" title="@Localizer["delete"]" onclick="cleanSong()"></div>
                 </div>
                  <span asp-validation-for="Song" class="text-danger"></span>
             </div>
@@ -68,7 +68,7 @@
                         }
                     </datalist>
                     <input type="hidden" name="BandId" id="answerInputband" value="@(ViewBag.chooseBand?.Id ?? "")">
-                    <div id="BandCross" type="hidden" class="bi bi-x fs-3 py-0 text-primary align-self-center" data-toggle="tooltip" data-placement="top" title="@Localizer["delete"]" onclick="cleanBand()"></div>
+                    <div id="BandCross" type="hidden" class="bi bi-x fs-3 py-0 text-primary hover-background-grey align-self-center" data-toggle="tooltip" data-placement="top" title="@Localizer["delete"]" onclick="cleanBand()"></div>
                 </div>
                 <span asp-validation-for="Band" class="text-danger"></span>
             </div>
