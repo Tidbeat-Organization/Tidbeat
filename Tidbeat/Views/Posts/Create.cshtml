@@ -50,8 +50,8 @@
 
                     <input type="hidden" name="SongId" id="answerInputSong" value="@(ViewBag.chooseSong?.Id ?? "")">
                     <div id="SongCross" type="hidden" class="bi bi-x fs-3 py-0 text-primary align-self-center" data-toggle="tooltip" data-placement="top" title="@Localizer["delete"]" onclick="cleanSong()"></div>
-                    <span asp-validation-for="Song" class="text-danger w-100"></span>
                 </div>
+                 <span asp-validation-for="Song" class="text-danger"></span>
             </div>
 
             <!-- Band -->
@@ -69,8 +69,8 @@
                     </datalist>
                     <input type="hidden" name="BandId" id="answerInputband" value="@(ViewBag.chooseBand?.Id ?? "")">
                     <div id="BandCross" type="hidden" class="bi bi-x fs-3 py-0 text-primary align-self-center" data-toggle="tooltip" data-placement="top" title="@Localizer["delete"]" onclick="cleanBand()"></div>
-                    <span asp-validation-for="Band" class="text-danger"></span>
                 </div>
+                <span asp-validation-for="Band" class="text-danger"></span>
             </div>
 
             <!-- Spotify Link -->
