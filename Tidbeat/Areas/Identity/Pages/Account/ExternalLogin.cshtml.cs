@@ -166,7 +166,11 @@ namespace Tidbeat.Areas.Identity.Pages.Account
                 ErrorMessage = "Error loading external login information.";
                 return RedirectToPage("./Login", new { ReturnUrl = returnUrl });
             }
-
+            var foundUser = await _userManager.FindByEmailAsync(info.Principal.FindFirstValue(ClaimTypes.Email));
+            if (foundUser != null) {
+                await _signInManager.SignInAsync(foundUser, isPersistent: false);
+                return LocalRedirect(returnUrl);
+            }
             // Sign in the user with this external login provider if the user already has a login.
             var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false, bypassTwoFactor: true);
             if (result.Succeeded)
@@ -241,7 +245,6 @@ namespace Tidbeat.Areas.Identity.Pages.Account
                 else
                 {
                     var user = CreateUser();
-
                     await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                     await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
                     user.FullName = Input.FullName;
