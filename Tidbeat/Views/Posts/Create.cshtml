@@ -61,7 +61,7 @@
                         </ul>
                     </div>-->
                     <input type="hidden" name="SongId" id="answerInputSong" value="@(ViewBag.chooseSong?.Id ?? "")">
-                    <div id="SongCross" type="hidden" class="bi bi-x fs-3 py-0 text-primary" data-toggle="tooltip" data-placement="top" title="@Localizer["delete"]" onclick="clean()"></div>
+                    <div id="SongCross" type="hidden" class="bi bi-x fs-3 py-0 text-primary" data-toggle="tooltip" data-placement="top" title="@Localizer["delete"]" onclick="cleanSong()"></div>
                     <span asp-validation-for="Song" class="text-danger"></span>
                 </div>
             </div>
@@ -83,7 +83,7 @@
                         }
                     </datalist>
                     <input type="hidden" name="BandId" id="answerInputband" value="@(ViewBag.chooseBand?.Id ?? "")">
-                    <div id="BandCross" type="hidden" class="bi bi-x fs-3 py-0 text-primary" data-toggle="tooltip" data-placement="top" title="@Localizer["delete"]" onclick="clean()"></div>
+                    <div id="BandCross" type="hidden" class="bi bi-x fs-3 py-0 text-primary" data-toggle="tooltip" data-placement="top" title="@Localizer["delete"]" onclick="cleanBand()"></div>
                     <span asp-validation-for="Band" class="text-danger"></span>
                 </div>
             </div>
@@ -202,6 +202,7 @@
                             option.setAttribute("song-link", item.Href);
                             option.setAttribute("band-value",item.artists[0].name);
                                 option.onclick = function () {
+                                     document.getElementById("SongIdInput").disabled=true;
                                     bandInput.disabled= true;
                                     val.value = option.getAttribute('name-value');
                                     options.style.display = 'none';
@@ -266,6 +267,7 @@
                         option.text = item.name;
                         option.setAttribute("data-value", item.id);
                             option.onclick = function () {
+                                document.getElementById("Bandsinput").disabled= true;
                                 songInput.disabled = true;
                                 val.value = option.value;
                                 options.style.display = 'none';
@@ -318,6 +320,7 @@
         };
         for (let option of optionS.options) {
             option.onclick = function () {
+            document.getElementById("SongIdInput").disabled=true;
                 input2.disabled = true;
                 input.value = option.value;
                 optionS.style.display = 'none';
@@ -337,6 +340,7 @@
         const hiddenInput2 = document.getElementById("answerInputband");
         for (let option of optionS2.options) {
             option.onclick = function () {
+                document.getElementById("Bandsinput").disabled= true;
                 input.disabled = true;
                 input2.value = option.value;
                 optionS2.style.display = 'none';
@@ -410,6 +414,18 @@
             document.getElementById("Bandsinput").value = "";
             document.getElementById("answerInputSong").value = "";
             document.getElementById('SongIdInput').value = "";
+       }
+
+       function cleanBand()
+       {
+            document.getElementById("Bandsinput").disabled = false;
+           clean()
+       }
+       function cleanSong()
+       {
+           
+            document.getElementById("SongIdInput").disabled=false;
+           clean()
        }
 
        function validateTitle() {
