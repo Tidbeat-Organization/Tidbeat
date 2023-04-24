@@ -252,7 +252,7 @@
                     }
                     @if (((User.IsInRole("Moderator") && ViewBag.CurrentUser.Id == Model.Id) || (User.IsInRole("Admin")) && ViewBag.CurrentUser.Id == Model.Id))
                     {
-                        <a class="btn bi bi-archive-fill text-primary fs-3 py-0 hover-background-grey px-1 py-0" href="@Url.Action("Index", "Reports")" data-toggle="tooltip" data-placement="top" title="@Localizer["report_list"]"></a>
+                        <a class="btn bi bi-archive-fill text-danger fs-5 hover-background-grey py-0 px-1 align-self-center" href="@Url.Action("Index", "Reports")" data-toggle="tooltip" data-placement="top" title="@Localizer["report_list"]"></a>
                     }
                     <button type="button" class="btn-edit-user ms-auto" data-user-id="@Model.Id">
                         @if (((User.IsInRole("Moderator") && Model.Role != RoleType.Admin) || User.IsInRole("Admin")) && ViewBag.CurrentUser.Id != Model.Id) {
