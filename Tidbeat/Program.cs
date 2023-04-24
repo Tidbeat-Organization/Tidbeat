@@ -3,8 +3,10 @@ using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Localization;
 using System.Globalization;
 using Tidbeat;
@@ -39,6 +41,9 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddRoles<IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews().AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix);
+services.Configure<MvcViewOptions>(options => {
+    options.ViewEngines.Add(new HtmlViewEngine());
+});
 
 builder.Services.AddTransient<IEmailSender, EmailSender>();
 builder.Services.Configure<AuthMessageSenderOptions>(builder.Configuration);
@@ -69,6 +74,11 @@ services.AddSignalR().AddAzureSignalR();
 
 var app = builder.Build();
 app.UseRequestLocalization();
+app.UseStaticFiles(new StaticFileOptions {
+    FileProvider = new PhysicalFileProvider(
+            Path.Combine(Directory.GetCurrentDirectory(), "Views", "VSdoc")),
+    RequestPath = "/VSdoc"
+});
 app.UseMiddleware<CultureMiddleware>();
 
 // 404 Error Handling
