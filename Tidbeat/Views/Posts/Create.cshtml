@@ -61,6 +61,7 @@
                         </ul>
                     </div>-->
                     <input type="hidden" name="SongId" id="answerInputSong" value="@(ViewBag.chooseSong?.Id ?? "")">
+                    <div id="SongCross" type="hidden" class="bi bi-x fs-3 py-0 text-primary" data-toggle="tooltip" data-placement="top" title="@Localizer["delete"]" onclick="clean()"></div>
                     <span asp-validation-for="Song" class="text-danger"></span>
                 </div>
             </div>
@@ -82,6 +83,7 @@
                         }
                     </datalist>
                     <input type="hidden" name="BandId" id="answerInputband" value="@(ViewBag.chooseBand?.Id ?? "")">
+                    <div id="BandCross" type="hidden" class="bi bi-x fs-3 py-0 text-primary" data-toggle="tooltip" data-placement="top" title="@Localizer["delete"]" onclick="clean()"></div>
                     <span asp-validation-for="Band" class="text-danger"></span>
                 </div>
             </div>
@@ -344,13 +346,14 @@
                 document.getElementById('BandOptions').style.display = 'none';
             }
         };
-
         //For the Optional
         var optionalChecker = document.getElementById("formOptional");
         if (optionalChecker.value === "complete") {
             document.getElementById("CheckerFormMusic").style.display = 'flex';
             document.getElementById("CheckerFormBand").style.display = 'flex';
             document.getElementById("CheckFormLink").style.display = 'flex';
+            document.getElementById("SongCross").style.display = 'flex';
+            document.getElementById("BandCross").style.display = 'none';
             document.getElementById("Bandsinput").disabled= true;
             document.getElementById("SongIdInput").disabled=false;
 
@@ -360,16 +363,22 @@
             document.getElementById("CheckerFormMusic").style.display = 'none';
             document.getElementById("CheckerFormBand").style.display = 'flex';
             document.getElementById("CheckFormLink").style.display = 'flex';
+            document.getElementById("SongCross").style.display = 'none';
+            document.getElementById("BandCross").style.display = 'flex';
         }else
         {
             document.getElementById("CheckerFormMusic").style.display = 'none';
             document.getElementById("CheckerFormBand").style.display = 'none';
             document.getElementById("CheckFormLink").style.display = 'none';
+            document.getElementById("SongCross").style.display = 'none';
+            document.getElementById("BandCross").style.display = 'none';
         }
        optionalChecker.addEventListener("change", (event) => {
         if (optionalChecker.value === "complete") {document.getElementById("CheckerFormMusic").style.display = 'flex';
             document.getElementById("CheckerFormBand").style.display = 'flex';
             document.getElementById("CheckFormLink").style.display = 'flex';
+            document.getElementById("SongCross").style.display = 'flex';
+            document.getElementById("BandCross").style.display = 'none';
             document.getElementById("Bandsinput").disabled= true;
             document.getElementById("SongIdInput").disabled=false;
                 clean()
@@ -380,12 +389,16 @@
             document.getElementById("CheckerFormMusic").style.display = 'none';
             document.getElementById("CheckerFormBand").style.display = 'flex';
                 document.getElementById("CheckFormLink").style.display = 'flex';
+                document.getElementById("SongCross").style.display = 'none';
+            document.getElementById("BandCross").style.display = 'flex';
                 clean()
         }else
         {
             document.getElementById("CheckerFormMusic").style.display = 'none';
             document.getElementById("CheckerFormBand").style.display = 'none';
             document.getElementById("CheckFormLink").style.display = 'none';
+                document.getElementById("SongCross").style.display = 'none';
+                document.getElementById("BandCross").style.display = 'none';
             clean()
         }
        });

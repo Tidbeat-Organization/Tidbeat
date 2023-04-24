@@ -129,6 +129,9 @@
   <data name="create_post" xml:space="preserve">
     <value>Create Post</value>
   </data>
+  <data name="delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
   <data name="extra_options" xml:space="preserve">
     <value>Extra Options</value>
   </data>
