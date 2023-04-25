@@ -21,6 +21,12 @@ steps:
   inputs:
     restoreSolution: '$(solution)'
 
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'install'
+    arguments: 'Microsoft.NET.Test.Sdk'
+    workingDirectory: '$(System.DefaultWorkingDirectory)'
+
 - task: VSBuild@1
   inputs:
     solution: '$(solution)'
