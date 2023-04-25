@@ -40,6 +40,8 @@ steps:
       !**\xunit.runner.visualstudio.testadapter.dll
       !**\xunit.runner.visualstudio.dotnetcore.testadapter.dll
       **\TidbeatTests2.0.dll
+    publishTestResults: true
+    testResultsFiles: '**/*.trx'
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
     useVsixExtensions: false
