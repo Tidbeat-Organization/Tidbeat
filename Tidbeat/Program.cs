@@ -85,7 +85,7 @@ var env = app.Services.GetService<IWebHostEnvironment>();
 app.UseRequestLocalization();
 app.UseStaticFiles(new StaticFileOptions {
     FileProvider = new PhysicalFileProvider(
-            Path.Combine("C:", "home", "site", "Views", "VSdoc")),
+            Path.Combine(env.ContentRootPath, "Views", "VSdoc")),
     RequestPath = "/VSdoc"
 });
 app.UseMiddleware<CultureMiddleware>();
