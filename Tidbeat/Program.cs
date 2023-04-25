@@ -75,11 +75,13 @@ services.AddSignalR().AddAzureSignalR();
 var app = builder.Build();
 var env = app.Services.GetService<IWebHostEnvironment>();
 app.UseRequestLocalization();
+/*
 app.UseStaticFiles(new StaticFileOptions {
     FileProvider = new PhysicalFileProvider(
             Path.Combine(env.ContentRootPath, "Views", "VSdoc")),
     RequestPath = "/VSdoc"
 });
+*/
 app.UseMiddleware<CultureMiddleware>();
 
 // 404 Error Handling
