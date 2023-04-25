@@ -42,3 +42,4 @@ steps:
       **\TidbeatTests2.0.dll
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
+    useVsixExtensions: false
