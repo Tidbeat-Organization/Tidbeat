@@ -1,0 +1,1 @@
+search_result['1023']=["topic_000000000000019F.html","ApplicationUser.IsBanned Property","A boolean about the ban status of the user."];

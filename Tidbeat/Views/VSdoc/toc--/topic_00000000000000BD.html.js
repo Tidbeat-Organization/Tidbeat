@@ -1,0 +1,1 @@
+var breadcrumbs=[['-1',"",""],['2',"Tidbeat Reference","topic_0000000000000259.html"],['250',"Tidbeat.AuxilliaryClasses Namespace","topic_00000000000000B9.html"],['254',"SpotifyAux Class","topic_00000000000000BC.html"],['255',"Methods","topic_00000000000000BC_methods--.html"],['256',"TestTrackApiCall Method","topic_00000000000000BD.html"]];

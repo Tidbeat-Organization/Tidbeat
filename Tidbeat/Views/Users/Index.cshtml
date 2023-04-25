@@ -6,6 +6,7 @@
 @{
     ViewData["Title"] = "Lista de utilizadores";
     var countrySaved = ViewData["CountryFilter"];
+    var order = ViewData["OrderFilter"]?.ToString();
 }
 
 <style>
@@ -29,7 +30,7 @@
 <h1 class="text-start ms-3" style="margin-top: 72px; color: #6610F2;">@Localizer["filters"]</h1>
 
 <form method="get" action="@Url.Action("Index", "Users")">
-    <div class="row justify-content-center">
+    <div class="row justify-content-center w-100">
         <div class="col-md-4">
             <div class="form-group ms-4">
                 <label for="inputName" class="row justify-content-left ms-1">@Localizer["name"]</label>
@@ -45,6 +46,16 @@
                     {
                         <option value="@country" selected="@((string)ViewData["CountryFilter"] == country)">@country</option>
                     }
+                </select>
+            </div>
+        </div>
+        <div class="col-md-4 mb-3">
+            <div class="form-group">
+                <label for="inputSort" class="row justify-content-left ms-4">@Localizer["order"]</label>
+                <select class="form-control ms-4" id="inputSort" name="sort">
+                    <!option value="">@Localizer["select_order"]</!option>
+                    <!option value="a-z" @(order == "a-z" ? "selected" : "")>@Localizer["alfabetically_a_to_z"]</!option>
+                    <!option value="z-a" @(order == "z-a" ? "selected" : "")>@Localizer["alfabetically_z_to_a"]</!option>
                 </select>
             </div>
         </div>
@@ -106,7 +117,7 @@
                 // Load more data
                 $.ajax({
                     url: "@Url.Action("getData")",
-                    data: { offset: offset, name: "@ViewData["NameFilter"]", country: "@countrySaved" },
+                    data: { offset: offset, name: "@ViewData["NameFilter"]", country: "@countrySaved", sort: "@order"},
                     dataType: "html",
                     success: function (data) {
                         if (data.length > 0) {

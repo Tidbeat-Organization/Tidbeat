@@ -1,1 +1,0 @@
-search_result['604']=["topic_0000000000000152.html","Comment Class","The comment model."];

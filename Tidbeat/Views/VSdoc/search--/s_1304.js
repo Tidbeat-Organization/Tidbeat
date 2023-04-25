@@ -1,0 +1,1 @@
+search_result['1304']=["topic_0000000000000222.html","IRatingService.HasUserRated Method","Gets whether the user has rated or not."];

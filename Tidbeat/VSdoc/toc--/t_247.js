@@ -1,1 +1,0 @@
-c['247']=[['248',"Details Method","topic_00000000000000BA.html",0],['249',"Index Method","topic_00000000000000B9.html",0]];

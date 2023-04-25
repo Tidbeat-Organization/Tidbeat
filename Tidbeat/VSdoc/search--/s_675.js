@@ -1,1 +1,0 @@
-search_result['675']=["topic_0000000000000176.html","Post Class","The post model."];

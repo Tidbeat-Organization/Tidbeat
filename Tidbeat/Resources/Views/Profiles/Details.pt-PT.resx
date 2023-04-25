@@ -123,6 +123,9 @@
   <data name="admin" xml:space="preserve">
     <value>Administrador</value>
   </data>
+  <data name="admin_menu" xml:space="preserve">
+    <value>Opções de moderação</value>
+  </data>
   <data name="adm_action" xml:space="preserve">
     <value>Defenições de Administrador</value>
   </data>
@@ -140,6 +143,9 @@
   </data>
   <data name="birth_date" xml:space="preserve">
     <value>Data de Nascimento</value>
+  </data>
+  <data name="chat" xml:space="preserve">
+    <value>Chat</value>
   </data>
   <data name="children" xml:space="preserve">
     <value>Crianças</value>
@@ -174,6 +180,9 @@
   <data name="disco" xml:space="preserve">
     <value>Disco</value>
   </data>
+  <data name="edit_profile" xml:space="preserve">
+    <value>Editar Perfil</value>
+  </data>
   <data name="favorite_genre" xml:space="preserve">
     <value>Género Favorito</value>
   </data>
@@ -188,6 +197,9 @@
   </data>
   <data name="folk" xml:space="preserve">
     <value>Folk</value>
+  </data>
+  <data name="follow" xml:space="preserve">
+    <value>Seguir</value>
   </data>
   <data name="followers" xml:space="preserve">
     <value>Pessoas Que Segues</value>
@@ -243,6 +255,9 @@
   <data name="my_posts" xml:space="preserve">
     <value>Meus posts</value>
   </data>
+  <data name="my_posts_otheruser" xml:space="preserve">
+    <value>Posts de</value>
+  </data>
   <data name="name" xml:space="preserve">
     <value>Nome</value>
   </data>
@@ -261,8 +276,14 @@
   <data name="no_followers" xml:space="preserve">
     <value>Ninguém te segue</value>
   </data>
+  <data name="no_followers_otheruser" xml:space="preserve">
+    <value>Não há Seguidores</value>
+  </data>
   <data name="no_followies" xml:space="preserve">
     <value>Não Segues Ninguém</value>
+  </data>
+  <data name="no_followies_otheruser" xml:space="preserve">
+    <value>Não Segue Ninguém</value>
   </data>
   <data name="no_posts" xml:space="preserve">
     <value>Sem posts</value>
@@ -278,6 +299,12 @@
   </data>
   <data name="reggae" xml:space="preserve">
     <value>Reggae</value>
+  </data>
+  <data name="report" xml:space="preserve">
+    <value>Reportar</value>
+  </data>
+  <data name="report_list" xml:space="preserve">
+    <value>Lista de Reports</value>
   </data>
   <data name="rock" xml:space="preserve">
     <value>Rock</value>
@@ -302,6 +329,9 @@
   </data>
   <data name="textp-otheruser" xml:space="preserve">
     <value>Pessoas Que Segue</value>
+  </data>
+  <data name="unfollow" xml:space="preserve">
+    <value>Deixar de Seguir</value>
   </data>
   <data name="user_data" xml:space="preserve">
     <value>Dados de utilizador</value>

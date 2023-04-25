@@ -1,0 +1,1 @@
+search_result['1284']=["topic_0000000000000218.html","IChatBeatService.RemoveMessageFromDatabase Method","Removes a message from the database."];

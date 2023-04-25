@@ -55,26 +55,50 @@ namespace Tidbeat.Models {
         [PersonalData]
         public string? Country { get; set; }
 
+        /// <summary>
+        /// A boolean about the ban status of the user.
+        /// </summary>
         public bool? IsBanned { get; set; }
 
+        /// <summary>
+        /// A reason for the ban status.
+        /// </summary>
         public string? reason { get; set; }
 
+        /// <summary>
+        /// A list of bans a user may have.
+        /// </summary>
         public List<BanUser>? Bans { get; set; }
+
+        /// <summary>
+        /// The current role of the user.
+        /// </summary>
         public RoleType Role { get; set; }
 
-
+        /// <summary>
+        /// A method for fetching a formatted FirstName.
+        /// </summary>
+        /// <returns></returns>
         public string FirstName() {
             return FullName.Split(' ')[0];
         }
 
+        /// <summary>
+        /// A method for fetching a formatted LastName.
+        /// </summary>
+        /// <returns></returns>
         public string LastName() {
-            var allNames = FullName.Split(' ');
+            var allNames = FullName.Trim().Split(' ');
             if (allNames.Length == 1) {
                 return "";
             }
             return allNames[allNames.Length - 1];
         }
 
+        /// <summary>
+        /// A method for fetching a concatenation of the first and last names.
+        /// </summary>
+        /// <returns></returns>
         public string FirstAndLastName() { 
             return FirstName() + " " + LastName();
         }

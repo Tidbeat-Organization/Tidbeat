@@ -22,6 +22,8 @@ using Microsoft.AspNetCore.WebUtilities;
 using System.Text.Encodings.Web;
 using System.Text;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Tidbeat.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace Tidbeat.Areas.Identity.Pages.Account
 {
@@ -36,6 +38,7 @@ namespace Tidbeat.Areas.Identity.Pages.Account
         private readonly IEmailSender _emailSender;
         private static string Pattern = RegisterModel.Pattern;
         private readonly IStringLocalizer<LoginModel> _localizer;
+        private readonly ApplicationDbContext _context;
 
         /// <summary>
         /// The constructor for the login model.
@@ -45,13 +48,14 @@ namespace Tidbeat.Areas.Identity.Pages.Account
         /// <param name="userManager">The user manager.</param>
         /// <param name="emailSender">The email sender.</param>
         /// <param name="localizer">The localizer.</param>
-        public LoginModel(SignInManager<ApplicationUser> signInManager, ILogger<LoginModel> logger, UserManager<ApplicationUser> userManager, IEmailSender emailSender, IStringLocalizer<LoginModel> localizer)
+        public LoginModel(ApplicationDbContext context, SignInManager<ApplicationUser> signInManager, ILogger<LoginModel> logger, UserManager<ApplicationUser> userManager, IEmailSender emailSender, IStringLocalizer<LoginModel> localizer)
         {
             _signInManager = signInManager;
             _logger = logger;
             _userManager = userManager;
             _emailSender = emailSender;
             _localizer = localizer;
+            _context = context;
         }
 
         /// <summary>
@@ -152,6 +156,14 @@ namespace Tidbeat.Areas.Identity.Pages.Account
                     var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: true);
                     if (result.Succeeded)
                     {
+                        var foundUser = await _context.Users.Include(u => u.Bans).FirstOrDefaultAsync(u => u.Email == Input.Email);
+                        if (foundUser.Bans != null) {
+                            List<BanUser> sortedList = foundUser.Bans.OrderByDescending(u => u.EndsAt).ToList();
+                            if (sortedList.Count >= 1 && sortedList[0].EndsAt.CompareTo(DateTime.Now) > 0) {
+                                await _signInManager.SignOutAsync();
+								return RedirectToAction("BanInfoWarning", "Home", new { date = sortedList[0].EndsAt, reason = sortedList[0].Reason });
+							}
+                        }
                         _logger.LogInformation("User logged in.");
                         return LocalRedirect(returnUrl);
                     }

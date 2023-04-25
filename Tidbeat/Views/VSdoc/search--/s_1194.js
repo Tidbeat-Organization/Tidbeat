@@ -1,0 +1,1 @@
+search_result['1194']=["topic_00000000000001E6.html","PostRating.Value Property","The post rating\u0027s value."];

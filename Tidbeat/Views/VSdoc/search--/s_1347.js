@@ -1,0 +1,1 @@
+search_result['1347']=["topic_000000000000023E.html","RatingService.SetUserRate Method","Sets the user\u0027s rating."];

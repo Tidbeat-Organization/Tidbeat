@@ -1,0 +1,1 @@
+search_result['830']=["topic_000000000000014C.html","SetMessageToSeenDto Class","The DTO for setting all messages of a user in a conversation to seen."];

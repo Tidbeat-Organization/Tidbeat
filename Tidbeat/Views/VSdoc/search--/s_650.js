@@ -1,0 +1,1 @@
+search_result['650']=["topic_0000000000000101.html","PostsController.BandsInfo Method","Used for fetching the bands for the Band dropdown list in the Create view."];

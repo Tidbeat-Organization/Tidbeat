@@ -1,1 +1,0 @@
-search_result['848']=["topic_00000000000001D8.html","Configurations Class","This is a class that contains all the starting configurations for the application."];

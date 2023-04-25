@@ -117,6 +117,12 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="alfabetically_a_to_z" xml:space="preserve">
+    <value>A-Z</value>
+  </data>
+  <data name="alfabetically_z_to_a" xml:space="preserve">
+    <value>Z-A</value>
+  </data>
   <data name="country" xml:space="preserve">
     <value>País:</value>
   </data>
@@ -135,10 +141,16 @@
   <data name="not_found_users" xml:space="preserve">
     <value>Não foram encontrados utilizadores com base nesses critérios.</value>
   </data>
+  <data name="order" xml:space="preserve">
+    <value>Ordenar por:</value>
+  </data>
   <data name="search" xml:space="preserve">
     <value>Procurar</value>
   </data>
   <data name="select_country" xml:space="preserve">
+    <value>Selecionar</value>
+  </data>
+  <data name="select_order" xml:space="preserve">
     <value>Selecionar</value>
   </data>
   <data name="users" xml:space="preserve">

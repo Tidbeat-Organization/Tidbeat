@@ -79,10 +79,19 @@ namespace Tidbeat.Data {
             .OnDelete(DeleteBehavior.Restrict);
         }
 
+        /// <summary>
+        /// The profiles in the database.
+        /// </summary>
         public DbSet<Tidbeat.Models.Profile>? Profile { get; set; }
 
+        /// <summary>
+        /// The follows in the database.
+        /// </summary>
         public DbSet<Tidbeat.Models.Follow>? Follow { get; set; }
 
+        /// <summary>
+        /// The reports in the database.
+        /// </summary>
         public DbSet<Tidbeat.Models.Report>? Report { get; set; }
     }
 }

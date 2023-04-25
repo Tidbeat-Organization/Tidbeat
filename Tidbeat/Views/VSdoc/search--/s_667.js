@@ -1,0 +1,1 @@
+search_result['667']=["topic_0000000000000108.html","ProfilesController.Details Method","Returns the details of a profile."];

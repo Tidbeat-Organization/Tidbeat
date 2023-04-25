@@ -34,7 +34,7 @@
             <!-- Song -->
             <div class="form-group row" id="CheckerFormMusic">
                 <label asp-for="Song" class=" col-form-label text-md-start" style="color: #6610F2; font-weight: bold;">@Localizer["song"]:</label>
-                <div class="" id="formfromsong">
+                <div class="w-100 d-flex" id="formfromsong">
                     <input autocomplete="off" role="combobox" list="" value="@((ViewBag?.chooseSong?.Name ?? ""))" name="SongId1" id="SongIdInput" oninput='onInputSong()' class="form-control" placeholder="@Localizer["pick_song"]..." style="border: 1.5px solid #6610F2; border-radius: 15px;" @(ViewBag.chooseSong != null ? "value=" + @ViewBag.chooseSong.Name : "")
                     @(ViewBag.chooseBand != null ? "disabled" : "") />
                     <datalist id="SongOptions" role="listbox">
@@ -42,39 +42,25 @@
                         {
                             @foreach (var item in ViewBag.songs)
                             {
-                                <option data-value="@item.Id" song-link="@item.Href" band-value="@item.Artists[0].Name">@item.Name</option>
+                                <option data-value="@item.Id" song-link="@item.Href" name-value="@item.Name" band-value="@item.Artists[0].Name">@item.Name <span class="text-light-grey">by @item.Artists[0].Name</span></option>
                             }
 
                         }
                     </datalist>
-                   <!-- <div class="custom-datalist">
-                        <input type="text" placeholder="Escolha a música..." id="SongIdInput" oninput='onInputSong()' class="form-control" style="border: 1.5px solid #6610F2; border-radius: 15px; width:625px;" @(ViewBag.chooseSong != null ? "value=" + @ViewBag.chooseSong.Name : "") @(ViewBag.chooseBand != null ? "disabled" : "")>
-                        <ul id="SongOptions">
-                            @if (ViewBag.songs != null)
-                            {
-                                @foreach (var item in ViewBag.songs)
-                                {
-                                    <li data-value="@item.Uri" song-link="@item.Href">@item.Name</li>
-                                }
 
-                            }
-                        </ul>
-                    </div>-->
                     <input type="hidden" name="SongId" id="answerInputSong" value="@(ViewBag.chooseSong?.Id ?? "")">
-                    <span asp-validation-for="Song" class="text-danger"></span>
+                    <div id="SongCross" type="hidden" class="bi bi-x fs-3 py-0 text-primary align-self-center hover-background-grey" data-toggle="tooltip" data-placement="top" title="@Localizer["delete"]" onclick="cleanSong()"></div>
                 </div>
+                 <span asp-validation-for="Song" class="text-danger"></span>
             </div>
 
             <!-- Band -->
              <div class="form-group row" style="margin-top: 15px;" id="CheckerFormBand">
                 <label asp-for="Band" class="col-form-label text-md-start" style="color: #6610F2; font-weight: bold;">@Localizer["band"]:</label>
-                <div class="" id="formfromband">
+                <div class="w-100 d-flex" id="formfromband">
                     <input autocomplete="off" role="combobox" list="" value="@((ViewBag?.chooseBand?.Name ?? ViewBag?.chooseSong?.Artists[0]?.Name ?? ""))" name="BandId1" id="Bandsinput" oninput='onInputBand()' class="form-control" placeholder="@Localizer["pick_band"]..." style="border: 1.5px solid #6610F2; border-radius: 15px;"
                     @(ViewBag.chooseSong != null ? "disabled" : "") />
-                    <!--@*      @if (ViewBag.chooseSong != null || ViewBag.chooseBand != null)
-                           {
-                           value="@((ViewBag.chooseSong != null) ? ViewBag.chooseSong.Artists[0].Name : ViewBag.chooseBand.Name)"
-                    *@}-->
+
                     <datalist id="BandOptions" role="listbox" class="zindex-dropdown" style="position: absolute; z-index: 999">
                         @foreach (var item in ViewBag.bands)
                         {
@@ -82,8 +68,9 @@
                         }
                     </datalist>
                     <input type="hidden" name="BandId" id="answerInputband" value="@(ViewBag.chooseBand?.Id ?? "")">
-                    <span asp-validation-for="Band" class="text-danger"></span>
+                    <div id="BandCross" type="hidden" class="bi bi-x fs-3 py-0 text-primary hover-background-grey align-self-center" data-toggle="tooltip" data-placement="top" title="@Localizer["delete"]" onclick="cleanBand()"></div>
                 </div>
+                <span asp-validation-for="Band" class="text-danger"></span>
             </div>
 
             <!-- Spotify Link -->
@@ -92,11 +79,11 @@
                     <span style="color: #6610F2; font-weight: bold;">Link:&nbsp;</span><a id="SongLink" target="_blank" href="@{
                             if (ViewBag.chooseSong != null) {
                                 string url = $"https://open.spotify.com/track/{ViewBag.chooseSong.Id}";
-                                                                                    @url
+                                                                                            @url
                             }
                             else if (ViewBag.chooseBand != null) {
                                 string url = $"https://open.spotify.com/artist/{ViewBag.chooseBand.Id}";
-                                                                                    @url
+                                                                                            @url
                             }
                         }">
                         @if (ViewBag.chooseSong != null)
@@ -148,7 +135,7 @@
         const body = document.querySelector('body');
         function onInputSong() {
             var val = document.getElementById("SongIdInput");
-            var opts = document.getElementById('SongOptions').childNodes;
+            var opts = document.getElementById('SongOptions').children;
             var hiddenInput = document.getElementById("answerInputSong");
             var songLink = document.getElementById("SongLink");
             var bandInput = document.getElementById("Bandsinput");
@@ -158,11 +145,13 @@
             hiddenInput.value = "";
             songLink.textContent="";
             for (var i = 0; i < opts.length; i++) {
-                if (opts[i].innerText === val.value) {
+                let actualChild = opts[i];
+                let tempValue = actualChild.getAttribute('name-value');
+                if (tempValue === val.value) {
                     // An item was selected from the list!
                     // yourCallbackHere()
                     hiddenInput.value = opts[i].getAttribute('data-value');
-                    songLink.textContent = "Spotify - " + opts[i].innerText;
+                    songLink.textContent = "Spotify - " + opts[i].getAttribute('name-value');
                     songLink.setAttribute("href", "https://open.spotify.com/track/"+opts[i].getAttribute('data-value'));
                     //bandInput.value =opts[i].getAttribute('band-value');
                     boolCheck = false;
@@ -192,13 +181,16 @@
 
                         data.forEach(item => {
                             var option = document.createElement("option");
-                            option.innerText = item.name;
+                            option.innerText = item.name + " by " + item.artists[0].name;
                             option.setAttribute("data-value",item.id);
+                            option.setAttribute("name-value",item.name);
                             option.setAttribute("song-link", item.Href);
                             option.setAttribute("band-value",item.artists[0].name);
                                 option.onclick = function () {
+                                     document.getElementById("SongIdInput").disabled=true;
+                                document.getElementById("SongCross").style.display = 'flex';
                                     bandInput.disabled= true;
-                                    val.value = option.value;
+                                    val.value = option.getAttribute('name-value');
                                     options.style.display = 'none';
                                     hiddenInput.value = option.getAttribute('data-value');
                                     songLink.textContent = "Spotify - " + option.innerText;
@@ -261,6 +253,8 @@
                         option.text = item.name;
                         option.setAttribute("data-value", item.id);
                             option.onclick = function () {
+                                document.getElementById("Bandsinput").disabled= true;  
+                                document.getElementById("BandCross").style.display = 'flex';
                                 songInput.disabled = true;
                                 val.value = option.value;
                                 options.style.display = 'none';
@@ -313,6 +307,7 @@
         };
         for (let option of optionS.options) {
             option.onclick = function () {
+            document.getElementById("SongIdInput").disabled=true;
                 input2.disabled = true;
                 input.value = option.value;
                 optionS.style.display = 'none';
@@ -320,6 +315,7 @@
                 songLink.textContent = "Spotify - " + option.innerText;
                 songLink.setAttribute("href", "https://open.spotify.com/track/" + option.getAttribute('data-value'));
                 document.getElementById('SongOptions').style.display = 'none';
+                document.getElementById("SongCross").style.display = 'flex';
                 input2.value = option.getAttribute('band-value');
             }
         };
@@ -332,6 +328,8 @@
         const hiddenInput2 = document.getElementById("answerInputband");
         for (let option of optionS2.options) {
             option.onclick = function () {
+                document.getElementById("Bandsinput").disabled= true;
+                document.getElementById("BandCross").style.display = 'flex';
                 input.disabled = true;
                 input2.value = option.value;
                 optionS2.style.display = 'none';
@@ -341,32 +339,39 @@
                 document.getElementById('BandOptions').style.display = 'none';
             }
         };
-
         //For the Optional
         var optionalChecker = document.getElementById("formOptional");
         if (optionalChecker.value === "complete") {
             document.getElementById("CheckerFormMusic").style.display = 'flex';
             document.getElementById("CheckerFormBand").style.display = 'flex';
             document.getElementById("CheckFormLink").style.display = 'flex';
+            document.getElementById("SongCross").style.display = 'flex';
+            document.getElementById("BandCross").style.display = 'none';
             document.getElementById("Bandsinput").disabled= true;
-            document.getElementById("SongIdInput").disabled=false;
+            document.getElementById("SongIdInput").disabled=true;
 
         } else if (optionalChecker.value === "incomplete") {
-            document.getElementById("Bandsinput").disabled= false;
+            document.getElementById("Bandsinput").disabled= true;
             document.getElementById("SongIdInput").disabled=true;
             document.getElementById("CheckerFormMusic").style.display = 'none';
             document.getElementById("CheckerFormBand").style.display = 'flex';
             document.getElementById("CheckFormLink").style.display = 'flex';
+            document.getElementById("SongCross").style.display = 'none';
+            document.getElementById("BandCross").style.display = 'flex';
         }else
         {
             document.getElementById("CheckerFormMusic").style.display = 'none';
             document.getElementById("CheckerFormBand").style.display = 'none';
             document.getElementById("CheckFormLink").style.display = 'none';
+            document.getElementById("SongCross").style.display = 'none';
+            document.getElementById("BandCross").style.display = 'none';
         }
        optionalChecker.addEventListener("change", (event) => {
         if (optionalChecker.value === "complete") {document.getElementById("CheckerFormMusic").style.display = 'flex';
             document.getElementById("CheckerFormBand").style.display = 'flex';
             document.getElementById("CheckFormLink").style.display = 'flex';
+            document.getElementById("SongCross").style.display = 'none';
+            document.getElementById("BandCross").style.display = 'none';
             document.getElementById("Bandsinput").disabled= true;
             document.getElementById("SongIdInput").disabled=false;
                 clean()
@@ -377,12 +382,16 @@
             document.getElementById("CheckerFormMusic").style.display = 'none';
             document.getElementById("CheckerFormBand").style.display = 'flex';
                 document.getElementById("CheckFormLink").style.display = 'flex';
+                document.getElementById("SongCross").style.display = 'none';
+            document.getElementById("BandCross").style.display = 'none';
                 clean()
         }else
         {
             document.getElementById("CheckerFormMusic").style.display = 'none';
             document.getElementById("CheckerFormBand").style.display = 'none';
             document.getElementById("CheckFormLink").style.display = 'none';
+                document.getElementById("SongCross").style.display = 'none';
+                document.getElementById("BandCross").style.display = 'none';
             clean()
         }
        });
@@ -394,6 +403,20 @@
             document.getElementById("Bandsinput").value = "";
             document.getElementById("answerInputSong").value = "";
             document.getElementById('SongIdInput').value = "";
+            document.getElementById("SongCross").style.display = 'none';
+            document.getElementById("BandCross").style.display = 'none';
+       }
+
+       function cleanBand()
+       {
+            document.getElementById("Bandsinput").disabled = false;
+           clean()
+       }
+       function cleanSong()
+       {
+           
+            document.getElementById("SongIdInput").disabled=false;
+           clean()
        }
 
        function validateTitle() {

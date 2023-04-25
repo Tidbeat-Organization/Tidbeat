@@ -1,1 +1,0 @@
-var breadcrumbs=[['-1',"",""],['2',"Tidbeat Reference","topic_00000000000001DD.html"],['114',"Tidbeat.Areas.Identity.Pages.Account.Manage Namespace","topic_0000000000000000.html"],['152',"EmailModel Class","topic_000000000000001D.html"],['159',"Properties","topic_000000000000001D_props--.html"],['160',"Email Property","topic_000000000000001F.html"]];

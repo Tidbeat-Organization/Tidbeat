@@ -72,10 +72,12 @@ namespace Tidbeat.Controllers
         /// Finds the Banning Info Warning page.
         /// </summary>
         /// <returns>Banning Info warning page.</returns>
-        public IActionResult BanInfoWarning()
-        {
-            return View();
-        }
+        public IActionResult BanInfoWarning([FromQuery] DateTime date, string reason) {
+            if (date.CompareTo(DateTime.Now) < 0) {
+                return NotFound();
+            }
+			return View(Tuple.Create(date, reason));
+		}
         /// <summary>
         /// Finds the Banning Info Warning page.
         /// </summary>

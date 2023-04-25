@@ -117,10 +117,133 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="all_reasons" xml:space="preserve">
+    <value>All reasons</value>
+  </data>
+  <data name="all_states" xml:space="preserve">
+    <value>All states</value>
+  </data>
+  <data name="all_types" xml:space="preserve">
+    <value>All types</value>
+  </data>
+  <data name="Closed" xml:space="preserve">
+    <value>Closed</value>
+  </data>
+  <data name="closedf" xml:space="preserve">
+    <value>Closed</value>
+  </data>
+  <data name="Comment" xml:space="preserve">
+    <value>Comment</value>
+  </data>
+  <data name="commentf" xml:space="preserve">
+    <value>Comment</value>
+  </data>
+  <data name="Created" xml:space="preserve">
+    <value>Created</value>
+  </data>
+  <data name="createdf" xml:space="preserve">
+    <value>Created</value>
+  </data>
   <data name="details" xml:space="preserve">
     <value>Details</value>
   </data>
+  <data name="filters" xml:space="preserve">
+    <value>Filters</value>
+  </data>
+  <data name="GoreContent" xml:space="preserve">
+    <value>Gore content</value>
+  </data>
+  <data name="goref" xml:space="preserve">
+    <value>Gore</value>
+  </data>
+  <data name="hatef" xml:space="preserve">
+    <value>Hate speech</value>
+  </data>
+  <data name="HateSpeech" xml:space="preserve">
+    <value>Hate speech</value>
+  </data>
+  <data name="id" xml:space="preserve">
+    <value>ID</value>
+  </data>
+  <data name="InnappropriateBehaviour" xml:space="preserve">
+    <value>Innappropriate Behaviour</value>
+  </data>
+  <data name="innappropriatef" xml:space="preserve">
+    <value>Innappropriate Behaviour</value>
+  </data>
+  <data name="newf" xml:space="preserve">
+    <value>Recent first</value>
+  </data>
   <data name="not_found" xml:space="preserve">
     <value>No reports were found based on these criteria.</value>
+  </data>
+  <data name="oldf" xml:space="preserve">
+    <value>Oldest first</value>
+  </data>
+  <data name="Open" xml:space="preserve">
+    <value>Open</value>
+  </data>
+  <data name="openf" xml:space="preserve">
+    <value>Open</value>
+  </data>
+  <data name="Other" xml:space="preserve">
+    <value>Other</value>
+  </data>
+  <data name="otherf" xml:space="preserve">
+    <value>Other</value>
+  </data>
+  <data name="postf" xml:space="preserve">
+    <value>Post</value>
+  </data>
+  <data name="reason" xml:space="preserve">
+    <value>Report reason:</value>
+  </data>
+  <data name="reported_user" xml:space="preserve">
+    <value>Reported user</value>
+  </data>
+  <data name="reports" xml:space="preserve">
+    <value>Reports</value>
+  </data>
+  <data name="report_date" xml:space="preserve">
+    <value>Report date</value>
+  </data>
+  <data name="report_reason" xml:space="preserve">
+    <value>Report reason</value>
+  </data>
+  <data name="report_state" xml:space="preserve">
+    <value>Report state</value>
+  </data>
+  <data name="report_type" xml:space="preserve">
+    <value>Report type</value>
+  </data>
+  <data name="search" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="see" xml:space="preserve">
+    <value>See</value>
+  </data>
+  <data name="SexualContent" xml:space="preserve">
+    <value>Sexual Content</value>
+  </data>
+  <data name="sexualf" xml:space="preserve">
+    <value>Sexual content</value>
+  </data>
+  <data name="sort" xml:space="preserve">
+    <value>Order by:</value>
+  </data>
+  <data name="state" xml:space="preserve">
+    <value>Report state:</value>
+  </data>
+  <data name="type" xml:space="preserve">
+    <value>Report type:</value>
+  </data>
+  <data name="User" xml:space="preserve">
+    <value>User</value>
+  </data>
+  <data name="userf" xml:space="preserve">
+    <value>User</value>
+  </data>
+  <data name="user_name" xml:space="preserve">
+    <value>Username:</value>
   </data>
 </root>

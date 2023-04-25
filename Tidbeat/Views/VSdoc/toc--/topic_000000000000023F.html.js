@@ -1,0 +1,1 @@
+var breadcrumbs=[['-1',"",""],['2',"Tidbeat Reference","topic_0000000000000259.html"],['599',"Tidbeat.Services Namespace","topic_00000000000001FC.html"],['640',"SpotifyService Class","topic_000000000000023F.html"]];

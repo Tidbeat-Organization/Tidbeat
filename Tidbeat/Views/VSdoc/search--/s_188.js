@@ -1,0 +1,1 @@
+search_result['188']=["topic_0000000000000056.html","ManageNavPages.TwoFactorAuthenticationNavClass Method","Gets the nav page class for the TwoFactorAuthentication."];

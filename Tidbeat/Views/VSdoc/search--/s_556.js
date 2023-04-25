@@ -1,0 +1,1 @@
+search_result['556']=["topic_00000000000000D9.html","ConversationsController.ExitConversation Method","The user exits a conversation. If there are only 2 participants, the conversation is deleted. Otherwise, the user is removed from the conversation."];

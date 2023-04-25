@@ -1,0 +1,1 @@
+search_result['508']=["topic_00000000000000C2.html","BandsController Constructor","Initializes needed services for the controller."];

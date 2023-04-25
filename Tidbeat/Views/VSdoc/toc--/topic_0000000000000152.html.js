@@ -1,0 +1,1 @@
+var breadcrumbs=[['-1',"",""],['2',"Tidbeat Reference","topic_0000000000000259.html"],['409',"Tidbeat.DTOs.Reports Namespace","topic_000000000000014F.html"],['410',"SetReportStatusDTO Class","topic_0000000000000150.html"],['411',"Properties","topic_0000000000000150_props--.html"],['413',"Status Property","topic_0000000000000152.html"]];

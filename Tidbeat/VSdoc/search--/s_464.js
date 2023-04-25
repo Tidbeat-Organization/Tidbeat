@@ -1,1 +1,0 @@
-search_result['464']=["topic_00000000000000FB.html","RatingPartialController.SetUserRate Method","Sets the current user\u0027s rating of a post or comment."];

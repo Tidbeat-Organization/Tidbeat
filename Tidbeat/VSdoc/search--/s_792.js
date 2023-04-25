@@ -1,1 +1,0 @@
-search_result['792']=["topic_00000000000001B4.html","IRatingService.SetUserRate Method","Sets the user\u0027s rating."];

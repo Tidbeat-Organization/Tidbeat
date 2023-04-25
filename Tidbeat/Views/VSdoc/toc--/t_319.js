@@ -1,0 +1,1 @@
+c['319']=[['320',"PostsController Constructor","topic_00000000000000F5.html",0],['321',"Methods","topic_00000000000000F4_methods--.html",1]];

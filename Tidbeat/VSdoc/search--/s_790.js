@@ -1,1 +1,0 @@
-search_result['790']=["topic_00000000000001B2.html","IRatingService.HasUserRated Method","Gets whether the user has rated or not."];

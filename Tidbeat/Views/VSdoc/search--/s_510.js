@@ -1,0 +1,1 @@
+search_result['510']=["topic_00000000000000C4.html","BandsController.Details Method","Gets the details of a band."];

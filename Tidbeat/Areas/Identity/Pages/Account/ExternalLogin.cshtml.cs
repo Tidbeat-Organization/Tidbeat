@@ -23,6 +23,8 @@ using Microsoft.Extensions.FileSystemGlobbing.Internal;
 using System.Text.RegularExpressions;
 using Microsoft.Extensions.Localization;
 using Tidbeat.Data;
+using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 
 namespace Tidbeat.Areas.Identity.Pages.Account
 {
@@ -164,27 +166,25 @@ namespace Tidbeat.Areas.Identity.Pages.Account
                 ErrorMessage = "Error loading external login information.";
                 return RedirectToPage("./Login", new { ReturnUrl = returnUrl });
             }
-
+            var foundUser = await _userManager.FindByEmailAsync(info.Principal.FindFirstValue(ClaimTypes.Email));
+            if (foundUser != null) {
+                await _signInManager.SignInAsync(foundUser, isPersistent: false);
+                return LocalRedirect(returnUrl);
+            }
             // Sign in the user with this external login provider if the user already has a login.
             var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false, bypassTwoFactor: true);
             if (result.Succeeded)
             {
                 var userResult = await _userManager.FindByLoginAsync(info.LoginProvider, info.ProviderKey);
-                var userCheck = await _context.Users.FindAsync(userResult.Id);
-                if (userCheck.IsBanned == true)
+                var userCheck = await _context.Users.Include(u => u.Bans).FirstOrDefaultAsync(u => userResult.Id == u.Id);
+                if (userCheck.Bans != null)
                 {
-                    //Add the page the user is banned 100%
-                    await _signInManager.SignOutAsync();
-                    return LocalRedirect(returnUrl); //Change for the view, when it's done
-                }
-                else if (userCheck.Bans != null)
-                {
-                    List<BanUser> sortedList = userCheck.Bans.OrderBy(u => u.EndsAt).ToList();
-                    if (sortedList.Count > 1 && sortedList[0].EndsAt.CompareTo(DateTime.Now) > 0)
+                    List<BanUser> sortedList = userCheck.Bans.OrderByDescending(u => u.EndsAt).ToList();
+                    if (sortedList.Count >= 1 && sortedList[0].EndsAt.CompareTo(DateTime.Now) > 0)
                     {
                         //Page for tempBan
                         await _signInManager.SignOutAsync();
-                        return LocalRedirect(returnUrl); //Change the view when its done
+                        return RedirectToAction("BanInfoWarning", "Home", new { date = sortedList[0].EndsAt, reason = sortedList[0].Reason }); //Change the view when its done
                     }
                 }
                 _logger.LogInformation("{Name} logged in with {LoginProvider} provider.", info.Principal.Identity.Name, info.LoginProvider);
@@ -245,7 +245,6 @@ namespace Tidbeat.Areas.Identity.Pages.Account
                 else
                 {
                     var user = CreateUser();
-
                     await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                     await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
                     user.FullName = Input.FullName;
@@ -261,25 +260,6 @@ namespace Tidbeat.Areas.Identity.Pages.Account
                         if (result.Succeeded)
                         {
                             _logger.LogInformation("User created an account using {Name} provider.", info.LoginProvider);
-                            /*
-                            var userId = await _userManager.GetUserIdAsync(user);
-                            var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                            code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-                            var callbackUrl = Url.Page(
-                                "/Account/ConfirmEmail",
-                                pageHandler: null,
-                                values: new { area = "Identity", userId = userId, code = code },
-                                protocol: Request.Scheme);
-
-                            await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                                $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
-
-                            // If account confirmation is required, we need to show the link if we don't have a real email sender
-                            if (_userManager.Options.SignIn.RequireConfirmedAccount)
-                            {
-                                return RedirectToPage("./RegisterConfirmation", new { Email = Input.Email });
-                            }
-                            */
                             await _signInManager.SignInAsync(user, isPersistent: false, info.LoginProvider);
                             return LocalRedirect(returnUrl);
                         }

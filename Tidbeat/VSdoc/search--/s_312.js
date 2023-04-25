@@ -1,1 +1,0 @@
-search_result['312']=["topic_00000000000000A5.html","RegisterConfirmationModel Constructor","The constructor for the register confirmation model."];

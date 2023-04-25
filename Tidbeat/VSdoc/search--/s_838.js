@@ -1,1 +1,0 @@
-search_result['838']=["topic_00000000000001CE.html","SpotifyService Constructor","Initializes the Spotify service."];

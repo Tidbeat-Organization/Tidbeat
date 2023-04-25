@@ -1,0 +1,1 @@
+search_result['182']=["topic_0000000000000050.html","ManageNavPages.EmailNavClass Method","Gets the nav page class for the Email."];
