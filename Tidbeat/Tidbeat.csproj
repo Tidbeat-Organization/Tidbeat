@@ -46,13 +46,4 @@
     <PackageReference Include="TinyMCE" Version="6.3.2" />
   </ItemGroup>
 
-  <ItemGroup>
-    <VSdocFiles Include="Views\VSdoc\**\*.*" />
-  </ItemGroup>
-
-  <Target Name="CopyVSdoc" BeforeTargets="Build">
-    <Copy SourceFiles="@(VSdocFiles)" DestinationFolder="$(OutputPath)\Views\VSdoc" />
-  </Target>
-
-
 </Project>
