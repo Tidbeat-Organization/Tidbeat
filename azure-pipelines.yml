@@ -23,7 +23,7 @@ steps:
 
 - task: DotNetCoreCLI@2
   inputs:
-    command: 'install'
+    command: 'tool'
     arguments: 'Microsoft.NET.Test.Sdk'
     workingDirectory: '$(System.DefaultWorkingDirectory)'
 
