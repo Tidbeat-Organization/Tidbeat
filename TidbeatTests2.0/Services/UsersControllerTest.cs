@@ -56,7 +56,7 @@ namespace TidbeatTests2._0.Services {
             var controller = new UsersController(_mockUserManager.Object);
 
             // Act
-            var result = await controller.Index("", "");
+            var result = await controller.Index("", "", "");
 
             // Assert
             var viewResult = Assert.IsType<ViewResult>(result);

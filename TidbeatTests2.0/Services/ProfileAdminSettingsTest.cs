@@ -73,7 +73,7 @@ namespace TidbeatTests2._0.Services
             _userManagerMock.Setup(u => u.FindByIdAsync("1")).ReturnsAsync(user);
 
             _userManagerMock.Setup(u => u.GetUserIdAsync(user)).ReturnsAsync("1");
-            var localizerMock = new Mock<IStringLocalizer<PostsController>>();
+            var localizerMock = new Mock<IStringLocalizer<RoleController>>();
             localizerMock.Setup(x => x["operation_fail"]).Returns(new LocalizedString("operation_fail", "failed_operation"));
             var roleController = new RoleController(_context, _userManagerMock.Object, null, localizerMock.Object, null);
 
@@ -96,7 +96,7 @@ namespace TidbeatTests2._0.Services
                     _context.Users.Update(userToUpdate);
                 }).ReturnsAsync(IdentityResult.Success);
 
-            var localizerMock = new Mock<IStringLocalizer<PostsController>>();
+            var localizerMock = new Mock<IStringLocalizer<RoleController>>();
             localizerMock.Setup(x => x["operation_fail"]).Returns(new LocalizedString("operation_fail", "failed_operation"));
             var roleController = new RoleController(_context, _userManagerMock.Object, null, localizerMock.Object, null);
 
