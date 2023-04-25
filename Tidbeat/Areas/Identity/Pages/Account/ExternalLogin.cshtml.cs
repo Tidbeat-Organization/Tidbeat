@@ -166,17 +166,20 @@ namespace Tidbeat.Areas.Identity.Pages.Account
                 ErrorMessage = "Error loading external login information.";
                 return RedirectToPage("./Login", new { ReturnUrl = returnUrl });
             }
-            var foundUser = await _userManager.FindByEmailAsync(info.Principal.FindFirstValue(ClaimTypes.Email));
-            if (foundUser != null) {
-                await _signInManager.SignInAsync(foundUser, isPersistent: false);
-                return LocalRedirect(returnUrl);
-            }
+            //var foundUser = await _userManager.FindByEmailAsync(info.Principal.FindFirstValue(ClaimTypes.Email));
+            var foundUser = await _context.Users.Include(u => u.Bans).FirstOrDefaultAsync(u => u.Email == info.Principal.FindFirstValue(ClaimTypes.Email));
+            
             // Sign in the user with this external login provider if the user already has a login.
             var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false, bypassTwoFactor: true);
-            if (result.Succeeded)
+            if (result.Succeeded || foundUser != null)
             {
-                var userResult = await _userManager.FindByLoginAsync(info.LoginProvider, info.ProviderKey);
-                var userCheck = await _context.Users.Include(u => u.Bans).FirstOrDefaultAsync(u => userResult.Id == u.Id);
+                ApplicationUser userCheck;
+                if (foundUser == null) {
+                    var userResult = await _userManager.FindByLoginAsync(info.LoginProvider, info.ProviderKey);
+                    userCheck = await _context.Users.Include(u => u.Bans).FirstOrDefaultAsync(u => userResult.Id == u.Id);
+                } else {
+                    userCheck = foundUser;
+                }
                 if (userCheck.Bans != null)
                 {
                     List<BanUser> sortedList = userCheck.Bans.OrderByDescending(u => u.EndsAt).ToList();
@@ -186,6 +189,10 @@ namespace Tidbeat.Areas.Identity.Pages.Account
                         await _signInManager.SignOutAsync();
                         return RedirectToAction("BanInfoWarning", "Home", new { date = sortedList[0].EndsAt, reason = sortedList[0].Reason }); //Change the view when its done
                     }
+                }
+                if (foundUser != null) {
+                    await _signInManager.SignInAsync(foundUser, isPersistent: false);
+                    return LocalRedirect(returnUrl);
                 }
                 _logger.LogInformation("{Name} logged in with {LoginProvider} provider.", info.Principal.Identity.Name, info.LoginProvider);
                 return LocalRedirect(returnUrl);
