@@ -73,10 +73,11 @@ builder.Services.Configure<RequestLocalizationOptions>(options => {
 services.AddSignalR().AddAzureSignalR();
 
 var app = builder.Build();
+var env = app.Services.GetService<IWebHostEnvironment>();
 app.UseRequestLocalization();
 app.UseStaticFiles(new StaticFileOptions {
     FileProvider = new PhysicalFileProvider(
-            Path.Combine(Directory.GetCurrentDirectory(), "Views", "VSdoc")),
+            Path.Combine(env.ContentRootPath, "Views", "VSdoc")),
     RequestPath = "/VSdoc"
 });
 app.UseMiddleware<CultureMiddleware>();
