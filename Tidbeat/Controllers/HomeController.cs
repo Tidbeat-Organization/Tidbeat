@@ -33,7 +33,9 @@ namespace Tidbeat.Controllers
                 var user = await _userManager.GetUserAsync(User);
                 var request = HttpContext.Request;
                 var currentUrl = string.Format("{0}://{1}", request.Scheme, request.Host);
-                TempData["Friends"] = await UtilityClass.SideBarAsync(user.Id, currentUrl);
+                if (user != null) {
+                    TempData["Friends"] = await UtilityClass.SideBarAsync(user.Id, currentUrl);
+                }
             }
             return View();
         }
