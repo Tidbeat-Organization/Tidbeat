@@ -53,10 +53,15 @@ namespace Tidbeat.Controllers
             var allCurrentUserConversations = await _context.Participants.Where(p => p.User.Id == currentUser.Id).Select(p => p.Conversation).ToListAsync();
             var allParticipantsInConversations = await _context.Participants.Include(p => p.User).Where(p => allCurrentUserConversations.Contains(p.Conversation) && p.User != currentUser).ToListAsync();
 
-            var conversationsParticipantsPairs = new List<Tuple<Conversation, List<string>>>();
+            var conversationsParticipantsPairs = new List<Tuple<Conversation, List<string>, int>>();
             foreach (var conversation in allCurrentUserConversations) {
                 var participants = allParticipantsInConversations.Where(p => p.Conversation == conversation).Select(p => p.User.FullName).ToList();
-                conversationsParticipantsPairs.Add(new Tuple<Conversation, List<string>>(conversation, participants));
+                var unreadMessagesCount = await _context.Messages
+                        .Include(m => m.Conversation)
+                        .Include(m => m.User)
+                        .Where(m => m.Conversation.Id == conversation.Id && m.Status == Convert.ToInt32(MessageStatus.Sent) && currentUser.Id != m.User.Id)
+                        .CountAsync();
+                conversationsParticipantsPairs.Add(new Tuple<Conversation, List<string>, int>(conversation, participants, unreadMessagesCount));
             }
             ViewBag.ConversationsParticipantsPairs = conversationsParticipantsPairs;
 
@@ -317,6 +322,32 @@ namespace Tidbeat.Controllers
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<int> GetMessagesNotReadAmount() {
+            var currentUser = await _userManager.GetUserAsync(User);
+            if (currentUser == null) {
+                return 0;
+            }
+
+            int totalAmount = 0;
+            foreach(Conversation conversation in _context.Conversations) {
+                var currentUserParticipant = await _context.Participants
+                    .Include(m => m.User)
+                    .Include(p => p.Conversation)
+                    .Where(p => p.Conversation.Id == conversation.Id && p.User.Id == currentUser.Id)
+                    .CountAsync();
+                if (currentUserParticipant != 0) { 
+                    var totalUnreadMessages = await _context.Messages
+                        .Include(m => m.Conversation)
+                        .Include(m => m.User)
+                        .Where(m => m.Conversation.Id == conversation.Id && m.Status == Convert.ToInt32(MessageStatus.Sent) && currentUser.Id != m.User.Id)
+                        .CountAsync();
+                    totalAmount += totalUnreadMessages;
+                }
+            }
+
+            return totalAmount;
         }
 
         private bool ConversationExists(string id)
