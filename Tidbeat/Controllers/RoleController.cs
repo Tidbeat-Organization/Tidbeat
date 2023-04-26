@@ -106,11 +106,14 @@ namespace Tidbeat.Controllers
             }
 
             RoleType roleType;
+            bool hasRole = false;
             if (editAsyncDto.RoleType == RoleType.Admin.ToString()) {
                 roleType = RoleType.Admin;
+                hasRole = true;
             }
             else if (editAsyncDto.RoleType == RoleType.Moderator.ToString()) {
                 roleType = RoleType.Moderator;
+                hasRole = true;
             }
             else {
                 roleType = RoleType.NormalUser;
@@ -121,7 +124,7 @@ namespace Tidbeat.Controllers
             var result = await _userManager.UpdateAsync(dbUser);
             if (result.Succeeded && _emailSender != null) {
                 _context.SaveChanges();
-                if (!hasBanned) {
+                if (!hasBanned && !hasRole) {
                     await _emailSender.SendEmailAsync(dbUser.Email, "TIDBEAT - " + _localizer["account_updated"],
                          _localizer["email_body_edit"]);
                 }
@@ -247,7 +250,6 @@ namespace Tidbeat.Controllers
                 if (newPermission.Succeeded)
                 {
                     var actualUser = await _userManager.FindByIdAsync(userId);
-
                     actualUser.Role = newRole;
                     _context.SaveChanges();
                 }
