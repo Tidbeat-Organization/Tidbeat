@@ -135,4 +135,7 @@
   <data name="no_active_conversations" xml:space="preserve">
     <value>Não existem quaisquer conversas ativas.</value>
   </data>
+  <data name="unread_messages" xml:space="preserve">
+    <value>Mensagens Não Lidas</value>
+  </data>
 </root>

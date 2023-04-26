@@ -80,28 +80,33 @@
     {
         @foreach (Tuple<Conversation, List<string>, int> item in ViewBag.ConversationsParticipantsPairs)
         {
-            <div class="d-flex flex-row">
+            <div class="d-flex flex-column flex-sm-row">
                 <div class="position-relative me-2 mt-2">
-                    <div class="d-flex">
-                        <div class="text-danger">@item.Item3&nbsp;</div>
-                        <div>Unread messages</div>
-                    </div>
+                    @if (item.Item3 != 0)
+                    {
+                        <div class="d-flex">
+                            <span class="text-danger">@item.Item3&nbsp;</span>
+                            @Localizer["unread_messages"]
+                        </div>
+                    }
                 </div>
-                <a class="btn btn-outline-primary mb-3 " asp-action="Details" asp-route-id="@item.Item1.Id">
-                    <div class="d-flex flex-row justify-content-center">
+                <div class="d-flex">
+                    <a class="btn btn-outline-primary mb-3 " asp-action="Details" asp-route-id="@item.Item1.Id">
+                        <div class="d-flex flex-row justify-content-center">
 
-                        @foreach (string participant in item.Item2)
-                        {
-                            <div class="ms-1">
-                                @participant
-                            </div>
-                        }
-                        <i class="bi bi-chat ms-3"></i>
-                    </div>
-                </a>
-                <form method="post" asp-action="ExitConversation" asp-route-conversationId="@item.Item1.Id" data-conversation-id="@item.Item1.Id">
-                    <button type="button" class="bi bi-trash-fill text-danger fs-3 btn hover-background-grey p-0 px-1 delete-btn" data-bs-toggle="modal" data-bs-target="#deleteConversationModal"></button>
-                </form>
+                            @foreach (string participant in item.Item2)
+                            {
+                                <div class="ms-1">
+                                    @participant
+                                </div>
+                            }
+                            <i class="bi bi-chat ms-3"></i>
+                        </div>
+                    </a>
+                    <form method="post" asp-action="ExitConversation" asp-route-conversationId="@item.Item1.Id" data-conversation-id="@item.Item1.Id">
+                        <button type="button" class="bi bi-trash-fill text-danger fs-3 btn hover-background-grey p-0 px-1 delete-btn" data-bs-toggle="modal" data-bs-target="#deleteConversationModal"></button>
+                    </form>
+                </div>
             </div>
         }
     }

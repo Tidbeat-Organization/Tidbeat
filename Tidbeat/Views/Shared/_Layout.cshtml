@@ -487,9 +487,13 @@
                         let shownResult = result;
                         if (result > 9) {
                             shownResult = '9+';
+                            document.getElementById('navbar-unread-messages-counter').style.marginLeft = "4px";
+                        } else {
+                            document.getElementById('navbar-unread-messages-counter').style.marginLeft = "6px";
                         }
                         unreadMessagesCounter.textContent = shownResult;
                         document.getElementById('navbar-unread-messages-full-counter').classList.remove('d-none');
+                        
                     },
                     error: function (xhr, status, error) {
                         console.log('Error: ' + error);
