@@ -86,7 +86,7 @@ namespace TidbeatTests2._0.Services
 
             var messageFromDb = _fixture.Messages.FirstOrDefault(m => m.Id == message.Id);
 
-            var controller = new ConversationsController(_fixture, _mockUserManager.Object, chatBeatService);
+            var controller = new ConversationsController(_fixture, _mockUserManager.Object, chatBeatService, null);
             var taskResult = controller.ExitConversation(conversation.Id);
             _fixture.SaveChanges();
             Assert.Null(messageFromDb);
