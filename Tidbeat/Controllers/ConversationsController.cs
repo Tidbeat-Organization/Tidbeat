@@ -319,6 +319,32 @@ namespace Tidbeat.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        public async Task<int> GetMessagesNotReadAmount() {
+            var currentUser = await _userManager.GetUserAsync(User);
+            if (currentUser == null) {
+                return 0;
+            }
+
+            int totalAmount = 0;
+            foreach(Conversation conversation in _context.Conversations) {
+                var currentUserParticipant = await _context.Participants
+                    .Include(m => m.User)
+                    .Include(p => p.Conversation)
+                    .Where(p => p.Conversation.Id == conversation.Id && p.User.Id == currentUser.Id)
+                    .CountAsync();
+                if (currentUserParticipant != 0) { 
+                    var totalUnreadMessages = await _context.Messages
+                        .Include(m => m.Conversation)
+                        .Include(m => m.User)
+                        .Where(m => m.Conversation.Id == conversation.Id && m.Status == Convert.ToInt32(MessageStatus.Sent) && currentUser.Id != m.User.Id)
+                        .CountAsync();
+                    totalAmount += totalUnreadMessages;
+                }
+            }
+
+            return totalAmount;
+        }
+
         private bool ConversationExists(string id)
         {
           return (_context.Conversations?.Any(e => e.Id == id)).GetValueOrDefault();
