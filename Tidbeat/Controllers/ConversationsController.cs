@@ -24,6 +24,7 @@ namespace Tidbeat.Controllers
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IChatBeatService _chatBeatService;
+        private readonly IConfiguration _configuration;
 
         /// <summary>
         /// Initializes needed services for the controller.
@@ -31,11 +32,12 @@ namespace Tidbeat.Controllers
         /// <param name="context">Context of the website.</param>
         /// <param name="userManager">The user manager.</param>
         /// <param name="chatBeatService">The chatting service.</param>
-        public ConversationsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, IChatBeatService chatBeatService)
+        public ConversationsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, IChatBeatService chatBeatService, IConfiguration configuration)
         {
             _context = context;
             _userManager = userManager;
             _chatBeatService = chatBeatService;
+            _configuration = configuration;
         }
 
         /// <summary>
@@ -332,18 +334,24 @@ namespace Tidbeat.Controllers
 
             int totalAmount = 0;
             foreach(Conversation conversation in _context.Conversations) {
-                var currentUserParticipant = await _context.Participants
-                    .Include(m => m.User)
-                    .Include(p => p.Conversation)
-                    .Where(p => p.Conversation.Id == conversation.Id && p.User.Id == currentUser.Id)
-                    .CountAsync();
-                if (currentUserParticipant != 0) { 
-                    var totalUnreadMessages = await _context.Messages
-                        .Include(m => m.Conversation)
+                var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
+                optionsBuilder.UseSqlServer(_configuration.GetConnectionString("DefaultConnection"));
+                var currentUserParticipant = 0;
+                using (var context = new ApplicationDbContext(optionsBuilder.Options)) {
+                    currentUserParticipant = await context.Participants
                         .Include(m => m.User)
-                        .Where(m => m.Conversation.Id == conversation.Id && m.Status == Convert.ToInt32(MessageStatus.Sent) && currentUser.Id != m.User.Id)
+                        .Include(p => p.Conversation)
+                        .Where(p => p.Conversation.Id == conversation.Id && p.User.Id == currentUser.Id)
                         .CountAsync();
-                    totalAmount += totalUnreadMessages;
+
+                    if (currentUserParticipant != 0) {
+                        var totalUnreadMessages = await context.Messages
+                            .Include(m => m.Conversation)
+                            .Include(m => m.User)
+                            .Where(m => m.Conversation.Id == conversation.Id && m.Status == Convert.ToInt32(MessageStatus.Sent) && currentUser.Id != m.User.Id)
+                            .CountAsync();
+                        totalAmount += totalUnreadMessages;
+                    }
                 }
             }
 
