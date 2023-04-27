@@ -75,6 +75,8 @@ namespace Tidbeat.Models {
         /// </summary>
         public RoleType Role { get; set; }
 
+        public DateTime? CreationDate { get; set; }
+
         /// <summary>
         /// A method for fetching a formatted FirstName.
         /// </summary>
