@@ -335,7 +335,9 @@
             </div>
         </div>
         <div id="FollowersContent" class="h-100">
-            <div class="text-primary">@(ViewBag.CurrentUser != null && ViewBag.CurrentUser.Id == Model.Id ? Localizer["textp-currentuser"] : Localizer["textp-otheruser"])</div>
+            <div class="d-flex justify-content-center">
+                <div class="text-primary fw-bold">@ViewBag.FollowersCount</div>&nbsp;<div class="text-primary">@(ViewBag.CurrentUser != null && ViewBag.CurrentUser.Id == Model.Id ? Localizer["textp-currentuser"] : Localizer["textp-otheruser"])</div>
+            </div>
             <div class="scrollable-posts h-100 px-sm-5">
                 @if (TempData.ContainsKey("Followers"))
                 {
@@ -368,7 +370,10 @@
             </div>
         </div>
         <div id="FollowersReverseContent" class="h-100">
-            <div class="text-primary">@(ViewBag.CurrentUser != null && ViewBag.CurrentUser.Id == Model.Id ? Localizer["textc-currentuser"] : Localizer["textc-otheruser"])</div>
+            
+            <div class="d-flex justify-content-center">
+                <div class="text-primary fw-bold">@ViewBag.FollowiesCount</div>&nbsp;<div class="text-primary">@(ViewBag.CurrentUser != null && ViewBag.CurrentUser.Id == Model.Id ? Localizer["textc-currentuser"] : Localizer["textc-otheruser"])</div>
+            </div>
             <div class="scrollable-posts h-100 px-sm-5">
                 @if (TempData.ContainsKey("Followies"))
                 {
