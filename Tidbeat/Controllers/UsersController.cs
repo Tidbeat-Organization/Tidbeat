@@ -36,6 +36,7 @@ namespace Tidbeat.Controllers
             var users = _userManager.Users
                 .Where(u => u.FullName != "[deleted]")
                 .ToList();
+            ViewBag.TotalUsersCount = users.Count;
 
             // filter by name
             if (!string.IsNullOrEmpty(name))
@@ -70,6 +71,7 @@ namespace Tidbeat.Controllers
                         break;
                 }
             }
+            ViewBag.FilteredUsersCount = users.Count;
 
             ViewBag.Countries = GlobalizationService.CountryList().OrderBy(c => c).ToList();
 
@@ -83,6 +85,7 @@ namespace Tidbeat.Controllers
                 var currentUrl = string.Format("{0}://{1}", request.Scheme, request.Host);
                 TempData["Friends"] = await UtilityClass.SideBarAsync(user.Id, currentUrl);
             }
+            
             return View(users.Take(9));
         }
 

@@ -85,6 +85,8 @@ namespace Tidbeat.Controllers
                 .Include(p => p.Band)
                 .Where(PostPasses(name, genre, order))
                 .ToListAsync();
+            ViewBag.FilteredPostsCount = results.Count;
+            ViewBag.TotalPostsCount = await _context.Posts.CountAsync();
 
             /* Console.WriteLine("[ Before Ordering ]");
              foreach (var result in results)
