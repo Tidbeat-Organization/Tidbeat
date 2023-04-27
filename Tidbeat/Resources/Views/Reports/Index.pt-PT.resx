@@ -189,9 +189,6 @@
   <data name="openf" xml:space="preserve">
     <value>Em aberto</value>
   </data>
-  <data name="open_reports" xml:space="preserve">
-    <value>denúncias abertas</value>
-  </data>
   <data name="Other" xml:space="preserve">
     <value>Outro</value>
   </data>
@@ -242,6 +239,9 @@
   </data>
   <data name="type" xml:space="preserve">
     <value>Tipo de denúncia:</value>
+  </data>
+  <data name="unresolved_reports" xml:space="preserve">
+    <value>denúncias por resolver</value>
   </data>
   <data name="User" xml:space="preserve">
     <value>Utilizador</value>

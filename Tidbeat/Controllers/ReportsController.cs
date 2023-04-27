@@ -56,6 +56,8 @@ namespace Tidbeat.Controllers
             {
                 var result = await _context.Report.Include(p => p.UserReported).ToListAsync();
 
+                ViewBag.TotalOpenReports = result.Where(p => p.Status.Equals(ReportStatus.Created) || p.Status.Equals(ReportStatus.Open)).Count();
+
                 if (!string.IsNullOrEmpty(name))
                 {
                     result = result.Where(p => p.UserReported.FullName.ToLower().Contains(name.ToLower())).ToList();
@@ -151,7 +153,6 @@ namespace Tidbeat.Controllers
                     }
                 }
                 ViewBag.TotalBannedUsersCount = totalBannedUsersCount;
-                ViewBag.TotalOpenReports = result.Count;
 
                 if (User != null && User.Identity.IsAuthenticated)
                 {
