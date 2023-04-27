@@ -117,25 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="an_error_occurred" xml:space="preserve">
-    <value>Ocorreu um erro.</value>
-  </data>
-  <data name="error_content" xml:space="preserve">
-    <value>O post encontra-se vazio.</value>
-  </data>
-  <data name="error_title" xml:space="preserve">
-    <value>O Titulo encontra-se vazio.</value>
-  </data>
-  <data name="no_permission_for_modification" xml:space="preserve">
-    <value>Não tem permissões para modificar o post.</value>
-  </data>
-  <data name="post_deleted_sucessfully" xml:space="preserve">
-    <value>O post foi apagado com sucesso.</value>
-  </data>
-  <data name="your_post_was_sucessfully_created" xml:space="preserve">
-    <value>O seu post foi criado com sucesso.</value>
-  </data>
-  <data name="your_post_was_sucessfully_updated" xml:space="preserve">
-    <value>O post foi atualizado com sucesso.</value>
+  <data name="your_profile_has_been_updated" xml:space="preserve">
+    <value>O seu perfil foi atualizado</value>
   </data>
 </root>

@@ -141,6 +141,9 @@
   <data name="joined_the_conversation" xml:space="preserve">
     <value>JUNTOU-SE À CONVERSA</value>
   </data>
+  <data name="loading_if_it_takes_too_long_refresh" xml:space="preserve">
+    <value>A carregar... se demorar demasiado tempo, recarregue a página!</value>
+  </data>
   <data name="more_messages" xml:space="preserve">
     <value>Mais mensagens...</value>
   </data>
