@@ -140,6 +140,19 @@ namespace Tidbeat.Controllers
                 var currentuser = await _userManager.GetUserAsync(User);
                 ViewBag.CurrentUser = currentuser;
 
+                var allUsers = await _context.Users.Include(u => u.Bans).ToListAsync();
+                var totalBannedUsersCount = 0;
+                foreach(var user in allUsers) {
+                    foreach(var bannedUser in user.Bans) {
+                        if (bannedUser.EndsAt.CompareTo(DateTime.Now) > 0) {
+                            totalBannedUsersCount += 1;
+                            break;
+                        }
+                    }
+                }
+                ViewBag.TotalBannedUsersCount = totalBannedUsersCount;
+                ViewBag.TotalOpenReports = result.Count;
+
                 if (User != null && User.Identity.IsAuthenticated)
                 {
                     var user = await _userManager.GetUserAsync(User);
