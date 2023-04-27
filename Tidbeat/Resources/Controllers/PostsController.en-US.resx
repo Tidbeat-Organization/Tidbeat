@@ -130,12 +130,12 @@
     <value>You don't have permission to modify the post.</value>
   </data>
   <data name="post_deleted_sucessfully" xml:space="preserve">
-    <value>Your post was sucessfully deleted.</value>
+    <value>The post was sucessfully deleted.</value>
   </data>
   <data name="your_post_was_sucessfully_created" xml:space="preserve">
     <value>Your post was sucessfully created.</value>
   </data>
   <data name="your_post_was_sucessfully_updated" xml:space="preserve">
-    <value>Your post was sucessfully updated.</value>
+    <value>The post was sucessfully updated.</value>
   </data>
 </root>

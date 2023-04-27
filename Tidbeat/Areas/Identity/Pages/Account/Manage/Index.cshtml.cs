@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Localization;
 using Tidbeat.Controllers;
 using Tidbeat.Models;
 
@@ -22,6 +23,7 @@ namespace Tidbeat.Areas.Identity.Pages.Account.Manage
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly IStringLocalizer<IndexModel> Localizer;
 
         /// <summary>
         /// The constructor for the index model.
@@ -30,10 +32,12 @@ namespace Tidbeat.Areas.Identity.Pages.Account.Manage
         /// <param name="signInManager">The sign in manager.</param>
         public IndexModel(
             UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser> signInManager)
+            SignInManager<ApplicationUser> signInManager,
+            IStringLocalizer<IndexModel> localizer)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            Localizer = localizer;
         }
 
         /// <summary>
@@ -176,7 +180,7 @@ namespace Tidbeat.Areas.Identity.Pages.Account.Manage
             await _userManager.UpdateAsync(user);
 
             await _signInManager.RefreshSignInAsync(user);
-            StatusMessage = "Your profile has been updated";
+            StatusMessage = Localizer["your_profile_has_been_updated"];
             return RedirectToPage();
         }
     }
