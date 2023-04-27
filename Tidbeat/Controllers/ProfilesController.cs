@@ -160,7 +160,8 @@ namespace Tidbeat.Controllers
             ViewBag.FavoriteSongs = await GetFavoriteSongsAsync(profile);
             ViewBag.BandsOfSongs = await GetBandsOfSongs(ViewBag.FavoriteSongs);
             ViewBag.IsCurrentUser = profile.Id == currentuser?.Id;
-
+            ViewBag.FollowersCount = 0;
+            ViewBag.FollowiesCount = 0;
             if (_env.EnvironmentName != "Test") {
                 using (var httpClient = new HttpClient()) {
                     string currentUrl = Request.Host.Value.ToString();
@@ -169,12 +170,14 @@ namespace Tidbeat.Controllers
                         var jsonString = responseFollowers.Content.ReadAsStringAsync().Result;
                         var jsonObject = JsonConvert.DeserializeObject<List<ApplicationUser>>(jsonString);
                         TempData["Followers"] = jsonObject;
+                        ViewBag.FollowersCount = jsonObject?.Count ?? 0;
                     }
                     var responseFollowies = httpClient.GetAsync(Request.Scheme.ToString() + "://" + currentUrl + "/Follows/Followies?userId=" + id).Result;
                     if (responseFollowies.IsSuccessStatusCode) {
                         var jsonString2 = responseFollowies.Content.ReadAsStringAsync().Result;
                         var jsonObject2 = JsonConvert.DeserializeObject<List<ApplicationUser>>(jsonString2);
                         TempData["Followies"] = jsonObject2;
+                        ViewBag.FollowiesCount = jsonObject2?.Count ?? 0;
                     }
                 }
             }

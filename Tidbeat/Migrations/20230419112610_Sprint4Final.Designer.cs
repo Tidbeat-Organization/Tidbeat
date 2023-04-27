@@ -12,7 +12,12 @@ using Tidbeat.Data;
 namespace Tidbeat.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
+<<<<<<<< HEAD:Tidbeat/Migrations/20230419112610_Sprint4Final.Designer.cs
     partial class Sprint4Final
+========
+    [Migration("20230427182508_AddCreationDate")]
+    partial class AddCreationDate
+>>>>>>>> dev:Tidbeat/Migrations/20230427182508_AddCreationDate.Designer.cs
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -180,6 +185,9 @@ namespace Tidbeat.Migrations
 
                     b.Property<string>("Country")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("CreationDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
                         .HasMaxLength(256)

@@ -126,6 +126,9 @@
   <data name="all_types" xml:space="preserve">
     <value>All types</value>
   </data>
+  <data name="banned_users" xml:space="preserve">
+    <value>banned users</value>
+  </data>
   <data name="Closed" xml:space="preserve">
     <value>Closed</value>
   </data>
@@ -185,6 +188,9 @@
   </data>
   <data name="openf" xml:space="preserve">
     <value>Open</value>
+  </data>
+  <data name="open_reports" xml:space="preserve">
+    <value>open reports</value>
   </data>
   <data name="Other" xml:space="preserve">
     <value>Other</value>

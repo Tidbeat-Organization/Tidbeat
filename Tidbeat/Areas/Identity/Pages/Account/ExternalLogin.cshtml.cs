@@ -258,6 +258,7 @@ namespace Tidbeat.Areas.Identity.Pages.Account
                     user.BirthdayDate = Input.BirthdayDate;
                     user.Gender = Input.Gender;
                     user.EmailConfirmed = true;
+                    user.CreationDate = DateTime.Now;
 
                     var result = await _userManager.CreateAsync(user);
                     if (result.Succeeded)
