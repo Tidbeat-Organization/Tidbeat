@@ -129,6 +129,9 @@
   <data name="favorite_genre" xml:space="preserve">
     <value>Favorite genre:</value>
   </data>
+  <data name="filtered_users" xml:space="preserve">
+    <value>filtered users</value>
+  </data>
   <data name="filters" xml:space="preserve">
     <value>Filters</value>
   </data>
@@ -152,6 +155,9 @@
   </data>
   <data name="select_order" xml:space="preserve">
     <value>Select</value>
+  </data>
+  <data name="total_users" xml:space="preserve">
+    <value>total users</value>
   </data>
   <data name="users" xml:space="preserve">
     <value>Users</value>

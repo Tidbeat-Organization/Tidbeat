@@ -150,6 +150,9 @@
   <data name="disco" xml:space="preserve">
     <value>Disco</value>
   </data>
+  <data name="filtered_posts" xml:space="preserve">
+    <value>filtered posts</value>
+  </data>
   <data name="filters" xml:space="preserve">
     <value>Filters</value>
   </data>
@@ -233,5 +236,8 @@
   </data>
   <data name="to" xml:space="preserve">
     <value>to</value>
+  </data>
+  <data name="total_posts" xml:space="preserve">
+    <value>total posts</value>
   </data>
 </root>
