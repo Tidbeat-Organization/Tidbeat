@@ -243,6 +243,9 @@
   <data name="type" xml:space="preserve">
     <value>Report type:</value>
   </data>
+  <data name="unresolved_reports" xml:space="preserve">
+    <value>unresolved reports</value>
+  </data>
   <data name="User" xml:space="preserve">
     <value>User</value>
   </data>

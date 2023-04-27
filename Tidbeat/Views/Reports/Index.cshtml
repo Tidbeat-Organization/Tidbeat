@@ -91,7 +91,7 @@
             <div class="fw-bold text-primary">@ViewBag.TotalBannedUsersCount</div>&nbsp;@Localizer["banned_users"]
         </div>
         <div class="d-flex">
-            <div class="fw-bold text-primary">@ViewBag.TotalOpenReports</div>&nbsp;@Localizer["open_reports"]
+            <div class="fw-bold text-primary">@ViewBag.TotalOpenReports</div>&nbsp;@Localizer["unresolved_reports"]
         </div>
     </div>
 </div>
@@ -135,7 +135,7 @@
 </div>
 <script>
     var loading = false;
-    var offset = 0;
+    var offset = 20;
     $(function () {
         // Listen for scroll events on the window
         $(window).scroll(function () {

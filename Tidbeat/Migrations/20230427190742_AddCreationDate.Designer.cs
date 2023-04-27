@@ -12,7 +12,11 @@ using Tidbeat.Data;
 namespace Tidbeat.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
+<<<<<<<< HEAD:Tidbeat/Migrations/20230427190742_AddCreationDate.Designer.cs
     [Migration("20230427190742_AddCreationDate")]
+========
+    [Migration("20230427182508_AddCreationDate")]
+>>>>>>>> dev:Tidbeat/Migrations/20230427182508_AddCreationDate.Designer.cs
     partial class AddCreationDate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
