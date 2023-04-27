@@ -129,6 +129,9 @@
   <data name="register_now_banner" xml:space="preserve">
     <value>Register now to join the community</value>
   </data>
+  <data name="users_registered_in_the_last_24_hours" xml:space="preserve">
+    <value>Users Registered in the Last 24h</value>
+  </data>
   <data name="welcome_banner" xml:space="preserve">
     <value>Welcome to Tidbeat!</value>
   </data>

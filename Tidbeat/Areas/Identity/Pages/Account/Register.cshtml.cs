@@ -196,6 +196,7 @@ namespace Tidbeat.Areas.Identity.Pages.Account
                     user.FullName = Input.FullName;
                     user.BirthdayDate = Input.BirthdayDate;
                     user.Gender = Input.Gender;
+                    user.CreationDate = DateTime.Now;
 
                     await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                     await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);

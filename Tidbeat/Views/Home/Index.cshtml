@@ -25,12 +25,17 @@
                         <div class="mx-1 text-left">
                             <span class="text-white" style="font-size: 2.5vw; font-weight: 600;">@Localizer["welcome_banner"]<br> @Localizer["welcome_banner1"]</span>
                         </div>
-                        @if (!User.Identity.IsAuthenticated)
-                        {
-                            <div class="text-right pointer-active me-4" onclick="@(isUserLogged ? "" : "window.location.href='/Identity/Account/Register';")">
-                                <span class="text-white font-weight-bold text-black-hover me-2" style="font-size: 2.5vw;">@Localizer["register_now_banner"]</span>
+                        <div class="d-flex flex-column">
+                            @if (!User.Identity.IsAuthenticated)
+                            {
+                                <div class="text-right pointer-active me-4" onclick="@(isUserLogged ? "" : "window.location.href='/Identity/Account/Register';")">
+                                    <span class="text-white font-weight-bold text-black-hover me-2" style="font-size: 2.5vw;">@Localizer["register_now_banner"]</span>
+                                </div>
+                            }
+                            <div class="d-flex text-white fs-4 text-center justify-content-center mt-4 me-4">
+                                <div class="text-white fw-bold">@ViewBag.RegisteredDailyUsers</div>&nbsp;@Localizer["users_registered_in_the_last_24_hours"]
                             </div>
-                        }
+                        </div>
                     </div>
                 </div>
             </div>

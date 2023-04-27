@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System.Diagnostics;
 using System.Net;
@@ -37,6 +38,8 @@ namespace Tidbeat.Controllers
                     TempData["Friends"] = await UtilityClass.SideBarAsync(user.Id, currentUrl);
                 }
             }
+            ViewBag.RegisteredDailyUsers = await _userManager.Users.Where(u => u.CreationDate.HasValue && u.CreationDate.Value >= DateTime.Now.AddDays(-1)).CountAsync();
+            
             return View();
         }
 
