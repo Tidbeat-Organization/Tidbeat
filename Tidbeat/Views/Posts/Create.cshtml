@@ -45,7 +45,7 @@
                         {
                             @foreach (var item in ViewBag.songs)
                             {
-                                <option data-value="@item.Id" song-link="@item.Href" name-value="@item.Name" band-value="@item.Artists[0].Name">@item.Name <span class="text-light-grey">by @item.Artists[0].Name</span></option>
+                                <option class="text-primary" data-value="@item.Id" song-link="@item.Href" name-value="@item.Name" band-value="@item.Artists[0].Name">@item.Name <span class="text-black fw-normal">by @item.Artists[0].Name</span></option>
                             }
 
                         }
@@ -67,7 +67,7 @@
                     <datalist id="BandOptions" role="listbox" class="zindex-dropdown position-absolute" style="position: absolute; z-index: 999">
                         @foreach (var item in ViewBag.bands)
                         {
-                            <option data-value="@item.Id">@item.Name</option>
+                            <option class="text-primary" data-value="@item.Id">@item.Name</option>
                         }
                     </datalist>
                     <input type="hidden" name="BandId" id="answerInputband" value="@(ViewBag.chooseBand?.Id ?? "")">
@@ -183,7 +183,12 @@
 
                         data.forEach(item => {
                             var option = document.createElement("option");
-                            option.innerText = item.name + " by " + item.artists[0].name;
+                            option.textContent = item.name;
+                            option.classList.add('text-primary');
+                            var greyArea = document.createElement("span");
+                            greyArea.textContent = " by " + item.artists[0].name;
+                            greyArea.classList.add("text-black");
+                            option.appendChild(greyArea);
                             option.setAttribute("data-value",item.id);
                             option.setAttribute("name-value",item.name);
                             option.setAttribute("song-link", item.Href);
