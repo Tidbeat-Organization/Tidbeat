@@ -10767,7 +10767,11 @@ option {
 
 datalist option:hover, datalist option:focus {
   color: black;
-  background-color: lightskyblue;
+  background-color: rgba(102, 16, 242, 0.1) !important;
+}
+
+datalist option span.text-black {
+  color: #000;
 }
 
 .custom-datalist {
